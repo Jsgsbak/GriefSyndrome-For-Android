@@ -1,0 +1,15 @@
+{
+    "name": "PureAmaya.General",
+    "references": [
+        "GUID:86cbef207480f214392a8dc4ab5bf67d"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
