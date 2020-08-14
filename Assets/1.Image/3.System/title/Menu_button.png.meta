@@ -10,7 +10,7 @@ TextureImporter:
     second: Exit
   - first:
       213: -5329828164448443161
-    second: Menu_button_2
+    second: lap
   - first:
       213: -5341501799543209036
     second: Menu_button_3
@@ -157,6 +157,27 @@ TextureImporter:
       bones: []
       spriteID: 4122f2efe8a87beb0800000000000000
       internalID: -4704138939010702828
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lap
+      rect:
+        serializedVersion: 2
+        x: 197
+        y: 31
+        width: 52
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7e4ad28e585a806b0800000000000000
+      internalID: -5329828164448443161
       vertices: []
       indices: 
       edges: []

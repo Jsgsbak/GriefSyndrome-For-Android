@@ -1,0 +1,188 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84a92b25f83d49b9bc132d206b370281, type: 3}
+  m_Name: PlayerFace
+  m_EditorClassIdentifier: 
+  hashCode: 480734450
+  material: {fileID: 6776190586498145835}
+  materialHashCode: 0
+  m_Version: 1.1.0
+  spriteSheet: {fileID: 2800000, guid: d8734ea58d1c25847bd246da50f0662a, type: 3}
+  m_SpriteCharacterTable:
+  - m_ElementType: 2
+    m_Unicode: 0
+    m_GlyphIndex: 0
+    m_Scale: 1
+    m_Name: Face_Homura
+    m_HashCode: -1591899918
+  - m_ElementType: 2
+    m_Unicode: 0
+    m_GlyphIndex: 1
+    m_Scale: 1
+    m_Name: Face_Kyoko
+    m_HashCode: 1384097703
+  - m_ElementType: 2
+    m_Unicode: 0
+    m_GlyphIndex: 2
+    m_Scale: 1
+    m_Name: Face_Madoka
+    m_HashCode: -1485862829
+  - m_ElementType: 2
+    m_Unicode: 0
+    m_GlyphIndex: 3
+    m_Scale: 1
+    m_Name: Face_Mami
+    m_HashCode: 432470870
+  - m_ElementType: 2
+    m_Unicode: 0
+    m_GlyphIndex: 4
+    m_Scale: 1
+    m_Name: Face_Sayaka
+    m_HashCode: -1872506306
+  - m_ElementType: 2
+    m_Unicode: 0
+    m_GlyphIndex: 5
+    m_Scale: 1
+    m_Name: Face_Homura_m
+    m_HashCode: 1587778912
+  m_SpriteGlyphTable:
+  - m_Index: 0
+    m_Metrics:
+      m_Width: 12
+      m_Height: 12
+      m_HorizontalBearingX: -6
+      m_HorizontalBearingY: 12
+      m_HorizontalAdvance: 12
+    m_GlyphRect:
+      m_X: 27
+      m_Y: 10
+      m_Width: 12
+      m_Height: 12
+    m_Scale: 1
+    m_AtlasIndex: 0
+    sprite: {fileID: 7744217938887842220, guid: d8734ea58d1c25847bd246da50f0662a,
+      type: 3}
+  - m_Index: 1
+    m_Metrics:
+      m_Width: 12
+      m_Height: 12
+      m_HorizontalBearingX: -6
+      m_HorizontalBearingY: 12
+      m_HorizontalAdvance: 12
+    m_GlyphRect:
+      m_X: 40
+      m_Y: 10
+      m_Width: 12
+      m_Height: 12
+    m_Scale: 1
+    m_AtlasIndex: 0
+    sprite: {fileID: 7637708923612650358, guid: d8734ea58d1c25847bd246da50f0662a,
+      type: 3}
+  - m_Index: 2
+    m_Metrics:
+      m_Width: 12
+      m_Height: 12
+      m_HorizontalBearingX: -6
+      m_HorizontalBearingY: 12
+      m_HorizontalAdvance: 12
+    m_GlyphRect:
+      m_X: 52
+      m_Y: 10
+      m_Width: 12
+      m_Height: 12
+    m_Scale: 1
+    m_AtlasIndex: 0
+    sprite: {fileID: -6340234826010411889, guid: d8734ea58d1c25847bd246da50f0662a,
+      type: 3}
+  - m_Index: 3
+    m_Metrics:
+      m_Width: 12
+      m_Height: 12
+      m_HorizontalBearingX: -6
+      m_HorizontalBearingY: 12
+      m_HorizontalAdvance: 12
+    m_GlyphRect:
+      m_X: 64
+      m_Y: 10
+      m_Width: 12
+      m_Height: 12
+    m_Scale: 1
+    m_AtlasIndex: 0
+    sprite: {fileID: -5843273147912078911, guid: d8734ea58d1c25847bd246da50f0662a,
+      type: 3}
+  - m_Index: 4
+    m_Metrics:
+      m_Width: 12
+      m_Height: 12
+      m_HorizontalBearingX: -6
+      m_HorizontalBearingY: 12
+      m_HorizontalAdvance: 12
+    m_GlyphRect:
+      m_X: 76
+      m_Y: 10
+      m_Width: 12
+      m_Height: 12
+    m_Scale: 1
+    m_AtlasIndex: 0
+    sprite: {fileID: 2189409247864640695, guid: d8734ea58d1c25847bd246da50f0662a,
+      type: 3}
+  - m_Index: 5
+    m_Metrics:
+      m_Width: 12
+      m_Height: 12
+      m_HorizontalBearingX: -6
+      m_HorizontalBearingY: 12
+      m_HorizontalAdvance: 12
+    m_GlyphRect:
+      m_X: 88
+      m_Y: 10
+      m_Width: 12
+      m_Height: 12
+    m_Scale: 1
+    m_AtlasIndex: 0
+    sprite: {fileID: 97815350574283036, guid: d8734ea58d1c25847bd246da50f0662a, type: 3}
+  spriteInfoList: []
+  fallbackSpriteAssets: []
+--- !u!21 &6776190586498145835
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: TextMeshPro/Sprite
+  m_Shader: {fileID: 4800000, guid: cf81c85f95fe47e1a27f6ae460cf182c, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: d8734ea58d1c25847bd246da50f0662a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _UseUIAlphaClip: 0
+    m_Colors:
+    - _ClipRect: {r: -32767, g: -32767, b: 32767, a: 32767}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
