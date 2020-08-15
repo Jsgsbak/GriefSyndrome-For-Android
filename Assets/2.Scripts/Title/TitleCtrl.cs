@@ -2,25 +2,38 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 /// <summary>
 /// n标题管理
 /// </summary>
 public class TitleCtrl : MonoBehaviour
 {
-    #region 分数管理
+    #region UI管理
+    //分数显示
     public TMP_Text HiScore;
     public TMP_Text BestTime;
     public TMP_Text MaxHits;
+    //按钮控制
+    public Button StartGameButton;
+    public TMP_InputField LapInput;
+    public Button SettingsButton;
+    public Button ExitButton;
     #endregion
 
 
-
-
+    /// <summary>
+    /// 尽量所有的属性/设置都从这里读取/写入
+    /// </summary>
+    public static GameScoreSettingsIO gameScoreSettingsIO;
     public static TitleCtrl titleCtrl;
 
     private void Awake()
     {
+        //事前处理
         titleCtrl = this;
+        gameScoreSettingsIO = Resources.Load("GameScoreAndSettings") as GameScoreSettingsIO;
+        gameScoreSettingsIO.Initial();
+
     }
 
 
@@ -29,20 +42,30 @@ public class TitleCtrl : MonoBehaviour
     {
         //BGM
         EasyBGMCtrl.easyBGMCtrl.PlayBGM(0);
+
+        //注册组件
+        //向GSS中写入周目数
+        LapInput.onValueChanged.AddListener(delegate (string lap) { gameScoreSettingsIO.lap = int.Parse(lap);});
+
+
+        StartGameButton.onClick.AddListener(delegate()
+        { 
+
+
+            //切换场景
+         
+        
+        });
+        //关闭游戏
+        ExitButton.onClick.AddListener(delegate () { Application.Quit(0); });
     }
 
-public void StartGame(int lap)
-    {
-
-    }
-
-    public void Exit()
-    {
-        Application.Quit();
-    }
-
-
-
+    /// <summary>
+    /// 调整标题界面展示的分数
+    /// </summary>
+    /// <param name="scoreType"></param>
+    /// <param name="Parameter"></param>
+    /// <param name="PlayerFaces"></param>
     public void AdjustScore(Variable.ScoreType scoreType,string Parameter,Variable.PlayerFaceType[] PlayerFaces)
     {
         if(scoreType == Variable.ScoreType.BestTime)
