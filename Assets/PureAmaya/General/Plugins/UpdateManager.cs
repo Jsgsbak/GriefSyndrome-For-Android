@@ -107,6 +107,12 @@ namespace PureAmaya.General
         /// </summary>
         public static UpdateEventClass FakeLateUpdate = new UpdateEventClass();
 
+
+        private void Start()
+        {
+            DontDestroyOnLoad(gameObject);
+        }
+
         private void Update()
         {
             FastUpdate.Invoke();

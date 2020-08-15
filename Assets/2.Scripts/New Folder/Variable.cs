@@ -32,9 +32,36 @@ public class Variable
         Mami,
         Sayaka,
         Homura_m,
-    Null,
+        Null,       
+    }
 
-       
+    public enum Majo
+    {
+        /// <summary>
+        /// 蔷薇魔女
+        /// </summary>
+        Gertrud =0,
+        /// <summary>
+        /// 零食魔女
+        /// </summary>
+        Charlotte =1,
+        /// <summary>
+        /// 箱之魔女
+        /// </summary>
+        Elly = 2,
+        /// <summary>
+        /// 影之魔女
+        /// </summary>
+        ElsaMaria =3,
+        /// <summary>
+        /// 舞台装置魔女
+        /// </summary>
+        Walpurgisnacht = 4,
+        /// <summary>
+        /// 人鱼魔女
+        /// </summary>
+        Oktavia = 5,
+
     }
 
     /// <summary>

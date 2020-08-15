@@ -23,6 +23,21 @@ public class GameScoreSettingsIO : ScriptableObject
     public int LastLap = 1;
     [Header("玩家类型")]//null用于占位子
     public Variable.PlayerFaceType[] PlayerType = new Variable.PlayerFaceType[3] { Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null };
+    /// <summary>
+    /// 正在打的魔女
+    /// </summary>
+    [Header("正在打的魔女")]
+    public Variable.Majo MajoBeingBattled = Variable.Majo.Gertrud;
+    /// <summary>
+    /// 本次周目最新可食用的魔女
+    /// </summary>
+    [Header("本次周目最新可食用的魔女")]
+    public Variable.Majo NewestMajo = Variable.Majo.Gertrud;
+    /// <summary>
+    /// 本次周目是否开启人鱼魔女
+    /// </summary>
+    [Header("本次周目是否开启人鱼魔女")]
+    public bool AllowOktavia = false;
     #endregion
 
     #region 玩家设置
@@ -43,6 +58,9 @@ public class GameScoreSettingsIO : ScriptableObject
         //读取上次游戏的周目数
         lap = LastLap;
         PlayerType = new Variable.PlayerFaceType[3] { Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null };
+        MajoBeingBattled = Variable.Majo.Gertrud;
+        NewestMajo = Variable.Majo.Gertrud;
+        AllowOktavia = false;
     }
 
 }
