@@ -13,10 +13,22 @@ MonoBehaviour:
   m_Name: GameScoreAndSettings
   m_EditorClassIdentifier: 
   Score: ffffffffffffffffffffffff
+  HiScore: 10000
+  HiScoreFace: 060000000600000006000000
   Hits: 0
-  Time: 000000000000000000000000
-  lap: 1
-  PlayerType: 060000000600000006000000
+  MaxHits: 0
+  MaxHitsFace: 060000000600000006000000
+  Time: 0
+  BestTime: 0
+  BestTimeFace: 060000000600000006000000
+  lap: 6666
+  LastLap: 1
+  PlayerType: 040000000600000006000000
+  MagicalGirlsDie: 0000000000
+  MajoBeingBattled: 0
+  NewestMajo: 0
+  AllowOktavia: 0
+  MajoKeikaiToSelectPart: 0
   mahouShoujos:
   - name: Homura
     BasicPow: 10

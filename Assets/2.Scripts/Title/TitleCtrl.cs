@@ -50,6 +50,7 @@ public class TitleCtrl : MonoBehaviour
     public Button ExitMajo;
 
     [Header("魔法少女选择控制")]
+    public Image[] Mahoshaojo;
     /// <summary>
     /// 溜了溜了
     /// </summary>
@@ -69,10 +70,9 @@ public class TitleCtrl : MonoBehaviour
     public  GameObject eventSystem;
     private void Awake()
     {
-        //组件获取/初始化
+        //组件获取
         titleCtrl = this;
         gameScoreSettingsIO = Resources.Load("GameScoreAndSettings") as GameScoreSettingsIO;
-        gameScoreSettingsIO.Initial();
 
     }
 
@@ -80,33 +80,71 @@ public class TitleCtrl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //淡入进入MainTitle part（用于刚刚打开游戏）
-        ChangePart[0].gameObject.SetActive(true);
-        ChangePart[0].alpha = 0;
-        Timing.RunCoroutine(ChangePartMethod(-1, 0));
-        //禁用其他Part
-        ChangePart[1].gameObject.SetActive(false);
-        ChangePart[2].gameObject.SetActive(false);
-
         //BGM
         EasyBGMCtrl.easyBGMCtrl.PlayBGM(0);
 
-        #region  注册组件
-        //主标题part
-        LapInput.onValueChanged.AddListener(delegate (string lap) { gameScoreSettingsIO.lap = int.Parse(lap); });//向GSS中写入周目数
-        StartGameButton.onClick.AddListener(delegate () { Timing.RunCoroutine(ChangePartMethod(0, 1)); });//进入魔女选择part
-        ExitButton.onClick.AddListener(delegate () { Application.Quit(0); });//关闭游戏
+        //刚打开游戏，并不是从魔女结界中返回
+        if (!gameScoreSettingsIO.MajoKeikaiToSelectPart)
+        {
+            //淡入进入MainTitle part（用于刚刚打开游戏）
+            ChangePart[0].gameObject.SetActive(true);
+            ChangePart[0].alpha = 0;
+            Timing.RunCoroutine(ChangePartMethod(-1, 0));
 
-        //魔女选择part
-        ExitMajo.onClick.AddListener(delegate () { Timing.RunCoroutine(ChangePartMethod(1, 0)); });//返回到主标题part
 
-        //魔法少女选择part
-        ExitMagicalGirls.onClick.AddListener(delegate () { Timing.RunCoroutine(ChangePartMethod(2, 1)); });
-        #endregion
+            //禁用其他Part
+            ChangePart[1].gameObject.SetActive(false);
+            ChangePart[2].gameObject.SetActive(false);
+
+            #region  注册组件
+            //主标题part
+            LapInput.onValueChanged.AddListener(delegate (string lap) { gameScoreSettingsIO.lap = int.Parse(lap); });//向GSS中写入周目数
+            StartGameButton.onClick.AddListener(delegate () { Timing.RunCoroutine(ChangePartMethod(0, 1)); });//进入魔女选择part
+            ExitButton.onClick.AddListener(delegate () { Application.Quit(0); });//关闭游戏
+
+            //魔女选择part
+            ExitMajo.onClick.AddListener(delegate () { Timing.RunCoroutine(ChangePartMethod(1, 0)); });//返回到主标题part
+
+            //魔法少女选择part
+            ExitMagicalGirls.onClick.AddListener(delegate () { Timing.RunCoroutine(ChangePartMethod(2, 1)); });//范围到魔女选择part
+            #endregion
+        }
+        else//不是刚打开游戏，是从魔女结界中返回
+
+        {
+            //禁用其他Part
+            ChangePart[0].gameObject.SetActive(false);
+            ChangePart[2].gameObject.SetActive(false);
+
+            //启用魔女选择part
+            Timing.RunCoroutine(ChangePartMethod(-1, 1));
+        }
+
     }
 
     #region 用于处理的按钮的方法
 
+    //不放在那个委托里是因为每次显示这个part的时候都要检查一次
+    /// <summary>
+    /// 检查魔法少女是否可用
+    /// </summary>
+    public void CheckMahoshaojo()
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            //如果魔法少女扑街，那么变灰
+            if (gameScoreSettingsIO.MagicalGirlsDie[i])
+            {
+                Mahoshaojo[i].color = new Color(0.2075f, 0.2075472f, 0.2075472f);
+            }
+            else
+            {
+                Mahoshaojo[i].color = Color.white;
+            }
+        }
+    }
+
+    //不放在那个委托里是因为每次显示这个part的时候都要检查一次
     /// <summary>
     /// 检查魔女是否可以食用
     /// </summary>
@@ -141,20 +179,36 @@ public class TitleCtrl : MonoBehaviour
             }
 
         }
-
-
-
     }
 
     /// <summary>
     /// 选择魔女（检查视图注入）
     /// </summary>
-    public void StartHuntering(int MajoId)
+    public void SelectedMajo(int MajoId)
     {
-        //储存要打的魔女
+        //储存要打的魔女&切换到选择魔法少女part
         if (MajoId <= (int)gameScoreSettingsIO.NewestMajo && MajoId != 5) { gameScoreSettingsIO.MajoBeingBattled = (Variable.Majo)MajoId; Timing.RunCoroutine(ChangePartMethod(-1, 2));}
         else if (MajoId == 5 && gameScoreSettingsIO.AllowOktavia) { gameScoreSettingsIO.MajoBeingBattled = (Variable.Majo)MajoId; Timing.RunCoroutine(ChangePartMethod(-1, 2)); }
-       //后续处理
+    }
+
+    /// <summary>
+    /// 选择魔法少女（检查视图注入）
+    /// </summary>
+    public void SelectedMahoshaojo(int id)
+    {
+        if (gameScoreSettingsIO.MagicalGirlsDie[id])
+        {
+            //挂了，选择为QB
+            gameScoreSettingsIO.PlayerType[0] = Variable.PlayerFaceType.QB;//玩家1，联机的话要在处理
+        }
+        else
+        {
+            //没挂，正常选择
+            gameScoreSettingsIO.PlayerType[0] = (Variable.PlayerFaceType)id;//玩家1，联机的话要在处理
+        }
+
+        //应该所有玩家都选择完在进行处理
+        //切换场景
     }
 
     #endregion
@@ -171,6 +225,14 @@ public class TitleCtrl : MonoBehaviour
     {
         if (scoreType == Variable.ScoreType.BestTime)
         {
+
+            //总秒数转换为时分秒
+            int time = int.Parse(Parameter);
+            int h = Mathf.FloorToInt(time / 3600);
+            int m = Mathf.FloorToInt(time / 60 - h * 60);
+            int s = Mathf.FloorToInt(time - m * 60 - h * 3600);
+            Parameter = string.Format("{0}:{1}:{2}", h.ToString("00"), m.ToString("00"), s.ToString("00"));
+
             BestTime.text = string.Format("{0} {1}  {2} {3} {4}", " Best Time", Parameter, PlayerFaceToRichText(PlayerFaces)[0], PlayerFaceToRichText(PlayerFaces)[1], PlayerFaceToRichText(PlayerFaces)[2]);
         }
         else if (scoreType == Variable.ScoreType.HiScore)
@@ -203,6 +265,24 @@ public class TitleCtrl : MonoBehaviour
         {
             //如果来的是SelectMajo，则检查一下马酒
             CheckMajo();
+        }
+        else if(InId == 2)
+        {
+            //如果来的是SelectMagicalGirls，则检查一下马猴烧酒
+            CheckMahoshaojo();
+        }
+        else
+        {
+            //回到主标题part则直接初始化临时数据
+            gameScoreSettingsIO.Initial();
+
+            #region 从存档中读取主标题part中的保存数据，lap 
+            gameScoreSettingsIO.Load();
+            AdjustScore(Variable.ScoreType.BestTime, gameScoreSettingsIO.BestTime.ToString(), gameScoreSettingsIO.BestTimeFace);
+            AdjustScore(Variable.ScoreType.HiScore, gameScoreSettingsIO.HiScore.ToString(), gameScoreSettingsIO.HiScoreFace);
+            AdjustScore(Variable.ScoreType.MaxHits, gameScoreSettingsIO.MaxHits.ToString(), gameScoreSettingsIO.MaxHitsFace);
+            LapInput.text = gameScoreSettingsIO.LastLap.ToString();
+            #endregion
         }
 
         //一个先变黑另外一个才出来

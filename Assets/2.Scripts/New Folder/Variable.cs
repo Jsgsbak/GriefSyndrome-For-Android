@@ -32,7 +32,8 @@ public class Variable
         Mami,
         Sayaka,
         Homura_m,
-        Null,       
+        Null,   
+        QB,
     }
 
     public enum Majo
