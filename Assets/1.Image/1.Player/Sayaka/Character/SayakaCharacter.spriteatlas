@@ -1,0 +1,338 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SayakaCharacter
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 2a92da531725fbe4394d57af3a0d3fb6, type: 3}
+    totalSpriteSurfaceArea: 2727936
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: a18db500691b16f4fb9f24f7603876c4, type: 3}
+  - {fileID: 21300000, guid: c7aa53101e8bb5d4a834d6cdca09fa9c, type: 3}
+  - {fileID: 21300000, guid: 14a18b4040e85ec43b85ccdcbacf8324, type: 3}
+  - {fileID: 21300000, guid: 47757d40f4c760046b967b5850c98ef4, type: 3}
+  - {fileID: 21300000, guid: 86af25703fa15194d9f6fd86af205e50, type: 3}
+  - {fileID: 21300000, guid: 9ad4287038d27c844965e8a67bb33f06, type: 3}
+  - {fileID: 21300000, guid: 49ad6a8070b40084a95c9d023418d827, type: 3}
+  - {fileID: 21300000, guid: e04f40909feadc342bb81f44e5988b33, type: 3}
+  - {fileID: 21300000, guid: c7c8939067b17514097c51bc9a033024, type: 3}
+  - {fileID: 21300000, guid: b7ed74e0024617e438004f28a6a0a02f, type: 3}
+  - {fileID: 21300000, guid: 2c19b4e01bbd5ea4596c0867b08a6169, type: 3}
+  - {fileID: 21300000, guid: 88f074f07704c7749b2dca9fd24da322, type: 3}
+  - {fileID: 21300000, guid: 28820f01f835c4a419fa06d502593618, type: 3}
+  - {fileID: 21300000, guid: acb9b121a0aa33c4d85b514c368335b7, type: 3}
+  - {fileID: 21300000, guid: 4049e6216fec85e4185c9fdd83f9d94c, type: 3}
+  - {fileID: 21300000, guid: f71239211f83a2b4d99187fb60c33590, type: 3}
+  - {fileID: 21300000, guid: 27ba3e410fe305d4fa5126eef4ca4707, type: 3}
+  - {fileID: 21300000, guid: 5613f4811e9a0ae4887dbff0b603f576, type: 3}
+  - {fileID: 21300000, guid: 33e22781c4781dd41bcf4178a57649bf, type: 3}
+  - {fileID: 21300000, guid: 58e53d81a920ee649934ddce3feadd92, type: 3}
+  - {fileID: 21300000, guid: 0e0a8d817ecc41c45860cf8fbd45d6cb, type: 3}
+  - {fileID: 21300000, guid: b5604a9142a91c045a573db617407b53, type: 3}
+  - {fileID: 21300000, guid: 4caa1ea1cfda36e4492f3f59f47e5b2a, type: 3}
+  - {fileID: 21300000, guid: 71b8e4f1ad3dc574fa62abd8c7704a18, type: 3}
+  - {fileID: 21300000, guid: 866100027a8179840812544fc5dd026f, type: 3}
+  - {fileID: 21300000, guid: 77f68b028a4f1f647bfd18be1cd129b1, type: 3}
+  - {fileID: 21300000, guid: ea5fe42225fad724fbff0d0cd3b5de1f, type: 3}
+  - {fileID: 21300000, guid: cd1197326a381f8499a04abbd9f21536, type: 3}
+  - {fileID: 21300000, guid: f349595208946014fb2a2ffb07506dea, type: 3}
+  - {fileID: 21300000, guid: 75b12b52577572c4b9cc01bf9a822b39, type: 3}
+  - {fileID: 21300000, guid: 38c3eea25d73c5645abf2da008d0a832, type: 3}
+  - {fileID: 21300000, guid: 03f70213a1660e24ea5311a2256a4544, type: 3}
+  - {fileID: 21300000, guid: 6d5cb363130c6dc4eaea1f6b6d0c632a, type: 3}
+  - {fileID: 21300000, guid: 2adc9f73f06634649b83f0df587fb58e, type: 3}
+  - {fileID: 21300000, guid: 4c2a9493309b8944bb44342651a5523d, type: 3}
+  - {fileID: 21300000, guid: 7fa75593122db174586ed791bf0b0894, type: 3}
+  - {fileID: 21300000, guid: a1db85936b4ea7d46a00a292dbc23f38, type: 3}
+  - {fileID: 21300000, guid: d27eae93ca9da2443b203b2dcaf54d52, type: 3}
+  - {fileID: 21300000, guid: 2e6a6aa36ce1276428c2b64975f37c8d, type: 3}
+  - {fileID: 21300000, guid: af64a144353477942855290fbde608ea, type: 3}
+  - {fileID: 21300000, guid: 027d30649a6932244b020e7af108d833, type: 3}
+  - {fileID: 21300000, guid: 951ee4a454e8c264f9d8862aba9c0c51, type: 3}
+  - {fileID: 21300000, guid: 0c609bd42e56bb64288c0fc13b55a447, type: 3}
+  - {fileID: 21300000, guid: 9fbe9df4d61a19a44b28d93bdccdfb4b, type: 3}
+  - {fileID: 21300000, guid: 3df5b70590bc147409572cb340b01598, type: 3}
+  - {fileID: 21300000, guid: 8986ef156a5c5014ba23823b3a40aab2, type: 3}
+  - {fileID: 21300000, guid: ec132025fbde9e043876fcbfb6b88bfc, type: 3}
+  - {fileID: 21300000, guid: 0f8a0525ee4997d44b1d6c7cbc919541, type: 3}
+  - {fileID: 21300000, guid: 9def78253174c8d40baeb1f2737d305d, type: 3}
+  - {fileID: 21300000, guid: a43e92959c0f9154d8ad353e6b4586e1, type: 3}
+  - {fileID: 21300000, guid: 585e00b59eaeb0c4db3b80f194a53ff1, type: 3}
+  - {fileID: 21300000, guid: 94644e16d8de66f45a55ba3e6efb3214, type: 3}
+  - {fileID: 21300000, guid: ab0e90567c639bf4f88e704db808b5a5, type: 3}
+  - {fileID: 21300000, guid: ed4bc056e22a2ce4090da31b0d3663e7, type: 3}
+  - {fileID: 21300000, guid: c5769966ccf33964e990faf2057d62c1, type: 3}
+  - {fileID: 21300000, guid: 3cd1c3073fb658743ab4e660bbad74b8, type: 3}
+  - {fileID: 21300000, guid: 50ac9e271cdee0c43a11043ae420dd4d, type: 3}
+  - {fileID: 21300000, guid: e27a1837ef2c9394fa5faa92c740965b, type: 3}
+  - {fileID: 21300000, guid: ce5c3e376c5f77649a5e7215d2b5bbe7, type: 3}
+  - {fileID: 21300000, guid: c2b4c257ae366204ca2313a501fb75ff, type: 3}
+  - {fileID: 21300000, guid: 4f9045570bc495f4a8fec2eb0d1ff129, type: 3}
+  - {fileID: 21300000, guid: 3ccea9671bc5f65448c284a2470c7907, type: 3}
+  - {fileID: 21300000, guid: 416ec4776b9fcd845ba37a733c834a29, type: 3}
+  - {fileID: 21300000, guid: 4defa58756a31774fa38bab11d47115a, type: 3}
+  - {fileID: 21300000, guid: 97972f9715bd72d47ae6f5a92ce2bb79, type: 3}
+  - {fileID: 21300000, guid: 6be5e5b7c086be9458ba896409840d43, type: 3}
+  - {fileID: 21300000, guid: 370615e7141b8a943ae2dfb94e8f9627, type: 3}
+  - {fileID: 21300000, guid: f57b17f7a1b90204d97590511319dba9, type: 3}
+  - {fileID: 21300000, guid: 29670228ddba76e40a55358dad8fd564, type: 3}
+  - {fileID: 21300000, guid: d30ff148c8c5c034ea10355eabe0a66e, type: 3}
+  - {fileID: 21300000, guid: bf8846486db511841b22f7293572c0f9, type: 3}
+  - {fileID: 21300000, guid: f426f678e5c52504ca231d63638fb1ee, type: 3}
+  - {fileID: 21300000, guid: 12760878e20aa7345b89ebf1541978fe, type: 3}
+  - {fileID: 21300000, guid: 5fc89ab8cfe6dc34baaa038f31bf3b00, type: 3}
+  - {fileID: 21300000, guid: 201ccfd86f8e19043b94fce8550a501f, type: 3}
+  - {fileID: 21300000, guid: be05c0e8f78ae664eae3e235375b1ecc, type: 3}
+  - {fileID: 21300000, guid: 8c489b1957c35814aadf26314200b7a3, type: 3}
+  - {fileID: 21300000, guid: abc61d19a6ee50548bf59576b43207cc, type: 3}
+  - {fileID: 21300000, guid: 08bea0295e7b3cb409c8265d6d9c115b, type: 3}
+  - {fileID: 21300000, guid: 19e103391a523c24fb45eb967e2fafc2, type: 3}
+  - {fileID: 21300000, guid: ee28bb6987063da4ea07ca9d513b75ea, type: 3}
+  - {fileID: 21300000, guid: 105783893984e5c479fff67caa64bacd, type: 3}
+  - {fileID: 21300000, guid: 55f1489919fcd6441970ca8730290204, type: 3}
+  - {fileID: 21300000, guid: 81575f99670cfa24ba6b1500f9351044, type: 3}
+  - {fileID: 21300000, guid: 5afa57b9ade90fe4cb4e97e9e0fd79ba, type: 3}
+  - {fileID: 21300000, guid: f861a9b925d6029449d6fe31e8097003, type: 3}
+  - {fileID: 21300000, guid: e0cc86d983af388448095b2d1448780a, type: 3}
+  - {fileID: 21300000, guid: c0f9b9e912341d143bd26d2a49660550, type: 3}
+  - {fileID: 21300000, guid: ae15381aa5db3b8459112f25f6d5f144, type: 3}
+  - {fileID: 21300000, guid: 5f2ceb2a6590a934883634d603fbe4ac, type: 3}
+  - {fileID: 21300000, guid: dd94b83a0c824c746a08dddf734f99a9, type: 3}
+  - {fileID: 21300000, guid: 7423e25a5fdb2dd44bb91f10903f4b55, type: 3}
+  - {fileID: 21300000, guid: ad7d1b6a83f112d4d9ff87cb66601f92, type: 3}
+  - {fileID: 21300000, guid: 696f809af8df7814a811ab3defceeb7c, type: 3}
+  - {fileID: 21300000, guid: 55b31e9abe70b684887f05d6e17dc68a, type: 3}
+  - {fileID: 21300000, guid: 6c4791aa502e502438a5dda53efdef42, type: 3}
+  - {fileID: 21300000, guid: 5e6a65aa16df369439e4b1e083ad7d1f, type: 3}
+  - {fileID: 21300000, guid: 9814f02b9e370204ba6e09d5a30d269f, type: 3}
+  - {fileID: 21300000, guid: c3970f2bdec748a47bc17c7d36419372, type: 3}
+  - {fileID: 21300000, guid: d452a83b47f6a1f4fad4af37042bae27, type: 3}
+  - {fileID: 21300000, guid: 60f0184b54f980843b61bfbb6436a1d1, type: 3}
+  - {fileID: 21300000, guid: a0fa784b23909b04dbf917cc2db2436d, type: 3}
+  - {fileID: 21300000, guid: 12e3d94b90f2f5c43b0e3f8693714edf, type: 3}
+  - {fileID: 21300000, guid: 7823886b6ffea3c479142de1294c01b0, type: 3}
+  - {fileID: 21300000, guid: 9eb5cf8b284c4a6488abd202078a0b1b, type: 3}
+  - {fileID: 21300000, guid: 0505bb9b7500c844784604dcf44efd78, type: 3}
+  - {fileID: 21300000, guid: 563f2bab052e6ec4a9f375a11748cc08, type: 3}
+  - {fileID: 21300000, guid: d71ac9cb7668b714197a84aa7a37e7b1, type: 3}
+  - {fileID: 21300000, guid: b88f39eb621ec60498f58b89f58760a5, type: 3}
+  - {fileID: 21300000, guid: 7e3bc23c149c6574db22e1150054fec2, type: 3}
+  - {fileID: 21300000, guid: 9f1bb54c8fbc32c4a942dd8e9208a6aa, type: 3}
+  - {fileID: 21300000, guid: 02498a4c7a7ea5346ba67c729cac204f, type: 3}
+  - {fileID: 21300000, guid: d393e35c53be6804b8bf5f9d9a81c759, type: 3}
+  - {fileID: 21300000, guid: 3db5d36c86314a8409d21635a5398a36, type: 3}
+  - {fileID: 21300000, guid: 7f82b07ce4dd84b4ea452287596e771b, type: 3}
+  - {fileID: 21300000, guid: 04c4ba7c88087ee449d1c5eab8f4cf81, type: 3}
+  - {fileID: 21300000, guid: 421b0accdbe402e4a8f7d1f7f8e041ff, type: 3}
+  - {fileID: 21300000, guid: 9fdc9edceab6d5c4491806edc9f03924, type: 3}
+  - {fileID: 21300000, guid: fe0c4fdc98bccee478e59cea42a7cfc9, type: 3}
+  - {fileID: 21300000, guid: 7f8da7ec344128e429a1d0f1c7ba8d07, type: 3}
+  - {fileID: 21300000, guid: 79a224fca4d0ec24a97fb34dc4bf0762, type: 3}
+  - {fileID: 21300000, guid: dd0bd5fca7ccf404aaa15c30b83ddcf1, type: 3}
+  - {fileID: 21300000, guid: b019358dbab561249950eaf9ccf1ae2b, type: 3}
+  - {fileID: 21300000, guid: bd7ae98d2b90a3c4d950492c1b899108, type: 3}
+  - {fileID: 21300000, guid: f6f93d8d102be614cae7741ac2d183b2, type: 3}
+  - {fileID: 21300000, guid: 589982cde65056a4d8591379a61ff4c4, type: 3}
+  - {fileID: 21300000, guid: 3e99f0fd01c73ce4791843dff93b84b1, type: 3}
+  - {fileID: 21300000, guid: b685250ef6d38fd44b34fb4810669f50, type: 3}
+  - {fileID: 21300000, guid: 6e2a2d2e739c7f54998cc7709f6307bf, type: 3}
+  - {fileID: 21300000, guid: 44e25b7e93dad3647baa9202ba8dae94, type: 3}
+  - {fileID: 21300000, guid: 1ff3e2bec1e9c46439150e932a15de57, type: 3}
+  - {fileID: 21300000, guid: 5d79243fb1bfc7b4c96af21370cb445a, type: 3}
+  - {fileID: 21300000, guid: 3d8a4a3f4abe90f488fa297cc3f22cfa, type: 3}
+  - {fileID: 21300000, guid: 95c18f4f9ff93e047b74454b06e89501, type: 3}
+  - {fileID: 21300000, guid: 9067226fa9a53c840aba0cba18c382f4, type: 3}
+  - {fileID: 21300000, guid: d7ebe28fe49bf4a4394df2121a0b9a22, type: 3}
+  - {fileID: 21300000, guid: 4c34258f91d654b4aa4c31f7b6e04e39, type: 3}
+  - {fileID: 21300000, guid: ddfe48afe5f3bac4d9ff7ab0ce4f3692, type: 3}
+  - {fileID: 21300000, guid: c1d0a4bfa31923849a561bf8154df89b, type: 3}
+  - {fileID: 21300000, guid: e677f5cfdb622ea41ac53ee12466fea3, type: 3}
+  - {fileID: 21300000, guid: e1bffccf5d2a9b74490a069ba679d320, type: 3}
+  - {fileID: 21300000, guid: 3cec8fcf9fcce8d4b911d46effb4c64f, type: 3}
+  - {fileID: 21300000, guid: 6f8e91dfb6b4d874f85bc02a86b2781e, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Sayaka_NA (1)
+  - Sayaka_Stand (1)
+  - Sayaka_Dead (9)
+  - Sayaka_Damage (2)
+  - Sayaka_Rush_fin (3)
+  - Sayaka_Dash (3)
+  - Sayaka_Rush_fin (1)
+  - Sayaka_8B (1)
+  - Sayaka_Jump (6)
+  - Sayaka_walk (8)
+  - Sayaka_Rush_fin (10)
+  - Sayaka_Rush_air (1)
+  - Sayaka_Rush (9)
+  - Sayaka_Jump (3)
+  - Sayaka_DashFront (5)
+  - Sayaka_NB_air (4)
+  - Sayaka_Jump (5)
+  - Sayaka_walk (3)
+  - Sayaka_AttackD (1)
+  - Sayaka_NB_air (1)
+  - Sayaka_Rush (7)
+  - Sayaka_2B (3)
+  - Sayaka_Rush (3)
+  - Sayaka_AttackA (1)
+  - Sayaka_Rush_fin (4)
+  - Sayaka_Rush (10)
+  - Sayaka_Rush (12)
+  - Sayaka_Stand (5)
+  - Sayaka_Rush_fin (8)
+  - Sayaka_Dash (4)
+  - Sayaka_NB_air (5)
+  - Sayaka_Jump (1)
+  - Sayaka_8A (4)
+  - Sayaka_Rush (11)
+  - Sayaka_NB_air (2)
+  - Sayaka_walk (6)
+  - Sayaka_NA (7)
+  - Sayaka_Rush_air (10)
+  - Sayaka_Dash (2)
+  - Sayaka_DashFront (1)
+  - Sayaka_Rush_fin (11)
+  - Sayaka_Rush_fin (7)
+  - Sayaka_Rush_air (3)
+  - Sayaka_Dead (8)
+  - Sayaka_8A (3)
+  - Sayaka_NB_air (8)
+  - Sayaka_Dead (7)
+  - Sayaka_AttackD (2)
+  - Sayaka_Rush (1)
+  - Sayaka_NA_air (2)
+  - Sayaka_2B (7)
+  - Sayaka_NA (5)
+  - Sayaka_Rush_air (9)
+  - Sayaka_8A (5)
+  - Sayaka_NB_air (6)
+  - Sayaka_NA_air (3)
+  - Sayaka_Rush_fin (9)
+  - Sayaka_2B (4)
+  - Sayaka_Dead (5)
+  - Sayaka_NB_air (10)
+  - Sayaka_NA_air (6)
+  - Sayaka_Rush_air (8)
+  - Sayaka_NA (2)
+  - Sayaka_NA_air (5)
+  - Sayaka_8B (3)
+  - Sayaka_8A (8)
+  - Sayaka_Rush_air (6)
+  - Sayaka_Dead (6)
+  - Sayaka_Rush (5)
+  - Sayaka_Damage (3)
+  - Sayaka_NB_air (3)
+  - Sayaka_Dead (1)
+  - Sayaka_2B (1)
+  - Sayaka_Magic_air (2)
+  - Sayaka_NA_air (1)
+  - Sayaka_Rush_fin (5)
+  - Sayaka_Damage (4)
+  - Sayaka_Rush_air (2)
+  - Sayaka_2B (5)
+  - Sayaka_AttackA (2)
+  - Sayaka_Rush_fin (6)
+  - Sayaka_Dash (1)
+  - Sayaka_walk (2)
+  - Sayaka_AttackD (5)
+  - Sayaka_Rush (4)
+  - Sayaka_Rush_fin (2)
+  - Sayaka_Rush_air (5)
+  - Sayaka_Dead (3)
+  - Sayaka_NA (6)
+  - Sayaka_DashFront (3)
+  - Sayaka_NA (4)
+  - Sayaka_Stand (3)
+  - Sayaka_NB_air (9)
+  - Sayaka_Jump (7)
+  - Sayaka_Magic_air (1)
+  - Sayaka_8A (1)
+  - Sayaka_2B (11)
+  - Sayaka_NA (9)
+  - Sayaka_AttackA (3)
+  - Sayaka_Rush_air (4)
+  - Sayaka_AttackD (6)
+  - Sayaka_8A (2)
+  - Sayaka_Rush_fin (12)
+  - Sayaka_8A (6)
+  - Sayaka_DashFront (6)
+  - Sayaka_Jump (8)
+  - Sayaka_NA (3)
+  - Sayaka_Rush (6)
+  - Sayaka_DashFront (4)
+  - Sayaka_walk (5)
+  - Sayaka_2B (9)
+  - Sayaka_Jump (9)
+  - Sayaka_Dead (10)
+  - Sayaka_AttackD (4)
+  - Sayaka_NA (10)
+  - Sayaka_NA_air (4)
+  - Sayaka_DashFront (2)
+  - Sayaka_Rush_air (12)
+  - Sayaka_8A (7)
+  - Sayaka_Dead (2)
+  - Sayaka_Rush_air (11)
+  - Sayaka_walk (1)
+  - Sayaka_Stand (4)
+  - Sayaka_NA (8)
+  - Sayaka_NB_air (7)
+  - Sayaka_2B (10)
+  - Sayaka_walk (7)
+  - Sayaka_Damage (1)
+  - Sayaka_Rush_air (7)
+  - Sayaka_Jump (4)
+  - Sayaka_walk (4)
+  - Sayaka_8B (2)
+  - Sayaka_Rush (8)
+  - Sayaka_Rush (2)
+  - Sayaka_AttackD (3)
+  - Sayaka_Rush (13)
+  - Sayaka_Dead (4)
+  - Sayaka_Stand (2)
+  - Sayaka_2B (6)
+  - Sayaka_2B (2)
+  - Sayaka_Jump (2)
+  - Sayaka_Magic_air (3)
+  - Sayaka_2B (8)
+  m_Tag: SayakaCharacter
+  m_IsVariant: 0

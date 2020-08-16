@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using UnityEngine.U2D;
 
 /// <summary>
 /// 控制游戏中的分数，设置，IO
@@ -73,6 +74,7 @@ public class GameScoreSettingsIO : ScriptableObject
     /// </summary>
     [Header("是从魔女结界中返回魔女选择part吗")]
     public bool MajoKeikaiToSelectPart = false;
+
     #endregion
 
     #region 玩家设置

@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.U2D;
 using MEC;
+using UnityEngine.Events;
 
 namespace PureAmaya.General
 {
-   
 
+    [DisallowMultipleComponent]
     [RequireComponent(typeof(SpriteRenderer))]
   public class AtlasAnimation : MonoBehaviour
     {
@@ -58,6 +59,14 @@ namespace PureAmaya.General
         /// </summary>
         private int PlayingSpriteId = 0;
 
+        #region 事件组
+        public class CommonEvent : UnityEvent { }
+        /// <summary>
+        /// 非循环动画结束事件
+        /// </summary>
+        public CommonEvent AnimStop = new CommonEvent();
+        #endregion
+
 
         private void Awake()
         {
@@ -100,7 +109,15 @@ namespace PureAmaya.General
                     Timing.KillCoroutines(GroupName);
                     Timing.RunCoroutine(PlayAnimation(AnimationId), GroupName);
 
-                    PlayingSpriteId = 0;
+                    if (AtlasAnimations[AnimationId].StartFromZero)
+                    {
+                        PlayingSpriteId = 0;
+                    }
+                    else
+                    {
+                        PlayingSpriteId = 1;
+                    }
+
                     BeDisabled = false;
                     PlayingId = AnimationId;
                 }
@@ -110,7 +127,14 @@ namespace PureAmaya.General
                 Timing.KillCoroutines(GroupName);
                 Timing.RunCoroutine(PlayAnimation(AnimationId), GroupName);
 
-                PlayingSpriteId = 0;
+                if (AtlasAnimations[AnimationId].StartFromZero)
+                {
+                    PlayingSpriteId = 0;
+                }
+                else
+                {
+                    PlayingSpriteId = 1;
+                }
                 BeDisabled = false;
                 PlayingId = AnimationId;
             }
@@ -120,12 +144,12 @@ namespace PureAmaya.General
         /// <summary>
         /// 控制播放的东西
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">数组中一组动画的id</param>
         /// <returns></returns>
         IEnumerator<float> PlayAnimation(int id)
         {
 
-            string AnimationName = null;
+            string AnimationName = string.Empty;
 
             while (true)
             {
@@ -140,11 +164,32 @@ namespace PureAmaya.General
 
                 SpriteRenderer.sprite = spriteAtlas.GetSprite(string.Format(Format,GroupName,
                                                                              AtlasAnimations[id].name, PlayingSpriteId.ToString()));
-                //处理 另一个循环
+
+                //处理 另一个循环（修复起始点循环和常规循环）
                 if (PlayingSpriteId == AtlasAnimations[id].Length - 1)
                 {
-                    if (AtlasAnimations[id].BeginningRepair) PlayingSpriteId = AtlasAnimations[id].RepairedFirstAtlasId;
-                    else PlayingSpriteId = 0;
+                    if (AtlasAnimations[id].Cycle)//允许循环
+                    {
+
+                        if (AtlasAnimations[id].BeginningRepair) { PlayingSpriteId = AtlasAnimations[id].RepairedFirstAtlasId; }
+                        else
+                        {
+                            if (AtlasAnimations[id].StartFromZero)
+                            {
+                                PlayingSpriteId = 0;
+                            }
+                            else
+                            {
+                                PlayingSpriteId = 1;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        //调用非循环动画结束事件
+                        AnimStop.Invoke();
+                        break;
+                    }
                 }
                 else
                 {
@@ -164,11 +209,22 @@ namespace PureAmaya.General
         public class AtlasAnimationInEditor
         {
             public string name;
+            [Space(10)]
+            public string Description;
+            [Space(10)]
+
             public int Length;
+            [Header("图像的id(Length)是否从0开始")]
+            public bool StartFromZero = true;
+            /// <summary>
+            /// 动画循环吗
+            /// </summary>
+            [Header("动画能循环播放吗")]
+            public bool Cycle = true;
             /// <summary>
             /// 循环间隔
             /// </summary>
-            public float Interval;
+            public float Interval = 0.1f;
             /// <summary>
             /// 起始点修复
             /// </summary>
@@ -177,16 +233,9 @@ namespace PureAmaya.General
             /// <summary>
             /// 完成一次循环且启用起始点修复后，一个周期内第一个图片的ID
             /// </summary> 
-            [Header("完成一次循环且启用起始点修复后，一个周期内第一个图片的ID")]      
+            [Header("完成一次循环且启用起始点修复后，一个周期内第一个图片的数组中的ID")]      
             public int RepairedFirstAtlasId;
 
-            AtlasAnimationInEditor()
-            {
-                name = "Idle";
-                Interval = 0.1f;
-                BeginningRepair = false;
-                RepairedFirstAtlasId = 0;
-            }
         }
     }
 }

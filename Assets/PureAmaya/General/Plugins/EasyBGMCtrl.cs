@@ -15,6 +15,8 @@ public class EasyBGMCtrl : MonoBehaviour
 
     private void Awake()
     {
+        DontDestroyOnLoad(gameObject);
+
         #region 组件初始化
         easyBGMCtrl = this;
         AudioSource[] AS= GetComponents<AudioSource>();
@@ -46,8 +48,19 @@ public class EasyBGMCtrl : MonoBehaviour
 
   public void PlayBGM(int index)
     {
-        BGMPlayer.Stop();
-        BGMPlayer.clip = BGM[index];
-        BGMPlayer.Play();
+
+        if (index < 0)
+        {
+            BGMPlayer.Stop();
+        }
+        else
+        {
+            BGMPlayer.Stop();
+            BGMPlayer.clip = BGM[index];
+            BGMPlayer.Play();
+
+        }
     }
+
+    
 }

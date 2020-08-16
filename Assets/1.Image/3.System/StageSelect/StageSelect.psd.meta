@@ -73,7 +73,7 @@ TextureImporter:
     second: Oktavia_selected
   - first:
       213: -8918268372864261744
-    second: Return To Title logo
+    second: ReturnLogo
   - first:
       213: -6873341469822673457
     second: Pointer
@@ -309,27 +309,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: p2
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 1752
-        width: 228
-        height: 155
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 47d74f027124bae30800000000000000
-      internalID: 4515775718473629044
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Gertrud
       rect:
         serializedVersion: 2
@@ -388,27 +367,6 @@ TextureImporter:
       bones: []
       spriteID: 26d9e266a3732ad40800000000000000
       internalID: 5594094411109539170
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: p3
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 1380
-        width: 228
-        height: 156
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a08bcc35a2f905410800000000000000
-      internalID: 1463844883038779402
       vertices: []
       indices: 
       edges: []
@@ -519,27 +477,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: p1
-      rect:
-        serializedVersion: 2
-        x: 3
-        y: 996
-        width: 221
-        height: 153
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: dcfd05f541cab26c0800000000000000
-      internalID: -4167047826702802995
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Oktavia
       rect:
         serializedVersion: 2
@@ -624,27 +561,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Return To Title
-      rect:
-        serializedVersion: 2
-        x: 7
-        y: 780
-        width: 377
-        height: 153
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 3e69a42fa5e64bb70800000000000000
-      internalID: 8913870899364140771
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Oktavia_selected
       rect:
         serializedVersion: 2
@@ -666,7 +582,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Return To Title logo
+      name: ReturnLogo
       rect:
         serializedVersion: 2
         x: 0
@@ -682,27 +598,6 @@ TextureImporter:
       bones: []
       spriteID: 09123d77a22fb3480800000000000000
       internalID: -8918268372864261744
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Pointer
-      rect:
-        serializedVersion: 2
-        x: 36
-        y: 232
-        width: 112
-        height: 113
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: fcd1247895cfc90a0800000000000000
-      internalID: -6873341469822673457
       vertices: []
       indices: 
       edges: []

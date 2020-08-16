@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using MEC;
+using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 /// <summary>
 /// n标题管理
@@ -158,11 +159,13 @@ public class TitleCtrl : MonoBehaviour
             {
                 if (i <= (int)gameScoreSettingsIO.NewestMajo)
                 {
-                    MajoPictures[i].sprite = MajoPictureEnable[i];
+                     MajoPictures[i].sprite = MajoPictureEnable[i];
+                   // MajoPictures[i].sprite = EasyAtlasToSprite.easyAtlasToSprite.GetSprite(0, MajoPictureEnableName[i]);
                 }
                 else
                 {
-                    MajoPictures[i].sprite = MajoPictureDisable[i];
+                      MajoPictures[i].sprite = MajoPictureDisable[i];
+                 //   MajoPictures[i].sprite = EasyAtlasToSprite.easyAtlasToSprite.GetSprite(0, MajoPictureDisableName[i]);
                 }
             }
             else
@@ -174,7 +177,7 @@ public class TitleCtrl : MonoBehaviour
                 }
                 else
                 {
-                    MajoPictures[i].gameObject.SetActive(false);
+                   MajoPictures[i].gameObject.SetActive(false);
                 }
             }
 
@@ -209,6 +212,8 @@ public class TitleCtrl : MonoBehaviour
 
         //应该所有玩家都选择完在进行处理
         //切换场景
+        LoadingCtrl.LoadScene(1);
+        
     }
 
     #endregion
