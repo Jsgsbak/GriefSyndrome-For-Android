@@ -291,7 +291,7 @@ MonoBehaviour:
   AtlasAnimations:
   - name: emotionC000
     Description: 
-    Length: 7
+    Length: 6
     StartFromZero: 1
     Cycle: 1
     Interval: 0.1
