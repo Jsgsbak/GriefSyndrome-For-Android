@@ -4,15 +4,27 @@ using UnityEngine;
 
 public class SayakaCtrl : APlayerCtrl
 {
-    // Start is called before the first frame update
-    void Start()
+
+
+    public override void PlayerAttackZ()
     {
-        
+        #region 动作
+            if (ZattackCount == 0 || ZattackCount == 1)
+            {
+                atlasAnimation.ChangeAnimation(zAttackAnimId[ ZattackCount]);
+                ZattackCount++;
+
+            //按Z行走
+            }
+            else
+            {
+                atlasAnimation.ChangeAnimation(zAttackAnimId[ZattackCount]);
+                ZattackCount = 0;
+                //僵直，移动
+            }
+        }
+        #endregion
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-}
+
+

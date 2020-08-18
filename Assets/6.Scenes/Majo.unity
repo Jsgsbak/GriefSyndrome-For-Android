@@ -320,9 +320,9 @@ GameObject:
   - component: {fileID: 730131201}
   - component: {fileID: 730131200}
   - component: {fileID: 730131199}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: GameObject (1)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -474,9 +474,9 @@ GameObject:
   - component: {fileID: 1609930914}
   - component: {fileID: 1609930915}
   - component: {fileID: 1609930916}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Sayaka
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -495,8 +495,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spriteAtlas: {fileID: 4343727234628468602, guid: 93ae529101d7a0e429b5f07aeac428bd,
     type: 2}
-  SpriteRenderer: {fileID: 0}
-  UseNewAnimPlayer: 1
+  SpriteRenderer: {fileID: 1609930912}
   GroupName: Sayaka
   Format: '{0}_{1} ({2})'
   PlayDefaultAnimation: 1
@@ -505,7 +504,8 @@ MonoBehaviour:
   - name: Stand
     Description: 
     Length: 6
-    StartFromZero: 0
+    StartFromId: 1
+    EndWithId: -1
     Cycle: 1
     Interval: 0.1
     BeginningRepair: 0
@@ -513,7 +513,8 @@ MonoBehaviour:
   - name: walk
     Description: 
     Length: 9
-    StartFromZero: 0
+    StartFromId: 1
+    EndWithId: -1
     Cycle: 1
     Interval: 0.1
     BeginningRepair: 0
@@ -521,7 +522,8 @@ MonoBehaviour:
   - name: Rush_fin
     Description: 
     Length: 13
-    StartFromZero: 0
+    StartFromId: 1
+    EndWithId: -1
     Cycle: 1
     Interval: 0.1
     BeginningRepair: 0
@@ -529,23 +531,26 @@ MonoBehaviour:
   - name: Rush_air
     Description: 
     Length: 13
-    StartFromZero: 0
+    StartFromId: 1
+    EndWithId: -1
     Cycle: 1
     Interval: 0.1
     BeginningRepair: 0
     RepairedFirstAtlasId: 0
   - name: Rush
-    Description: 
+    Description: "4 \uFF08\u5E73A2\u77ED\uFF09"
     Length: 14
-    StartFromZero: 0
-    Cycle: 1
+    StartFromId: 7
+    EndWithId: 12
+    Cycle: 0
     Interval: 0.1
     BeginningRepair: 0
     RepairedFirstAtlasId: 0
   - name: NB_air
     Description: 
     Length: 11
-    StartFromZero: 0
+    StartFromId: 1
+    EndWithId: -1
     Cycle: 1
     Interval: 0.1
     BeginningRepair: 0
@@ -553,7 +558,8 @@ MonoBehaviour:
   - name: NA_air
     Description: 
     Length: 7
-    StartFromZero: 0
+    StartFromId: 1
+    EndWithId: -1
     Cycle: 1
     Interval: 0.1
     BeginningRepair: 0
@@ -561,7 +567,8 @@ MonoBehaviour:
   - name: NA
     Description: 7
     Length: 11
-    StartFromZero: 0
+    StartFromId: 1
+    EndWithId: -1
     Cycle: 1
     Interval: 0.1
     BeginningRepair: 0
@@ -569,7 +576,8 @@ MonoBehaviour:
   - name: NA_air
     Description: 8
     Length: 7
-    StartFromZero: 0
+    StartFromId: 1
+    EndWithId: -1
     Cycle: 1
     Interval: 0.1
     BeginningRepair: 0
@@ -577,7 +585,8 @@ MonoBehaviour:
   - name: Magic_air
     Description: 9
     Length: 4
-    StartFromZero: 0
+    StartFromId: 1
+    EndWithId: -1
     Cycle: 1
     Interval: 0.1
     BeginningRepair: 0
@@ -585,7 +594,8 @@ MonoBehaviour:
   - name: Dead
     Description: 10
     Length: 11
-    StartFromZero: 0
+    StartFromId: 1
+    EndWithId: -1
     Cycle: 0
     Interval: 0.1
     BeginningRepair: 0
@@ -593,7 +603,8 @@ MonoBehaviour:
   - name: DashFront
     Description: 11
     Length: 7
-    StartFromZero: 0
+    StartFromId: 1
+    EndWithId: -1
     Cycle: 0
     Interval: 0.1
     BeginningRepair: 0
@@ -601,7 +612,8 @@ MonoBehaviour:
   - name: Dash
     Description: 12
     Length: 5
-    StartFromZero: 0
+    StartFromId: 1
+    EndWithId: -1
     Cycle: 0
     Interval: 0.1
     BeginningRepair: 0
@@ -609,23 +621,26 @@ MonoBehaviour:
   - name: Damage
     Description: 13
     Length: 5
-    StartFromZero: 0
+    StartFromId: 1
+    EndWithId: -1
     Cycle: 0
     Interval: 0.1
     BeginningRepair: 0
     RepairedFirstAtlasId: 0
   - name: AttackD
-    Description: 14
+    Description: "14  \u5E73A\u4E09\u6BB5"
     Length: 7
-    StartFromZero: 0
+    StartFromId: 1
+    EndWithId: -1
     Cycle: 0
     Interval: 0.1
     BeginningRepair: 0
     RepairedFirstAtlasId: 0
   - name: AttackA
-    Description: 15
+    Description: "15 \u5E73A\u4E00\u6BB5"
     Length: 4
-    StartFromZero: 0
+    StartFromId: 1
+    EndWithId: -1
     Cycle: 0
     Interval: 0.1
     BeginningRepair: 0
@@ -633,7 +648,8 @@ MonoBehaviour:
   - name: 8B
     Description: 16
     Length: 4
-    StartFromZero: 0
+    StartFromId: 1
+    EndWithId: -1
     Cycle: 0
     Interval: 0.1
     BeginningRepair: 0
@@ -641,7 +657,8 @@ MonoBehaviour:
   - name: 8A
     Description: 17
     Length: 9
-    StartFromZero: 0
+    StartFromId: 1
+    EndWithId: -1
     Cycle: 0
     Interval: 0.1
     BeginningRepair: 0
@@ -649,7 +666,8 @@ MonoBehaviour:
   - name: 2B
     Description: 18
     Length: 12
-    StartFromZero: 0
+    StartFromId: 1
+    EndWithId: -1
     Cycle: 0
     Interval: 0.1
     BeginningRepair: 0
@@ -657,11 +675,12 @@ MonoBehaviour:
   - name: Jump
     Description: 19
     Length: 10
-    StartFromZero: 0
-    Cycle: 0
-    Interval: 0.1
-    BeginningRepair: 0
-    RepairedFirstAtlasId: 0
+    StartFromId: 1
+    EndWithId: -1
+    Cycle: 1
+    Interval: 0.08
+    BeginningRepair: 1
+    RepairedFirstAtlasId: 8
 --- !u!212 &1609930912
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -701,7 +720,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 7fa75593122db174586ed791bf0b0894, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 71b8e4f1ad3dc574fa62abd8c7704a18, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -740,11 +759,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedMahoshaojo: 4
   Speed: 1
-  JumpForce: 3000
-  JumpSpeed: 10
   atlasAnimation: {fileID: 1609930911}
   StandAnimId: 0
   MoveAnimId: 1
+  JumpAnimId: 19
+  zAttackAnimId: 0f000000040000000e000000
+  BanStandWalkAnim: 0
+  IsHanging: 0
+  IsJumping: 0
+  JumpCount: 0
+  JumpTimer: 0
+  CanJumpTwice: 0
+  ZattackCount: 0
+  IsZattacking: 0
 --- !u!50 &1609930915
 Rigidbody2D:
   serializedVersion: 4
@@ -765,7 +792,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &1609930916
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -779,7 +806,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.05}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -790,7 +817,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.8, y: 0.8}
+  m_Size: {x: 0.9, y: 1.1}
   m_EdgeRadius: 0
 --- !u!1 &1677099376
 GameObject:
@@ -803,9 +830,9 @@ GameObject:
   - component: {fileID: 1677099379}
   - component: {fileID: 1677099378}
   - component: {fileID: 1677099377}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: GameObject
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -827,7 +854,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 5.12, y: 5.7614064}
+    oldSize: {x: 8, y: 6}
     newSize: {x: 5.12, y: 5.7614064}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -875,7 +902,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 2aaee041b1efa0e49a37d40b7e660034, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f906aff9ee0fe48428cd20fe8570c48e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

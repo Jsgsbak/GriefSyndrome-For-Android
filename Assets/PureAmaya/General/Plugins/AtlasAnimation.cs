@@ -26,8 +26,6 @@ namespace PureAmaya.General
         [Header("含有动画的图集")]
         public SpriteAtlas spriteAtlas;
         public SpriteRenderer SpriteRenderer;
-        [Header("使用新的动画播放器")]
-        public bool UseNewAnimPlayer = false;
 
         [Header("同一组动画的统一id（用于控制动画的停止）")]
         public string GroupName = "DefaultGroup";
@@ -100,72 +98,54 @@ namespace PureAmaya.General
             Timing.KillCoroutines(GroupName);
         }
 
+        [ContextMenu("播放DefaultAnimationNameInAtlas动画")]
+        public void PlayAnimInEditor()
+        {
+                ChangeAnimation(DefaultAnimationNameInAtlas);
+        }
+
+
         /// <summary>
         /// 更换正在播放的动画
         /// </summary>
         /// <param name="AnimationNameId">那个数组中的id</param>
-     public void ChangeAnimation(int AnimationId)
+        /// <param name="Forced">强制播放</param>
+        public void ChangeAnimation(int AnimationId,bool Forced = false)
         {
+            //id小于-1直接无视
+            if(AnimationId < 0) { return; }
 
             //垃圾代码
 
             if(!BeDisabled)//上一帧正常运行
             {
-                if (AnimationId != PlayingId)//阻止多次调用同一动画
+                if (AnimationId != PlayingId || Forced)//阻止多次调用同一动画
                 {
 
                     BeDisabled = false;
                     PlayingId = AnimationId;
 
-                    if (!UseNewAnimPlayer)
-                    {
-                        //旧的动画播放器
-                        Timing.KillCoroutines(GroupName);
-                        Timing.RunCoroutine(PlayAnimation(AnimationId), GroupName);
-                    }
-                    else
-                    {
                         //新的动画播放器
                         CancelInvoke("NewPlayAnimation");
                         InvokeRepeating("NewPlayAnimation", 0f, AtlasAnimations[AnimationId].Interval);
-                    }
+                    
 
-                    //判断该动画是否从0开始，但是仅用来在检查视图中显示
-                    if (AtlasAnimations[AnimationId].StartFromZero)
-                    {
-                        PlayingSpriteId = 0;
-                    }
-                    else
-                    {
-                        PlayingSpriteId = 1;
-                    }
+                    //判断该动画是否从哪里开始，但是仅用来在检查视图中显示
+                  PlayingSpriteId = AtlasAnimations[AnimationId].StartFromId;
+                   
+
 
                 }
             }
+
             else//如果上一帧是因为被禁用物体而停止播放动画，则强制播放动画
             {
 
-                if (!UseNewAnimPlayer)
-                {
-                   //旧的动画播放器
-                    Timing.KillCoroutines(GroupName);
-                    Timing.RunCoroutine(PlayAnimation(AnimationId), GroupName);
-                }
-                else
-                {
                     //新的动画播放器
                     CancelInvoke("NewPlayAnimation");
                     InvokeRepeating("NewPlayAnimation", 0f, AtlasAnimations[AnimationId].Interval);
-                }
 
-                if (AtlasAnimations[AnimationId].StartFromZero)
-                {
-                    PlayingSpriteId = 0;
-                }
-                else
-                {
-                    PlayingSpriteId = 1;
-                }
+                PlayingSpriteId = AtlasAnimations[AnimationId].StartFromId;
                 BeDisabled = false;
                 PlayingId = AnimationId;
             }
@@ -186,8 +166,22 @@ namespace PureAmaya.General
             SpriteRenderer.sprite = spriteAtlas.GetSprite(string.Format(Format, GroupName,
                                                                          AtlasAnimations[PlayingId].name, PlayingSpriteId.ToString()));
 
+            int d = 0;
             //处理 另一个循环（修复起始点循环和常规循环）
-            if (PlayingSpriteId == AtlasAnimations[PlayingId].Length - 1)
+            if (AtlasAnimations[PlayingId].EndWithId != -1)
+            {
+                //到预定位置停止播放以后的图像
+                d = AtlasAnimations[PlayingId].EndWithId;
+            }
+            else
+            {
+                //直接戳出来
+                d = AtlasAnimations[PlayingId].Length - 1;
+
+            }
+
+            //如果动画播放完了
+            if (PlayingSpriteId == d)
             {
                 if (AtlasAnimations[PlayingId].Cycle)//允许循环
                 {
@@ -197,22 +191,16 @@ namespace PureAmaya.General
                     //不修复起始点循环
                     else
                     {
-                        if (AtlasAnimations[PlayingId].StartFromZero)
-                        {
-                            PlayingSpriteId = 0;
-                        }
-                        else
-                        {
-                            PlayingSpriteId = 1;
-                        }
+                        //从指定位置开始播放动画
+                        PlayingSpriteId = AtlasAnimations[PlayingId].StartFromId;
                     }
                 }
 
                 //不循环动画
                 else
-                    {
-                        //调用非循环动画结束事件
-                        AnimStop.Invoke();
+                {
+                    //调用非循环动画结束事件
+                    AnimStop.Invoke();
                     //停止该动画播放
                     CancelInvoke("NewPlayAnimation");
 
@@ -220,77 +208,26 @@ namespace PureAmaya.General
                 }
             }
 
-                //动画没有播放到最后一张图片，继续
-                else
-                {
-                    PlayingSpriteId++;
-                }
+            //动画没有播放到最后一张图片（或预定照片），继续
+            else
+            {
+                PlayingSpriteId++;
+            }
 
 
 
-          //  }
+            //  }
         }
-
 
         /// <summary>
         /// 控制播放的东西
         /// </summary>
         /// <param name="id">数组中一组动画的id</param>
         /// <returns></returns>
-        [Obsolete("short time animation won't work properly")]
+        [Obsolete("use NewPlayAnimation instead",true)]
         IEnumerator<float> PlayAnimation(int id)
         {
-
-            string AnimationName = string.Empty;
-
-            while (true)
-            {
-                //异常报道用。提前获取变量
-                AnimationName = string.Format(Format, GroupName, AtlasAnimations[id].name, PlayingSpriteId.ToString());
-                if (AnimationName == null)
-                {
-                    Debug.LogWarning(string.Format("{0} {1}", "该图集中不包含：", AtlasAnimations[id].name));
-                }
-
-                yield return Timing.WaitForSeconds(AtlasAnimations[id].Interval);
-
-                SpriteRenderer.sprite = spriteAtlas.GetSprite(string.Format(Format,GroupName,
-                                                                             AtlasAnimations[id].name, PlayingSpriteId.ToString()));
-
-                //处理 另一个循环（修复起始点循环和常规循环）
-                if (PlayingSpriteId == AtlasAnimations[id].Length - 1)
-                {
-                    if (AtlasAnimations[id].Cycle)//允许循环
-                    {
-
-                        if (AtlasAnimations[id].BeginningRepair) { PlayingSpriteId = AtlasAnimations[id].RepairedFirstAtlasId; }
-                        else
-                        {
-                            if (AtlasAnimations[id].StartFromZero)
-                            {
-                                PlayingSpriteId = 0;
-                            }
-                            else
-                            {
-                                PlayingSpriteId = 1;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        //调用非循环动画结束事件
-                        AnimStop.Invoke();
-                        break;
-                    }
-                }
-                else
-                {
-                    PlayingSpriteId++;
-                }
-
-
-
-            }
+            yield return Timing.WaitForOneFrame;
         }
         
 
@@ -306,8 +243,10 @@ namespace PureAmaya.General
             [Space(10)]
 
             public int Length;
-            [Header("图像的id(Length)是否从0开始")]
-            public bool StartFromZero = true;
+            [Header("动画从哪开始")]
+            public int StartFromId = 0;
+            [Header("动画到哪里结束(-1:直接播放完)")]
+            public int EndWithId = -1;
             /// <summary>
             /// 动画循环吗
             /// </summary>

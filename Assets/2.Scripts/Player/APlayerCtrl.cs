@@ -17,24 +17,56 @@ public abstract class APlayerCtrl : MonoBehaviour
 
     [Header("玩家移动")]
     public float Speed = 10f;
-    #region 跳跃
-    public bool IsJump;
-     float JumpSpeed = 20f;    
-    #endregion
+
     /// <summary>
     /// 向左看
     /// </summary>
     [Header("动画机")]
     readonly Quaternion LookLeft = new Quaternion(0f, 1f, 0f, 0f);
     public AtlasAnimation atlasAnimation;
+    //这些动画ID如果取值-1则直接无视该动画
     public int StandAnimId = 0;
     public int MoveAnimId = 1;
+    public int JumpAnimId = 19;
+    [Header("平A n段攻击")]
+    public int[] zAttackAnimId;
 
     #region 状态
     /// <summary>
+    /// 不允许执行站立/行走动作
+    /// </summary>
+    [Header("玩家状态")]
+    public bool BanStandWalkAnim = false;
+
+    /// <summary>
     /// 悬空
     /// </summary>
-    bool IsHanging = false;
+    public bool IsHanging = false;
+    /// <summary>
+    /// 正在跳跃
+    /// </summary>
+    public bool IsJumping = false;
+    /// <summary>
+    /// 跳跃次数
+    /// </summary>
+    public int JumpCount = 0;
+    /// <summary>
+    /// 跳跃用计时器
+    /// </summary>
+    public float JumpTimer = 0f;
+    /// <summary>
+    /// 可以二段跳
+    /// </summary>
+    public bool CanJumpTwice = true;
+
+    /// <summary>
+    /// Z平A连段次数
+    /// </summary>
+    public int ZattackCount = 0;
+    /// <summary>
+    /// 正在用Z攻击
+    /// </summary>
+    public bool IsZattacking = false;
     #endregion
 
     #region 自带组件
@@ -53,49 +85,163 @@ public abstract class APlayerCtrl : MonoBehaviour
 
         //注册事件
         UpdateManager.FastUpdate.AddListener(FastUpdate);
+        UpdateManager.FastUpdate.AddListener(RayGround);
+        //允许 能够停止的动画 停止后 出现 站立动作
+        atlasAnimation.AnimStop.AddListener(delegate () {BanStandWalkAnim = false;});
+
     }
 
 
-   public virtual void FastUpdate()
+    public  void FastUpdate()
     {
+        //注意，所有的攻击（Z X A）以及其衍生版本（比如在天上白给）都用抽象方法来实现
+        if (RebindableInput.GetKeyDown("Attack"))
+        {
+            //防止意外出现站立动作
+            BanStandWalkAnim = true;
+            //Z攻击
+            PlayerAttackZ();
+        }
+        else
+        {
+        }
+
+
+
+
         #region 移动
         //行走
-         rigidbody2D.MovePosition(rigidbody2D.position + new Vector2(RebindableInput.GetAxis("Horizontal"),0f) * 0.1f * Speed);
-        //tr.Translate(new Vector2(RebindableInput.GetAxis("Horizontal"), 0) * Time.deltaTime * Speed, Space.World);
-       
-        //跳跃
-        if (RebindableInput.GetKeyDown("Jump"))
+        if (!IsZattacking)
         {
-            JumpUp(); //给刚体一个向上的力
+            //常规行走
+            rigidbody2D.MovePosition(rigidbody2D.position + new Vector2(RebindableInput.GetAxis("Horizontal"), 0f) * 0.1f * Speed);
+
+            //关于按着Z键行走的说明：因为每个角色不一样，放在对应的角色脚本中写（PlayerAttackZ方法中）
         }
+        //tr.Translate(new Vector2(RebindableInput.GetAxis("Horizontal"), 0) * Time.deltaTime * Speed, Space.World);
+
+        //跳跃
+        if (RebindableInput.GetKeyDown("Jump") && JumpCount < 1)//这里很迷emmm 1是二段跳 2就成三段了
+        {
+            atlasAnimation.ChangeAnimation(JumpAnimId, true);//托管的动作在这里
+            JumpCount++;
+            JumpTimer = Time.timeSinceLevelLoad;
+            IsJumping = true;
+            //rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, JumpSpeed);
+        }
+        Jump();
+
         #endregion
+
+
 
         #region 动作
-        //先转向
-        if (RebindableInput.GetAxis("Horizontal") > 0) spriteRenderer.flipX = true ;
+        //先转向（这样子弄是为了允许不动的时候保持原朝向）
+        if (RebindableInput.GetAxis("Horizontal") > 0) spriteRenderer.flipX = true;
         else if (RebindableInput.GetAxis("Horizontal") < 0) spriteRenderer.flipX = false;
-        //行走walk
-        if (RebindableInput.GetAxis("Horizontal") != 0) atlasAnimation.ChangeAnimation(MoveAnimId);
-        else { atlasAnimation.ChangeAnimation(StandAnimId); }
-        //!!!!跳跃动作放在了Jump()中
+
+        //不受是否挂在天上影响的动画
+
+        //跳跃（放在上面跳跃移动那里）
+
+
+
+        //没挂在天上时的动画
+        if (!IsHanging)
+        {
+
+            //行走walk
+            if (RebindableInput.GetAxis("Horizontal") != 0 && !BanStandWalkAnim) { atlasAnimation.ChangeAnimation(MoveAnimId); }
+            else if(!BanStandWalkAnim) { atlasAnimation.ChangeAnimation(StandAnimId); }
+
+        }
+
+        //挂在天上用的动画
+        else
+        {
+
+        }
+
+
+
         #endregion
     }
 
+    /// <summary>
+    /// 使用射线判断是否在地上
+    /// </summary>
+    public void RayGround()
+    {
+        Debug.DrawRay(transform.position, Vector2.down, Color.red);
+        //仅对10（Ground）碰撞检测
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 1f, 1 << 10);//10:Ground层ID
 
+
+        if (hit.collider != null)
+        {
+            //在地上，初始化
+            IsHanging = false;
+            JumpCount = 0;
+            CanJumpTwice = true;
+        }
+        else
+        {
+            IsHanging = true;
+        }
+
+
+
+    }
 
     /// <summary>
-    /// 跳跃。目前是常规起跳
+    /// Z键平A
     /// </summary>
-    /// <returns></returns>
+    public abstract void PlayerAttackZ();
+
+
+
     #region 内部方法
-    void JumpUp()
+    void Jump()
     {
-        if (!IsJump)
+        //正在跳跃的时候才跳
+        if (IsJumping)
         {
-            JumpSpeed -= 2 * rigidbody2D.gravityScale * 9.8f ;
-            rigidbody2D.MovePosition(rigidbody2D.position + Vector2.up * Time.deltaTime * JumpSpeed);
+            //调整状态
+            IsHanging = true;
+
+            //防止意外出现站立动作
+            BanStandWalkAnim = true;
+
+
+            //起飞
+            rigidbody2D.gravityScale = -40f;
+
+            /*
+            if (Time.timeSinceLevelLoad - JumpTimer   > 0.25f)
+            {
+                //时间到，滞空
+                rigidbody2D.gravityScale = 0f;
+                JumpTimer = Time.timeSinceLevelLoad;
+            }*/
+
+            if (Time.timeSinceLevelLoad - JumpTimer > 0.3f && rigidbody2D.gravityScale == -40f)
+            {
+                //时间到，下降
+                rigidbody2D.gravityScale = 40f;
+                IsJumping = false;
+                //允许出现站立动作
+                BanStandWalkAnim = false;
+
+
+            }
+            else { return; }
+
+
         }
+
     }
-   
-    #endregion
+
+
 }
+#endregion
+
