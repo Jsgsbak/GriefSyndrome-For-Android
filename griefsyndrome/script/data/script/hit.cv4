@@ -1,0 +1,250 @@
+function OnHitActor( atk, def, info )
+{
+	if (!::game.enableHit)
+	{
+		return;
+	}
+
+	if (def.invin > 0 || atk.hitTarget == null)
+	{
+		return;
+	}
+
+	if (atk.hitTarget.len() > 0)
+	{
+		foreach( a in atk.hitTarget )
+		{
+			if (a == def.name)
+			{
+				return;
+			}
+		}
+	}
+
+	atk.hitTarget.append(def.name);
+
+	if (atk.hitEffect)
+	{
+		this.world2d.CreateActor(info[0].x, info[0].y, atk.direction, atk.hitEffect, atk.DefaultShotTable());
+	}
+
+	if (atk.hitSE)
+	{
+		this.PlaySE(atk.hitSE);
+	}
+
+	def.hitStopTime = atk.hitStopE;
+	atk.hitStopTime = atk.hitStopP;
+	local dam_ = 0;
+
+	if (def.baseDef == 0.0)
+	{
+		dam_ = 0;
+	}
+	else
+	{
+		dam_ = (atk.baseAtk * atk.atkRate * 0.001 * def.baseDef).tointeger();
+
+		if (atk.playerResist && def.callbackGroup == 1)
+		{
+			dam_ = dam_ / 5;
+		}
+
+		local damB_ = (dam_ * atk.atkOffset).tointeger();
+
+		if (damB_ < 1)
+		{
+			damB_ = 1;
+		}
+
+		if (dam_ > 1)
+		{
+			dam_ -= this.rand() % (damB_ * 2 + 1) - damB_;
+
+			if (dam_ < 1)
+			{
+				dam_ = 1;
+			}
+		}
+	}
+
+	def.endure += 100 * atk.atkType;
+	def.life -= dam_;
+	def.regainLife = def.life;
+	local scoreTarget_;
+
+	if (atk.owner)
+	{
+		if (atk.owner in ::actor)
+		{
+			scoreTarget_ = atk.owner;
+		}
+	}
+
+	if (atk.callbackGroup == 1)
+	{
+		if (dam_ > 0)
+		{
+			::StageMainAct.IncrementHitCount();
+
+			if (::StageMainAct.global.hit[::StageMainAct.global.hit.len() - 1].hitCount > ::gameData.maxCombo)
+			{
+				::gameData.maxCombo = ::StageMainAct.global.hit[::StageMainAct.global.hit.len() - 1].hitCount;
+			}
+
+			if (atk.owner in this.actor)
+			{
+				if (def.life <= 0 && def.life + dam_ > 0)
+				{
+					this.SetBigDamageFont(dam_, info[0].x, info[0].y, this.actor[atk.owner].fontType);
+				}
+				else
+				{
+					this.SetDamageFont(dam_, info[0].x, info[0].y, this.actor[atk.owner].fontType);
+				}
+			}
+			else if (def.life <= 0 && def.life + dam_ > 0)
+			{
+				this.SetBigDamageFont(dam_, info[0].x, info[0].y, this.actor[atk.owner].fontType);
+			}
+			else
+			{
+				this.SetDamageFont(dam_, info[0].x, info[0].y, atk.fontType);
+			}
+		}
+
+		if (def.callbackGroup == 2)
+		{
+			if (def.life <= 0)
+			{
+				if (def.score > 0)
+				{
+					if (scoreTarget_)
+					{
+						if (atk.atkType >= 2)
+						{
+							this.actor[scoreTarget_].ADD_Score(def.score * 5);
+						}
+						else
+						{
+							this.actor[scoreTarget_].ADD_Score(def.score);
+						}
+
+						def.score = 100;
+					}
+				}
+
+				if (def.exp > 0)
+				{
+					local exp_ = def.exp;
+					local A = this.actor[scoreTarget_].level - def.level;
+
+					if (exp_ > 0)
+					{
+						if (A >= 2)
+						{
+							exp_ = 1;
+						}
+						else if (A <= -8)
+						{
+							exp_ *= 20;
+						}
+						else
+						{
+							exp_ *= -(A - 2) * 2;
+						}
+
+						if (def.exp > 0)
+						{
+							this.actor[scoreTarget_].ADD_Exp(exp_, this.actor[scoreTarget_].type);
+							def.exp = 0;
+						}
+					}
+				}
+			}
+		}
+	}
+	else if (dam_ > 0)
+	{
+		if (atk.owner in this.actor)
+		{
+			if (def.life <= 0 && def.life + dam_ > 0)
+			{
+				this.SetBigDamageFont(dam_, info[0].x, info[0].y, this.actor[atk.owner].fontType);
+			}
+			else
+			{
+				this.SetDamageFont(dam_, info[0].x, info[0].y, this.actor[atk.owner].fontType);
+			}
+		}
+		else if (def.life <= 0 && def.life + dam_ > 0)
+		{
+			this.SetBigDamageFont(dam_, info[0].x, info[0].y, atk.fontType);
+		}
+		else
+		{
+			this.SetDamageFont(dam_, info[0].x, info[0].y, atk.fontType);
+		}
+	}
+
+	local SetHitState_ = function ( t, atk, def )
+	{
+		if (atk.flagAttack & 1)
+		{
+			t.direction <- -atk.direction;
+		}
+		else
+		{
+			t.direction <- atk.x > def.x ? 1.0 : -1.0;
+		}
+
+		t.hitVecX <- atk.hitVecX * 0.001 + 1.0 - this.rand() % 20 * 0.1;
+		t.hitVecY <- atk.hitVecY * 0.001 + 1.0 - this.rand() % 20 * 0.1;
+		t.hitVecG <- atk.hitVecG * 0.001;
+		def.hitG = t.hitVecG;
+	};
+
+	if (atk.hitEvent)
+	{
+		atk.hitEvent();
+	}
+
+	if (def.life <= 0 || def.endureMax == 0 || def.endure >= def.endureMax)
+	{
+		if (def.endure >= def.endureMax)
+		{
+			def.endure = 0;
+		}
+
+		if (def.hitAction)
+		{
+			local t = {};
+			SetHitState_(t, atk, def);
+			def.hitAction.call(def, atk.atkType, t);
+		}
+	}
+}
+
+function OnHitCollision( atk, info )
+{
+	if (atk.hitTarget == null)
+	{
+		return;
+	}
+
+	if (atk.hitEffect)
+	{
+		this.world2d.CreateActor(info[0].x, info[0].y, atk.direction, atk.hitEffect, atk.DefaultShotTable());
+	}
+
+	if (atk.hitSE)
+	{
+		this.PlaySE(atk.hitSE);
+	}
+
+	if (atk.hitEvent)
+	{
+		atk.hitEvent();
+	}
+}
+

@@ -1,0 +1,471 @@
+this.CompileFile("data/system/Component/common.nut", this);
+class this.GaugeInfo 
+{
+	charactorType = 0;
+	inputIndex = 0;
+	score = 0;
+	level = 1;
+	soul = 10000;
+	life = 1000;
+	lifeMax = 1000;
+	regainLife = 1000;
+	state = 0;
+	revive = 0;
+	reviveMax = 1;
+	gemLevel_ = 1.0;
+	greenBarAlpha = 1.0;
+	gemAnimPattern = 0;
+	gemAnimFrame = 0;
+	textBlackAlpha = 1.0;
+	soulPrev = 0;
+	function _set( _slot, _val )
+	{
+		if (_slot == "gemLevel")
+		{
+			this.gemLevel_ = _val;
+			local currentAnimPattern = 0;
+
+			if (this.gemLevel_ <= 0.0)
+			{
+				currentAnimPattern = 4;
+			}
+			else if (this.gemLevel_ <= 0.25)
+			{
+				currentAnimPattern = 3;
+			}
+			else if (this.gemLevel_ <= 0.5)
+			{
+				currentAnimPattern = 2;
+			}
+			else if (this.gemLevel_ <= 0.75)
+			{
+				currentAnimPattern = 1;
+			}
+			else
+			{
+				currentAnimPattern = 0;
+			}
+
+			if (currentAnimPattern != this.gemAnimPattern)
+			{
+				this.gemAnimPattern = currentAnimPattern;
+				this.gemAnimFrame = 0;
+			}
+		}
+
+		return _val;
+	}
+
+	function _get( _slot )
+	{
+		if (_slot == "gemLevel")
+		{
+			return this.gemLevel_;
+		}
+
+		return ::_get(_slot);
+	}
+
+}
+
+class this.HitInfo 
+{
+	hitCount = 0;
+	frame = 0;
+}
+
+function OnCreate()
+{
+	this.thisAct.CreateGuage <- this.CreateGuage.bindenv(this);
+	this.thisAct.SetHitCount <- this.SetHitCount.bindenv(this);
+	this.thisAct.IncrementHitCount <- this.IncrementHitCount.bindenv(this);
+	this.thisAct.hitCount <- 0;
+	this.thisAct.bossLifePer <- 0.0;
+	this.thisAct.bossLv <- 1;
+	this.thisAct.bossAtackable <- true;
+	this.thisAct.bossGaugeAlpha <- 0.0;
+	this.pl.BeginStage(0);
+}
+
+function Init()
+{
+	this.guage <- [];
+	this.hit <- [];
+	this.gemImage <- [
+		this.resource.jem_homura,
+		this.resource.jem_kyouko,
+		this.resource.jem_madoka,
+		this.resource.jem_mami,
+		this.resource.jem_sayaka,
+		this.resource.jem_homura
+	];
+	this.frame <- 0;
+}
+
+function Update()
+{
+	this.frame++;
+
+	if (this.guage.len() == 0 || this.TitleAct.pl.IsActive() || this.StageSelectAct.pl.IsActive() || this.StaffrollAct.pl.IsActive() || this.StageResultAct.pl.IsActive())
+	{
+		this.thisAct.bossLifePer = 0.0;
+		this.hit.clear();
+
+		if (!("world2d" in this.getroottable()) || this.world2d == null)
+		{
+			this.thisAct.bossGaugeAlpha = 0.0;
+		}
+	}
+
+	if (this.thisAct.bossLifePer > 0.0)
+	{
+		this.thisAct.bossGaugeAlpha += 0.0099999998;
+
+		if (this.thisAct.bossGaugeAlpha > 1.0)
+		{
+			this.thisAct.bossGaugeAlpha = 1.0;
+		}
+	}
+	else
+	{
+		this.thisAct.bossGaugeAlpha -= 0.0099999998;
+
+		if (this.thisAct.bossGaugeAlpha < 0.0)
+		{
+			this.thisAct.bossGaugeAlpha = 0.0;
+		}
+	}
+
+	local bar_width = (512 * this.thisAct.bossLifePer).tointeger();
+	this.pl.BitBlt(786 - bar_width, 38, bar_width, 8, this.resource.boss_hp, 512 - bar_width, this.thisAct.bossAtackable ? 0 : 8, this.BLEND_ALPHA, this.thisAct.bossGaugeAlpha);
+	this.pl.BitBlt(562, 8, 192, 32, this.resource.boss_name, 0, (this.StageSelectAct.lastStage - 1) * 32, this.BLEND_ALPHA, this.thisAct.bossGaugeAlpha);
+	this.DrawNumber("num14x19", 772, 14, this.thisAct.bossLv, 0, this.thisAct.bossGaugeAlpha);
+
+	for( local i = this.guage.len() - 1; i >= 0; i-- )
+	{
+		if (this.guage[i] == null)
+		{
+			this.guage.remove(i);
+		}
+	}
+
+	local gaugeNum = this.guage.len();
+
+	if (gaugeNum > 3)
+	{
+		gaugeNum = 3;
+	}
+
+	local left = [
+		470,
+		470,
+		470
+	];
+	local top = [
+		470,
+		470,
+		470
+	];
+
+	switch(gaugeNum)
+	{
+	case 1:
+		left[0] = 280;
+		break;
+
+	case 2:
+		left[0] = 150;
+		left[1] = 410;
+		break;
+
+	case 3:
+		left[0] = 20;
+		left[1] = 280;
+		left[2] = 540;
+		break;
+	}
+
+	for( local playerIndex = 0; playerIndex < this.guage.len(); playerIndex++ )
+	{
+		local info = this.guage[playerIndex];
+		local left = left[playerIndex];
+		local top = top[playerIndex];
+
+		if (this.guage[playerIndex].charactorType < 6)
+		{
+			local charactorType = info.charactorType;
+
+			switch(info.charactorType)
+			{
+			case 0:
+				charactorType = 1;
+				break;
+
+			case 5:
+				charactorType = 1;
+				break;
+
+			case 1:
+				charactorType = 4;
+				break;
+
+			case 2:
+				charactorType = 0;
+				break;
+
+			case 3:
+				charactorType = 2;
+				break;
+
+			case 4:
+				charactorType = 3;
+				break;
+			}
+
+			switch(info.state)
+			{
+			case 1:
+				this.pl.BitBlt(left, top + 84, 190, 16, this.resource.barK, 0, 48, this.BLEND_ALPHA, 1.0);
+				local dx = 190 * info.revive / info.reviveMax;
+				this.pl.BitBlt(left + (190 - dx), top + 84, dx, 16, this.resource.barR, 190 - dx, 64, this.BLEND_ALPHA, 1.0);
+				this.pl.BitBlt(left + (190 - dx), top + 84, dx, 16, this.resource.gauge_cloud, this.frame * 12 % 800, 0, this.BLEND_MULTI, 0.5);
+				info.greenBarAlpha = 0.0;
+				this.DrawNumber("num14x19", left + 157, top + 59, info.level, -2, 1.0);
+				this.DrawGem(left + 180, top + 32, info);
+				this.pl.BitBlt(left + 53, top + 2, 128, 128, this.resource.Lv, 0, 0, this.BLEND_ALPHA, 1.0);
+				this.DrawNumber("num20x36R", left + 109, top + 94, info.soul, -5, 1.0);
+				this.pl.BitBlt(left - 1, top + 52, 256, 32, this.resource.name, 0, 5 * 32, this.BLEND_ALPHA, 1.0);
+				break;
+
+			case 3:
+				info.gemAnimPattern = -1;
+
+			case 2:
+				this.pl.BitBlt(left, top + 84, 190, 16, this.resource.barK, 0, 48, this.BLEND_ALPHA, 1.0);
+				this.DrawGem(left + 180, top + 32, info);
+				this.pl.BitBlt(left - 1, top + 52, 256, 32, this.resource.name, 0, charactorType * 32, this.BLEND_ALPHA, 1.0);
+				break;
+
+			case 0:
+				this.pl.BitBlt(left, top + 84, 190, 16, this.resource.barW, 0, 32, this.BLEND_ALPHA, 1.0);
+				local dxR = 190 * info.regainLife / info.lifeMax;
+				this.pl.BitBlt(left + (190 - dxR), top + 84, dxR, 16, this.resource.barR, 190 - dxR, 16, this.BLEND_ALPHA, 1.0);
+				local dx = 190 * info.life / info.lifeMax;
+				this.pl.BitBlt(left + (190 - dx), top + 84, dx, 16, this.resource.barG, 190 - dx, 64, this.BLEND_ALPHA, 1.0);
+				info.greenBarAlpha += 0.0099999998;
+
+				if (info.greenBarAlpha > 1.0)
+				{
+					info.greenBarAlpha = 1.0;
+				}
+
+				this.pl.BitBlt(left + (190 - dx), top + 84, dx, 16, this.resource.barG, 190 - dx, 0, this.BLEND_ALPHA, info.greenBarAlpha);
+				this.DrawNumber("num14x19", left + 157, top + 59, info.level, -2, 1.0);
+				this.DrawGem(left + 180, top + 32, info);
+				this.pl.BitBlt(left + 53, top + 2, 128, 128, this.resource.Lv, 0, 0, this.BLEND_ALPHA, 1.0);
+
+				if (info.soulPrev != info.soul)
+				{
+					info.textBlackAlpha = 0.0;
+				}
+
+				if (info.textBlackAlpha < 1.0)
+				{
+					info.textBlackAlpha += 0.050000001;
+				}
+
+				if (info.gemAnimPattern == 4)
+				{
+					local textAlpha = info.textBlackAlpha;
+					this.DrawNumber("num20x36R", left + 109, top + 94, info.soul, -5, 1.0);
+
+					if (info.soul > 0)
+					{
+						this.DrawNumber("num20x36", left + 109, top + 94, info.soul, -5, textAlpha);
+					}
+				}
+				else
+				{
+					this.DrawNumber("num20x36R", left + 109, top + 94, info.soul, -5, 1.0);
+
+					if (info.soul > 0)
+					{
+						this.DrawNumber("num20x36", left + 109, top + 94, info.soul, -5, info.greenBarAlpha);
+					}
+				}
+
+				this.pl.BitBlt(left - 1, top + 52, 256, 32, this.resource.name, 0, charactorType * 32, this.BLEND_ALPHA, 1.0);
+				break;
+			}
+		}
+
+		this.pl.BitBlt(56 - playerIndex * 16, 12 + playerIndex * 24, 80, 24, this.resource.Score, 0, info.inputIndex * 24, this.BLEND_ALPHA, 1.0);
+		this.DrawNumber("num14x19", 136 - playerIndex * 16, 13 + playerIndex * 24, info.score, -8, 1.0);
+
+		if (::StageSelectAct.entryCount >= 2 || true)
+		{
+			local left = 136 - playerIndex * 16;
+			local top = 13 + playerIndex * 24;
+			this.pl.BitBlt(left + 108, top + 2, 16, 16, this.resource.face_s, info.charactorType * 16, 0, this.BLEND_ALPHA, 1.0);
+		}
+
+		info.soulPrev = info.soul;
+	}
+
+	if (this.hit.len())
+	{
+		local hitInfo = this.hit[this.hit.len() - 1];
+
+		if (hitInfo.frame < 60)
+		{
+			local hit_y = 111;
+
+			if (hitInfo.frame == 0)
+			{
+				hit_y -= 30;
+				this.DrawNumber("num32x60", 666, 85 - 30, hitInfo.hitCount, 1, 0.075000003, 1.2);
+				this.DrawNumber("num32x60", 666, 85 - 30, hitInfo.hitCount, 1, 0.075000003, 1.4);
+				this.DrawNumber("num32x60", 666, 85 - 30, hitInfo.hitCount, 1, 0.075000003, 1.6);
+				this.DrawNumber("num32x60", 666, 85 - 30, hitInfo.hitCount, 1, 0.075000003, 1.8);
+				this.DrawNumber("num32x60", 666, 85 - 30, hitInfo.hitCount, 1, 0.075000003, 2.0);
+			}
+			else if (hitInfo.frame == 1)
+			{
+				hit_y += 15;
+				this.DrawNumber("num32x60", 666, 85 + 15, hitInfo.hitCount, 1, 0.1, 1.15);
+				this.DrawNumber("num32x60", 666, 85 + 15, hitInfo.hitCount, 1, 0.1, 1.3);
+				this.DrawNumber("num32x60", 666, 85 + 15, hitInfo.hitCount, 1, 0.1, 1.45);
+				this.DrawNumber("num32x60", 666, 85 + 15, hitInfo.hitCount, 1, 0.1, 1.6);
+				this.DrawNumber("num32x60", 666, 85 + 15, hitInfo.hitCount, 1, 0.1, 1.75);
+			}
+			else if (hitInfo.frame == 2)
+			{
+				this.DrawNumber("num32x60", 666, 85, hitInfo.hitCount, 1, 0.2, 1.1);
+				this.DrawNumber("num32x60", 666, 85, hitInfo.hitCount, 1, 0.2, 1.2);
+				this.DrawNumber("num32x60", 666, 85, hitInfo.hitCount, 1, 0.2, 1.3);
+				this.DrawNumber("num32x60", 666, 85, hitInfo.hitCount, 1, 0.2, 1.4);
+				this.DrawNumber("num32x60", 666, 85, hitInfo.hitCount, 1, 0.2, 1.5);
+			}
+			else if (hitInfo.frame >= 3)
+			{
+				this.DrawNumber("num32x60", 666, 85, hitInfo.hitCount, 1, 1.0, 1.0);
+			}
+
+			this.pl.BitBlt(728, hit_y, 38, 22, this.resource.hit, 0, 0, this.BLEND_ALPHA, 1.0);
+		}
+		else
+		{
+			local lframe = hitInfo.frame - 60;
+			local scaleY = 1.0 + lframe / 2.5;
+			local scaleX = 1.0;
+			local alpha = 1.0 - lframe / 5.0;
+
+			if (alpha < 0.0)
+			{
+				alpha = 0.0;
+			}
+
+			this.DrawNumber("num32x60", 666, 85, hitInfo.hitCount, 1, alpha, scaleY, scaleX);
+			this.pl.SetBlend(this.BLEND_ALPHA, alpha);
+			this.pl.StretchBlt(728 - (38 * scaleX - 38) / 2.0, 111 - (22 * scaleY - 22) / 2.0, 38 * scaleX, 22 * scaleY, this.resource.hit, 0, 0, 38, 22);
+		}
+
+		if (("world2d" in this.getroottable()) && this.world2d != null && this.world2d.GetState() == 0)
+		{
+			if (++hitInfo.frame >= 66)
+			{
+				this.hit.clear();
+			}
+		}
+	}
+}
+
+function DrawGem( _left, _top, _gaugeInfo )
+{
+	local characterType = _gaugeInfo.charactorType;
+
+	if (characterType < 0 || characterType >= this.gemImage.len())
+	{
+		return;
+	}
+
+	local img = this.gemImage[characterType];
+	_gaugeInfo.gemAnimFrame++;
+	local frame = _gaugeInfo.gemAnimFrame / 8;
+
+	if (frame > 7)
+	{
+		frame = 7;
+	}
+
+	switch(_gaugeInfo.gemAnimPattern)
+	{
+	case 0:
+		this.pl.BitBlt(_left, _top, 64, 96, img, 0, 0, this.BLEND_ALPHA, 1.0);
+		break;
+
+	case 1:
+		this.pl.BitBlt(_left, _top, 64, 96, img, 0, 96 + frame * 96, this.BLEND_ALPHA, 1.0);
+
+		if (_gaugeInfo.gemAnimFrame > 60 * 2)
+		{
+			_gaugeInfo.gemAnimFrame = 0;
+		}
+
+		break;
+
+	case 2:
+		this.pl.BitBlt(_left, _top, 64, 96, img, 64, 96 + frame * 96, this.BLEND_ALPHA, 1.0);
+
+		if (_gaugeInfo.gemAnimFrame > 60 * 1.5)
+		{
+			_gaugeInfo.gemAnimFrame = 0;
+		}
+
+		break;
+
+	case 3:
+		this.pl.BitBlt(_left, _top, 64, 96, img, 128, 96 + frame * 96, this.BLEND_ALPHA, 1.0);
+
+		if (_gaugeInfo.gemAnimFrame > 60 * 1)
+		{
+			_gaugeInfo.gemAnimFrame = 0;
+		}
+
+		break;
+
+	case 4:
+	default:
+		this.pl.BitBlt(_left, _top, 64, 96, img, 64, 0, this.BLEND_ALPHA, 1.0);
+		break;
+	}
+}
+
+function CreateGuage( _playerIndex, _charactorType )
+{
+	local newGuage = this.GaugeInfo();
+	newGuage.inputIndex = _playerIndex;
+	newGuage.charactorType = _charactorType;
+	this.guage.append(newGuage.weakref());
+	return newGuage;
+}
+
+function SetHitCount( _count )
+{
+	local newHitInfo = this.HitInfo();
+	newHitInfo.hitCount = _count;
+	this.hit.append(newHitInfo);
+}
+
+function IncrementHitCount()
+{
+	if (this.hit.len() == 0)
+	{
+		this.SetHitCount(1);
+	}
+	else
+	{
+		this.SetHitCount(this.hit[this.hit.len() - 1].hitCount + 1);
+	}
+}
+

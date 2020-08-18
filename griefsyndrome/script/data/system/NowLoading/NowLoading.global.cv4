@@ -1,0 +1,92 @@
+function OnCreate()
+{
+	this.thisAct.Show <- this.Show.bindenv(this);
+	this.pl.BeginStage(0);
+}
+
+function Init()
+{
+	this.imageQB <- [
+		this.resource.QB0000,
+		this.resource.QB0001,
+		this.resource.QB0002,
+		this.resource.QB0003,
+		this.resource.QB0004,
+		this.resource.QB0005,
+		this.resource.QB0006
+	];
+	this.frameQB <- 0;
+	this.leftQB <- 800;
+	this.stopFlag <- true;
+	this.funcUpdate <- null;
+	this.mode <- true;
+	this.Show(false);
+	this.nowloading.visible = false;
+}
+
+function Show( _mode = true )
+{
+	if (this.mode && !_mode)
+	{
+		this.funcUpdate <- this.Update0.bindenv(this);
+		this.mode = _mode;
+	}
+	else if (!this.mode && _mode)
+	{
+		this.funcUpdate <- this.Update1.bindenv(this);
+		this.mode = _mode;
+	}
+}
+
+function Update()
+{
+	this.stopFlag = this.nowloading.visible;
+	this.frameQB = (this.frameQB + 1) % 6;
+
+	if (this.funcUpdate)
+	{
+		this.funcUpdate();
+	}
+
+	this.pl.SetBlend(this.BLEND_ALPHA, 1.0);
+
+	if (this.mode)
+	{
+		if (this.nowloading.visible)
+		{
+			this.pl.StretchBlt(this.leftQB + 128 - 3, 508, -128, 64, this.imageQB[0], 0, 0, 128, 64);
+		}
+		else
+		{
+			this.pl.StretchBlt(this.leftQB + 128, 508, -128, 64, this.imageQB[this.frameQB + 1], 0, 0, 128, 64);
+		}
+	}
+	else
+	{
+		this.pl.StretchBlt(this.leftQB - 8, 508, 128, 64, this.imageQB[this.frameQB + 1], 0, 0, 128, 64);
+	}
+}
+
+function Update0()
+{
+	this.nowloading.visible = false;
+
+	if (this.leftQB < 836)
+	{
+		this.leftQB += 3;
+	}
+}
+
+function Update1()
+{
+	if (this.leftQB >= 648)
+	{
+		this.leftQB -= 3;
+	}
+	else
+	{
+		this.leftQB = 648;
+		this.nowloading.visible = true;
+	}
+}
+

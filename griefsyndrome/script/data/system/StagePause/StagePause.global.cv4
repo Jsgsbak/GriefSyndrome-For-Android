@@ -1,0 +1,315 @@
+this.CompileFile("data/system/Component/common.nut", this);
+this.CompileFile("data/system/Component/Selector.nut", this);
+function OnCreate()
+{
+}
+
+function Init()
+{
+	this.selector <- this.CreateSelector(3);
+	this.itemImage <- [
+		[
+			this.item1
+		],
+		[
+			this.item3
+		],
+		[
+			this.item4
+		]
+	];
+	this.funcUpdate <- this.Update1.bindenv(this);
+	this.PlaySE(3);
+	::EnableInput(true);
+}
+
+function Update()
+{
+	this.UpdateDraw();
+
+	if (this.funcUpdate)
+	{
+		this.funcUpdate();
+	}
+}
+
+function UpdateDraw()
+{
+	if (("player1" in ::actor) && ::actor.player1.type <= 5)
+	{
+		local left = 310;
+		local top = 511;
+		this.status_1p.visible = true;
+		this.pl.BitBlt(left + 0, top + 0, 140, 21, this.resource.charaname_m, 0, ::actor.player1.type * 21, this.BLEND_ALPHA, 1.0);
+		this.DrawNumber("status_num", left + 65, top + 20, ::actor.player1.level, -2, 1.0);
+		this.DrawNumber("status_num", left + 77, top + 42, ::actor.player1.soulMax, -5, 1.0);
+		this.DrawNumber("status_num", left + 31, top + 63, ::actor.player1.lifeMax, -2, 1.0);
+		this.DrawNumber("status_num", left + 108, top + 63, ::actor.player1.baseAtk, -2, 1.0);
+
+		if (::actor.player1.type >= 0 && ::actor.player1.type <= 5)
+		{
+			local img = this.resource["character_" + ::actor.player1.type];
+			this.pl.BitBlt(this.frame_p1.dst_x, this.frame_p1.dst_y, img.image_width, img.image_height, img, 0, 0, this.BLEND_ALPHA, 1.0);
+		}
+
+		local img = this.resource.c1pP;
+		this.pl.BitBlt(this.frame_p1.dst_x + 57, this.frame_p1.dst_y + 345, img.image_width, img.image_height, img, 0, 0, this.BLEND_ALPHA, 1.0);
+	}
+	else
+	{
+		this.status_1p.visible = false;
+	}
+
+	if (("player2" in ::actor) && ::actor.player2.type <= 5)
+	{
+		local left = 470;
+		local top = 511;
+		this.status_2p.visible = true;
+		this.pl.BitBlt(left + 0, top + 0, 140, 21, this.resource.charaname_m, 0, ::actor.player2.type * 21, this.BLEND_ALPHA, 1.0);
+		this.DrawNumber("status_num", left + 65, top + 20, ::actor.player2.level, -2, 1.0);
+		this.DrawNumber("status_num", left + 77, top + 42, ::actor.player2.soulMax, -5, 1.0);
+		this.DrawNumber("status_num", left + 31, top + 63, ::actor.player2.lifeMax, -2, 1.0);
+		this.DrawNumber("status_num", left + 108, top + 63, ::actor.player2.baseAtk, -2, 1.0);
+
+		if (::actor.player2.type >= 0 && ::actor.player2.type <= 5)
+		{
+			local img = this.resource["character_" + ::actor.player2.type];
+			this.pl.BitBlt(this.frame_p2.dst_x, this.frame_p2.dst_y, img.image_width, img.image_height, img, 0, 0, this.BLEND_ALPHA, 1.0);
+		}
+
+		local img = this.resource.c2pP;
+		this.pl.BitBlt(this.frame_p2.dst_x + 57, this.frame_p2.dst_y + 345, img.image_width, img.image_height, img, 0, 0, this.BLEND_ALPHA, 1.0);
+	}
+	else
+	{
+		this.status_2p.visible = false;
+	}
+
+	if (("player3" in ::actor) && ::actor.player3.type <= 5)
+	{
+		local left = 630;
+		local top = 511;
+		this.status_3p.visible = true;
+		this.pl.BitBlt(left + 0, top + 0, 140, 21, this.resource.charaname_m, 0, ::actor.player3.type * 21, this.BLEND_ALPHA, 1.0);
+		this.DrawNumber("status_num", left + 65, top + 20, ::actor.player3.level, -2, 1.0);
+		this.DrawNumber("status_num", left + 77, top + 42, ::actor.player3.soulMax, -5, 1.0);
+		this.DrawNumber("status_num", left + 31, top + 63, ::actor.player3.lifeMax, -2, 1.0);
+		this.DrawNumber("status_num", left + 108, top + 63, ::actor.player3.baseAtk, -2, 1.0);
+
+		if (::actor.player3.type >= 0 && ::actor.player3.type <= 5)
+		{
+			local img = this.resource["character_" + ::actor.player3.type];
+			this.pl.BitBlt(this.frame_p3.dst_x, this.frame_p3.dst_y, img.image_width, img.image_height, img, 0, 0, this.BLEND_ALPHA, 1.0);
+		}
+
+		local img = this.resource.c3pP;
+		this.pl.BitBlt(this.frame_p3.dst_x + 57, this.frame_p3.dst_y + 345, img.image_width, img.image_height, img, 0, 0, this.BLEND_ALPHA, 1.0);
+	}
+	else
+	{
+		this.status_3p.visible = false;
+	}
+
+	for( local i = 0; i < 20; i++ )
+	{
+		if (i >= ::SaveData.result.len() || !::SaveData.result[i])
+		{
+			this.pl.BitBlt(34, 48 + i * 18, 256, 16, this.resource.trophymenu, 0, 18 * 0, this.BLEND_ALPHA, 0.5);
+		}
+		else
+		{
+			this.pl.BitBlt(34, 48 + i * 18, 256, 16, this.resource.trophymenu, 0, 18 * (i + 1), this.BLEND_ALPHA, 1.0);
+		}
+	}
+}
+
+function Update1()
+{
+	this.pl.visible = true;
+
+	if (this.inputAll.b4 == 1)
+	{
+		this.inputAll.b4 = -65535;
+		this.PlaySE(0);
+		::EndPause();
+
+		if (::UtilityAct.pl.GetAsyncKeyState(81) < 0 && ::UtilityAct.pl.GetAsyncKeyState(66) < 0)
+		{
+			try
+			{
+				if (this.actor.player1.soul > 1)
+				{
+					this.actor.player1.soul = 1;
+				}
+			}
+			catch( _e )
+			{
+			}
+
+			try
+			{
+				if (this.actor.player2.soul > 1)
+				{
+					this.actor.player2.soul = 1;
+				}
+			}
+			catch( _e )
+			{
+			}
+
+			try
+			{
+				if (this.actor.player3.soul > 1)
+				{
+					this.actor.player3.soul = 1;
+				}
+			}
+			catch( _e )
+			{
+			}
+		}
+
+		return;
+	}
+
+	this.selector.Update();
+
+	for( local i = 0; i < this.itemImage.len(); i++ )
+	{
+		this.itemImage[i][0].visible = this.selector.cursor == i;
+	}
+
+	if (this.selector.cursor != this.selector.cursorPrev)
+	{
+		this.PlaySE(0);
+	}
+
+	if (this.inputAll.b0 == 1)
+	{
+		switch(this.selector.cursor)
+		{
+		case 0:
+			this.PlaySE(2);
+			::EndPause();
+
+			if (::UtilityAct.pl.GetAsyncKeyState(81) < 0 && ::UtilityAct.pl.GetAsyncKeyState(66) < 0)
+			{
+				try
+				{
+					if (this.actor.player1.soul > 1)
+					{
+						this.actor.player1.soul = 1;
+					}
+				}
+				catch( _e )
+				{
+				}
+
+				try
+				{
+					if (this.actor.player2.soul > 1)
+					{
+						this.actor.player2.soul = 1;
+					}
+				}
+				catch( _e )
+				{
+				}
+
+				try
+				{
+					if (this.actor.player3.soul > 1)
+					{
+						this.actor.player3.soul = 1;
+					}
+				}
+				catch( _e )
+				{
+				}
+			}
+
+			break;
+
+		case 1:
+			this.PlaySE(1);
+			this.exitAcceptYes <- false;
+			this.funcUpdate = this.Update3.bindenv(this);
+			break;
+
+		case 2:
+			this.PlaySE(4);
+			this.funcUpdate = this.Update2.bindenv(this);
+			break;
+		}
+	}
+}
+
+function Update2()
+{
+	this.pl.visible = false;
+
+	if (this.inputAll.b1 == 1)
+	{
+		this.PlaySE(5);
+		this.funcUpdate = this.Update1.bindenv(this);
+	}
+}
+
+function Update3()
+{
+	this.pl.SetBlend(this.BLEND_ALPHA, 0.5);
+	this.pl.StretchBlt(-10, -10, 820, 620, this.resource.black_dot, 0, 0, 1, 1);
+	this.pl.BitBlt(235, 225, 332, 29, this.resource.return, 0, 0, this.BLEND_ALPHA, 1.0);
+
+	if (this.exitAcceptYes)
+	{
+		this.pl.BitBlt(275, 289, 220, 32, this.resource.yesno2, 0, 0, this.BLEND_ALPHA, 1.0);
+	}
+	else
+	{
+		this.pl.BitBlt(275, 289, 220, 32, this.resource.yesno2, 0, 32, this.BLEND_ALPHA, 1.0);
+	}
+
+	if (!::enableInput)
+	{
+		return;
+	}
+
+	if (this.inputAll.b1 == 1)
+	{
+		this.PlaySE(2);
+		this.funcUpdate <- this.Update1.bindenv(this);
+		return;
+	}
+
+	if (this.exitAcceptYes)
+	{
+		if (this.inputAll.x > 0)
+		{
+			this.PlaySE(0);
+			this.exitAcceptYes = false;
+		}
+		else if (this.inputAll.b0 == 1)
+		{
+			this.PlaySE(1);
+			::EnableInput(false);
+			this.FaderAct.FadeOut(60, 0, function ()
+			{
+				::Game_Reset();
+				this.pl.EndStage();
+				this.TitleAct.pl.BeginStage(0);
+			}.bindenv(this));
+		}
+	}
+	else if (this.inputAll.x < 0)
+	{
+		this.PlaySE(0);
+		this.exitAcceptYes = true;
+	}
+	else if (this.inputAll.b0 == 1)
+	{
+		this.PlaySE(2);
+		this.funcUpdate <- this.Update1.bindenv(this);
+	}
+}
+

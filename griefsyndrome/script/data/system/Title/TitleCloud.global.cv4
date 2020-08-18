@@ -1,0 +1,46 @@
+function OnCreate()
+{
+	this.thisAct.DrawCloud <- this.DrawCloud.bindenv(this);
+}
+
+function Init()
+{
+	this.frame <- 0;
+	this.pl.SetBltOrder(-1);
+	this.vx <- 1.0;
+	this.vy <- 1.0;
+}
+
+function Update()
+{
+	this.frame++;
+	local dx = -(this.frame / 4 % 800);
+	this.pl.BitBlt(dx, 0, 800, 600, this.resource.title_cloud_shadow, 0, 0, this.BLEND_ALPHA, 1.0);
+	this.pl.BitBlt(dx + 800, 0, 800, 600, this.resource.title_cloud_shadow, 0, 0, this.BLEND_ALPHA, 1.0);
+	this.bar0.dst_x += this.vx;
+
+	if (this.bar0.dst_x >= 800 || this.bar0.dst_x <= 0)
+	{
+		this.vx *= -1;
+	}
+
+	this.bar0.dst_y += this.vy;
+
+	if (this.bar0.dst_y >= 600 || this.bar0.dst_y <= 0)
+	{
+		this.vy *= -1;
+	}
+
+	this.bar1.dst_x += this.vx;
+	this.bar1.dst_y += this.vy;
+	this.bar0.layout.roll_z += 1.0;
+	this.bar1.layout.roll_z += 1.0;
+}
+
+function DrawCloud( _pl, _alpha = 1.0 )
+{
+	local dx = -(this.frame / 4 % 800);
+	_pl.BitBlt(dx, 0, 800, 600, this.resource.title_cloud, 0, 0, this.BLEND_ALPHA, _alpha);
+	_pl.BitBlt(dx + 800, 0, 800, 600, this.resource.title_cloud, 0, 0, this.BLEND_ALPHA, _alpha);
+}
+

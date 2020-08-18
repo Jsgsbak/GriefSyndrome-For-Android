@@ -1,0 +1,29 @@
+function DrawNumber( _fontName, _x, _y, _num, _digit, _alpha = 1.0, _scaleY = 1.0, _scaleX = 1.0, _charSpacing = -4 )
+{
+	local FONT_WIDTH = (this.resource[_fontName].image_width / 10).tointeger();
+	local FONT_HEIGHT = this.resource[_fontName].image_height;
+	local zeroNoDraw = _digit <= -1;
+	_digit = this.abs(_digit);
+
+	if (_digit >= 1)
+	{
+		_x += _digit * (FONT_WIDTH + _charSpacing);
+	}
+
+	if (_num == 0 && _digit != 0)
+	{
+		this.pl.SetBlend(this.BLEND_ALPHA, _alpha);
+		this.pl.StretchBlt(_x - (FONT_WIDTH * _scaleX - FONT_WIDTH) / 2.0, _y - (FONT_HEIGHT * _scaleY - FONT_HEIGHT) / 2.0, FONT_WIDTH * _scaleX, FONT_HEIGHT * _scaleY, this.resource[_fontName], 0, 0, FONT_WIDTH, FONT_HEIGHT);
+	}
+
+	while (_num != 0 || !zeroNoDraw && _digit >= 1)
+	{
+		local code = _num % 10;
+		this.pl.SetBlend(this.BLEND_ALPHA, _alpha);
+		this.pl.StretchBlt(_x - (FONT_WIDTH * _scaleX - FONT_WIDTH) / 2.0, _y - (FONT_HEIGHT * _scaleY - FONT_HEIGHT) / 2.0, FONT_WIDTH * _scaleX, FONT_HEIGHT * _scaleY, this.resource[_fontName], code * FONT_WIDTH, 0, FONT_WIDTH, FONT_HEIGHT);
+		_num /= 10;
+		_x -= FONT_WIDTH + _charSpacing;
+		_digit--;
+	}
+}
+

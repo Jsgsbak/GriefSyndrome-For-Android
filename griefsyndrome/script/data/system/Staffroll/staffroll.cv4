@@ -1,0 +1,299 @@
+function OnCreate()
+{
+	this.thisAct.no <- 9;
+	this.thisAct.lap <- 1;
+	this.thisAct.Begin <- this.Begin.bindenv(this);
+}
+
+function Init()
+{
+	this.black.alpha = 1;
+	this.start <- this.pl.timeGetTime();
+	this.current <- 0;
+	this.offset <- this.current - 10;
+	this.State <- this.UpdatePrev;
+	this.SetGroup(-1);
+	this.FaderAct.FadeIn(1, 0, null);
+}
+
+function Update()
+{
+	this.current = (this.pl.timeGetTime() - this.start) / 1000.0;
+	this.State();
+
+	if (::SaveData.edList[this.no] > 0 && this.inputAll.b0 == 1)
+	{
+		this.State = this.Update7;
+		this.StopBgm(1000);
+	}
+}
+
+function UpdatePrev()
+{
+	local image = this.pl.CreateResource2D("data/system/staffroll/000" + this.no + ".bmp");
+	this.pic.AssociateResource(image);
+	this.gp0.intro_num_x.AssociateResource(this.resource["intro_num" + this.lap % 10]);
+	this.gp0.intro_num_xx.AssociateResource(this.resource["intro_num" + this.lap / 10 % 10]);
+	this.gp0.intro_num_xxx.AssociateResource(this.resource["intro_num" + this.lap / 100 % 10]);
+	this.gp0.intro_num_xxxx.AssociateResource(this.resource["intro_num" + this.lap / 1000 % 10]);
+	this.gp0.intro_num_xxxxx.AssociateResource(this.resource["intro_num" + this.lap / 10000 % 10]);
+	this.gp0.intro_num_xxxxxx.AssociateResource(this.resource["intro_num" + this.lap / 100000 % 10]);
+
+	if (this.lap % 100 >= 10 && this.lap % 100 < 20)
+	{
+		this.gp0.intro_th.AssociateResource(this.resource.intro_th);
+	}
+	else if (this.lap % 10 == 1)
+	{
+		this.gp0.intro_th.AssociateResource(this.resource.intro_st);
+	}
+	else if (this.lap % 10 == 2)
+	{
+		this.gp0.intro_th.AssociateResource(this.resource.intro_nd);
+	}
+	else if (this.lap % 10 == 3)
+	{
+		this.gp0.intro_th.AssociateResource(this.resource.intro_rd);
+	}
+	else
+	{
+		this.gp0.intro_th.AssociateResource(this.resource.intro_th);
+	}
+
+	if ("PlayBgm" in this.getroottable())
+	{
+		this.PlayBgmOnce("data/bgm/mdk_ed.ogg", 0, 100);
+	}
+
+	this.start <- this.pl.timeGetTime();
+	this.current <- 0;
+	this.offset <- this.current - 10;
+	this.totalLength <- 2256;
+
+	switch(0)
+	{
+	case 0:
+		this.picLength <- 1200 - 600;
+		this.ScrollStaff <- this.ScrollStaffDown;
+		break;
+
+	case 1:
+		this.picLength <- 1200 - 500;
+		this.ScrollStaff <- this.ScrollStaffLeft;
+		break;
+
+	case 2:
+		this.picLength <- 1200 - 500;
+		this.ScrollStaff <- this.ScrollStaffRight;
+		break;
+
+	case 3:
+		this.picLength <- 1200 - 600;
+		this.ScrollStaff <- this.ScrollStaffUp;
+		break;
+	}
+
+	this.State <- this.Update0;
+	this.SetGroup(0);
+}
+
+function Update0()
+{
+	local a = 1 - this.current / 5.0;
+
+	if (a <= 0)
+	{
+		a = 0;
+		this.State = this.Update1;
+	}
+
+	this.black.alpha = a;
+}
+
+function Update1()
+{
+	if (this.current > 8)
+	{
+		this.State = this.Update2;
+	}
+}
+
+function Update2()
+{
+	local a = (this.current - 8) / 2.0;
+
+	if (a >= 1)
+	{
+		a = 1;
+		this.State = this.Update3;
+		this.SetGroup(1);
+	}
+
+	this.black.alpha = a;
+}
+
+function Update3()
+{
+	local a = 1 - (this.current - 10) / 2.0;
+
+	if (a <= 0)
+	{
+		a = 0;
+		this.State = this.Update4;
+	}
+
+	this.black.alpha = a;
+	this.ScrollStaff();
+}
+
+function Update4()
+{
+	if (this.current > 54)
+	{
+		this.State = this.Update5;
+	}
+
+	this.ScrollStaff();
+}
+
+function Update5()
+{
+	local a = (this.current - 54) / 2.0;
+
+	if (a > 1)
+	{
+		this.State = this.End;
+	}
+
+	this.black.alpha = a;
+	this.ScrollStaff();
+}
+
+function Update6()
+{
+	if (this.current > 62)
+	{
+		this.black.alpha += 1 / 60.0;
+	}
+
+	if (this.black.alpha > 1)
+	{
+		this.State = function ()
+		{
+		};
+		this.End();
+		this.black.alpha = 1;
+	}
+}
+
+function Update7()
+{
+	this.black.alpha += 1 / 60.0;
+
+	if (this.black.alpha > 1)
+	{
+		this.State = function ()
+		{
+		};
+		this.End();
+		this.black.alpha = 1;
+	}
+}
+
+function End()
+{
+	if ("FaderAct" in this.getroottable())
+	{
+		this.pl.EndStage();
+		::StageResultAct.BeginEndResult(function ()
+		{
+			this.PlaySE(51);
+		});
+		this.FaderAct.FadeIn(60, 0, null);
+	}
+}
+
+function ScrollStaffName()
+{
+	this.offset = this.current - 10;
+
+	if (this.offset > 40.700001)
+	{
+		this.offset = 40.700001;
+	}
+
+	this.gp1.staff_margin.dst_y = -this.totalLength * this.offset / 40.700001;
+	this.gp1.staff0.dst_y = 600.0 + this.gp1.staff_margin.dst_y;
+	this.gp1.staff1.dst_y = this.gp1.staff0.dst_y + 1024;
+}
+
+function ScrollStaffLeft()
+{
+	this.ScrollStaffName();
+	this.pic.dst_x = -this.picLength * this.offset / 40.700001;
+}
+
+function ScrollStaffRight()
+{
+	this.ScrollStaffName();
+	this.pic.dst_x = this.picLength * this.offset / 40.700001 - this.picLength;
+}
+
+function ScrollStaffDown()
+{
+	this.ScrollStaffName();
+	this.pic.dst_y = this.picLength * this.offset / 40.700001 - this.picLength;
+}
+
+function ScrollStaffUp()
+{
+	this.ScrollStaffName();
+	this.pic.dst_y = -this.picLength * this.offset / 40.700001;
+}
+
+function SetGroup( gp )
+{
+	this.gp0.visible = gp == 0;
+
+	if (this.lap < 10)
+	{
+		this.gp0.intro_num_xx.visible = false;
+	}
+
+	if (this.lap < 100)
+	{
+		this.gp0.intro_num_xxx.visible = false;
+	}
+
+	if (this.lap < 1000)
+	{
+		this.gp0.intro_num_xxxx.visible = false;
+	}
+
+	if (this.lap < 10000)
+	{
+		this.gp0.intro_num_xxxxx.visible = false;
+	}
+
+	if (this.lap < 100000)
+	{
+		this.gp0.intro_num_xxxxxx.visible = false;
+	}
+
+	this.gp1.visible = gp == 1;
+	this.pic.visible = gp == 1;
+}
+
+function Begin( _no, _lap )
+{
+	this.no = _no;
+	this.lap = _lap;
+
+	if (this.lap > 999999)
+	{
+		this.lap = 999999;
+	}
+
+	this.pl.BeginStage(0);
+}
+

@@ -1,0 +1,136 @@
+function UpdateWorld()
+{
+	this.render.Update();
+	this.NowLoadingAct.Show(false);
+
+	if ("globalCount" in ::stage)
+	{
+		::stage.globalCount++;
+	}
+
+	if (::game.enableTimeCount)
+	{
+		::gameData.stageTime++;
+
+		if (::gameData.stageTime % 60 == 0)
+		{
+		}
+	}
+
+	if (!::game.gameOver && !::game.stageClear)
+	{
+		local gameOver_ = true;
+		local playerCount_ = 0;
+
+		for( local i = 1; i < 4; i++ )
+		{
+			if ("player" + i in this.actor)
+			{
+				if (this.actor["player" + i].soulMax <= 1)
+				{
+				}
+				else
+				{
+					playerCount_++;
+
+					if (this.actor["player" + i].soul > 0)
+					{
+						gameOver_ = false;
+					}
+				}
+			}
+		}
+
+		if (gameOver_ && playerCount_)
+		{
+			this.Game_CountStop();
+			this.Game_EndTimeStop();
+			::game.gameOver = 1;
+		}
+	}
+
+	if (::game.gameOver)
+	{
+		::game.gameOver++;
+
+		if (::game.gameOver == 480)
+		{
+			this.WriteGameData();
+			local die_ = 0;
+
+			if (this.playerData.homura.soul <= 0)
+			{
+				die_++;
+			}
+
+			if (this.playerData.kyouko.soul <= 0)
+			{
+				die_++;
+			}
+
+			if (this.playerData.madoka.soul <= 0)
+			{
+				die_++;
+			}
+
+			if (this.playerData.mami.soul <= 0)
+			{
+				die_++;
+			}
+
+			if (this.playerData.sayaka.soul <= 0)
+			{
+				die_++;
+			}
+
+			if (die_ >= 5)
+			{
+				this.Game_Over();
+			}
+			else
+			{
+				this.Game_StageFail();
+			}
+		}
+	}
+
+	if (this.game.timeStop > 0)
+	{
+		this.game.timeStop--;
+
+		if (this.game.timeStop <= 0)
+		{
+			this.PlaySE(1145);
+			this.Game_EndTimeStop();
+		}
+	}
+
+	if (this.inputAll.b4 == 1 && !this.FaderAct.IsFading())
+	{
+		this.world2d.SetState(1);
+		::StagePauseAct.pl.BeginStage(0);
+	}
+}
+
+function EndPause()
+{
+	this.world2d.SetState(0);
+	::StagePauseAct.pl.EndStage();
+	this.inputArray[0].b0 = this.inputArray[0].b1 = this.inputArray[0].b2 = this.inputArray[0].b3 = this.inputArray[0].b4 = this.inputArray[0].b5 = -65535;
+	this.inputArray[1].b0 = this.inputArray[1].b1 = this.inputArray[1].b2 = this.inputArray[1].b3 = this.inputArray[1].b4 = this.inputArray[1].b5 = -65535;
+	this.inputArray[2].b0 = this.inputArray[2].b1 = this.inputArray[2].b2 = this.inputArray[2].b3 = this.inputArray[2].b4 = this.inputArray[2].b5 = -65535;
+	this.inputAll.b4 = -65535;
+}
+
+function ReturnToCharactorSelect()
+{
+	this.Game_Reset();
+	this.StageSelectAct.pl.BeginStage(0);
+	this.StagePauseAct.pl.EndStage();
+}
+
+function ReturnToTitle()
+{
+	this.Game_Reset();
+}
+

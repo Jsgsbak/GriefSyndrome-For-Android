@@ -1,0 +1,673 @@
+function Update_Normal()
+{
+	if (this.life <= 0)
+	{
+		::StageMainAct.bossLifePer = 0.0;
+	}
+	else
+	{
+		::StageMainAct.bossLifePer = this.life.tofloat() / this.lifeMax.tofloat();
+	}
+
+	::StageMainAct.bossLv = this.level;
+
+	if (this.UpdateStopCheck())
+	{
+		return false;
+	}
+
+	this.EnemyCommonLoopB();
+	this.SetGravity();
+
+	if (this.aList.len() > 0)
+	{
+		this.u.CPU_aListAction.call(this);
+	}
+	else
+	{
+		local Dice_ = this.rand() % 100;
+
+		if (Dice_ <= 50)
+		{
+			local l = this.ActionData();
+			l.script = this.u.RandomTarget;
+			this.aList.append(l);
+		}
+		else
+		{
+			local l = this.ActionData();
+			l.script = this.u.SearchTarget;
+			this.aList.append(l);
+		}
+
+		local l = this.ActionData();
+		l.script = this.u.FreeCheck;
+		this.aList.append(l);
+		local l = this.ActionData();
+		l.script = this.u.BeginStand;
+		l.time = 1500 + this.rand() % 60;
+		l.val = 0.0;
+		this.aList.append(l);
+		local l = this.ActionData();
+		l.script = this.u.BeginGear;
+		this.aList.append(l);
+		local l = this.ActionData();
+		l.script = this.u.FreeCheck;
+		this.aList.append(l);
+		local l = this.ActionData();
+		l.script = this.u.BeginBackWait;
+		this.aList.append(l);
+		local l = this.ActionData();
+		l.script = this.u.FreeCheck;
+		this.aList.append(l);
+	}
+
+	if (this.stateLabel)
+	{
+		this.stateLabel.call(this);
+	}
+
+	return true;
+}
+
+function EndtoFreeMove()
+{
+	this.LabelClear();
+	this.SetMotion(this.u.CA, 0);
+	::StageMainAct.bossAtackable = true;
+	this.stateLabel = this.u.Stand_Update;
+
+	if (this.vy < 0)
+	{
+		this.u.offSet_x = -1;
+	}
+	else
+	{
+		this.u.offSet_x = 1;
+	}
+}
+
+function BeginStand( dir )
+{
+	if (this.motion != this.u.CA)
+	{
+		this.count = 0;
+
+		if (this.vy < 0)
+		{
+			this.u.offSet_x = -1;
+		}
+		else
+		{
+			this.u.offSet_x = 1;
+		}
+
+		this.LabelClear();
+		this.SetMotion(this.u.CA, 0);
+		this.stateLabel = this.u.Stand_Update;
+		::StageMainAct.bossAtackable = true;
+	}
+
+	return true;
+}
+
+function BeginGear( dir )
+{
+	if (this.motion != this.u.CA + 1)
+	{
+		this.PlaySE(4601);
+		this.SetMotion(this.u.CA + 1, 0);
+		this.stateLabel = this.u.Stand_Update;
+		this.SetEndMotionCallbackFunction(this.u.EndtoFreeMove);
+		return false;
+	}
+
+	return true;
+}
+
+function Stand_Update()
+{
+	local cy_ = (this.camera2d.top + this.camera2d.bottom) * 0.5;
+	this.vy += 0.0024999999 * this.u.offSet_x;
+
+	if (this.Abs(this.vy) > 0.5)
+	{
+		this.vy = 0.5 * this.u.offSet_x;
+	}
+
+	if (this.u.offSet_x < 0 && this.y < cy_ - 100.0 + 200)
+	{
+		this.u.offSet_x = 1;
+	}
+
+	if (this.u.offSet_x > 0 && this.y > cy_ + 250.0 + 200)
+	{
+		this.u.offSet_x = -1;
+	}
+
+	this.red += 0.0049999999;
+
+	if (this.red > 1.0)
+	{
+		this.red = 1.0;
+	}
+
+	this.green = this.blue = this.red;
+	this.count++;
+
+	if (this.count % 360 == 0)
+	{
+		this.u.FuncCount = 0;
+		this.u.FuncFlag = this.Vector3();
+		this.u.FuncFlag.x = (this.camera2d.left + this.camera2d.right) * 0.5 + 300 - this.rand() % 601;
+		this.u.FuncFlag.y = (this.camera2d.top + this.camera2d.bottom) * 0.5 + 200 - this.rand() % 401;
+		this.u.FuncFlagB = this.rand() % 6;
+		this.func = this.u.Func_Laser;
+	}
+
+	if (this.func)
+	{
+		this.func.call(this);
+	}
+
+	if (this.u.offSet_y == 0)
+	{
+		if (this.Abs(this.vx) > 0.050000001)
+		{
+			this.vx -= this.vx > 0.0 ? 0.050000001 : -0.050000001;
+		}
+		else
+		{
+			this.vx = 0.0;
+			this.u.offSet_y = -400 + this.rand() % 801 + (::stage.scrollLeft + ::stage.scrollRight) * 0.5;
+		}
+	}
+	else
+	{
+		if (this.u.offSet_y - this.x < 0.0)
+		{
+			this.vx -= 0.0024999999;
+		}
+		else
+		{
+			this.vx += 0.0024999999;
+		}
+
+		if (this.Abs(this.vx) > 1.5)
+		{
+			this.vx = this.vx > 0.0 ? 1.5 : -1.5;
+		}
+
+		if (this.vx >= 1.5 && this.x > this.u.offSet_y || this.vx <= -1.5 && this.x < this.u.offSet_y)
+		{
+			this.u.offSet_y = 0;
+		}
+	}
+}
+
+function Func_Laser()
+{
+	if (this.u.FuncCount % 10 == 0)
+	{
+		local R_ = 3.141592 * (this.u.FuncCount * 0.1).tointeger() / 3;
+		local t = this.DefaultShotTable();
+		t.rz = R_;
+
+		if ((this.u.FuncCount * 0.1).tointeger() == this.u.FuncFlagB)
+		{
+			this.world2d.CreateActor(this.u.FuncFlag.x + 100.0 * this.cos(R_) * this.direction, this.u.FuncFlag.y + 100.0 * this.sin(R_), this.direction, this.Boss6_LaserBall_Spawn, t);
+		}
+		else
+		{
+			this.world2d.CreateActor(this.u.FuncFlag.x + 100.0 * this.cos(R_) * this.direction, this.u.FuncFlag.y + 100.0 * this.sin(R_), this.direction, this.Boss6_LaserBall, t);
+		}
+	}
+
+	this.u.FuncCount++;
+
+	if (this.u.FuncCount > 60)
+	{
+		this.func = null;
+	}
+}
+
+function BeginBackWait( t )
+{
+	if (this.vy < 0)
+	{
+		this.u.offSet_x = -1;
+	}
+	else
+	{
+		this.u.offSet_x = 1;
+	}
+
+	this.u.offSet_y = 0;
+	this.u.posShift = 0;
+	::StageMainAct.bossAtackable = false;
+	this.u.FireLine = (120.0 - this.rand() % 241) * 0.017453292;
+	this.u.FireAngle = 10.0;
+
+	if (this.rand() % 100 <= 49)
+	{
+		this.u.FireAngle = -190.0;
+	}
+
+	this.count = 0;
+	this.LabelClear();
+	this.SetMotion(this.u.CA + 21, 0);
+	this.SetEndMotionCallbackFunction(function ()
+	{
+		this.SetMotion(this.u.CA + 21, 0);
+	});
+	this.stateLabel = function ()
+	{
+		local cy_ = (this.camera2d.top + this.camera2d.bottom) * 0.5;
+		this.vy += 0.0024999999 * this.u.offSet_x;
+
+		if (this.Abs(this.vy) > 0.5)
+		{
+			this.vy = 0.5 * this.u.offSet_x;
+		}
+
+		if (this.u.offSet_x < 0 && this.y < cy_ + 250.0 - 200)
+		{
+			this.u.offSet_x = 1;
+		}
+
+		if (this.u.offSet_x > 0 && this.y > cy_ + 250.0 - 200)
+		{
+			this.u.offSet_x = -1;
+		}
+
+		if (this.u.offSet_y == 0)
+		{
+			if (this.Abs(this.vx) > 0.050000001)
+			{
+				this.vx -= this.vx > 0.0 ? 0.050000001 : -0.050000001;
+			}
+			else
+			{
+				this.vx = 0.0;
+				this.u.offSet_y = (::stage.scrollLeft + ::stage.scrollRight) * 0.5;
+			}
+		}
+		else
+		{
+			if (this.u.offSet_y - this.x < 0.0)
+			{
+				this.vx -= 0.0024999999;
+			}
+			else
+			{
+				this.vx += 0.0024999999;
+			}
+
+			if (this.Abs(this.vx) > 1.5)
+			{
+				this.vx = this.vx > 0.0 ? 1.5 : -1.5;
+			}
+
+			if (this.vx >= 1.5 && this.x > this.u.offSet_y || this.vx <= -1.5 && this.x < this.u.offSet_y)
+			{
+				this.u.offSet_y = 0;
+			}
+		}
+
+		if (this.u.posShift == 0)
+		{
+			this.count++;
+
+			if (this.count == 1)
+			{
+				this.Set_Vibration(20);
+				this.PlaySE(4606);
+			}
+
+			if (this.count <= 600)
+			{
+				if (this.count % 40 == 0)
+				{
+					this.world2d.CreateActor((this.camera2d.left + this.camera2d.right) * 0.5 + 400 - this.rand() % 801, this.camera2d.bottom + 256, this.direction, this.Boss6_Block, this.DefaultShotTable());
+				}
+			}
+
+			if (this.count % 15 == 0)
+			{
+				this.Set_Vibration(4);
+			}
+
+			this.sx -= 0.001;
+			this.red -= 0.00050000002;
+
+			if (this.red < 0.30000001)
+			{
+				this.red = 0.30000001;
+			}
+
+			this.green = this.blue = this.red;
+
+			if (this.sx < 1.0)
+			{
+				this.count = 0;
+				this.sx = 1.0;
+				this.u.posShift = 1;
+			}
+
+			this.sy = this.sx;
+		}
+		else if (this.u.posShift == 1)
+		{
+			this.count++;
+
+			if (this.count == 3)
+			{
+				this.PlaySE(4602);
+			}
+
+			if (this.count % 3 == 0 && (this.u.FireAngle >= -350.0 || this.u.FireAngle <= 170.0) && this.count <= 660)
+			{
+				local t = this.DefaultShotTable();
+				t.flag1 = this.cos(this.u.FireAngle * 0.017453292);
+				t.rz = this.u.FireLine;
+				this.world2d.CreateActor(this.point2_x, this.point2_y, this.direction, this.Boss6_Fire, t);
+
+				if (this.u.FireAngle > 0)
+				{
+					this.u.FireAngle += 2;
+				}
+				else
+				{
+					this.u.FireAngle -= 2;
+				}
+
+				this.u.FireLine += 0.0099999998;
+			}
+
+			if (this.count >= 720)
+			{
+				this.PlaySE(4601);
+				this.SetMotion(this.u.CA + 22, 0);
+				this.count = 0;
+				this.u.posShift = 2;
+
+				if (this.life.tofloat() / this.lifeMax.tofloat() <= 0.33000001)
+				{
+					this.Set_Vibration(20);
+
+					if (this.target in this.actor)
+					{
+						local t = this.DefaultShotTable();
+						this.world2d.CreateActor(this.actor[this.target].x, this.camera2d.top - 1024.0, this.direction, this.Boss6_Bill, t);
+					}
+					else
+					{
+						local x_ = (::stage.scrollLeft + ::stage.scrollRight) * 0.5 + (800 - 800 * (this.rand() % 3));
+						local t = this.DefaultShotTable();
+						this.world2d.CreateActor(x_, this.camera2d.top - 1024.0, this.direction, this.Boss6_Bill, t);
+					}
+				}
+			}
+		}
+		else if (this.u.posShift == 2)
+		{
+			if (this.motion == this.u.CA + 21)
+			{
+				this.count++;
+
+				if (this.count >= 60)
+				{
+					this.sx += 0.001;
+					this.red += 0.00025000001;
+
+					if (this.red > 1.0)
+					{
+						this.red = 1.0;
+					}
+
+					this.green = this.blue = this.red;
+
+					if (this.sx > 2.0)
+					{
+						this.sx = 2.0;
+						this.u.BeginStand.call(this, null);
+					}
+
+					this.sy = this.sx;
+				}
+			}
+		}
+	};
+	return false;
+}
+
+function BattleBegin_Init()
+{
+	this.LabelClear();
+	this.flag1 = 0;
+	this.count = 0;
+	this.SetMotion(this.u.CA + 40, 0);
+	this.vy = -2.0;
+	this.vx = -0.34999999;
+	this.flag1 = 0;
+	this.green = this.red = this.blue = 0.1;
+	this.stateLabel = function ()
+	{
+		switch(this.flag1)
+		{
+		case 0:
+			this.count++;
+
+			if (this.count == 180)
+			{
+				this.PlaySE(4600);
+				this.Set_Vibration(10);
+			}
+
+			if (this.y - 400.0 < this.camera2d.bottom)
+			{
+				this.red += 0.0024999999;
+
+				if (this.red > 1.0)
+				{
+					this.red = 1.0;
+				}
+
+				this.green = this.blue = this.red;
+			}
+
+			if (this.y - 400.0 < this.camera2d.top)
+			{
+				this.flag1 = 1;
+			}
+
+			break;
+
+		case 1:
+			this.red += 0.0024999999;
+
+			if (this.red > 1.0)
+			{
+				this.red = 1.0;
+			}
+
+			this.green = this.blue = this.red;
+			this.vy += 0.0049999999;
+
+			if (this.vy > 0.1)
+			{
+				this.vy = 0.1;
+				this.flag1 = 2;
+				this.u.EndtoFreeMove.call(this);
+			}
+
+			break;
+		}
+	};
+}
+
+function BeginAttackA( val_ )
+{
+	if (this.flagState & 32)
+	{
+		this.LabelClear();
+		this.HitReset();
+		this.atkCount = 0;
+		this.SetMotion(this.u.CA + 20, 2);
+		this.vx = 0.0;
+		this.count = 60;
+		this.stateLabel = function ()
+		{
+		};
+		this.SetEndTakeCallbackFunction(this.KeyActionCheck);
+		this.keyAction = [
+			null,
+			null,
+			this.u.EndtoFreeMove,
+			null,
+			this.u.EndtoFreeMove,
+			null,
+			this.u.EndtoFreeMove
+		];
+
+		if (this.option)
+		{
+			for( local i = 0; i < this.option.len(); i++ )
+			{
+				if (this.option[i] in this.actor)
+				{
+					this.actor[this.option[i]].u.BeginAttackA.call(this.actor[this.option[i]], null);
+				}
+			}
+		}
+
+		this.SetEndMotionCallbackFunction(this.u.EndtoFreeMove);
+		return false;
+	}
+
+	return true;
+}
+
+function Dead( t )
+{
+	this.LabelClear();
+	this.aList = [];
+	this.SetMotion(this.u.CA + 19, 0);
+	this.vx = 0.0;
+	this.vy = 0.0;
+	this.setG = 0.0;
+	this.count = 0;
+	this.immuneGravity = true;
+	this.stateLabel = this.u.Dead_Update;
+	this.world2d.CreateActor(this.x, this.y, this.direction, this.Boss6_DeadBack, this.DefaultShotTable());
+}
+
+function Dead_Smash( t )
+{
+	this.u.Dead.call(this, null);
+}
+
+function Dead_Update()
+{
+	this.count++;
+
+	if (this.count >= 90)
+	{
+		if (this.count == 90)
+		{
+			this.Set_Vibration(10);
+			this.PlaySE(4606);
+		}
+
+		if (this.count <= 600)
+		{
+			if (this.count % 40 == 0)
+			{
+				this.world2d.CreateActor((this.camera2d.left + this.camera2d.right) * 0.5 + 400 - this.rand() % 801, this.camera2d.bottom + 256, this.direction, this.Boss6_Block_Clear, this.DefaultShotTable());
+			}
+		}
+
+		if (this.count % 15 == 0)
+		{
+			this.Set_Vibration(4);
+		}
+
+		this.sx -= 0.0012000001;
+
+		if (this.sx <= 0.5)
+		{
+			this.sx = 0.5;
+		}
+
+		this.sy = this.sx;
+		local cy_ = (this.camera2d.top + this.camera2d.bottom) * 0.5;
+		this.vy += 0.0024999999 * this.u.offSet_x;
+
+		if (this.Abs(this.vy) > 0.5)
+		{
+			this.vy = 0.5 * this.u.offSet_x;
+		}
+
+		if (this.u.offSet_x < 0 && this.y < cy_ + 250.0 - 200)
+		{
+			this.u.offSet_x = 1;
+		}
+
+		if (this.u.offSet_x > 0 && this.y > cy_ + 250.0 - 200)
+		{
+			this.u.offSet_x = -1;
+		}
+
+		if (this.u.offSet_y == 0)
+		{
+			if (this.Abs(this.vx) > 0.050000001)
+			{
+				this.vx -= this.vx > 0.0 ? 0.050000001 : -0.050000001;
+			}
+			else
+			{
+				this.vx = 0.0;
+				this.u.offSet_y = (::stage.scrollLeft + ::stage.scrollRight) * 0.5;
+			}
+		}
+		else
+		{
+			if (this.u.offSet_y - this.x < 0.0)
+			{
+				this.vx -= 0.0024999999;
+			}
+			else
+			{
+				this.vx += 0.0024999999;
+			}
+
+			if (this.Abs(this.vx) > 1.5)
+			{
+				this.vx = this.vx > 0.0 ? 1.5 : -1.5;
+			}
+
+			if (this.vx >= 1.5 && this.x > this.u.offSet_y || this.vx <= -1.5 && this.x < this.u.offSet_y)
+			{
+				this.u.offSet_y = 0;
+			}
+		}
+	}
+	else
+	{
+		this.vx *= 0.94999999;
+		this.vy *= 0.94999999;
+	}
+}
+
+function Damage_Light( t )
+{
+}
+
+function Damage_Heavy( t )
+{
+}
+
+function Damage_Smash( t )
+{
+}
+

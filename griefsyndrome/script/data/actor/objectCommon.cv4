@@ -1,0 +1,75 @@
+function DefaultShotTable()
+{
+	local t = this.ObjectBase();
+	t.owner = this.owner;
+	t.callbackGroup = this.callbackGroup;
+	t.baseAtk = this.baseAtk;
+	t.fontType = this.fontType;
+	t.atkOffset = this.atkOffset;
+	return t;
+}
+
+function ObjectCommon()
+{
+	this.updateGroup = 4;
+	this.filter = 2;
+	this.u = {};
+	this.hitTarget = [];
+	::objectID++;
+	this.name = "NonameObject" + ::objectID;
+	this.u.objectID <- ::objectID;
+	this.priority = 300;
+}
+
+function StageObjectCommon()
+{
+	this.updateGroup = 16;
+
+	if (this.name in ::stage.stageActor)
+	{
+	}
+
+	::stage.stageActor[this.name] <- this;
+	this.u = {};
+	this.hitTarget = [];
+	this.priority = 0;
+	this.isVisible = false;
+	this.count = 0;
+}
+
+function ShotInit( t )
+{
+	this.ObjectCommon();
+
+	if (t.owner in this.actor)
+	{
+		this.owner = t.owner;
+		this.baseAtk = this.actor[this.owner].baseAtk;
+		this.fontType = this.actor[this.owner].fontType;
+		this.atkOffset = this.actor[this.owner].atkOffset;
+	}
+	else
+	{
+		this.baseAtk = t.baseAtk;
+		this.fontType = t.fontType;
+		this.atkOffset = t.atkOffset;
+	}
+
+	this.callbackGroup = t.callbackGroup;
+
+	if (this.callbackGroup == 1)
+	{
+		this.callbackMask = 2;
+	}
+	else
+	{
+		this.callbackMask = 1;
+	}
+}
+
+function CommonShotHit()
+{
+	this.hitEvent = null;
+	this.Release();
+}
+

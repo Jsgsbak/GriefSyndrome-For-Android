@@ -1,0 +1,81 @@
+function Update_Normal()
+{
+	if (this.UpdateStopCheck())
+	{
+		return false;
+	}
+
+	this.EnemyCommonLoop();
+	this.FieldCheck();
+	this.SetGravity();
+
+	if (this.stateLabel)
+	{
+		this.stateLabel.call(this);
+	}
+	else if (::stage.globalCount % 420 == 270)
+	{
+		this.u.BeginAttackA.call(this, 60);
+	}
+
+	return true;
+}
+
+function EndtoFreeMove()
+{
+	this.LabelClear();
+	this.immuneGravity = true;
+	this.isAir = true;
+	this.SetMotion(this.u.CA, 0);
+}
+
+function BeginAttackA( val_ )
+{
+	if (this.motion != this.u.CA + 20)
+	{
+		if (this.CC_ScrollOut_Check(512))
+		{
+			return false;
+		}
+
+		this.LabelClear();
+		this.count = 0;
+		this.isAir = true;
+		this.immuneGravity = true;
+		this.SetMotion(this.u.CA + 20, 1);
+		this.stateLabel = function ()
+		{
+			switch(this.keyTake)
+			{
+			case 1:
+				this.count++;
+
+				if (this.count >= 60)
+				{
+					this.count = 0;
+					this.SetMotion(this.u.CA + 20, 2);
+					this.PlaySE(4205);
+					this.HitReset();
+				}
+
+				break;
+
+			case 2:
+				this.count++;
+
+				if (this.count >= 120)
+				{
+					this.count = 0;
+					this.SetMotion(this.u.CA, 0);
+					this.stateLabel = null;
+				}
+
+				break;
+			}
+		};
+		return false;
+	}
+
+	return true;
+}
+

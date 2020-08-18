@@ -1,0 +1,1241 @@
+function Update_Normal()
+{
+	if (this.UpdateStopCheck())
+	{
+		return false;
+	}
+
+	this.ScrollOut_Enemy(this.scrollOut_margin);
+
+	if (this.fallCount > 0)
+	{
+		this.fallCount--;
+
+		if (this.fallCount == 0)
+		{
+			this.collisionMask = 8 | 4;
+		}
+		else
+		{
+			this.collisionMask = 8;
+		}
+	}
+	else
+	{
+		this.collisionMask = 8 | 4;
+	}
+
+	if (this.aList.len() > 0)
+	{
+		this.u.CPU_aListAction.call(this);
+	}
+	else
+	{
+		local Dice_ = this.rand() % 100;
+
+		if (Dice_ <= 50)
+		{
+			local l = this.ActionData();
+			l.script = this.u.RandomTarget;
+			this.aList.append(l);
+		}
+		else
+		{
+			local l = this.ActionData();
+			l.script = this.u.SearchTarget;
+			this.aList.append(l);
+		}
+
+		local l = this.ActionData();
+		l.script = this.u.BeginTargetTurn;
+		this.aList.append(l);
+		local l = this.ActionData();
+		l.script = this.u.FreeCheck;
+		this.aList.append(l);
+
+		if (this.target in this.actor)
+		{
+			if (this.actor[this.target].y - this.y <= -150.0)
+			{
+				if (Dice_ <= 50)
+				{
+					local l = this.ActionData();
+					l.script = this.u.BeginJump;
+					this.aList.append(l);
+					local l = this.ActionData();
+					l.script = this.u.FreeCheck;
+					this.aList.append(l);
+				}
+
+				Dice_ = this.rand() % 100;
+			}
+			else
+			{
+				if (this.actor[this.target].y - this.y >= 100.0 && this.hitBottom == 4)
+				{
+					if (Dice_ <= 50)
+					{
+						local l = this.ActionData();
+						l.script = this.u.BeginStepFall;
+						this.aList.append(l);
+						local l = this.ActionData();
+						l.script = this.u.FreeCheck;
+						this.aList.append(l);
+					}
+				}
+
+				Dice_ = this.rand() % 100;
+			}
+		}
+
+		if (this.atkCount >= 240 && Dice_ >= 75 || this.atkCount >= 360 && Dice_ >= 50 || this.atkCount >= 480 && Dice_ >= 25 || this.atkCount >= 600 && Dice_ >= 5)
+		{
+			local l = this.ActionData();
+			l.script = this.u.CPU_Attack;
+			this.aList.append(l);
+		}
+
+		Dice_ = this.rand() % 100;
+
+		if (Dice_ <= 15)
+		{
+			local l = this.ActionData();
+			l.script = this.u.BeginWalk;
+			l.time = 30 + this.rand() % 15;
+			this.aList.append(l);
+			local l = this.ActionData();
+			l.script = this.u.BeginWalkStop;
+			this.aList.append(l);
+		}
+		else if (Dice_ <= 40)
+		{
+			local l = this.ActionData();
+			l.val = 120 + this.rand() % 60;
+			l.script = this.u.BeginAttackC;
+			this.aList.append(l);
+			local l = this.ActionData();
+			l.script = this.u.FreeCheck;
+			this.aList.append(l);
+		}
+
+		Dice_ = this.rand() % 100;
+
+		if (Dice_ <= 50)
+		{
+			local l = this.ActionData();
+			l.script = this.u.BeginWalk;
+			l.time = 75 + this.rand() % 45;
+			this.aList.append(l);
+			local l = this.ActionData();
+			l.script = this.u.BeginWalkStop;
+			this.aList.append(l);
+		}
+		else
+		{
+			local l = this.ActionData();
+			l.val = 60 + this.rand() % 120;
+			l.script = this.u.BeginAttackC;
+			this.aList.append(l);
+		}
+
+		local l = this.ActionData();
+		l.script = this.u.FreeCheck;
+		this.aList.append(l);
+		local l = this.ActionData();
+		l.script = this.u.BeginStand;
+		l.time = 20 + this.rand() % 40;
+		this.aList.append(l);
+		local l = this.ActionData();
+		l.script = this.u.CPU_Attack;
+		this.aList.append(l);
+	}
+
+	this.EnemyCommonLoop();
+	this.FieldCheck();
+	this.SetGravity();
+
+	if (this.stateLabel)
+	{
+		this.stateLabel.call(this);
+	}
+
+	return true;
+}
+
+function CPU_Attack( val )
+{
+	local d = this.GetTargetDist();
+	local Dice_ = this.rand() % 100;
+	this.aList.resize(0);
+
+	if (d != false)
+	{
+		if (this.target in this.actor)
+		{
+			local l = this.ActionData();
+			l.script = this.u.BeginTargetTurn;
+			this.aList.append(l);
+			local l = this.ActionData();
+			l.script = this.u.FreeCheck;
+			this.aList.append(l);
+
+			if (d <= 250 * 250)
+			{
+				if (this.actor[this.target].y - this.y > -150.0)
+				{
+					if (Dice_ <= 50)
+					{
+						local l = this.ActionData();
+						l.script = this.u.BeginCry;
+						l.time = 90 + this.rand() % 30;
+						this.aList.append(l);
+						local l = this.ActionData();
+						l.script = this.u.BeginAttackD;
+						l.val = 90;
+						this.aList.append(l);
+					}
+					else if (Dice_ >= 75)
+					{
+						local l = this.ActionData();
+						l.script = this.u.BeginCry;
+						l.time = 60 + this.rand() % 15;
+						this.aList.append(l);
+						local l = this.ActionData();
+						l.script = this.u.BeginStand;
+						l.time = 10;
+						this.aList.append(l);
+					}
+				}
+			}
+			else if (d <= 500 * 500)
+			{
+				if (this.actor[this.target].y - this.y > -300.0)
+				{
+					if (Dice_ <= 33)
+					{
+						local l = this.ActionData();
+						l.script = this.u.BeginCry;
+						l.time = 60 + this.rand() % 30;
+						this.aList.append(l);
+						local l = this.ActionData();
+						l.script = this.u.BeginAttackB;
+						this.aList.append(l);
+					}
+					else if (Dice_ <= 66)
+					{
+						local l = this.ActionData();
+						l.script = this.u.BeginCry;
+						l.time = 60 + this.rand() % 30;
+						this.aList.append(l);
+						local l = this.ActionData();
+						l.script = this.u.BeginAttackD;
+						l.val = 120 + this.rand() % 60;
+						this.aList.append(l);
+					}
+				}
+			}
+			else if (Dice_ >= 60)
+			{
+				local l = this.ActionData();
+				l.script = this.u.BeginCry;
+				l.time = 30 + this.rand() % 30;
+				this.aList.append(l);
+
+				if (Dice_ >= 80)
+				{
+					local l = this.ActionData();
+					l.script = this.u.BeginAttackD;
+					l.val = 120 + this.rand() % 60;
+					this.aList.append(l);
+				}
+				else
+				{
+					local l = this.ActionData();
+					l.val = 90 + this.rand() % 30;
+					l.script = this.u.BeginAttackC;
+					this.aList.append(l);
+					local l = this.ActionData();
+					l.script = this.u.BeginStand;
+					l.time = 10;
+					this.aList.append(l);
+				}
+			}
+
+			local l = this.ActionData();
+			l.script = this.u.FreeCheck;
+			this.aList.append(l);
+			local l = this.ActionData();
+			l.script = this.u.BeginStand;
+			l.time = 10;
+			this.aList.append(l);
+		}
+	}
+
+	return true;
+}
+
+function EndtoFreeMove()
+{
+	this.LabelClear();
+
+	if (this.isAir)
+	{
+		this.SetMotion(2003, 0);
+		this.sitLabel = this.u.BeginSit;
+	}
+	else
+	{
+		this.vx = 0.0;
+		this.SetMotion(2000, 0);
+		this.fallLabel = this.u.BeginFall;
+	}
+}
+
+function BeginStand( dir )
+{
+	if (this.flagState & 32)
+	{
+		if (this.motion != this.u.CA)
+		{
+			this.LabelClear();
+			this.fallLabel = this.u.BeginFall;
+			this.vx = 0.0;
+			this.SetMotion(this.u.CA, 0);
+		}
+	}
+
+	return true;
+}
+
+function BeginSit()
+{
+	this.LabelClear();
+	this.PlaySE(3001);
+	this.stateLabel = this.u.Sit_Update;
+	this.fallLabel = this.u.BeginFall;
+	this.isAir = false;
+	this.SetMotion(this.u.CA + 4, 0);
+	this.SetEndMotionCallbackFunction(this.u.EndtoFreeMove);
+	this.vx *= 0.5;
+	this.vy = 0.0;
+	return true;
+}
+
+function Sit_Update()
+{
+	if (this.Abs(this.vx) <= 0.5)
+	{
+		this.vx = 0.0;
+	}
+	else
+	{
+		this.vx -= this.vx > 0.0 ? 0.5 : -0.5;
+	}
+}
+
+function BeginWalk( dir )
+{
+	if (this.flagState & 32)
+	{
+		if (this.motion != this.u.CA + 1)
+		{
+			this.LabelClear();
+			this.fallLabel = this.u.BeginFall;
+
+			if (this.direction == dir)
+			{
+				this.SetMotion(this.u.CA + 1, 0);
+			}
+			else
+			{
+				this.SetMotion(this.u.CA + 1, 1);
+			}
+
+			if (dir)
+			{
+				this.vx = (this.direction * 2.0 + this.rand() % 100 * 0.0099999998) * dir * this.u.sizeRate;
+			}
+			else
+			{
+				this.vx = (this.direction * 2.0 + this.rand() % 100 * 0.0099999998) * this.u.sizeRate;
+			}
+		}
+		else if (this.direction == dir && this.ketTake != 0)
+		{
+			this.SetMotion(this.u.CA + 1, 0);
+		}
+		else if (this.keyTake != 1)
+		{
+			this.SetMotion(this.u.CA + 1, 1);
+		}
+	}
+
+	return true;
+}
+
+function BeginWalkStop( val )
+{
+	if (this.flagState & 32)
+	{
+		if (this.motion != this.u.CA + 1 || this.keyTake != 2)
+		{
+			this.LabelClear();
+			this.fallLabel = this.u.BeginFall;
+			this.SetMotion(this.u.CA + 1, 2);
+			this.count = 0;
+			this.stateLabel = this.u.WalkStopUpdate;
+			this.SetEndTakeCallbackFunction(this.u.EndtoFreeMove);
+			return false;
+		}
+	}
+
+	return true;
+}
+
+function WalkStopUpdate()
+{
+	if (this.Abs(this.vx) <= 0.25)
+	{
+		this.vx = 0.0;
+	}
+	else
+	{
+		this.vx -= this.vx > 0.0 ? 0.25 : -0.25;
+	}
+
+	return true;
+}
+
+function BeginJump( dir )
+{
+	if (this.flagState & 32)
+	{
+		if (this.motion != this.u.CA + 2 && !this.isAir)
+		{
+			this.LabelClear();
+			this.fallLabel = this.u.BeginFall;
+			this.SetEndTakeCallbackFunction(this.KeyActionCheck);
+			this.keyAction = [
+				this.u.Jump_Move
+			];
+			this.stateLabel = this.u.Jump_Update;
+			this.SetMotion(this.u.CA + 2, 0);
+
+			if (dir)
+			{
+				this.direction = dir;
+			}
+
+			this.vx = 0.0;
+			return false;
+		}
+	}
+
+	return true;
+}
+
+function Jump_Move()
+{
+	this.collisionMask = 8;
+	this.PlaySE(3002);
+	this.vx = (1.0 + this.rand() % 10 * 0.1) * this.direction;
+	this.vy = -10.0 - this.rand() % 20 * 0.1;
+	this.isAir = true;
+	this.sitLabel = this.u.BeginSit;
+	this.fallLabel = null;
+	this.setG = 0.25;
+}
+
+function BeginJump_Front( dir )
+{
+	if (this.flagState & 32)
+	{
+		if (this.motion != this.u.CA + 2 && !this.isAir)
+		{
+			this.LabelClear();
+			this.SetEndTakeCallbackFunction(this.KeyActionCheck);
+			this.keyAction = [
+				this.u.Jump_Move_Front
+			];
+			this.stateLabel = this.u.Jump_Update;
+			this.sitLabel = this.u.BeginSit;
+			this.SetMotion(this.u.CA + 2, 0);
+
+			if (dir)
+			{
+				this.direction = dir;
+			}
+
+			this.vx = 0.0;
+			return false;
+		}
+	}
+
+	return true;
+}
+
+function Jump_Move_Front()
+{
+	this.collisionMask = 8;
+	this.PlaySE(3002);
+	this.vx = (2.5 + this.rand() % 15 * 0.1) * this.direction;
+	this.vy = -6.0 - this.rand() % 20 * 0.1;
+	this.isAir = true;
+	this.sitLabel = this.u.BeginSit;
+	this.fallLabel = null;
+	this.setG = 0.2;
+}
+
+function Jump_Update()
+{
+	if (this.keyTake == 1)
+	{
+		if (this.vy >= -1.0)
+		{
+			this.SetMotion(this.u.CA + 2, 2);
+			return;
+		}
+	}
+
+	if (this.keyTake >= 1)
+	{
+		this.setG = 0.25;
+	}
+}
+
+function BeginFall()
+{
+	this.LabelClear();
+	this.isAir = true;
+	this.sitLabel = this.u.BeginSit;
+	this.vy = 0.0;
+	this.SetMotion(this.u.CA + 3, 0);
+	return false;
+}
+
+function BeginStepFall( t )
+{
+	this.LabelClear();
+	this.fallCount = 30;
+	this.isAir = true;
+	this.sitLabel = this.u.BeginSit;
+	this.vy = 0.0;
+	this.SetMotion(this.u.CA + 3, 0);
+	return false;
+}
+
+function BeginTargetTurn( val )
+{
+	if (this.target in this.actor)
+	{
+		local dir_ = 1.0;
+
+		if (this.x > this.actor[this.target].x)
+		{
+			dir_ = -1.0;
+		}
+
+		local t = this.u.BeginTurn.call(this, dir_);
+
+		if (t)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else
+	{
+		return false;
+	}
+}
+
+function BeginTurn( dir )
+{
+	if (this.flagState & 32)
+	{
+		if (this.direction != dir)
+		{
+			if (this.motion != this.u.CA + 5)
+			{
+				this.LabelClear();
+				this.fallLabel = this.u.BeginFall;
+				this.vx = 0.0;
+				this.SetMotion(this.u.CA + 5, 0);
+				this.SetEndTakeCallbackFunction(this.u.DirectionTurn);
+				this.SetEndMotionCallbackFunction(this.u.EndtoFreeMove);
+			}
+		}
+
+		return false;
+	}
+
+	return true;
+}
+
+function DirectionTurn()
+{
+	this.direction = -this.direction;
+}
+
+function BeginCry( val )
+{
+	if (this.flagState & 32)
+	{
+		if (this.motion != this.u.CA + 29)
+		{
+			this.count = 0;
+			this.LabelClear();
+			this.fallLabel = this.u.BeginFall;
+			this.SetMotion(this.u.CA + 29, 0);
+			this.vx = 0.0;
+			this.stateLabel = this.u.UpdateCry;
+			this.SetEndMotionCallbackFunction(this.u.EndtoFreeMove);
+		}
+	}
+
+	return true;
+}
+
+function UpdateCry()
+{
+	this.count++;
+
+	if (this.count % 30 == 16)
+	{
+		this.PlaySE(3003);
+	}
+}
+
+function CryEffect()
+{
+}
+
+function ForceDead()
+{
+	if (this.life > 0)
+	{
+		this.life = 0;
+		this.LabelClear();
+		this.SetMotion(this.u.CA + 19, 0);
+		this.isAir = true;
+		this.ox = 0.0;
+		this.oy = -75 * this.sy;
+		this.vx = (-3.0 + this.rand() % 20 * 0.1) * this.direction;
+		this.vy = -6.0 - this.rand() % 20 * 0.1;
+		this.rz = 0.0;
+		this.hitG = 0.15000001;
+		this.flag1 = 137.5 * 0.2 * 0.017453292;
+		this.red = 0.5;
+		this.blue = 0.5;
+		this.green = 0.5;
+		this.stateLabel = this.u.Dead_Update;
+		this.sitLabel = this.u.Dead_Bound;
+		this.wallLabel = this.u.Dead_Wall;
+	}
+}
+
+function Dead( t )
+{
+	this.LabelClear();
+	this.SetMotion(this.u.CA + 19, 0);
+	this.isAir = true;
+	this.ox = 0.0;
+	this.oy = -75 * this.sy;
+	this.direction = t.direction;
+	this.vx = (-3.0 + this.rand() % 20 * 0.1) * this.direction;
+	this.vy = -6.0 - this.rand() % 20 * 0.1;
+	this.rz = 0.0;
+	this.setG = 0.0;
+	this.hitG = 0.15000001;
+	this.flag1 = 137.5 * 0.2 * 0.017453292;
+	this.red = 0.5;
+	this.blue = 0.5;
+	this.green = 0.5;
+	this.stateLabel = this.u.Dead_Update;
+	this.sitLabel = this.u.Dead_Bound;
+	this.wallLabel = this.u.Dead_Wall;
+}
+
+function Dead_Smash( t )
+{
+	this.LabelClear();
+	this.SetMotion(this.u.CA + 19, 1);
+	this.isAir = true;
+	this.ox = 0.0;
+	this.oy = -85 * this.sy;
+	this.direction = t.direction;
+	this.vx = t.hitVecX * this.direction;
+	this.vy = t.hitVecY;
+	this.hitG = t.hitVecG;
+	this.setG = 0.0;
+	this.flag1 = 137.5 * 0.2 * 0.017453292;
+	this.red = 0.25;
+	this.blue = 0.25;
+	this.green = 0.25;
+	this.stateLabel = this.u.Dead_Update;
+	this.sitLabel = this.u.Dead_Bound;
+	this.wallLabel = this.u.Dead_Wall;
+}
+
+function Dead_Update()
+{
+	if (this.keyTake == 0)
+	{
+		if (this.Abs(this.vx) > 0.0049999999)
+		{
+			this.vx -= this.vx > 0.0 ? 0.0049999999 : -0.0049999999;
+		}
+
+		this.deadCount++;
+		this.rz += this.flag1;
+	}
+	else
+	{
+		this.rz += this.flag1 * 1.5;
+	}
+
+	if (this.deadCount >= 60)
+	{
+		this.invin = 60;
+	}
+
+	if (this.deadCount >= 120)
+	{
+		this.PlaySE(3004);
+		this.ReleaseActor();
+		return;
+	}
+
+	this.setG = this.hitG;
+}
+
+function Dead_Bound()
+{
+	this.vy *= -0.5;
+
+	if (this.vy > -3.0)
+	{
+		this.vy = -3.0;
+	}
+
+	this.vx *= 0.5;
+	this.oy = -75 * this.sy;
+	this.SetMotion(this.u.CA + 19, 0);
+	this.hitG = 0.15000001;
+}
+
+function Dead_Wall()
+{
+	if (this.keyTake == 0)
+	{
+		this.vx *= -0.5;
+	}
+	else
+	{
+		this.oy = -75 * this.sy;
+		this.SetMotion(this.u.CA + 19, 0);
+		this.vx *= -0.5;
+		this.vy = -5.0;
+		this.hitG = 0.15000001;
+	}
+}
+
+function Damage_Light( t )
+{
+	this.hitTable = t;
+	this.LabelClear();
+	this.aList = [];
+	this.SetMotion(this.u.CA + 10, 0);
+	this.direction = t.direction;
+	this.vx = t.hitVecX * this.direction * 0.1;
+	this.vy = t.hitVecY * 0.1;
+	this.hitG = 0.0;
+	this.setG = 0.0;
+	this.stateLabel = this.u.DamageLight_Update;
+	this.isAir = true;
+	this.SetEndMotionCallbackFunction(this.u.EndtoFreeMove);
+	this.count = 0;
+	return false;
+}
+
+function DamageLight_Knock()
+{
+	this.SetMotion(this.u.CA + 10, 1);
+	this.sitLabel = this.u.BeginSit;
+	this.direction = this.hitTable.direction;
+	this.vx = this.hitTable.hitVecX * this.direction;
+	this.vy = this.hitTable.hitVecY;
+	this.hitG = this.hitTable.hitVecG;
+}
+
+function DamageLight_Update()
+{
+	if (this.keyTake == 0)
+	{
+		this.setG = 0.0;
+		this.hitStopTime--;
+
+		if (this.hitStopTime <= 0)
+		{
+			this.u.DamageLight_Knock.call(this);
+		}
+	}
+	else
+	{
+		if (this.Abs(this.vx) >= 1.0)
+		{
+			this.vx *= 0.80000001;
+		}
+
+		this.setG = this.hitG;
+	}
+}
+
+function Damage_Heavy( t )
+{
+	this.hitTable = t;
+	this.LabelClear();
+	this.aList = [];
+	this.SetMotion(this.u.CA + 11, 0);
+	this.direction = t.direction;
+	this.vx = t.hitVecX * this.direction * 0.1;
+	this.vy = t.hitVecY * 0.1;
+	this.hitG = 0.0;
+	this.setG = 0.0;
+	this.stateLabel = this.u.DamageHeavy_Update;
+	this.isAir = true;
+	this.SetEndMotionCallbackFunction(this.u.EndtoFreeMove);
+}
+
+function DamageHeavy_Knock()
+{
+	this.SetMotion(this.u.CA + 11, 1);
+	this.sitLabel = this.u.DamageHeavy_Bound;
+	this.wallLabel = this.u.DamageHeavy_Wall;
+	this.direction = this.hitTable.direction;
+	this.vx = this.hitTable.hitVecX * this.direction;
+	this.vy = this.hitTable.hitVecY;
+	this.hitG = this.hitTable.hitVecG;
+}
+
+function DamageHeavy_Update()
+{
+	if (this.keyTake == 0)
+	{
+		this.setG = 0.0;
+		this.hitStopTime--;
+
+		if (this.hitStopTime <= 0)
+		{
+			this.u.DamageHeavy_Knock.call(this);
+		}
+	}
+	else
+	{
+		this.setG = this.hitG;
+	}
+}
+
+function DamageHeavy_Bound()
+{
+	this.sitLabel = null;
+	this.wallLabel = null;
+	this.SetMotion(this.u.CA + 10, 1);
+	this.vy = -4.0;
+	this.hitG = 0.25;
+	this.stateLabel = this.u.DamageLight_Update;
+	this.isAir = true;
+	this.SetEndTakeCallbackFunction(this.u.EndtoFreeMove);
+	this.count = 0;
+}
+
+function DamageHeavy_Wall()
+{
+	this.wallLabel = null;
+	this.vx *= -0.5;
+}
+
+function Damage_Smash( t )
+{
+	this.LabelClear();
+	this.aList = [];
+	this.SetMotion(this.u.CA + 12, 0);
+	this.direction = t.direction;
+	this.vx = t.hitVecX * this.direction;
+	this.vy = t.hitVecY;
+	this.hitG = 0.0;
+	this.setG = 0.0;
+	this.stateLabel = this.u.DamageSmash_Update;
+	local R_ = this.atan2(this.vy, this.vx);
+
+	if (this.cos(R_) >= 0.98500001 || this.cos(R_) <= -0.98500001)
+	{
+		this.wallLabel = this.u.DamageSmash_Wall;
+	}
+	else
+	{
+		this.sitLabel = this.u.DamageSmash_Bound;
+	}
+
+	this.isAir = true;
+	this.SetEndMotionCallbackFunction(this.u.EndtoFreeMove);
+}
+
+function DamageSmash_Update()
+{
+	this.setG = 0.0;
+}
+
+function DamageSmash_Bound()
+{
+	this.PlaySE(2100);
+	this.SetMotion(this.u.CA + 13, 0);
+	this.vy = 0.0;
+	this.vx = 0.0;
+	this.hitG = 0.0;
+	this.stateLabel = this.u.DamageBound_Update;
+	this.sitLabel = null;
+	this.wallLabel = null;
+	this.isAir = false;
+	this.SetEndTakeCallbackFunction(this.u.DamageBound_Move);
+}
+
+function DamageBound_Update()
+{
+	this.setG = this.hitG;
+}
+
+function DamageBound_Move()
+{
+	this.vy = -5.0;
+	this.vx = -2.0 * this.direction;
+	this.hitG = 0.25;
+	this.sitLabel = this.u.DamageHeavy_Bound;
+	this.isAir = true;
+	this.SetEndTakeCallbackFunction(null);
+}
+
+function DamageSmash_Wall()
+{
+	this.PlaySE(2100);
+	this.SetMotion(this.u.CA + 14, 0);
+	this.vy = 0.0;
+	this.vx = 0.0;
+	this.hitG = 0.0;
+	this.stateLabel = this.u.DamageBound_Update;
+	this.SetEndTakeCallbackFunction(this.u.DamageBound_Wall);
+	this.sitLabel = null;
+	this.wallLabel = null;
+	this.isAir = true;
+	this.count = 0;
+}
+
+function DamageBound_Wall()
+{
+	this.vy = -5.0;
+	this.vx = 2.0 * this.direction;
+	this.hitG = 0.25;
+	this.wallLabel = null;
+	this.sitLabel = this.u.DamageHeavy_Bound;
+	this.isAir = true;
+	this.SetEndTakeCallbackFunction(null);
+	this.count = 0;
+}
+
+function BeginAttackA( dir )
+{
+	if (this.flagState & 32)
+	{
+		this.LabelClear();
+		this.fallLabel = this.u.BeginFall;
+		this.count = 120 + this.rand() % 60;
+		this.atkCount = 0;
+		this.SetMotion(this.u.CA + 20, 0);
+
+		if (dir)
+		{
+			this.direction = dir;
+		}
+
+		this.stateLabel = this.u.UpdateAttackA;
+		this.SetEndTakeCallbackFunction(this.KeyActionCheck);
+		this.keyAction = [
+			this.u.AttackA_Fire
+		];
+		this.SetEndMotionCallbackFunction(this.u.EndtoFreeMove);
+		return false;
+	}
+
+	return true;
+}
+
+function UpdateAttackA()
+{
+	if (this.keyTake <= 1)
+	{
+		this.vx += 0.25 * this.direction;
+
+		if (this.Abs(this.vx) >= 1.5)
+		{
+			this.vx = 1.5 * this.direction;
+		}
+	}
+
+	if (this.keyTake == 1)
+	{
+		this.count--;
+
+		if (this.count <= 0)
+		{
+			this.SetMotion(this.u.CA + 20, 2);
+		}
+	}
+
+	if (this.keyTake == 2)
+	{
+		if (this.Abs(this.vx) <= 0.30000001)
+		{
+			this.vx = 0.0;
+		}
+		else
+		{
+			this.vx -= this.vx > 0.0 ? 0.30000001 : -0.30000001;
+		}
+	}
+}
+
+function AttackA_Fire()
+{
+	this.world2d.CreateActor(this.point0_x + this.vx, this.point0_y + this.vy, this.direction, this.Init_A1_ThornA, this.DefaultShotTable());
+}
+
+function BeginAttackB( dir )
+{
+	if (this.flagState & 32)
+	{
+		this.LabelClear();
+		this.fallLabel = this.u.BeginFall;
+		this.count = 180 + this.rand() % 60;
+		this.atkCount = 0;
+		this.SetMotion(this.u.CA + 21, 0);
+
+		if (dir)
+		{
+			this.direction = dir;
+		}
+
+		this.vx = 0.0;
+		this.stateLabel = this.u.UpdateAttackB;
+		this.SetEndTakeCallbackFunction(this.KeyActionCheck);
+		this.keyAction = [
+			this.u.AttackB_Fire
+		];
+		this.SetEndMotionCallbackFunction(this.u.EndtoFreeMove);
+		return false;
+	}
+
+	return true;
+}
+
+function UpdateAttackB()
+{
+	if (this.keyTake == 1)
+	{
+		this.count--;
+
+		if (this.count <= 0)
+		{
+			this.SetMotion(this.u.CA + 21, 2);
+		}
+	}
+
+	if (this.keyTake == 2)
+	{
+		if (this.Abs(this.vx) <= 0.30000001)
+		{
+			this.vx = 0.0;
+		}
+		else
+		{
+			this.vx -= this.vx > 0.0 ? 0.30000001 : -0.30000001;
+		}
+	}
+}
+
+function AttackB_Fire()
+{
+	this.world2d.CreateActor(this.point0_x + this.vx, this.point0_y + this.vy, this.direction, this.Init_A1_ThornB, this.DefaultShotTable());
+}
+
+function BeginAttackC( time_ )
+{
+	if (this.flagState & 32)
+	{
+		this.LabelClear();
+		this.fallLabel = this.u.BeginFall;
+		this.wallLabel = this.u.BeginFall;
+		this.count = time_;
+		this.SetMotion(this.u.CA + 22, 0);
+		this.u.AttackC_Move.call(this);
+		this.stateLabel = this.u.UpdateAttackC;
+		this.SetEndTakeCallbackFunction(this.KeyActionCheck);
+		this.keyAction = [
+			this.u.AttackC_Sit,
+			this.u.AttackC_Move,
+			this.u.AttackC_Sit,
+			this.u.AttackC_Loop
+		];
+		this.SetEndMotionCallbackFunction(this.u.EndtoFreeMove);
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+function UpdateAttackC()
+{
+	if (this.keyTake <= 3)
+	{
+		this.count--;
+	}
+
+	if (this.keyTake == 1 || this.keyTake == 3 || this.keyTake == 4)
+	{
+		if (this.Abs(this.vx) <= 0.5)
+		{
+			this.vx = 0.0;
+		}
+		else
+		{
+			this.vx -= this.vx > 0.0 ? 0.5 : -0.5;
+		}
+	}
+
+	if (this.keyTake == 0 || this.keyTake == 2)
+	{
+		if (this.Abs(this.vx) <= 0.15000001)
+		{
+			this.vx = 0.0;
+		}
+		else
+		{
+			this.vx -= this.vx > 0.0 ? 0.15000001 : -0.15000001;
+		}
+	}
+}
+
+function AttackC_Sit()
+{
+	if (this.count <= 0)
+	{
+		this.SetMotion(this.u.CA + 22, 4);
+	}
+
+	this.vx *= 0.75;
+}
+
+function AttackC_Move()
+{
+	this.vx = 7.0 * this.direction * this.sx;
+}
+
+function AttackC_Loop()
+{
+	this.vx = 7.0 * this.direction * this.sx;
+	this.SetMotion(this.u.CA + 22, 0);
+}
+
+function BeginAttackD( time_ )
+{
+	if (this.flagState & 32)
+	{
+		this.LabelClear();
+		this.fallLabel = this.u.BeginFall;
+		this.count = time_;
+		this.atkCount = 0;
+		this.SetMotion(this.u.CA + 23, 0);
+		this.u.AttackD_MoveFast.call(this);
+		this.stateLabel = this.u.UpdateAttackD;
+		this.SetEndTakeCallbackFunction(this.KeyActionCheck);
+		this.keyAction = [
+			this.u.AttackD_Sit,
+			this.u.AttackD_Move,
+			this.u.AttackD_Sit,
+			this.u.AttackD_Loop
+		];
+		this.SetEndMotionCallbackFunction(this.u.EndtoFreeMove);
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+function UpdateAttackD()
+{
+	if (this.keyTake <= 3)
+	{
+		this.count--;
+	}
+
+	if (this.keyTake == 1 || this.keyTake == 3 || this.keyTake == 4)
+	{
+		if (this.Abs(this.vx) <= 0.5)
+		{
+			this.vx = 0.0;
+		}
+		else
+		{
+			this.vx -= this.vx > 0.0 ? 0.5 : -0.5;
+		}
+	}
+
+	if (this.keyTake == 0 || this.keyTake == 2)
+	{
+		if (this.Abs(this.vx) <= 0.15000001)
+		{
+			this.vx = 0.0;
+		}
+		else
+		{
+			this.vx -= this.vx > 0.0 ? 0.15000001 : -0.15000001;
+		}
+	}
+}
+
+function AttackD_Sit()
+{
+	if (this.count <= 0)
+	{
+		this.SetMotion(this.u.CA + 23, 4);
+	}
+	else
+	{
+		this.world2d.CreateActor(this.point0_x + this.vx, this.point0_y + this.vy, this.direction, this.Init_A1_ThornD, this.DefaultShotTable());
+	}
+
+	this.vx *= 0.75;
+}
+
+function AttackD_Move()
+{
+	this.vx = 7.5 * this.direction * this.sx;
+}
+
+function AttackD_MoveFast()
+{
+	this.vx = 10.0 * this.direction * this.sx;
+}
+
+function AttackD_Loop()
+{
+	this.vx = 7.5 * this.direction * this.sx;
+	this.SetMotion(this.u.CA + 23, 0);
+}
+

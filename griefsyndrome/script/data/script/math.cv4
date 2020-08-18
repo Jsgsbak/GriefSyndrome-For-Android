@@ -1,0 +1,93 @@
+function Abs( Val_ )
+{
+	if (Val_ > 0.0)
+	{
+		return Val_;
+	}
+	else
+	{
+		return -Val_;
+	}
+}
+
+function GetDirection( from, to )
+{
+	return this.atan2(to.y - from.y, to.x - from.x) * 57.295792;
+}
+
+function GetDistance3D( from, to )
+{
+	return (to.x - from.x) * (to.x - from.x) + (to.y - from.y) * (to.y - from.y) + (to.z - from.z) * (to.z - from.z);
+}
+
+function RotateVec2D( VX_, VY_, R_ )
+{
+	local Vec3B_ = this.Vector3();
+	Vec3B_.x = VX_ * this.cos(R_ * 0.017453292) - VY_ * this.sin(R_ * 0.017453292);
+	Vec3B_.y = VX_ * this.sin(R_ * 0.017453292) + VY_ * this.cos(R_ * 0.017453292);
+	return Vec3B_;
+}
+
+function ConvertVecYPR( Vec_ )
+{
+	local YPR_ = this.Vector3();
+	YPR_.x = this.atan2(Vec_.y, Vec_.x);
+	YPR_.y = this.atan2(Vec_.z, this.sqrt(Vec_.x * Vec_.x + Vec_.y * Vec_.y));
+	return YPR_;
+}
+
+function RotateVecX( Vec_, R_ )
+{
+	local Vec3B_ = this.Vector3();
+	Vec3B_.x = Vec_.x;
+	Vec3B_.y = Vec_.y * this.cos(R_ * 0.017453292) - Vec_.z * this.sin(R_ * 0.017453292);
+	Vec3B_.z = Vec_.y * this.sin(R_ * 0.017453292) + Vec_.z * this.cos(R_ * 0.017453292);
+	return Vec3B_;
+}
+
+function RotateVecY( Vec_, R_ )
+{
+	local Vec3B_ = this.Vector3();
+	Vec3B_.x = Vec_.x * this.cos(R_ * 0.017453292) - Vec_.z * this.sin(R_ * 0.017453292);
+	Vec3B_.y = Vec_.y;
+	Vec3B_.z = Vec_.x * this.sin(R_ * 0.017453292) + Vec_.z * this.cos(R_ * 0.017453292);
+	return Vec3B_;
+}
+
+function RotateVecZ( Vec_, R_ )
+{
+	local Vec3B_ = this.Vector3();
+	Vec3B_.x = Vec_.x * this.cos(R_ * 0.017453292) - Vec_.y * this.sin(R_ * 0.017453292);
+	Vec3B_.y = Vec_.x * this.sin(R_ * 0.017453292) + Vec_.y * this.cos(R_ * 0.017453292);
+	Vec3B_.z = Vec_.z;
+	return Vec3B_;
+}
+
+function Mass_ShotPath( V, G, Pos_, Target_ )
+{
+	local X = this.sqrt((Target_.x - Pos_.x) * (Target_.x - Pos_.x) + (Target_.y - Pos_.y) * (Target_.y - Pos_.y));
+	local Y = Target_.z + Target_.lockPos.z - Pos_.z;
+	local A = -G * X * X / (2 * V * V);
+	local A2 = X / A;
+	local B = -Y / A + 1;
+	local Check_ = -B + A2 * A2 * 0.25;
+	local t = [];
+
+	if (Check_ < 0)
+	{
+		return null;
+	}
+	else if (Check_ == 0)
+	{
+		t.append(-A2 * 0.5);
+	}
+	else
+	{
+		local Check_root = this.sqrt(Check_);
+		t.append(-A2 * 0.5 + Check_root);
+		t.append(-A2 * 0.5 - Check_root);
+	}
+
+	return t;
+}
+

@@ -1,0 +1,311 @@
+this.CompileFile("data/system/Component/common.nut", this);
+function OnCreate()
+{
+	this.thisAct.BeginStageResult <- this.BeginStageResult.bindenv(this);
+	this.thisAct.BeginEndResult <- this.BeginEndResult.bindenv(this);
+	this.thisAct.endMode <- false;
+}
+
+function Init()
+{
+	this.frame <- 0;
+	this.funcOnFinighScene <- null;
+	this.funcUpdate <- this.Update0.bindenv(this);
+	this.stageTime <- 0;
+	this.stageTimeTarget <- 0;
+
+	if (("gameData" in this.getroottable()) && "stageTime" in ::gameData)
+	{
+		this.stageTimeTarget = ::gameData.stageTime * 16;
+
+		if (this.stageTimeTarget < 0)
+		{
+			this.stageTimeTarget = 0;
+		}
+	}
+
+	this.totalTime <- 0;
+	this.totalTimeTarget <- 0;
+
+	if (("gameData" in this.getroottable()) && "gameTime" in ::gameData)
+	{
+		this.totalTimeTarget = ::gameData.gameTime * 16;
+		this.totalTime = this.totalTimeTarget - this.stageTimeTarget;
+
+		if (this.totalTimeTarget < 0)
+		{
+			this.totalTimeTarget = 0;
+		}
+
+		if (this.totalTime < 0)
+		{
+			this.totalTime = 0;
+		}
+	}
+
+	this.stageNo <- 1;
+
+	if ("StageSelectAct" in this.getroottable())
+	{
+		this.stageNo = this.StageSelectAct.lastStage;
+	}
+
+	if (this.stageNo <= 0)
+	{
+		this.stageNo = 1;
+	}
+
+	::EnableInput(false);
+}
+
+function Update()
+{
+	if (this.funcUpdate)
+	{
+		this.funcUpdate();
+	}
+
+	this.frame++;
+}
+
+function Update0()
+{
+	local img = this.resource["clear" + this.stageNo];
+
+	if (this.frame > 30)
+	{
+		local lframe = this.frame - 30;
+		local dx = (20 - lframe) * 5.0;
+
+		if (dx < 0)
+		{
+			dx = 0;
+		}
+
+		local alpha = lframe / 20.0;
+
+		if (alpha > 1.0)
+		{
+			alpha = 1.0;
+		}
+
+		this.pl.SetBlend(this.BLEND_ALPHA, alpha);
+		this.pl.StretchBlt(dx, 124, 800, 75, img, 0, 0, 800, 75);
+
+		if (lframe > 20)
+		{
+			local lframe2 = lframe - 20;
+			local dx = lframe2 * 5.0;
+			local alpha = 1.0 - lframe2 / 20.0;
+
+			if (alpha < 0.0)
+			{
+				alpha = 0.0;
+			}
+
+			this.pl.SetBlend(this.BLEND_ALPHA, alpha);
+			this.pl.StretchBlt(-dx, 124, 800, 75, img, 0, 0, 800, 75);
+		}
+	}
+
+	if (this.frame > 60)
+	{
+		local lframe = this.frame - 60;
+		local dx = (20 - lframe) * 5.0;
+
+		if (dx < 0)
+		{
+			dx = 0;
+		}
+
+		local alpha = lframe / 20.0;
+
+		if (alpha > 1.0)
+		{
+			alpha = 1.0;
+		}
+
+		this.pl.SetBlend(this.BLEND_ALPHA, alpha);
+		this.pl.StretchBlt(dx, 124 + 75, 800, 75, img, 0, 75, 800, 75);
+
+		if (lframe > 20)
+		{
+			local lframe2 = lframe - 20;
+			local dx = lframe2 * 5.0;
+			local alpha = (1.0 - lframe2 / 20.0) / 2.0;
+
+			if (alpha < 0.0)
+			{
+				alpha = 0.0;
+			}
+
+			this.pl.SetBlend(this.BLEND_ALPHA, alpha);
+			this.pl.StretchBlt(-dx, 124 + 75, 800, 75, img, 0, 75, 800, 75);
+		}
+	}
+
+	if (this.black_dot.alpha <= 0.75)
+	{
+		this.black_dot.alpha += 0.0099999998;
+	}
+
+	if (this.frame >= 60)
+	{
+		if (this.stageTimeTarget - this.stageTime > 1111111111)
+		{
+			this.stageTime += 1111111111;
+		}
+		else if (this.stageTimeTarget - this.stageTime > 111111111)
+		{
+			this.stageTime += 111111111;
+		}
+		else if (this.stageTimeTarget - this.stageTime > 11111111)
+		{
+			this.stageTime += 11111111;
+		}
+		else if (this.stageTimeTarget - this.stageTime > 1111111)
+		{
+			this.stageTime += 1111111;
+		}
+		else if (this.stageTimeTarget - this.stageTime > 111111)
+		{
+			this.stageTime += 111111;
+		}
+		else if (this.stageTimeTarget - this.stageTime > 11111)
+		{
+			this.stageTime += 11111;
+		}
+		else if (this.stageTimeTarget - this.stageTime > 1111)
+		{
+			this.stageTime += 1111;
+		}
+		else if (this.stageTimeTarget - this.stageTime > 111)
+		{
+			this.stageTime += 111;
+		}
+		else
+		{
+			this.stageTime = this.stageTimeTarget;
+		}
+
+		if (this.totalTimeTarget - this.totalTime > 1111111111)
+		{
+			this.totalTime += 1111111111;
+		}
+		else if (this.totalTimeTarget - this.totalTime > 111111111)
+		{
+			this.totalTime += 111111111;
+		}
+		else if (this.totalTimeTarget - this.totalTime > 11111111)
+		{
+			this.totalTime += 11111111;
+		}
+		else if (this.totalTimeTarget - this.totalTime > 1111111)
+		{
+			this.totalTime += 1111111;
+		}
+		else if (this.totalTimeTarget - this.totalTime > 111111)
+		{
+			this.totalTime += 111111;
+		}
+		else if (this.totalTimeTarget - this.totalTime > 11111)
+		{
+			this.totalTime += 11111;
+		}
+		else if (this.totalTimeTarget - this.totalTime > 1111)
+		{
+			this.totalTime += 1111;
+		}
+		else if (this.totalTimeTarget - this.totalTime > 111)
+		{
+			this.totalTime += 111;
+		}
+		else
+		{
+			this.totalTime = this.totalTimeTarget;
+		}
+	}
+
+	local msec = this.stageTime % 1000 / 10;
+	local sec = this.stageTime / 1000 % 60;
+	local min = this.stageTime / 1000 / 60;
+	this.DrawNumber("num20x36", 518, 304, msec, 2, 1.0, 1.0, 1.0, 0);
+	this.DrawNumber("num20x36", 463, 304, sec, 2, 1.0, 1.0, 1.0, 0);
+	this.DrawNumber("num20x36", 426, 304, min, 1, 1.0, 1.0, 1.0, 0);
+	local msec = this.totalTime % 1000 / 10;
+	local sec = this.totalTime / 1000 % 60;
+	local min = this.totalTime / 1000 / 60;
+	this.DrawNumber("num20x36", 518, 367, msec, 2, 1.0, 1.0, 1.0, 0);
+	this.DrawNumber("num20x36", 463, 367, sec, 2, 1.0, 1.0, 1.0, 0);
+	this.DrawNumber("num20x36", 426, 367, min, 1, 1.0, 1.0, 1.0, 0);
+
+	if (this.frame == 60 * 6)
+	{
+		this.FaderAct.FadeOut(60, 0, function ()
+		{
+			if (this.funcOnFinighScene)
+			{
+				this.funcOnFinighScene();
+			}
+
+			this.pl.EndStage();
+
+			if (this.StageSelectAct.openStageThreshold < 6)
+			{
+				this.StageSelectAct.openStageThreshold++;
+			}
+
+			if (this.thisAct.endMode)
+			{
+				this.TitleAct.pl.BeginStage(0);
+			}
+			else
+			{
+				this.StageSelectAct.pl.BeginStage(0);
+				this.FaderAct.FadeIn(60, 0, null);
+			}
+		}.bindenv(this));
+	}
+}
+
+function Update1()
+{
+	if (this.frame == 60 * (5 + (this.thisAct.endMode ? 5 : 0)))
+	{
+		this.FaderAct.FadeOut(60, 0, function ()
+		{
+			if (this.funcOnFinighScene)
+			{
+				this.funcOnFinighScene();
+			}
+
+			this.pl.EndStage();
+
+			if (this.thisAct.endMode)
+			{
+				this.TitleAct.pl.BeginStage(0);
+			}
+			else
+			{
+				this.StageSelectAct.pl.BeginStage(0);
+			}
+
+			this.FaderAct.FadeIn(60, 0, null);
+		}.bindenv(this));
+	}
+}
+
+function BeginStageResult( _OnFinighScene = null )
+{
+	this.thisAct.endMode = false;
+	this.pl.BeginStage(0);
+	this.funcOnFinighScene = _OnFinighScene;
+}
+
+function BeginEndResult( _OnFinighScene = null )
+{
+	this.thisAct.endMode = true;
+	this.pl.BeginStage(0);
+	this.funcOnFinighScene = _OnFinighScene;
+}
+

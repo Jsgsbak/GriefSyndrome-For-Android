@@ -1,0 +1,57 @@
+function PlayerLevelUp( name_ )
+{
+	if (name_ in ::playerData)
+	{
+		local lifeAdd = this.playerData[name_].lifeUP;
+		this.playerData[name_].lifeMax += lifeAdd;
+		this.lifeMax = this.playerData[name_].lifeMax;
+		local soulAdd = this.playerData[name_].soulUP;
+		this.playerData[name_].soulMax += soulAdd;
+		this.soulMax = this.playerData[name_].soulMax;
+		this.playerData[name_].baseAtk += 1;
+		this.baseAtk = this.playerData[name_].baseAtk;
+	}
+	else
+	{
+	}
+}
+
+function UseMagic( X )
+{
+	if (this.life > X)
+	{
+		if (X > 1)
+		{
+			::SaveData.useMagic++;
+		}
+
+		this.u.regainCount = 90;
+		this.life -= X;
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+function ChangeFreeMove()
+{
+	this.LabelClear();
+	this.u.freeCancel = true;
+}
+
+function C_Check( x )
+{
+	if (this.cancelLV <= 0)
+	{
+		return true;
+	}
+	else if (this.cancelLV < x && this.flagState & 32)
+	{
+		return true;
+	}
+
+	return false;
+}
+

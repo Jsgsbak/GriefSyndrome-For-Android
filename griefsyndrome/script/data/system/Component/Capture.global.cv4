@@ -1,0 +1,10 @@
+function OnCreate()
+{
+	this.pl.BeginStage(0);
+}
+
+function Init()
+{
+	this.thisAct.bbSnap <- this.pl.CreateBackbufferSnap();
+}
+

@@ -1,0 +1,578 @@
+function SetStageTable()
+{
+	::stage <- {};
+	::stage.stageActor <- {};
+	::stage.stageActorID <- 0;
+	::stage.eventActor <- [];
+	::stage.flag1 <- 0;
+	::stage.scrollLeft <- 0;
+	::stage.scrollRight <- 800;
+	::stage.scrollTop <- 128;
+	::stage.scrollBottom <- 600 + 128;
+	::stage.scrollLeftLock <- false;
+	::stage.scrollRightLock <- false;
+	::stage.scrollUpLock <- false;
+	::stage.scrollDownLock <- false;
+	::stage.globalCount <- 0;
+	::stage.level <- 0;
+	::stage.warpFlag <- true;
+	::stage.renderState <- this.RenderStateController();
+	this.SetStageFlag();
+	this.CompileFile("data/stage/stageCommonScript.nut", ::stage);
+}
+
+function StageBaseSetting_Common( map_ )
+{
+	local a = this.RenderStateController();
+	a.pixelShader = 255;
+	this.world2d.CreateCollisionFromMap(map_.layer_block.layout, 4);
+	this.world2d.CreateCollisionFromMap(map_.layermain.layout, 8);
+	this.world2d.AddRenderStateController(this.render.targetController);
+	this.world2d.AddRenderStateController(::stage.renderState);
+	::stage.BackSet(map_);
+	local rs0 = this.RenderStateController();
+	rs0.stencilState = 2 | 4;
+	rs0.stencilVal = 2;
+	this.world2d.AddRenderStateController(rs0);
+	local rs1 = this.RenderStateController();
+	rs1.stencilState = 8;
+	rs1.stencilVal = 0;
+	this.world2d.AddRenderStateController(rs1);
+	::stage.ShadowSet(map_);
+	this.world2d.AddRenderLayerActor(370);
+	this.world2d.AddRenderStateController(a);
+	this.SetActorLayer();
+	this.world2d.AddRenderStateController(::stage.renderState);
+	::stage.FrontSet(map_);
+	this.world2d.AddRenderStateController(a);
+	this.world2d.AddRenderLayerActor(380);
+	this.world2d.AddRenderLayerActor(390);
+	this.world2d.AddRenderLayerActor(400);
+	this.world2d.AddRenderStateController(this.render.screenPrev);
+	this.world2d.AddRenderStateController(this.render.screenController);
+	this.world2d.AddRenderStateController(this.render.screen);
+	this.world2d.AddRenderLayerActor(600);
+	::stage.scrollTop = map_.pl.marginTop;
+	::stage.scrollBottom = map_.pl.screenHeight - map_.pl.marginBottom;
+	::stage.scrollLeft = map_.pl.marginLeft;
+	::stage.scrollRight = map_.pl.screenWidth - map_.pl.marginRight;
+	this.camera2d.groupLeft = 16;
+	this.camera2d.groupRight = 16;
+	this.camera2d.cx = 400;
+	this.camera2d.cy = 600 - 128;
+}
+
+function StageBaseSetting( map_ )
+{
+	::stage.ShadowSet <- function ( map_ )
+	{
+		this.world2d.AddRenderLayer(map_.layermain.layout);
+		this.world2d.AddRenderLayer(map_.layer_block.layout);
+		this.world2d.AddRenderLayer(map_.layer_0.layout);
+	};
+	::stage.FrontSet <- function ( map_ )
+	{
+		this.world2d.AddRenderLayer(map_.layer_F1.layout);
+		this.world2d.AddRenderLayer(map_.layer_F0.layout);
+	};
+	::stage.BackSet <- function ( map_ )
+	{
+		this.world2d.AddRenderLayer(map_.layer_5.layout);
+		this.world2d.AddRenderLayer(map_.layer_4.layout);
+		this.world2d.AddRenderLayer(map_.layer_3.layout);
+		this.world2d.AddRenderLayer(map_.layer_2.layout);
+		this.world2d.AddRenderLayer(map_.layer_1.layout);
+	};
+	this.StageBaseSetting_Common(map_);
+}
+
+function StageBaseSetting_1stB( map_ )
+{
+	::stage.ShadowSet <- function ( map_ )
+	{
+		this.world2d.AddRenderLayer(map_.layermain.layout);
+		this.world2d.AddRenderLayer(map_.layer_block.layout);
+		this.world2d.AddRenderLayer(map_.layer_0.layout);
+	};
+	::stage.FrontSet <- function ( map_ )
+	{
+		this.world2d.AddRenderLayer(map_.layer_F1.layout);
+		this.world2d.AddRenderLayer(map_.layer_F0.layout);
+	};
+	::stage.BackSet <- function ( map_ )
+	{
+		this.world2d.AddRenderLayer(map_.layer_5.layout);
+		this.world2d.AddRenderLayer(map_.layer_4.layout);
+		this.world2d.AddRenderLayer(map_.layer_3.layout);
+		this.world2d.AddRenderLayer(map_.layer_2.layout);
+		this.world2d.AddRenderLayer(map_.layer_2B.layout);
+		this.world2d.AddRenderLayer(map_.layer_1.layout);
+	};
+	this.StageBaseSetting_Common(map_);
+}
+
+function StageBaseSetting_2stK( map_ )
+{
+	::stage.ShadowSet <- function ( map_ )
+	{
+		this.world2d.AddRenderLayer(map_.layer_1.layout);
+		this.world2d.AddRenderLayer(map_.layermain.layout);
+		this.world2d.AddRenderLayer(map_.layer_block.layout);
+		this.world2d.AddRenderLayer(map_.layer_0.layout);
+	};
+	::stage.FrontSet <- function ( map_ )
+	{
+		this.world2d.AddRenderLayer(map_.layer_F1.layout);
+		this.world2d.AddRenderLayer(map_.layer_F0.layout);
+	};
+	::stage.BackSet <- function ( map_ )
+	{
+		this.world2d.AddRenderLayer(map_.layer_5.layout);
+		this.world2d.AddRenderLayer(map_.layer_4.layout);
+		this.world2d.AddRenderLayer(map_.layer_3.layout);
+		this.world2d.AddRenderLayer(map_.layer_2.layout);
+	};
+	this.StageBaseSetting_Common(map_);
+}
+
+function StageBaseSetting_2stL( map_ )
+{
+	::stage.ShadowSet <- function ( map_ )
+	{
+		this.world2d.AddRenderLayer(map_.layermain.layout);
+		this.world2d.AddRenderLayer(map_.layer_block.layout);
+		this.world2d.AddRenderLayer(map_.layer_0.layout);
+	};
+	::stage.FrontSet <- function ( map_ )
+	{
+		this.world2d.AddRenderLayer(map_.layer_F1.layout);
+		this.world2d.AddRenderLayer(map_.layer_F0.layout);
+		this.world2d.AddRenderLayer(map_.layer_0B.layout);
+		this.world2d.AddRenderLayer(map_.layer_0A.layout);
+	};
+	::stage.BackSet <- function ( map_ )
+	{
+		this.world2d.AddRenderLayer(map_.layer_5.layout);
+		this.world2d.AddRenderLayer(map_.layer_5B.layout);
+		this.world2d.AddRenderLayer(map_.layer_5A.layout);
+		this.world2d.AddRenderLayer(map_.layer_4.layout);
+		this.world2d.AddRenderLayer(map_.layer_3.layout);
+		this.world2d.AddRenderLayer(map_.layer_2.layout);
+		this.world2d.AddRenderLayer(map_.layer_1.layout);
+		this.world2d.AddRenderLayer(map_.layer_1B.layout);
+		this.world2d.AddRenderLayer(map_.layer_1A.layout);
+	};
+	this.StageBaseSetting_Common(map_);
+}
+
+function StageBaseSetting_3stB( map_ )
+{
+	::stage.ShadowSet <- function ( map_ )
+	{
+		this.world2d.AddRenderLayer(map_.layermain.layout);
+		this.world2d.AddRenderLayer(map_.layer_block.layout);
+		this.world2d.AddRenderLayer(map_.layer_0.layout);
+	};
+	::stage.FrontSet <- function ( map_ )
+	{
+		this.world2d.AddRenderLayer(map_.layer_F1.layout);
+		this.world2d.AddRenderLayer(map_.layer_F0.layout);
+	};
+	::stage.BackSet <- function ( map_ )
+	{
+		this.world2d.AddRenderLayer(map_.layer_5.layout);
+		this.world2d.AddRenderLayer(map_.layer_4.layout);
+		this.world2d.AddRenderLayer(map_.layer_3.layout);
+		this.world2d.AddRenderLayer(map_.layer_2.layout);
+		this.world2d.AddRenderLayer(map_.layer_1.layout);
+		this.world2d.AddRenderLayer(map_.layer_01.layout);
+		this.world2d.AddRenderLayer(map_.layer_02.layout);
+	};
+	this.StageBaseSetting_Common(map_);
+	this.camera2d.cy = 600 - 128;
+}
+
+function StageBaseSetting_3stC( map_ )
+{
+	::stage.ShadowSet <- function ( map_ )
+	{
+		this.world2d.AddRenderLayer(map_.layermain.layout);
+		this.world2d.AddRenderLayer(map_.layer_block.layout);
+		this.world2d.AddRenderLayer(map_.layer_0.layout);
+	};
+	::stage.FrontSet <- function ( map_ )
+	{
+		this.world2d.AddRenderLayer(map_.layer_F1.layout);
+		this.world2d.AddRenderLayer(map_.layer_F0.layout);
+	};
+	::stage.BackSet <- function ( map_ )
+	{
+		this.world2d.AddRenderLayer(map_.layer_5.layout);
+		this.world2d.AddRenderLayer(map_.layer_4.layout);
+		this.world2d.AddRenderLayer(map_.layer_3.layout);
+		this.world2d.AddRenderLayer(map_.layer_2.layout);
+		this.world2d.AddRenderLayer(map_.layer_1.layout);
+	};
+	this.StageBaseSetting_Common(map_);
+	this.camera2d.cy = 600 - 256;
+}
+
+function StageBaseSetting_6st( map_ )
+{
+	::stage.ShadowSet <- function ( map_ )
+	{
+		this.world2d.AddRenderLayer(map_.layer_1B.layout);
+		this.world2d.AddRenderLayer(map_.layermain.layout);
+		this.world2d.AddRenderLayer(map_.layer_block.layout);
+		this.world2d.AddRenderLayer(map_.layer_0.layout);
+	};
+	::stage.FrontSet <- function ( map_ )
+	{
+		this.world2d.AddRenderLayer(map_.layer_F1.layout);
+		this.world2d.AddRenderLayer(map_.layer_F0.layout);
+	};
+	::stage.BackSet <- function ( map_ )
+	{
+		this.world2d.AddRenderLayer(map_.layer_8.layout);
+		this.world2d.AddRenderLayer(map_.layer_7.layout);
+		this.world2d.AddRenderLayer(map_.layer_6.layout);
+		this.world2d.AddRenderLayer(map_.layer_5.layout);
+		this.world2d.AddRenderLayer(map_.layer_4.layout);
+		this.world2d.AddRenderLayer(map_.layer_3.layout);
+		this.world2d.AddRenderLayer(map_.layer_2.layout);
+		this.world2d.AddRenderLayerActor(80);
+		this.world2d.AddRenderLayerActor(81);
+		this.world2d.AddRenderLayer(map_.layer_1.layout);
+	};
+	this.StageBaseSetting_Common(map_);
+}
+
+function StageBaseSetting_6stB( map_ )
+{
+	::stage.ShadowSet <- function ( map_ )
+	{
+		this.world2d.AddRenderLayer(map_.layermain.layout);
+		this.world2d.AddRenderLayer(map_.layer_block.layout);
+		this.world2d.AddRenderLayer(map_.layer_0.layout);
+	};
+	::stage.FrontSet <- function ( map_ )
+	{
+		this.world2d.AddRenderLayer(map_.layer_F1.layout);
+		this.world2d.AddRenderLayer(map_.layer_F0.layout);
+	};
+	::stage.BackSet <- function ( map_ )
+	{
+		this.world2d.AddRenderLayer(map_.layer_8.layout);
+		this.world2d.AddRenderLayer(map_.layer_7.layout);
+		this.world2d.AddRenderLayer(map_.layer_6.layout);
+		this.world2d.AddRenderLayer(map_.layer_5.layout);
+		this.world2d.AddRenderLayer(map_.layer_4.layout);
+		this.world2d.AddRenderLayer(map_.layer_3.layout);
+		this.world2d.AddRenderLayer(map_.layer_2.layout);
+		this.world2d.AddRenderLayerActor(80);
+		this.world2d.AddRenderLayerActor(81);
+		this.world2d.AddRenderLayer(map_.layer_1.layout);
+	};
+	this.StageBaseSetting_Common(map_);
+}
+
+function StageBaseSetting_6stC( map_ )
+{
+	::stage.ShadowSet <- function ( map_ )
+	{
+		this.world2d.AddRenderLayer(map_.layer_1.layout);
+		this.world2d.AddRenderLayer(map_.layermain.layout);
+		this.world2d.AddRenderLayer(map_.layer_block.layout);
+		this.world2d.AddRenderLayer(map_.layer_0.layout);
+	};
+	::stage.FrontSet <- function ( map_ )
+	{
+		this.world2d.AddRenderLayer(map_.layer_F1.layout);
+		this.world2d.AddRenderLayer(map_.layer_F0.layout);
+	};
+	::stage.BackSet <- function ( map_ )
+	{
+		this.world2d.AddRenderLayer(map_.layer_8.layout);
+		this.world2d.AddRenderLayer(map_.layer_7.layout);
+		this.world2d.AddRenderLayer(map_.layer_6.layout);
+		this.world2d.AddRenderLayer(map_.layer_5.layout);
+		this.world2d.AddRenderLayer(map_.layer_4.layout);
+		this.world2d.AddRenderLayer(map_.layer_3.layout);
+		this.world2d.AddRenderLayer(map_.layer_2.layout);
+		this.world2d.AddRenderLayerActor(80);
+		this.world2d.AddRenderLayerActor(81);
+	};
+	this.StageBaseSetting_Common(map_);
+}
+
+function SetActorLayer()
+{
+	this.SetShadowActorLayer();
+	this.SetFrontActorLayer();
+}
+
+function SetShadowActorLayer()
+{
+	local rs0 = this.RenderStateController();
+	rs0.stencilState = 16;
+	rs0.stencilVal = 1;
+	this.world2d.AddRenderStateController(rs0);
+	this.world2d.AddRenderLayerActor(500);
+	local rs1 = this.RenderStateController();
+	rs1.stencilState = 1;
+	this.world2d.AddRenderStateController(rs1);
+}
+
+function SetFrontActorLayer()
+{
+	this.world2d.AddRenderLayerActor(10);
+	this.world2d.AddRenderLayerActor(50);
+	this.world2d.AddRenderLayerActor(90);
+	this.world2d.AddRenderLayerActor(95);
+	this.world2d.AddRenderLayerActor(100);
+	this.world2d.AddRenderLayerActor(150);
+	this.world2d.AddRenderLayerActor(200);
+	this.world2d.AddRenderLayerActor(250);
+	this.world2d.AddRenderLayerActor(300);
+}
+
+function SetFinalBossLayer()
+{
+	this.world2d.AddRenderLayerActor(80);
+}
+
+function SetStageFlag()
+{
+	::stage.name <- null;
+	::stage.StartPoint <- [
+		{},
+		{},
+		{}
+	];
+	::stage.FreeTarget <- [];
+	::stage.TargetList <- [];
+	::stage.clearCount <- 0;
+	::stage.Boss <- null;
+}
+
+function RefleshStageList()
+{
+	for( local i = 0; i < ::stage.FreeTarget.len(); i++ )
+	{
+		if (::stage.FreeTarget[i] in this.actor)
+		{
+			continue;
+		}
+		else
+		{
+			::stage.FreeTarget.remove(i);
+			i--;
+		}
+	}
+}
+
+function ResetChangeMap()
+{
+}
+
+function Stage_SetStartPlayer( playerID_, type_, colorFile_ )
+{
+	local t = this.ActorPlayer();
+	t.playerID = playerID_;
+
+	switch(type_)
+	{
+	case 0:
+		this.world2d.CreateAnimationDataWithPalette("data/actor/homura/homura.pat", "data/actor/homura/" + colorFile_);
+		this.SetActor(null, ::stage.StartPoint[playerID_].x, ::stage.StartPoint[playerID_].y, 1.0, ::Actor2D.Init_Homura, t);
+		break;
+
+	case 1:
+		this.world2d.CreateAnimationDataWithPalette("data/actor/kyouko/kyouko.pat", "data/actor/kyouko/" + colorFile_);
+		this.SetActor(null, ::stage.StartPoint[playerID_].x, ::stage.StartPoint[playerID_].y, 1.0, ::Actor2D.Init_Kyouko, t);
+		break;
+
+	case 2:
+		this.world2d.CreateAnimationDataWithPalette("data/actor/madoka/madoka.pat", "data/actor/madoka/" + colorFile_);
+		this.SetActor(null, ::stage.StartPoint[playerID_].x, ::stage.StartPoint[playerID_].y, 1.0, ::Actor2D.Init_Madoka, t);
+		break;
+
+	case 3:
+		this.world2d.CreateAnimationDataWithPalette("data/actor/mami/mami.pat", "data/actor/mami/" + colorFile_);
+		this.SetActor(null, ::stage.StartPoint[playerID_].x, ::stage.StartPoint[playerID_].y, 1.0, ::Actor2D.Init_Mami, t);
+		break;
+
+	case 4:
+		this.world2d.CreateAnimationDataWithPalette("data/actor/sayaka/sayaka.pat", "data/actor/sayaka/" + colorFile_);
+		this.SetActor(null, ::stage.StartPoint[playerID_].x, ::stage.StartPoint[playerID_].y, 1.0, ::Actor2D.Init_Sayaka, t);
+		break;
+
+	case 5:
+		this.world2d.CreateAnimationDataWithPalette("data/actor/homura_m/homura.pat", "data/actor/homura_m/" + colorFile_);
+		this.SetActor(null, ::stage.StartPoint[playerID_].x, ::stage.StartPoint[playerID_].y, 1.0, ::Actor2D.Init_Homura_M, t);
+		break;
+
+	case 6:
+		this.world2d.CreateAnimationDataWithPalette("data/actor/QB/QB.pat", "data/actor/QB/" + colorFile_);
+		this.SetActor(null, ::stage.StartPoint[playerID_].x, ::stage.StartPoint[playerID_].y, 1.0, ::Actor2D.Init_QB, t);
+		break;
+	}
+
+	this.camera2d.Reset();
+}
+
+function Stage_SetPlayer( PL_ )
+{
+	local t = this.ActorPlayer();
+
+	switch(::debug.testPlayer)
+	{
+	case 1:
+		this.world2d.CreateAnimationData("data/actor/homura/homura.pat");
+		this.SetActor(null, ::stage.StartPoint[PL_].x, ::stage.StartPoint[PL_].y, 1.0, ::Actor2D.Init_Homura, t);
+		break;
+
+	case 2:
+		this.world2d.CreateAnimationData("data/actor/sayaka/sayaka.pat");
+		this.SetActor(null, ::stage.StartPoint[PL_].x, ::stage.StartPoint[PL_].y, 1.0, ::Actor2D.Init_Sayaka, t);
+		break;
+
+	case 3:
+		this.world2d.CreateAnimationData("data/actor/kyouko/kyouko.pat");
+		this.SetActor(null, ::stage.StartPoint[PL_].x, ::stage.StartPoint[PL_].y, 1.0, ::Actor2D.Init_Kyouko, t);
+		break;
+
+	case 4:
+		this.world2d.CreateAnimationData("data/actor/mami/mami.pat");
+		this.SetActor(null, ::stage.StartPoint[PL_].x, ::stage.StartPoint[PL_].y, 1.0, ::Actor2D.Init_Mami, t);
+		break;
+
+	case 5:
+		this.world2d.CreateAnimationData("data/actor/madoka/madoka.pat");
+		this.SetActor(null, ::stage.StartPoint[PL_].x, ::stage.StartPoint[PL_].y, 1.0, ::Actor2D.Init_Madoka, t);
+		break;
+	}
+
+	this.camera2d.Reset();
+}
+
+function ReleaseStageActor()
+{
+	if (this.name in ::stage.stageActor)
+	{
+		if (this.stage.stageActor[this.name] == this)
+		{
+			delete this.stage.stageActor[this.name];
+		}
+	}
+
+	this.Release();
+}
+
+function Stage_PlayerStayCheck( target_, x_, y_, xRange_, yRange_ )
+{
+	if (this.actor[target_])
+	{
+		if (this.actor[target_].life <= 0 || this.actor[target_].soul <= 0 || !this.actor[target_].isActive)
+		{
+			return false;
+		}
+
+		if (this.Abs(this.actor[target_].x - x_) <= xRange_ && this.Abs(this.actor[target_].y - y_) <= yRange_)
+		{
+			return true;
+		}
+	}
+	else
+	{
+		return false;
+	}
+}
+
+function Stage_PartyStayCheck( x_, y_, xRange_, yRange_ )
+{
+	local C_ = false;
+
+	for( local i = 1; i < 4; i++ )
+	{
+		if ("player" + i in ::actor)
+		{
+			if (this.actor["player" + i])
+			{
+				if (this.actor["player" + i].life <= 0 || !this.actor["player" + i].isActive)
+				{
+				}
+				else if (this.Abs(this.actor["player" + i].x - x_) <= xRange_ && this.Abs(this.actor["player" + i].y - y_) <= yRange_)
+				{
+					C_ = true;
+				}
+			}
+		}
+	}
+
+	return C_;
+}
+
+function Stage_PlayerGateCheck( x_, y_, xRange_, yRange_, dir_ )
+{
+	local C_ = false;
+
+	for( local i = 1; i < 4; i++ )
+	{
+		if ("player" + i in ::actor)
+		{
+			if (this.actor["player" + i])
+			{
+				if (this.actor["player" + i].life <= 0 || !this.actor["player" + i].isActive)
+				{
+				}
+				else if (this.Abs(this.actor["player" + i].x - x_) <= xRange_ && this.Abs(this.actor["player" + i].y - y_) <= yRange_ && this.actor["player" + i].motion == this.actor["player" + i].u.CA + 1 && this.actor["player" + i].direction == dir_)
+				{
+					C_ = "player" + i;
+				}
+			}
+		}
+	}
+
+	return C_;
+}
+
+function Stage_AliveCheck( group_ )
+{
+	local Num = 0;
+
+	foreach( a in group_ )
+	{
+		if (a in ::actor)
+		{
+			if (::actor[a])
+			{
+				if (::actor[a].life > 0)
+				{
+					Num++;
+				}
+			}
+		}
+	}
+
+	return Num;
+}
+
+function StageGroupKill( group_ )
+{
+	foreach( a in group_ )
+	{
+		if (a in ::actor)
+		{
+			if (this.actor[a].isActive == false)
+			{
+				this.actor[a].ReleaseActor();
+			}
+			else if (this.actor[a].life > 0)
+			{
+				this.actor[a].u.ForceDead.call(this.actor[a]);
+			}
+		}
+	}
+}
+

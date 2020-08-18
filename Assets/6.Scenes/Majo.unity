@@ -216,6 +216,14 @@ PrefabInstance:
       propertyPath: defaultRebindableKeys.Array.data[4].input
       value: 98
       objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: d294f228be83a314b9679578a11b4844, type: 3}
+      propertyPath: defaultRebindableAxes.Array.data[1].axisPos
+      value: 275
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: d294f228be83a314b9679578a11b4844, type: 3}
+      propertyPath: defaultRebindableAxes.Array.data[1].axisNeg
+      value: 276
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d294f228be83a314b9679578a11b4844, type: 3}
 --- !u!1 &519420028

@@ -1,0 +1,50 @@
+::configData <- {};
+this.configData.BGMvolume <- 0.69999999;
+this.configData.SEvolume <- 0.69999999;
+this.configData.mouseSensitivity <- 50;
+this.configData.cameraReverseV <- false;
+this.configData.cameraReverseH <- false;
+this.configData.enableShadow <- true;
+this.configData.enableOutline <- true;
+this.configData.enableAnaglyph <- false;
+this.configData.enableLiteEffect <- false;
+this.LoadTable("system.dat", this.configData);
+this.SetRenderStateShadow(this.configData.enableShadow);
+this.SetRenderStateOutline(this.configData.enableOutline);
+this.SetVolumeBgm(this.configData.BGMvolume);
+this.SetVolumeSE(this.configData.SEvolume);
+function ReadKeyAssign( _reader, _input, _deviceID = -1 )
+{
+	local devmap = this.DeviceMapping();
+	devmap.device = _deviceID;
+	devmap.up = _reader.ReadInt();
+	devmap.down = _reader.ReadInt();
+	devmap.left = _reader.ReadInt();
+	devmap.right = _reader.ReadInt();
+	devmap.b0 = _reader.ReadInt();
+	devmap.b1 = _reader.ReadInt();
+	devmap.b2 = _reader.ReadInt();
+	devmap.b3 = _reader.ReadInt();
+	devmap.b4 = _reader.ReadInt();
+	_input.SetDeviceAssign(devmap);
+}
+
+local reader = this.FileReader();
+
+if (reader.Open("keyconfig.dat"))
+{
+	this.ReadKeyAssign(reader, this.inputP1_key, -1);
+	this.ReadKeyAssign(reader, this.inputP2_key, -1);
+	this.ReadKeyAssign(reader, this.inputP3_key, -1);
+	local device1 = reader.ReadInt();
+	local device2 = reader.ReadInt();
+	local device3 = reader.ReadInt();
+	this.ReadKeyAssign(reader, this.inputP1_pad, device1);
+	this.ReadKeyAssign(reader, this.inputP2_pad, device2);
+	this.ReadKeyAssign(reader, this.inputP3_pad, device3);
+}
+else
+{
+	this.MessageBox("\x0083Q\x0081[\x0083\x0080\x0082\x00f0\x0083v\x0083\x008c\x0083C\x0082\x00b7\x0082\x00e9\x0091O\x0082\x00c9\x0090\x00dd\x0092\x00e8\x0082\x00f0\x008ds\x0082\x00c1\x0082\x00c4\x0082\x00ad\x0082\x00be\x0082\x00b3\x0082\x00a2\x0081B");
+	this.ExitGame();
+}

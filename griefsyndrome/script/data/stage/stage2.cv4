@@ -1,0 +1,1977 @@
+function Stage2_MasterInit()
+{
+	this.world2d.CreateAnimationData("data/actor/enemy2st/enemy.pat");
+	this.world2d.CreateAnimationData("data/actor/boss2/boss2.pat");
+}
+
+function ChipObjectSet( ID_, left_, top_, right_, bottom_ )
+{
+	switch(ID_)
+	{
+	case 80:
+		::stage.StartPoint[0].x <- (left_ + right_) * 0.5;
+		::stage.StartPoint[0].y <- bottom_;
+		::stage.StartPoint[0].direction <- 1.0;
+		break;
+
+	case 81:
+		::stage.StartPoint[1].x <- (left_ + right_) * 0.5;
+		::stage.StartPoint[1].y <- bottom_;
+		::stage.StartPoint[1].direction <- 1.0;
+		break;
+
+	case 82:
+		::stage.StartPoint[2].x <- (left_ + right_) * 0.5;
+		::stage.StartPoint[2].y <- bottom_;
+		::stage.StartPoint[2].direction <- 1.0;
+		break;
+
+	case 88:
+		local c_ = this.world2d.CreateActor((left_ + right_) * 0.5, bottom_, -1.0, ::stage["WarpPoint1Actor_" + ::stage.name], right_);
+		break;
+
+	case 89:
+		local c_ = this.world2d.CreateActor((left_ + right_) * 0.5, bottom_, 1.0, ::stage["WarpPoint2Actor_" + ::stage.name], right_);
+		::stage.eventActor.append(c_.name);
+		break;
+
+	case 90:
+		local c_ = this.world2d.CreateActor((left_ + right_) * 0.5, bottom_, 1.0, ::stage["WarpPoint3Actor_" + ::stage.name], right_);
+		::stage.eventActor.append(c_.name);
+		break;
+
+	case 96:
+		local c_ = this.world2d.CreateActor((left_ + right_) * 0.5, bottom_, -1.0, ::Actor2D.Init_Enemy2A_Hide, null);
+		::stage.FreeTarget.append(c_.name);
+		break;
+
+	case 97:
+		local c_ = this.world2d.CreateActor((left_ + right_) * 0.5, bottom_, -1.0, ::Actor2D.Init_Enemy2A_AttackIn_Hide, null);
+		::stage.TargetList.append(c_.name);
+		break;
+
+	case 104:
+		local c_ = this.world2d.CreateActor((left_ + right_) * 0.5, bottom_, 1.0, ::Actor2D.Init_Enemy2A_BackWait, null);
+		::stage.TargetList.append(c_.name);
+		break;
+
+	case 105:
+		local c_ = this.world2d.CreateActor((left_ + right_) * 0.5, bottom_, -1.0, ::Actor2D.Init_Enemy2A_BackWait, null);
+		::stage.TargetList.append(c_.name);
+		break;
+
+	case 106:
+		local c_ = this.world2d.CreateActor((left_ + right_) * 0.5, bottom_, 1.0, ::Actor2D.Init_Enemy2A, null);
+		::stage.TargetList.append(c_.name);
+		break;
+
+	case 107:
+		local c_ = this.world2d.CreateActor((left_ + right_) * 0.5, bottom_, -1.0, ::Actor2D.Init_Enemy2A, null);
+		::stage.TargetList.append(c_.name);
+		break;
+
+	case 108:
+		local c_ = this.world2d.CreateActor((left_ + right_) * 0.5, bottom_, -1.0, ::Actor2D.Init_Enemy2A_AttackIn, null);
+		::stage.TargetList.append(c_.name);
+		break;
+
+	case 109:
+		local c_ = this.world2d.CreateActor((left_ + right_) * 0.5, bottom_, 1.0, ::Actor2D.Init_Enemy2A_Big_AttackIn, null);
+		::stage.TargetList.append(c_.name);
+		break;
+
+	case 110:
+		local c_ = this.world2d.CreateActor((left_ + right_) * 0.5, bottom_, -1.0, ::Actor2D.Init_Enemy2A_Big_AttackIn, null);
+		::stage.TargetList.append(c_.name);
+		break;
+
+	case 120:
+		local c_ = this.world2d.CreateActor(right_, bottom_, -1.0, ::stage["StopPoint1Actor_" + ::stage.name], null);
+		break;
+
+	case 121:
+		local c_ = this.world2d.CreateActor(right_, bottom_, -1.0, ::stage["StopPoint2Actor_" + ::stage.name], null);
+		break;
+
+	case 122:
+		local c_ = this.world2d.CreateActor(right_, bottom_, -1.0, ::stage["StopPoint3Actor_" + ::stage.name], null);
+		break;
+
+	case 136:
+		local c_ = this.SetActor("boss", (left_ + right_) * 0.5, bottom_, -1.0, ::Actor2D.Init_Boss2_1, this.ActorCommon());
+		::stage.Boss = c_.name;
+		break;
+
+	case 137:
+		local c_ = this.SetActor("boss", (left_ + right_) * 0.5, bottom_, -1.0, ::Actor2D.Init_Boss2, this.ActorCommon());
+		::stage.Boss = c_.name;
+		break;
+	}
+}
+
+function Stage2AInit()
+{
+	this.world2d.CreateMap("data/stage/stage2A.act", "map0");
+	this.StageBaseSetting(this.map0);
+	this.SetStageFlag();
+	::stage.name <- "2_1A";
+	this.world2d.CreateEventFromMap(this.map0.start.layout, ::stage.ChipObjectSet, this.getroottable());
+	this.world2d.CreateEventFromMap(this.map0.warpPoint1.layout, ::stage.ChipObjectSet, this.getroottable());
+	this.FaderAct.FadeIn(60, 0, function ()
+	{
+		this.Game_CountStart();
+	});
+	this.world2d.CreateEventFromMap(this.map0.stopPoint1.layout, ::stage.ChipObjectSet, this.getroottable());
+	::stage.beginScript <- "Stage2A_Begin";
+	this.PlayBgm("data/bgm/mdk_s2.ogg", 0, 100);
+	this.world2d.SetState(0);
+}
+
+function Stage2A_Begin()
+{
+	::stage.MapIn_WalkRight();
+	::stage.scrollLeftLock = true;
+	::stage.scrollRightLock = false;
+	::stage.scrollUpLock = true;
+	::stage.scrollDownLock = true;
+}
+
+function StopPoint1Actor_2_1A( t )
+{
+	this.name = "stopPoint1";
+	this.StageObjectCommon();
+	::stage.scrollRight = this.x;
+	this.world2d.CreateEventFromMap(this.map0.freeEnemy1.layout, ::stage.ChipObjectSet, this.getroottable());
+	this.world2d.CreateEventFromMap(this.map0.stopEnemy1.layout, ::stage.ChipObjectSet, this.getroottable());
+	this.SetUpdateFunction(function ()
+	{
+		if (this.camera2d.right >= ::stage.scrollRight)
+		{
+			::stage.scrollLeftLock = true;
+			::stage.scrollRightLock = true;
+			::stage.scrollUpLock = true;
+			::stage.scrollDownLock = true;
+			local c_ = this.world2d.CreateActor(this.x, this.y, -1.0, ::stage.ClearPoint1Actor_2_1A, null);
+			this.ReleaseStageActor();
+		}
+	});
+}
+
+function ClearPoint1Actor_2_1A( t )
+{
+	this.name = "clearPoint1_2_1A";
+	this.StageObjectCommon();
+	this.SetUpdateFunction(function ()
+	{
+		if (this.count < 90)
+		{
+			this.count++;
+			return;
+		}
+		else if (this.count == 90)
+		{
+			this.count++;
+			local Walt_ = 15;
+
+			foreach( a in ::stage.TargetList )
+			{
+				if (a in ::actor)
+				{
+					::actor[a].u.Begin_StageIn_Jump.call(::actor[a], Walt_);
+					Walt_ += 3;
+				}
+			}
+		}
+		else if (this.count == 91)
+		{
+			if (this.Stage_AliveCheck(::stage.TargetList))
+			{
+				return;
+			}
+
+			this.count++;
+			this.StageGroupKill(::stage.FreeTarget);
+			::stage.FreeTarget = [];
+		}
+		else if (this.count >= 92)
+		{
+			this.count++;
+
+			if (this.count == 92 + 120)
+			{
+				this.SetGoahed();
+				::stage.scrollLeftLock = false;
+				::stage.scrollRightLock = false;
+				::stage.scrollUpLock = true;
+				::stage.scrollDownLock = true;
+				::stage.scrollRight = ::map0.pl.screenWidth - ::map0.pl.marginRight;
+				::stage.scrollLeft = ::camera2d.left;
+				this.PlaySE(501);
+
+				foreach( a in ::stage.eventActor )
+				{
+					if (a in ::stage.stageActor)
+					{
+						if (::stage.stageActor[a].func)
+						{
+							::stage.stageActor[a].func();
+						}
+					}
+				}
+
+				this.ReleaseStageActor();
+			}
+		}
+	});
+}
+
+function WarpPoint2Actor_2_1A( t )
+{
+	this.name = "warpPoint2_2_1A";
+	this.StageObjectCommon();
+	this.isVisible = true;
+	this.SetMotion(3700, 0);
+	this.priority = 50;
+	this.func = function ()
+	{
+		this.SetMotion(3700, 1);
+	};
+	this.SetUpdateFunction(function ()
+	{
+		if (::stage.warpFlag)
+		{
+			if (this.keyTake == 2)
+			{
+				if (this.Stage_PartyStayCheck(this.x, this.y, 50.0, 50.0))
+				{
+					this.count++;
+				}
+				else
+				{
+					this.count = 0;
+				}
+
+				if (this.count >= 30)
+				{
+					::stage.warpFlag = false;
+					this.Game_CountStop();
+					this.SetMotion(3700, 3);
+					::stage.MapOut_Normal_White("Stage2BInit");
+				}
+			}
+		}
+
+		return true;
+	});
+}
+
+function DoorCount1()
+{
+	::game.stageFlag1++;
+
+	if (::game.stageFlag1 >= 6)
+	{
+		::stage.MapOut_Normal_White("Stage2IInit");
+		::game.stageFlag1 = 0;
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+
+function Stage2BInit()
+{
+	this.world2d.CreateMap("data/stage/stage2B.act", "map1");
+	this.StageBaseSetting(this.map1);
+	this.SetStageFlag();
+	::stage.warpFlag = true;
+	::stage.name <- "2_2A";
+	this.world2d.CreateEventFromMap(this.map1.start.layout, ::stage.ChipObjectSet, this.getroottable());
+	this.FaderAct.FadeIn(60, 16777215, function ()
+	{
+		this.Game_CountStart();
+	});
+	this.world2d.CreateEventFromMap(this.map1.stopPoint1.layout, ::stage.ChipObjectSet, this.getroottable());
+	this.world2d.CreateEventFromMap(this.map1.warpPoint1.layout, ::stage.ChipObjectSet, this.getroottable());
+	::stage.beginScript <- "Stage2B_Begin";
+	this.world2d.SetState(0);
+}
+
+function Stage2B_Begin()
+{
+	::stage.scrollLeftLock = false;
+	::stage.scrollRightLock = false;
+	::stage.scrollUpLock = true;
+	::stage.scrollDownLock = true;
+}
+
+function StopPoint1Actor_2_2A( t )
+{
+	this.name = "stopPoint1_2_2A";
+	this.StageObjectCommon();
+	::stage.scrollRight = this.x;
+	this.SetUpdateFunction(function ()
+	{
+		if (this.count == 60)
+		{
+			this.world2d.CreateEventFromMap(this.map1.stopEnemy1.layout, ::stage.ChipObjectSet, this.getroottable());
+			local c_ = this.world2d.CreateActor(this.x, this.y, -1.0, ::stage.ClearPoint1Actor_2_2A, null);
+			this.ReleaseStageActor();
+		}
+
+		this.count++;
+	});
+}
+
+function ClearPoint1Actor_2_2A( t )
+{
+	this.name = "clearPoint1_2_2A";
+	this.StageObjectCommon();
+	this.SetUpdateFunction(function ()
+	{
+		if (this.count == 0)
+		{
+			if (this.Stage_AliveCheck(::stage.TargetList))
+			{
+				return;
+			}
+
+			this.StageGroupKill(::stage.FreeTarget);
+		}
+
+		this.count++;
+
+		if (this.count == 92 + 120)
+		{
+			this.PlaySE(501);
+
+			foreach( a in ::stage.eventActor )
+			{
+				if (a in ::stage.stageActor)
+				{
+					if (::stage.stageActor[a].func)
+					{
+						::stage.stageActor[a].func();
+					}
+				}
+			}
+
+			this.ReleaseStageActor();
+		}
+	});
+}
+
+function WarpPoint2Actor_2_2A( t )
+{
+	this.name = "warpPoint2_2_2A";
+	this.StageObjectCommon();
+	this.isVisible = true;
+	this.SetMotion(3700, 0);
+	this.priority = 50;
+	this.func = function ()
+	{
+		this.SetMotion(3700, 1);
+	};
+	this.SetUpdateFunction(function ()
+	{
+		if (this.keyTake == 2 && ::stage.warpFlag)
+		{
+			if (this.Stage_PartyStayCheck(this.x, this.y, 50.0, 50.0))
+			{
+				this.count++;
+			}
+			else
+			{
+				this.count = 0;
+			}
+
+			if (this.count >= 30)
+			{
+				::stage.warpFlag = false;
+				this.Game_CountStop();
+				this.SetMotion(3700, 3);
+
+				if (::stage.DoorCount1())
+				{
+					::stage.MapOut_Normal_White("Stage2CInit");
+				}
+			}
+		}
+
+		return true;
+	});
+}
+
+function WarpPoint3Actor_2_2A( t )
+{
+	this.name = "warpPoint3_2_2A";
+	this.StageObjectCommon();
+	this.isVisible = true;
+	this.SetMotion(3701, 0);
+	this.priority = 50;
+	this.func = function ()
+	{
+		this.SetMotion(3701, 1);
+	};
+	this.SetUpdateFunction(function ()
+	{
+		if (this.keyTake == 2 && ::stage.warpFlag)
+		{
+			if (this.Stage_PartyStayCheck(this.x, this.y, 50.0, 50.0))
+			{
+				this.count++;
+			}
+			else
+			{
+				this.count = 0;
+			}
+
+			if (this.count >= 30)
+			{
+				::stage.warpFlag = false;
+				this.Game_CountStop();
+				this.SetMotion(3701, 3);
+
+				if (::stage.DoorCount1())
+				{
+					::stage.MapOut_Normal_White("Stage2DInit");
+				}
+			}
+		}
+
+		return true;
+	});
+}
+
+function Stage2CInit()
+{
+	this.world2d.CreateMap("data/stage/stage2C.act", "map2");
+	this.StageBaseSetting(this.map2);
+	this.SetStageFlag();
+	::stage.warpFlag = true;
+	::stage.name <- "2_2B";
+	this.world2d.CreateEventFromMap(this.map2.start.layout, ::stage.ChipObjectSet, this.getroottable());
+	this.FaderAct.FadeIn(60, 16777215, function ()
+	{
+		this.Game_CountStart();
+	});
+	this.world2d.CreateEventFromMap(this.map2.stopPoint1.layout, ::stage.ChipObjectSet, this.getroottable());
+	this.world2d.CreateEventFromMap(this.map2.warpPoint1.layout, ::stage.ChipObjectSet, this.getroottable());
+	::stage.beginScript <- "Stage2C_Begin";
+	this.world2d.SetState(0);
+}
+
+function Stage2C_Begin()
+{
+	::stage.scrollLeftLock = false;
+	::stage.scrollRightLock = false;
+	::stage.scrollUpLock = true;
+	::stage.scrollDownLock = true;
+}
+
+function StopPoint1Actor_2_2B( t )
+{
+	this.name = "stopPoint1_2_2B";
+	this.StageObjectCommon();
+	::stage.scrollRight = this.x;
+	this.world2d.CreateEventFromMap(this.map2.stopEnemy1.layout, ::stage.ChipObjectSet, this.getroottable());
+	this.SetUpdateFunction(function ()
+	{
+		if (this.count == 60)
+		{
+			local Walt_ = 15;
+
+			foreach( a in ::stage.TargetList )
+			{
+				if (a in ::actor)
+				{
+					::actor[a].u.Begin_StageIn_Jump.call(::actor[a], Walt_);
+					Walt_ += 10;
+				}
+			}
+		}
+
+		if (this.count == 180)
+		{
+			this.world2d.CreateEventFromMap(this.map2.stopEnemy2.layout, ::stage.ChipObjectSet, this.getroottable());
+			local c_ = this.world2d.CreateActor(this.x, this.y, -1.0, ::stage.ClearPoint1Actor_2_2B, null);
+			this.ReleaseStageActor();
+		}
+
+		this.count++;
+	});
+}
+
+function ClearPoint1Actor_2_2B( t )
+{
+	this.name = "clearPoint1_2_2B";
+	this.StageObjectCommon();
+	this.SetUpdateFunction(function ()
+	{
+		if (this.count == 0)
+		{
+			if (this.Stage_AliveCheck(::stage.TargetList))
+			{
+				return;
+			}
+
+			this.StageGroupKill(::stage.FreeTarget);
+			::stage.FreeTarget = [];
+		}
+
+		this.count++;
+
+		if (this.count == 92 + 120)
+		{
+			this.PlaySE(501);
+
+			foreach( a in ::stage.eventActor )
+			{
+				if (a in ::stage.stageActor)
+				{
+					if (::stage.stageActor[a].func)
+					{
+						::stage.stageActor[a].func();
+					}
+				}
+			}
+
+			this.ReleaseStageActor();
+		}
+	});
+}
+
+function WarpPoint2Actor_2_2B( t )
+{
+	this.name = "warpPoint2_2_2B";
+	this.StageObjectCommon();
+	this.isVisible = true;
+	this.SetMotion(3700, 0);
+	this.priority = 50;
+	this.func = function ()
+	{
+		this.SetMotion(3700, 1);
+	};
+	this.SetUpdateFunction(function ()
+	{
+		if (this.keyTake == 2 && ::stage.warpFlag)
+		{
+			if (this.Stage_PartyStayCheck(this.x, this.y, 50.0, 50.0))
+			{
+				this.count++;
+			}
+			else
+			{
+				this.count = 0;
+			}
+
+			if (this.count >= 30)
+			{
+				::stage.warpFlag = false;
+				this.Game_CountStop();
+				this.SetMotion(3700, 3);
+
+				if (::stage.DoorCount1())
+				{
+					::stage.MapOut_Normal_White("Stage2IInit");
+				}
+			}
+		}
+
+		return true;
+	});
+}
+
+function WarpPoint3Actor_2_2B( t )
+{
+	this.name = "warpPoint3_2_2B";
+	this.StageObjectCommon();
+	this.isVisible = true;
+	this.SetMotion(3701, 0);
+	this.priority = 50;
+	this.func = function ()
+	{
+		this.SetMotion(3701, 1);
+	};
+	this.SetUpdateFunction(function ()
+	{
+		if (this.keyTake == 2 && ::stage.warpFlag)
+		{
+			if (this.Stage_PartyStayCheck(this.x, this.y, 50.0, 50.0))
+			{
+				this.count++;
+			}
+			else
+			{
+				this.count = 0;
+			}
+
+			if (this.count >= 30)
+			{
+				::stage.warpFlag = false;
+				this.Game_CountStop();
+				this.SetMotion(3701, 3);
+
+				if (::stage.DoorCount1())
+				{
+					::stage.MapOut_Normal_White("Stage2DInit");
+				}
+			}
+		}
+
+		return true;
+	});
+}
+
+function Stage2DInit()
+{
+	this.world2d.CreateMap("data/stage/stage2D.act", "map3");
+	this.StageBaseSetting(this.map3);
+	this.SetStageFlag();
+	::stage.name <- "2_2C";
+	::stage.warpFlag = true;
+	this.world2d.CreateEventFromMap(this.map3.start.layout, ::stage.ChipObjectSet, this.getroottable());
+	this.world2d.CreateEventFromMap(this.map3.warpPoint1.layout, ::stage.ChipObjectSet, this.getroottable());
+	this.FaderAct.FadeIn(60, 16777215, function ()
+	{
+		this.Game_CountStart();
+	});
+	this.world2d.CreateEventFromMap(this.map3.stopPoint1.layout, ::stage.ChipObjectSet, this.getroottable());
+	::stage.beginScript <- "Stage2D_Begin";
+	this.world2d.SetState(0);
+}
+
+function Stage2D_Begin()
+{
+	::stage.scrollLeftLock = false;
+	::stage.scrollRightLock = false;
+	::stage.scrollUpLock = true;
+	::stage.scrollDownLock = true;
+}
+
+function StopPoint1Actor_2_2C( t )
+{
+	this.name = "stopPoint1_2_2C";
+	this.StageObjectCommon();
+	this.SetUpdateFunction(function ()
+	{
+		if (this.count == 0)
+		{
+			::stage.scrollRight = this.x;
+			this.count++;
+		}
+		else
+		{
+			if (this.count == 120)
+			{
+				this.world2d.CreateEventFromMap(this.map3.stopEnemy1.layout, ::stage.ChipObjectSet, this.getroottable());
+			}
+
+			if (this.count == 420)
+			{
+				this.world2d.CreateEventFromMap(this.map3.stopEnemy2.layout, ::stage.ChipObjectSet, this.getroottable());
+				local c_ = this.world2d.CreateActor(this.x, this.y, -1.0, ::stage.ClearPoint1Actor_2_2C, null);
+				this.ReleaseStageActor();
+			}
+
+			this.count++;
+		}
+	});
+}
+
+function ClearPoint1Actor_2_2C( t )
+{
+	this.name = "clearPoint1_2_2C";
+	this.StageObjectCommon();
+	this.SetUpdateFunction(function ()
+	{
+		if (this.count == 0)
+		{
+			if (this.Stage_AliveCheck(::stage.TargetList))
+			{
+				return;
+			}
+
+			this.StageGroupKill(::stage.FreeTarget);
+			::stage.FreeTarget = [];
+		}
+
+		this.count++;
+
+		if (this.count == 92 + 120)
+		{
+			this.PlaySE(501);
+
+			foreach( a in ::stage.eventActor )
+			{
+				if (a in ::stage.stageActor)
+				{
+					if (::stage.stageActor[a].func)
+					{
+						::stage.stageActor[a].func();
+					}
+				}
+			}
+
+			this.ReleaseStageActor();
+		}
+	});
+}
+
+function WarpPoint2Actor_2_2C( t )
+{
+	this.name = "warpPoint2_2_2C";
+	this.StageObjectCommon();
+	this.isVisible = true;
+	this.SetMotion(3700, 0);
+	this.priority = 50;
+	this.func = function ()
+	{
+		this.SetMotion(3700, 1);
+	};
+	this.SetUpdateFunction(function ()
+	{
+		if (this.keyTake == 2 && ::stage.warpFlag)
+		{
+			if (this.Stage_PartyStayCheck(this.x, this.y, 50.0, 50.0))
+			{
+				this.count++;
+			}
+			else
+			{
+				this.count = 0;
+			}
+
+			if (this.count >= 30)
+			{
+				::stage.warpFlag = false;
+				this.Game_CountStop();
+				this.SetMotion(3700, 3);
+
+				if (::stage.DoorCount1())
+				{
+					::stage.MapOut_Normal_White("Stage2CInit");
+				}
+			}
+		}
+
+		return true;
+	});
+}
+
+function WarpPoint3Actor_2_2C( t )
+{
+	this.name = "warpPoint3_2_2C";
+	this.StageObjectCommon();
+	this.isVisible = true;
+	this.SetMotion(3701, 0);
+	this.priority = 50;
+	this.func = function ()
+	{
+		this.SetMotion(3701, 1);
+	};
+	this.SetUpdateFunction(function ()
+	{
+		if (this.keyTake == 2 && ::stage.warpFlag)
+		{
+			if (this.Stage_PartyStayCheck(this.x, this.y, 50.0, 50.0))
+			{
+				this.count++;
+			}
+			else
+			{
+				this.count = 0;
+			}
+
+			if (this.count >= 30)
+			{
+				::stage.warpFlag = false;
+				this.Game_CountStop();
+				this.SetMotion(3701, 3);
+
+				if (::stage.DoorCount1())
+				{
+					::stage.MapOut_Normal_White("Stage2IInit");
+				}
+			}
+		}
+
+		return true;
+	});
+}
+
+function DoorCount2()
+{
+	::game.stageFlag1++;
+
+	if (::game.stageFlag1 >= 8)
+	{
+		::stage.MapOut_Normal_White("Stage2LInit");
+		::game.stageFlag1 = 0;
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+
+function Stage2EInit()
+{
+	this.world2d.CreateMap("data/stage/stage2E.act", "map4");
+	this.StageBaseSetting(this.map4);
+	this.SetStageFlag();
+	::stage.warpFlag = true;
+	::stage.name <- "2_4A";
+	this.world2d.CreateEventFromMap(this.map4.start.layout, ::stage.ChipObjectSet, this.getroottable());
+	this.world2d.CreateEventFromMap(this.map4.warpPoint1.layout, ::stage.ChipObjectSet, this.getroottable());
+	this.FaderAct.FadeIn(60, 16777215, function ()
+	{
+		this.Game_CountStart();
+	});
+	this.world2d.CreateEventFromMap(this.map4.stopPoint1.layout, ::stage.ChipObjectSet, this.getroottable());
+	::stage.beginScript <- "Stage2E_Begin";
+	this.world2d.SetState(0);
+}
+
+function Stage2E_Begin()
+{
+	::stage.scrollLeftLock = false;
+	::stage.scrollRightLock = false;
+	::stage.scrollUpLock = true;
+	::stage.scrollDownLock = true;
+}
+
+function StopPoint1Actor_2_4A( t )
+{
+	this.name = "stopPoint1_2_4A";
+	this.StageObjectCommon();
+	::stage.scrollRight = this.x;
+	this.world2d.CreateEventFromMap("stopEnemy1", ::stage.ChipObjectSet, this.getroottable());
+	this.SetUpdateFunction(function ()
+	{
+		if (this.count == 180)
+		{
+			this.count++;
+			local Walt_ = 5;
+
+			foreach( a in ::stage.TargetList )
+			{
+				if (a in ::actor)
+				{
+					::actor[a].u.Begin_StageIn_Jump.call(::actor[a], Walt_);
+					Walt_ += 3;
+				}
+			}
+
+			local c_ = this.world2d.CreateActor(this.x, this.y, -1.0, ::stage.ClearPoint1Actor_2_4A, null);
+			this.ReleaseStageActor();
+		}
+
+		this.count++;
+	});
+}
+
+function ClearPoint1Actor_2_4A( t )
+{
+	this.name = "clearPoint1_2_4A";
+	this.StageObjectCommon();
+	this.SetUpdateFunction(function ()
+	{
+		if (this.count == 0)
+		{
+			if (this.Stage_AliveCheck(::stage.TargetList))
+			{
+				return;
+			}
+
+			this.StageGroupKill(::stage.FreeTarget);
+			::stage.FreeTarget = [];
+		}
+
+		this.count++;
+
+		if (this.count == 92 + 120)
+		{
+			this.PlaySE(501);
+
+			foreach( a in ::stage.eventActor )
+			{
+				if (a in ::stage.stageActor)
+				{
+					if (::stage.stageActor[a].func)
+					{
+						::stage.stageActor[a].func();
+					}
+				}
+			}
+
+			this.ReleaseStageActor();
+		}
+	});
+}
+
+function WarpPoint2Actor_2_4A( t )
+{
+	this.name = "warpPoint2_2_4A";
+	this.StageObjectCommon();
+	this.isVisible = true;
+	this.SetMotion(3700, 0);
+	this.priority = 50;
+	this.func = function ()
+	{
+		this.SetMotion(3700, 1);
+	};
+	this.SetUpdateFunction(function ()
+	{
+		if (this.keyTake == 2 && ::stage.warpFlag)
+		{
+			if (this.Stage_PartyStayCheck(this.x, this.y, 50.0, 50.0))
+			{
+				this.count++;
+			}
+			else
+			{
+				this.count = 0;
+			}
+
+			if (this.count >= 30)
+			{
+				::stage.warpFlag = false;
+				this.Game_CountStop();
+				this.SetMotion(3700, 3);
+
+				if (::stage.DoorCount2())
+				{
+					::stage.MapOut_Normal_White("Stage2FInit");
+				}
+			}
+		}
+
+		return true;
+	});
+}
+
+function WarpPoint3Actor_2_4A( t )
+{
+	this.name = "warpPoint3_2_4A";
+	this.StageObjectCommon();
+	this.isVisible = true;
+	this.SetMotion(3701, 0);
+	this.priority = 50;
+	this.func = function ()
+	{
+		this.SetMotion(3701, 1);
+	};
+	this.SetUpdateFunction(function ()
+	{
+		if (this.keyTake == 2 && ::stage.warpFlag)
+		{
+			if (this.Stage_PartyStayCheck(this.x, this.y, 50.0, 50.0))
+			{
+				this.count++;
+			}
+			else
+			{
+				this.count = 0;
+			}
+
+			if (this.count >= 30)
+			{
+				::stage.warpFlag = false;
+				this.Game_CountStop();
+				this.SetMotion(3701, 3);
+
+				if (::stage.DoorCount2())
+				{
+					::stage.MapOut_Normal_White("Stage2GInit");
+				}
+			}
+		}
+
+		return true;
+	});
+}
+
+function Stage2FInit()
+{
+	this.world2d.CreateMap("data/stage/stage2F.act", "map5");
+	this.StageBaseSetting(this.map5);
+	this.SetStageFlag();
+	::stage.warpFlag = true;
+	::stage.name <- "2_4B";
+	this.world2d.CreateEventFromMap(this.map5.start.layout, ::stage.ChipObjectSet, this.getroottable());
+	this.world2d.CreateEventFromMap(this.map5.warpPoint1.layout, ::stage.ChipObjectSet, this.getroottable());
+	this.FaderAct.FadeIn(60, 16777215, function ()
+	{
+		this.Game_CountStart();
+	});
+	this.world2d.CreateEventFromMap(this.map5.stopPoint1.layout, ::stage.ChipObjectSet, this.getroottable());
+	::stage.beginScript <- "Stage2F_Begin";
+	this.world2d.SetState(0);
+}
+
+function Stage2F_Begin()
+{
+	this.MapIn_Normal();
+	::stage.scrollLeftLock = false;
+	::stage.scrollRightLock = false;
+	::stage.scrollUpLock = true;
+	::stage.scrollDownLock = true;
+}
+
+function StopPoint1Actor_2_4B( t )
+{
+	this.name = "stopPoint1_2_4B";
+	this.StageObjectCommon();
+	::stage.scrollRight = this.x;
+	this.SetUpdateFunction(function ()
+	{
+		if (this.count >= 120 && this.count % 15 == 0)
+		{
+			local r_ = this.rand() % 3;
+
+			switch(r_)
+			{
+			case 0:
+				this.world2d.CreateEventFromMap(this.map5.stopEnemy1.layout, ::stage.ChipObjectSet, this.getroottable());
+				break;
+
+			case 1:
+				this.world2d.CreateEventFromMap(this.map5.stopEnemy1b.layout, ::stage.ChipObjectSet, this.getroottable());
+				break;
+
+			case 2:
+				this.world2d.CreateEventFromMap(this.map5.stopEnemy1c.layout, ::stage.ChipObjectSet, this.getroottable());
+				break;
+			}
+		}
+
+		if (this.count == 210)
+		{
+			local c_ = this.world2d.CreateActor(this.x, this.y, -1.0, ::stage.ClearPoint1Actor_2_4B, null);
+			this.ReleaseStageActor();
+		}
+
+		this.count++;
+	});
+}
+
+function ClearPoint1Actor_2_4B( t )
+{
+	this.name = "clearPoint1_2_4B";
+	this.StageObjectCommon();
+	this.SetUpdateFunction(function ()
+	{
+		if (this.count == 0)
+		{
+			if (this.Stage_AliveCheck(::stage.TargetList))
+			{
+				return;
+			}
+
+			this.StageGroupKill(::stage.FreeTarget);
+			::stage.FreeTarget = [];
+		}
+
+		this.count++;
+
+		if (this.count == 92 + 120)
+		{
+			this.PlaySE(501);
+
+			foreach( a in ::stage.eventActor )
+			{
+				if (a in ::stage.stageActor)
+				{
+					if (::stage.stageActor[a].func)
+					{
+						::stage.stageActor[a].func();
+					}
+				}
+			}
+
+			this.ReleaseStageActor();
+		}
+	});
+}
+
+function WarpPoint2Actor_2_4B( t )
+{
+	this.name = "warpPoint2_2_4B";
+	this.StageObjectCommon();
+	this.isVisible = true;
+	this.SetMotion(3700, 0);
+	this.priority = 50;
+	this.func = function ()
+	{
+		this.SetMotion(3700, 1);
+	};
+	this.SetUpdateFunction(function ()
+	{
+		if (this.keyTake == 2 && ::stage.warpFlag)
+		{
+			if (this.Stage_PartyStayCheck(this.x, this.y, 50.0, 50.0))
+			{
+				this.count++;
+			}
+			else
+			{
+				this.count = 0;
+			}
+
+			if (this.count >= 30)
+			{
+				::stage.warpFlag = false;
+				this.Game_CountStop();
+				this.SetMotion(3700, 3);
+
+				if (::stage.DoorCount2())
+				{
+					::stage.MapOut_Normal_White("Stage2GInit");
+				}
+			}
+		}
+
+		return true;
+	});
+}
+
+function WarpPoint3Actor_2_4B( t )
+{
+	this.name = "warpPoint3_2_4B";
+	this.StageObjectCommon();
+	this.isVisible = true;
+	this.SetMotion(3701, 0);
+	this.priority = 50;
+	this.func = function ()
+	{
+		this.SetMotion(3701, 1);
+	};
+	this.SetUpdateFunction(function ()
+	{
+		if (this.keyTake == 2 && ::stage.warpFlag)
+		{
+			if (this.Stage_PartyStayCheck(this.x, this.y, 50.0, 50.0))
+			{
+				this.count++;
+			}
+			else
+			{
+				this.count = 0;
+			}
+
+			if (this.count >= 30)
+			{
+				::stage.warpFlag = false;
+				this.Game_CountStop();
+				this.SetMotion(3701, 3);
+
+				if (::stage.DoorCount2())
+				{
+					::stage.MapOut_Normal_White("Stage2EInit");
+				}
+			}
+		}
+
+		return true;
+	});
+}
+
+function Stage2GInit()
+{
+	this.world2d.CreateMap("data/stage/stage2G.act", "map6");
+	this.StageBaseSetting(this.map6);
+	this.SetStageFlag();
+	::stage.warpFlag = true;
+	::stage.name <- "2_4C";
+	this.world2d.CreateEventFromMap(this.map6.start.layout, ::stage.ChipObjectSet, this.getroottable());
+	this.world2d.CreateEventFromMap(this.map6.warpPoint1.layout, ::stage.ChipObjectSet, this.getroottable());
+	this.FaderAct.FadeIn(60, 16777215, function ()
+	{
+		this.Game_CountStart();
+	});
+	this.world2d.CreateEventFromMap(this.map6.stopPoint1.layout, ::stage.ChipObjectSet, this.getroottable());
+	::stage.beginScript <- "Stage2G_Begin";
+	this.world2d.SetState(0);
+}
+
+function Stage2G_Begin()
+{
+	::stage.scrollLeftLock = false;
+	::stage.scrollRightLock = false;
+	::stage.scrollUpLock = true;
+	::stage.scrollDownLock = true;
+}
+
+function StopPoint1Actor_2_4C( t )
+{
+	this.name = "stopPoint1_2_4C";
+	this.StageObjectCommon();
+	::stage.scrollRight = this.x;
+	this.SetUpdateFunction(function ()
+	{
+		if (this.count == 90)
+		{
+			this.world2d.CreateEventFromMap(this.map6.stopEnemy1.layout, ::stage.ChipObjectSet, this.getroottable());
+		}
+
+		if (this.count >= 260 && this.count % 30 == 0)
+		{
+			this.world2d.CreateEventFromMap(this.map6.stopEnemy2.layout, ::stage.ChipObjectSet, this.getroottable());
+		}
+
+		if (this.count == 350)
+		{
+			local c_ = this.world2d.CreateActor(this.x, this.y, -1.0, ::stage.ClearPoint1Actor_2_4C, null);
+			this.ReleaseStageActor();
+		}
+
+		this.count++;
+	});
+}
+
+function ClearPoint1Actor_2_4C( t )
+{
+	this.name = "clearPoint1_2_4C";
+	this.StageObjectCommon();
+	this.SetUpdateFunction(function ()
+	{
+		if (this.count == 0)
+		{
+			if (this.Stage_AliveCheck(::stage.TargetList))
+			{
+				return;
+			}
+
+			this.StageGroupKill(::stage.FreeTarget);
+			::stage.FreeTarget = [];
+		}
+
+		this.count++;
+
+		if (this.count == 92 + 120)
+		{
+			this.PlaySE(501);
+
+			foreach( a in ::stage.eventActor )
+			{
+				if (a in ::stage.stageActor)
+				{
+					if (::stage.stageActor[a].func)
+					{
+						::stage.stageActor[a].func();
+					}
+				}
+			}
+
+			this.ReleaseStageActor();
+		}
+	});
+}
+
+function WarpPoint2Actor_2_4C( t )
+{
+	this.name = "warpPoint2_2_4C";
+	this.StageObjectCommon();
+	this.isVisible = true;
+	this.SetMotion(3700, 0);
+	this.priority = 50;
+	this.func = function ()
+	{
+		this.SetMotion(3700, 1);
+	};
+	this.SetUpdateFunction(function ()
+	{
+		if (this.keyTake == 2 && ::stage.warpFlag)
+		{
+			if (this.Stage_PartyStayCheck(this.x, this.y, 50.0, 50.0))
+			{
+				this.count++;
+			}
+			else
+			{
+				this.count = 0;
+			}
+
+			if (this.count >= 30)
+			{
+				::stage.warpFlag = false;
+				this.Game_CountStop();
+				this.SetMotion(3700, 3);
+
+				if (::stage.DoorCount2())
+				{
+					::stage.MapOut_Normal_White("Stage2FInit");
+				}
+			}
+		}
+
+		return true;
+	});
+}
+
+function WarpPoint3Actor_2_4C( t )
+{
+	this.name = "warpPoint3_2_4C";
+	this.StageObjectCommon();
+	this.isVisible = true;
+	this.SetMotion(3701, 0);
+	this.priority = 50;
+	this.func = function ()
+	{
+		this.SetMotion(3701, 1);
+	};
+	this.SetUpdateFunction(function ()
+	{
+		if (this.keyTake == 2 && ::stage.warpFlag)
+		{
+			if (this.Stage_PartyStayCheck(this.x, this.y, 50.0, 50.0))
+			{
+				this.count++;
+			}
+			else
+			{
+				this.count = 0;
+			}
+
+			if (this.count >= 30)
+			{
+				::stage.warpFlag = false;
+				this.Game_CountStop();
+				this.SetMotion(3701, 3);
+
+				if (::stage.DoorCount2())
+				{
+					::stage.MapOut_Normal_White("Stage2HInit");
+				}
+			}
+		}
+
+		return true;
+	});
+}
+
+function Stage2HInit()
+{
+	this.world2d.CreateMap("data/stage/stage2H.act", "map7");
+	this.StageBaseSetting(this.map7);
+	this.SetStageFlag();
+	::stage.warpFlag = true;
+	::stage.name <- "2_4D";
+	this.world2d.CreateEventFromMap(this.map7.start.layout, ::stage.ChipObjectSet, this.getroottable());
+	this.world2d.CreateEventFromMap(this.map7.warpPoint1.layout, ::stage.ChipObjectSet, this.getroottable());
+	this.FaderAct.FadeIn(60, 16777215, function ()
+	{
+		this.Game_CountStart();
+	});
+	this.world2d.CreateEventFromMap(this.map7.stopPoint1.layout, ::stage.ChipObjectSet, this.getroottable());
+	::stage.beginScript <- "Stage2H_Begin";
+	this.world2d.SetState(0);
+}
+
+function Stage2H_Begin()
+{
+	::stage.scrollLeftLock = false;
+	::stage.scrollRightLock = false;
+	::stage.scrollUpLock = true;
+	::stage.scrollDownLock = true;
+}
+
+function StopPoint1Actor_2_4D( t )
+{
+	this.name = "stopPoint1_2_4D";
+	this.StageObjectCommon();
+	::stage.scrollRight = this.x;
+	this.SetUpdateFunction(function ()
+	{
+		if (this.count >= 120 && this.count % 45 == 0)
+		{
+			this.world2d.CreateEventFromMap(this.map7.stopEnemy1.layout, ::stage.ChipObjectSet, this.getroottable());
+		}
+
+		if (this.count >= 135 && this.count % 38 == 15)
+		{
+			this.world2d.CreateEventFromMap(this.map7.stopEnemy2.layout, ::stage.ChipObjectSet, this.getroottable());
+		}
+
+		if (this.count == 320)
+		{
+			local c_ = this.world2d.CreateActor(this.x, this.y, -1.0, ::stage.ClearPoint1Actor_2_4D, null);
+			this.ReleaseStageActor();
+		}
+
+		this.count++;
+	});
+}
+
+function ClearPoint1Actor_2_4D( t )
+{
+	this.name = "clearPoint1_2_4D";
+
+	if (this.name in ::stage.stageActor)
+	{
+	}
+
+	::stage.stageActor[this.name] <- this;
+	this.SetUpdateFunction(function ()
+	{
+		if (this.count == 0)
+		{
+			if (this.Stage_AliveCheck(::stage.TargetList))
+			{
+				return;
+			}
+
+			this.StageGroupKill(::stage.FreeTarget);
+			::stage.FreeTarget = [];
+		}
+
+		this.count++;
+
+		if (this.count == 92 + 120)
+		{
+			this.PlaySE(501);
+
+			foreach( a in ::stage.eventActor )
+			{
+				if (a in ::stage.stageActor)
+				{
+					if (::stage.stageActor[a].func)
+					{
+						::stage.stageActor[a].func();
+					}
+				}
+			}
+
+			this.ReleaseStageActor();
+		}
+	});
+}
+
+function WarpPoint2Actor_2_4D( t )
+{
+	this.name = "warpPoint2_2_4D";
+	this.StageObjectCommon();
+	this.isVisible = true;
+	this.SetMotion(3700, 0);
+	this.priority = 50;
+	this.func = function ()
+	{
+		this.SetMotion(3700, 1);
+	};
+	this.SetUpdateFunction(function ()
+	{
+		if (this.keyTake == 2)
+		{
+			if (this.Stage_PartyStayCheck(this.x, this.y, 50.0, 50.0))
+			{
+				this.count++;
+			}
+			else
+			{
+				this.count = 0;
+			}
+
+			if (this.count >= 30)
+			{
+				this.Game_CountStop();
+				this.SetMotion(3700, 3);
+
+				if (::stage.DoorCount2())
+				{
+					::stage.MapOut_Normal_White("Stage2LInit");
+				}
+			}
+		}
+
+		return true;
+	});
+}
+
+function WarpPoint3Actor_2_4D( t )
+{
+	this.name = "warpPoint3_2_4D";
+	this.StageObjectCommon();
+	this.isVisible = true;
+	this.SetMotion(3701, 0);
+	this.priority = 50;
+	this.func = function ()
+	{
+		this.SetMotion(3701, 1);
+	};
+	this.SetUpdateFunction(function ()
+	{
+		if (this.keyTake == 2 && ::stage.warpFlag)
+		{
+			if (this.Stage_PartyStayCheck(this.x, this.y, 50.0, 50.0))
+			{
+				this.count++;
+			}
+			else
+			{
+				this.count = 0;
+			}
+
+			if (this.count >= 30)
+			{
+				::stage.warpFlag = false;
+				this.Game_CountStop();
+				this.SetMotion(3701, 3);
+
+				if (::stage.DoorCount2())
+				{
+					::stage.MapOut_Normal_White("Stage2GInit");
+				}
+			}
+		}
+
+		return true;
+	});
+}
+
+function Stage2IInit()
+{
+	this.world2d.CreateMap("data/stage/stage2I.act", "map8");
+	this.StageBaseSetting(this.map8);
+	::game.stageFlag1 = 0;
+	this.SetStageFlag();
+	::stage.name <- "2_3A";
+	this.world2d.CreateEventFromMap(this.map8.start.layout, ::stage.ChipObjectSet, this.getroottable());
+	this.FaderAct.FadeIn(60, 16777215, function ()
+	{
+		this.Game_CountStart();
+	});
+	this.world2d.CreateEventFromMap(this.map8.stopPoint1.layout, ::stage.ChipObjectSet, this.getroottable());
+	this.world2d.CreateEventFromMap(this.map8.freeEnemy1.layout, ::stage.ChipObjectSet, this.getroottable());
+	::stage.beginScript <- "Stage2I_Begin";
+	this.world2d.SetState(0);
+}
+
+function Stage2I_Begin()
+{
+	::stage.MapIn_WalkRight();
+	::stage.scrollLeftLock = false;
+	::stage.scrollRightLock = false;
+	::stage.scrollUpLock = true;
+	::stage.scrollDownLock = true;
+}
+
+function StopPoint1Actor_2_3A( t )
+{
+	this.name = "stopPoint1_2_3A";
+	this.StageObjectCommon();
+	this.SetUpdateFunction(function ()
+	{
+		if (this.camera2d.right >= this.x)
+		{
+			this.world2d.CreateEventFromMap(this.map8.stopEnemy1.layout, ::stage.ChipObjectSet, this.getroottable());
+			this.ReleaseStageActor();
+		}
+	});
+}
+
+function StopPoint2Actor_2_3A( t )
+{
+	this.name = "stopPoint2_2_3A";
+	this.StageObjectCommon();
+	this.SetUpdateFunction(function ()
+	{
+		if (this.camera2d.right >= this.x)
+		{
+			this.world2d.CreateEventFromMap(this.map8.stopEnemy2.layout, ::stage.ChipObjectSet, this.getroottable());
+			this.ReleaseStageActor();
+		}
+	});
+}
+
+function WarpPoint1Actor_2_3A( t )
+{
+	this.name = "warpPoint1_2_3A";
+	this.StageObjectCommon();
+	::stage.scrollRight = this.x;
+	local f = function ()
+	{
+		::stage.MapOut_WalkRight_White.call(this, "Stage2FInit");
+	};
+	this.SetUpdateFunction(f);
+}
+
+function Stage2JInit()
+{
+	this.world2d.CreateMap("data/stage/stage2J.act", "map9");
+	this.StageBaseSetting(this.map9);
+	this.SetStageFlag();
+	::stage.name <- "2_5A";
+	this.world2d.CreateEventFromMap(this.map9.start.layout, ::stage.ChipObjectSet, this.getroottable());
+	this.FaderAct.FadeIn(60, 0, function ()
+	{
+		this.Game_CountStart();
+	});
+	this.world2d.CreateEventFromMap(this.map9.warpPoint1.layout, ::stage.ChipObjectSet, this.getroottable());
+	::stage.beginScript <- "Stage2J_Begin";
+	this.world2d.SetState(0);
+}
+
+function Stage2J_Begin()
+{
+	::stage.MapIn_Fall();
+	::stage.scrollLeftLock = false;
+	::stage.scrollRightLock = false;
+	::stage.scrollUpLock = true;
+	::stage.scrollDownLock = true;
+}
+
+function WarpPoint1Actor_2_5A( t )
+{
+	this.name = "warpPoint1_2_5A";
+	this.StageObjectCommon();
+	::stage.scrollRight = this.x;
+	this.world2d.CreateEventFromMap(this.map9.freeEnemy1.layout, ::stage.ChipObjectSet, this.getroottable());
+	local f = function ()
+	{
+		::stage.MapOut_WalkRight.call(this, "Stage2KInit");
+	};
+	this.SetUpdateFunction(f);
+}
+
+function Stage2LInit()
+{
+	this.world2d.CreateMap("data/stage/stage2L.act", "map11");
+	this.StageBaseSetting_2stL(this.map11);
+	this.SetStageFlag();
+	::stage.name <- "2_6A";
+	this.world2d.CreateEventFromMap(this.map11.start.layout, ::stage.ChipObjectSet, this.getroottable());
+	this.FaderAct.FadeIn(60, 16777215, function ()
+	{
+		this.Game_CountStart();
+	});
+	this.world2d.CreateEventFromMap(this.map11.stopPoint1.layout, ::stage.ChipObjectSet, this.getroottable());
+	this.world2d.CreateEventFromMap(this.map11.freeEnemy1.layout, ::stage.ChipObjectSet, this.getroottable());
+	::stage.beginScript <- "Stage2I_Begin";
+	this.world2d.SetState(0);
+}
+
+function Stage2L_Begin()
+{
+	::stage.MapIn_WalkRight();
+	::stage.scrollLeftLock = false;
+	::stage.scrollRightLock = false;
+	::stage.scrollUpLock = true;
+	::stage.scrollDownLock = true;
+}
+
+function StopPoint1Actor_2_6A( t )
+{
+	this.name = "stopPoint1_2_6A";
+	this.StageObjectCommon();
+	this.SetUpdateFunction(function ()
+	{
+		if (this.camera2d.right >= this.x)
+		{
+			this.world2d.CreateEventFromMap(this.map11.stopEnemy1.layout, ::stage.ChipObjectSet, this.getroottable());
+			this.ReleaseStageActor();
+		}
+	});
+}
+
+function StopPoint2Actor_2_6A( t )
+{
+	this.name = "stopPoint2_2_6A";
+	this.StageObjectCommon();
+	this.SetUpdateFunction(function ()
+	{
+		if (this.camera2d.right >= this.x)
+		{
+			this.world2d.CreateEventFromMap(this.map11.stopEnemy2.layout, ::stage.ChipObjectSet, this.getroottable());
+			this.ReleaseStageActor();
+		}
+	});
+}
+
+function StopPoint3Actor_2_6A( t )
+{
+	this.name = "stopPoint3_2_6A";
+	this.StageObjectCommon();
+	this.SetUpdateFunction(function ()
+	{
+		if (this.camera2d.right >= this.x)
+		{
+			::stage.scrollLeftLock = true;
+			::stage.scrollRightLock = false;
+			::stage.scrollUpLock = true;
+			::stage.scrollDownLock = true;
+
+			for( local i = 0; i < 3; i++ )
+			{
+				if ("player" + i in this.actor)
+				{
+					this.actor["player" + i].scrollOut_margin = null;
+				}
+			}
+
+			this.world2d.CreateEventFromMap(this.map11.warpPoint1.layout, ::stage.ChipObjectSet, this.getroottable());
+			this.ReleaseStageActor();
+		}
+	});
+}
+
+function WarpPoint1Actor_2_6A( t )
+{
+	this.name = "warpPoint1_2_6A";
+	this.StageObjectCommon();
+	::stage.scrollRight = this.x;
+	local f = function ()
+	{
+		::stage.MapOut_Fall.call(this, "Stage2JInit");
+	};
+	this.SetUpdateFunction(f);
+}
+
+function Stage2KInit()
+{
+	this.world2d.CreateMap("data/stage/stage2K.act", "map10");
+	this.world2d.CreateMap("data/stage/stage2M.act", "map12");
+	this.StageBaseSetting_2stK(this.map10);
+	this.SetStageFlag();
+	::stage.name <- "2_Boss";
+	this.world2d.CreateEventFromMap(this.map10.start.layout, ::stage.ChipObjectSet, this.getroottable());
+	this.FaderAct.FadeIn(60, 0, function ()
+	{
+		this.Game_CountStart();
+	});
+	this.world2d.CreateEventFromMap(this.map10.stopPoint1.layout, ::stage.ChipObjectSet, this.getroottable());
+	::stage.beginScript <- "Stage2K_Begin";
+	this.world2d.SetState(0);
+}
+
+function Stage2K_Begin()
+{
+	::stage.MapIn_WalkRight();
+	::stage.scrollLeftLock = false;
+	::stage.scrollRightLock = false;
+	::stage.scrollUpLock = true;
+	::stage.scrollDownLock = true;
+}
+
+function StopPoint1Actor_2_Boss( t )
+{
+	this.name = "stopPoint1_2_Boss";
+	this.StageObjectCommon();
+	this.StopBgm(2000);
+	this.flag1 = 1.0;
+	this.SetUpdateFunction(function ()
+	{
+		if (this.count == 0)
+		{
+			if (this.camera2d.right >= this.x)
+			{
+				this.count++;
+				::stage.scrollLeftLock = true;
+				::stage.scrollRightLock = true;
+				this.Game_CountStop();
+			}
+		}
+		else
+		{
+			this.count++;
+
+			if (this.count == 120)
+			{
+				this.world2d.CreateEventFromMap(this.map10.boss.layout, ::stage.ChipObjectSet, this.getroottable());
+			}
+
+			local c = 210;
+
+			if (this.count == c)
+			{
+				this.world2d.updateMask = 16;
+				this.flag2 = this.actor[::stage.Boss].point0_x;
+				this.flag3 = this.actor[::stage.Boss].point0_y;
+				this.PlayBgm("data/bgm/mdk_b1.ogg", 0, 100);
+			}
+
+			if (this.count >= c && this.count <= c + 180)
+			{
+				if (this.count <= c + 10)
+				{
+					this.flag1 += 0.25;
+				}
+
+				if (this.count == c + 10)
+				{
+					this.world2d.CreateActorOnScreen(0, 0, 1.0, this.Boss2_Name, null);
+				}
+
+				if (this.count >= c + 170)
+				{
+					this.flag1 -= 0.25;
+
+					if (this.flag1 < 1.0)
+					{
+						this.flag1 = 1.0;
+					}
+				}
+
+				this.render.SetFocus(this.flag2, this.flag3, this.flag1);
+				this.camera2d.SetTarget(this.flag2, this.flag3, true);
+			}
+
+			if (this.count == c + 180)
+			{
+				this.render.SetFocus(this.camera2d.x, this.camera2d.y, 1.0);
+				this.world2d.updateMask = -1;
+			}
+
+			if (this.count == c + 210)
+			{
+				::stage.scrollLeftLock = false;
+				::stage.scrollRightLock = false;
+				this.Game_CountStart();
+				local c_ = this.world2d.CreateActor(this.x, this.y, -1.0, ::stage.ClearPointBossActor, null);
+				this.ReleaseStageActor();
+			}
+		}
+	});
+}
+
+function ClearPointBossActor( t )
+{
+	this.name = "clearPointBoss";
+	this.StageObjectCommon();
+	this.flag1 = 0;
+	::stage.scrollLeftLock = false;
+	::stage.scrollRightLock = false;
+	this.SetUpdateFunction(function ()
+	{
+		this.count++;
+
+		if (this.flag1 == 0)
+		{
+			if (::stage.Boss in this.actor)
+			{
+				if (this.actor[::stage.Boss].life > 0)
+				{
+					if (this.count % 360 == 179 || this.count % 360 == 359)
+					{
+						this.RefleshStageList();
+
+						if (::stage.FreeTarget.len() <= 4)
+						{
+							local c_ = this.SetActor(null, this.camera2d.left - 32, 400, 1.0, ::Actor2D.Init_Enemy2A_Slave, null);
+							::stage.FreeTarget.append(c_.name);
+							local c_ = this.SetActor(null, this.camera2d.right + 32, 400, -1.0, ::Actor2D.Init_Enemy2A_Slave, null);
+							::stage.FreeTarget.append(c_.name);
+						}
+					}
+
+					return;
+				}
+
+				this.count = 0;
+				this.StageGroupKill(::stage.FreeTarget);
+				::stage.Boss = null;
+				this.flag1 = 1;
+			}
+		}
+		else if (this.flag1 == 1)
+		{
+			this.count++;
+
+			if (this.count >= 300)
+			{
+				this.count = 0;
+				this.flag1 = 2;
+				this.world2d.CreateEventFromMap(this.map10.boss2.layout, ::stage.ChipObjectSet, this.getroottable());
+			}
+		}
+		else
+		{
+			if (::stage.Boss in this.actor)
+			{
+				if (this.actor[::stage.Boss].life > 0)
+				{
+					if (this.count % 720 == 121 || this.count % 720 == 241)
+					{
+						this.RefleshStageList();
+
+						if (::stage.FreeTarget.len() <= 2)
+						{
+							local c_ = this.SetActor(null, this.camera2d.left - 32, 400, 1.0, ::Actor2D.Init_Enemy2A, null);
+							::stage.FreeTarget.append(c_.name);
+							local c_ = this.SetActor(null, this.camera2d.right + 32, 400, -1.0, ::Actor2D.Init_Enemy2A, null);
+							::stage.FreeTarget.append(c_.name);
+						}
+					}
+
+					return;
+				}
+			}
+
+			::stage.level = this.actor[::stage.Boss].level;
+			this.Game_DefeatBoss();
+			local c_ = this.world2d.CreateActor(this.x, this.y, -1.0, ::stage.ClearEventActor, null);
+			this.ReleaseStageActor();
+		}
+	});
+}
+
+function ClearEventActor( t )
+{
+	this.name = "stageClear";
+	this.StageObjectCommon();
+	this.StopBgm(2000);
+	this.count = -120;
+	this.flag1 = 1.0;
+	this.flag2 = 1.0;
+	this.flag3 = 9.9999997e-005;
+	this.SetUpdateFunction(function ()
+	{
+		this.count++;
+		this.flag1 += this.flag3;
+		this.flag2 -= 0.0099999998;
+		this.flag3 *= 0.93000001;
+
+		if (this.flag2 > 0)
+		{
+			this.render.SetBlur(this.actor[::stage.Boss].x, this.actor[::stage.Boss].y, this.flag1, this.flag2);
+		}
+		else
+		{
+			this.render.Reset();
+		}
+
+		if (this.count == 360)
+		{
+			this.PlaySE(1023);
+			::stage.scrollLeftLock = true;
+			::stage.scrollRightLock = true;
+			::stage.scrollDownLock = true;
+			::stage.scrollUpLock = true;
+			local c_ = this.world2d.CreateActor(this.camera2d.left, this.camera2d.top, 1.0, this.Boss2_ClearBack, this.DefaultShotTable());
+			::stage.back <- c_;
+		}
+
+		if (this.count == 420)
+		{
+			this.world2d.RemoveCollisionFromMap(null);
+			this.StageBaseSetting(this.map12);
+		}
+
+		if (this.count == 600)
+		{
+			local t = this.DefaultShotTable();
+			t.flag1 = 1;
+			this.world2d.CreateActor((this.camera2d.left + this.camera2d.right) * 0.5, this.camera2d.top - 512, 1.0, this.Clear_GrifSeed, t);
+		}
+
+		if (this.count == 840)
+		{
+			this.Game_StageClear(1);
+			this.ReleaseStageActor();
+		}
+	});
+}
+

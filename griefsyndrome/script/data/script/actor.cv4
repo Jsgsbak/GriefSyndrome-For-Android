@@ -1,0 +1,365 @@
+this.base_actor <- {};
+this.actor <- {};
+this.CompileFile("data/actor/playerCommon.nut", ::Actor2D);
+this.CompileFile("data/actor/actorCommon.nut", ::Actor2D);
+this.CompileFile("data/actor/characterCommon.nut", ::Actor2D);
+this.CompileFile("data/actor/objectCommon.nut", ::Actor2D);
+this.CompileFile("data/actor/bullet.nut", ::Actor2D);
+this.CompileFile("data/actor/bulletEnemy.nut", ::Actor2D);
+this.CompileFile("data/actor/bulletBoss.nut", ::Actor2D);
+this.CompileFile("data/actor/effect.nut", ::Actor2D);
+::Actor2D.u <- null;
+::Actor2D.actorType <- 0;
+::Actor2D.score <- 0;
+::Actor2D.type <- null;
+::Actor2D.name <- null;
+::Actor2D.life <- 999;
+::Actor2D.lifeMax <- 999;
+::Actor2D.soul <- 99999;
+::Actor2D.soulMax <- 99999;
+::Actor2D.soulCount <- 0;
+::Actor2D.revive <- 0;
+::Actor2D.reviveMax <- 180;
+::Actor2D.level <- 1;
+::Actor2D.exp <- 0;
+::Actor2D.expMax <- 100;
+::Actor2D.regainLife <- 0;
+::Actor2D.baseAtk <- 0;
+::Actor2D.atkOffset <- 0.1;
+::Actor2D.baseDef <- 1.0;
+::Actor2D.input <- null;
+::Actor2D.owner <- null;
+::Actor2D.deadCount <- 0;
+::Actor2D.isAir <- false;
+::Actor2D.immuneGravity <- false;
+::Actor2D.fallCount <- 0;
+::Actor2D.stateLabel <- null;
+::Actor2D.sitLabel <- null;
+::Actor2D.wallLabel <- null;
+::Actor2D.topLabel <- null;
+::Actor2D.fallLabel <- null;
+::Actor2D.keyFlag <- false;
+::Actor2D.setG <- 0.0;
+::Actor2D.hitG <- 0.0;
+::Actor2D.keyAction <- null;
+::Actor2D.updateList <- null;
+::Actor2D.func <- null;
+::Actor2D.basePos <- null;
+::Actor2D.scrollOut_margin <- 0.0;
+::Actor2D.hitTable <- null;
+::Actor2D.hitStopTime <- 0;
+::Actor2D.invin <- 0;
+::Actor2D.hitTarget <- null;
+::Actor2D.hitAction <- null;
+::Actor2D.hitEvent <- null;
+::Actor2D.hitEffect <- null;
+::Actor2D.endure <- 0;
+::Actor2D.endureMax <- 0;
+::Actor2D.fontType <- null;
+::Actor2D.playerResist <- false;
+::Actor2D.option <- null;
+::Actor2D.aList <- null;
+::Actor2D.target <- null;
+::Actor2D.atkCount <- 0;
+::Actor2D.noTarget <- false;
+::Actor2D.damageEvent <- null;
+::Actor2D.count <- 0;
+::Actor2D.flag1 <- 0;
+::Actor2D.flag2 <- 0;
+::Actor2D.flag3 <- 0;
+function SetActor( name_, x_, y_, dir_, init_, t )
+{
+	if (t)
+	{
+		if (name_ in t)
+		{
+			t.name = name_;
+		}
+	}
+
+	local actor_ = this.world2d.CreateActor(x_, y_, dir_, init_, t);
+	return actor_;
+}
+
+this.Actor2D.ReleaseActor <- function ()
+{
+	if (this.name in this.actor)
+	{
+		if (this.actor[this.name] == this)
+		{
+			delete ::actor[this.name];
+		}
+	}
+
+	this.Release();
+};
+this.Actor2D.GainFullLife <- function ()
+{
+	this.life = this.lifeMax;
+	this.regainLife = this.lifeMax;
+};
+function ResetActor()
+{
+	::actor = {};
+	::playerID = 0;
+	::enemyID = 0;
+	::objectID = 0;
+}
+
+function ResetNonPlayerActor()
+{
+	foreach( idx, a in this.actor )
+	{
+		if (a.updateGroup & 1)
+		{
+			continue;
+		}
+
+		delete ::actor[idx];
+	}
+
+	::enemyID = 0;
+	::objectID = 0;
+}
+
+function ReleaseNonPlayer()
+{
+	this.ResetNonPlayerActor();
+	::stage.stageActor = {};
+	::stage.stageActorID = 0;
+	this.world2d.ReleaseActor(0 | 2 | 4 | 16);
+}
+
+this.Actor2D.HitReset <- function ()
+{
+	this.hitTarget = [];
+};
+function KeyActionCheck()
+{
+	if (this.keyAction != null)
+	{
+		if (this.keyAction.len() > this.keyTake)
+		{
+			if (this.keyAction[this.keyTake])
+			{
+				this.keyAction[this.keyTake].call(this);
+			}
+		}
+	}
+}
+
+function UpdateStopCheck()
+{
+	if (this.game.timeStop > 0)
+	{
+		return true;
+	}
+
+	return false;
+}
+
+function FieldCheck()
+{
+	if (this.vx > 0.0 && this.hitRight)
+	{
+		if (this.wallLabel)
+		{
+			this.wallLabel();
+		}
+	}
+	else if (this.vx > 0.0 && this.x >= this.camera2d.right)
+	{
+		if (this.wallLabel)
+		{
+			this.wallLabel();
+		}
+	}
+
+	if (this.vx < 0.0 && this.hitLeft)
+	{
+		if (this.wallLabel)
+		{
+			this.wallLabel();
+		}
+	}
+	else if (this.vx < 0.0 && this.x <= this.camera2d.left)
+	{
+		if (this.wallLabel)
+		{
+			this.wallLabel();
+		}
+	}
+}
+
+function FieldCheckPlayer()
+{
+	if (this.vx > 0.0 && this.hitRight)
+	{
+		if (this.wallLabel)
+		{
+			this.wallLabel();
+		}
+
+		return;
+	}
+
+	if (this.vx < 0.0 && this.hitLeft)
+	{
+		if (this.wallLabel)
+		{
+			this.wallLabel();
+		}
+
+		return;
+	}
+}
+
+function IsGetDownCheck()
+{
+	if (this.hitBottom)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+function SetNearTarget()
+{
+	local tempDist = -1.0;
+	local tempTarget;
+
+	for( local i = 1; i <= this.playerID; i++ )
+	{
+		if ("player" + i in this.actor)
+		{
+			local a = this.actor["player" + i];
+
+			if (a.life <= 0 || a.soul <= 0 || !a.isActive || a.noTarget)
+			{
+			}
+			else
+			{
+				local d = (a.x - this.x) * (a.x - this.x) + (a.y - this.y) * (a.y - this.y);
+
+				if (tempDist < 0.0 || tempDist > d)
+				{
+					tempDist = d;
+					tempTarget = this.actor["player" + i];
+				}
+			}
+		}
+	}
+
+	if (tempTarget)
+	{
+		this.target = tempTarget.name;
+		return tempDist;
+	}
+	else
+	{
+		return 0.0;
+	}
+}
+
+function SetRandomTarget()
+{
+	local tempTarget = [];
+
+	for( local i = 1; i <= this.playerID; i++ )
+	{
+		if ("player" + i in this.actor)
+		{
+			local a = this.actor["player" + i];
+
+			if (a.life <= 0 || a.soul <= 0 || !a.isActive || a.noTarget)
+			{
+			}
+			else
+			{
+				tempTarget.append("player" + i);
+			}
+		}
+	}
+
+	if (tempTarget.len())
+	{
+		local T_ = this.rand() % tempTarget.len();
+		this.target = tempTarget[T_];
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+function GetTargetDist()
+{
+	if (this.target != null)
+	{
+		if (this.target in this.actor)
+		{
+			local t = this.actor[this.target];
+
+			if (t != null)
+			{
+				if (t.isActive)
+				{
+					local d = (t.x - this.x) * (t.x - this.x) + (t.y - this.y) * (t.y - this.y);
+					return d;
+				}
+				else
+				{
+					return false;
+				}
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else
+	{
+		return false;
+	}
+}
+
+function Revive()
+{
+	this.LabelClear();
+	this.isAir = true;
+	this.life = this.lifeMax;
+	this.isActive = true;
+	this.vx = 0.0;
+	this.vy = 0.0;
+	this.count = 0;
+	this.deadCount = 0;
+	this.stateLabel = null;
+	this.sitLabel = null;
+	this.aList = [];
+	this.keyAction = [];
+	this.SetMotion(this.u.CA, 0);
+	this.invin = 0;
+	this.rz = 0;
+	this.isActive = true;
+	this.isVisible = true;
+}
+
+function SetPlayer()
+{
+	this.world2d.CreateActor(0, 50, 1.0, this.funcInitBG, null);
+}
+
+function SetCharacter( name_, voice_, data_, setPos_, param_ = {} )
+{
+	this.world2d.CreateActor(0, 50, 1.0, this.funcInitBG, null);
+}
+

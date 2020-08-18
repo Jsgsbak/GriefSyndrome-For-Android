@@ -1,0 +1,1355 @@
+function Init_Homura( t )
+{
+	this.type = 0;
+	this.fontType = 0;
+	this.PlayerInit("homura", t.playerID);
+	this.CompileFile("data/actor/homura.nut", this.u);
+	this.u.CA = 0;
+	this.u.regainCycle = 5;
+	this.u.regainRate = 2;
+	this.u.magicUse = 50;
+	this.atkOffset = 0.5;
+	this.SetMotion(this.u.CA + 0, 0);
+	this.SetUpdateFunction(this.u.Update_Normal);
+	this.fallLabel = this.u.BeginFall;
+	this.u.dexLV = 5;
+	this.world2d.CreateActor(this.x, this.y, this.direction, this.Player_Shadow, this.DefaultShotTable());
+}
+
+function Init_Sayaka( t )
+{
+	this.type = 4;
+	this.fontType = 4;
+	this.PlayerInit("sayaka", t.playerID);
+	this.CompileFile("data/actor/sayaka.nut", this.u);
+	this.u.CA = 100;
+	this.u.regainCycle = 3;
+	this.u.regainRate = 1;
+	this.u.magicUse = 20;
+	this.u.warikomi = function ()
+	{
+		this.u.SetBariaState.call(this, false);
+	};
+	this.SetMotion(this.u.CA + 0, 0);
+	this.SetUpdateFunction(this.u.Update_Normal);
+	this.fallLabel = this.u.BeginFall;
+	this.u.dexLV = 5;
+	this.world2d.CreateActor(this.x, this.y, this.direction, this.Player_Shadow, this.DefaultShotTable());
+}
+
+function Init_Kyouko( t )
+{
+	this.type = 1;
+	this.fontType = 1;
+	this.PlayerInit("kyouko", t.playerID);
+	this.CompileFile("data/actor/kyouko.nut", this.u);
+	this.u.CA = 200;
+	this.u.regainCycle = 5;
+	this.u.regainRate = 2;
+	this.u.magicUse = 35;
+	this.SetMotion(this.u.CA + 0, 0);
+	this.SetUpdateFunction(this.u.Update_Normal);
+	this.fallLabel = this.u.BeginFall;
+	this.u.dexLV = 5;
+	this.option = [
+		null
+	];
+	this.world2d.CreateActor(this.x, this.y, this.direction, this.Player_Shadow, this.DefaultShotTable());
+}
+
+function Init_Mami( t )
+{
+	this.type = 3;
+	this.fontType = 3;
+	this.PlayerInit("mami", t.playerID);
+	this.CompileFile("data/actor/mami.nut", this.u);
+	this.u.CA = 300;
+	this.u.regainCycle = 5;
+	this.u.regainRate = 2;
+	this.u.magicUse = 100;
+	this.SetMotion(this.u.CA + 0, 0);
+	this.SetUpdateFunction(this.u.Update_Normal);
+	this.fallLabel = this.u.BeginFall;
+	this.u.dexLV = 5;
+	this.option = [
+		null,
+		null
+	];
+	this.world2d.CreateActor(this.x, this.y, this.direction, this.Player_Shadow, this.DefaultShotTable());
+}
+
+function Init_Madoka( t )
+{
+	this.type = 2;
+	this.fontType = 2;
+	this.PlayerInit("madoka", t.playerID);
+	this.CompileFile("data/actor/madoka.nut", this.u);
+	this.u.CA = 400;
+	this.u.regainCycle = 5;
+	this.u.regainRate = 2;
+	this.u.magicUse = 45;
+	this.SetMotion(this.u.CA + 0, 0);
+	this.SetUpdateFunction(this.u.Update_Normal);
+	this.fallLabel = this.u.BeginFall;
+	this.u.dexLV = 5;
+	this.option = [
+		null,
+		null,
+		null
+	];
+	this.world2d.CreateActor(this.x, this.y, this.direction, this.Player_Shadow, this.DefaultShotTable());
+}
+
+function Init_Homura_M( t )
+{
+	this.type = 5;
+	this.fontType = 0;
+	this.PlayerInit("homura", t.playerID);
+	this.CompileFile("data/actor/homura_m.nut", this.u);
+	this.u.CA = 500;
+	this.callbackMask = 2 | 32;
+	this.u.regainCycle = 5;
+	this.u.regainRate = 2;
+	this.u.magicUse = 50;
+	this.atkOffset = 0.5;
+	this.SetMotion(this.u.CA + 0, 0);
+	this.SetUpdateFunction(this.u.Update_Normal);
+	this.fallLabel = this.u.BeginFall;
+	this.u.dexLV = 5;
+	this.option = [
+		null
+	];
+	this.world2d.CreateActor(this.x, this.y, this.direction, this.Player_Shadow, this.DefaultShotTable());
+}
+
+function Init_QB( t )
+{
+	this.type = 6;
+	this.fontType = 0;
+	this.PlayerInit_QB("QB", t.playerID);
+	this.callbackGroup = 1 | 2;
+	this.CompileFile("data/actor/QB.nut", this.u);
+	this.u.CA = 600;
+	this.u.regainCycle = 1;
+	this.u.regainRate = 0;
+	this.u.magicUse = 0;
+	this.atkOffset = 0.1;
+	this.SetMotion(this.u.CA + 0, 0);
+	this.SetUpdateFunction(this.u.Update_Normal);
+	this.fallLabel = this.u.BeginFall;
+	this.u.dexLV = 5;
+	this.world2d.CreateActor(this.x, this.y, this.direction, this.Player_Shadow, this.DefaultShotTable());
+}
+
+function Init_Enemy1A( t )
+{
+	this.level = 3;
+	this.lifeMax = 25;
+	this.baseAtk = 10;
+	this.EnemyInit(t);
+	this.CompileFile("data/actor/Enemy1A.nut", this.u);
+	this.callbackGroup = 2;
+	this.callbackMask = 1;
+	this.collisionMask = 8 | 4;
+	this.u.CA = 2000;
+	this.sx = 0.69999999;
+	this.sy = 0.69999999;
+	this.u.sizeRate = 0.69999999;
+	this.SetCollisionScaling(this.u.sizeRate, this.u.sizeRate, 1.0);
+	this.fallLabel = this.u.BeginFall;
+	this.SetMotion(this.u.CA, 0);
+	this.SetUpdateFunction(this.u.Update_Normal);
+	this.exp = 1;
+	this.score = 100;
+}
+
+function Init_Enemy1A_Hide( t )
+{
+	this.Init_Enemy1A(t);
+	this.isActive = false;
+	this.SetOnScreenCallbackFunction(this.u.CameraIN_Common, 96);
+}
+
+function Init_Enemy1A_Shot( t )
+{
+	this.Init_Enemy1A(t);
+	this.SetUpdateFunction(this.u.Update_ShotOnly);
+	this.isActive = false;
+	this.SetOnScreenCallbackFunction(this.u.CameraIN_Common, 96);
+}
+
+function Init_Enemy1A_Big( t )
+{
+	this.level = 3;
+	this.endureMax = 600;
+	this.baseAtk = 15;
+	this.lifeMax = 300;
+	this.EnemyInit(t);
+	this.CompileFile("data/actor/Enemy1A.nut", this.u);
+	this.callbackGroup = 2;
+	this.callbackMask = 1;
+	this.collisionMask = 8 | 4;
+	this.u.CA = 2000;
+	this.SetCollisionScaling(this.u.sizeRate, this.u.sizeRate, 1.0);
+	this.fallLabel = this.u.BeginFall;
+	this.SetMotion(this.u.CA, 0);
+	this.SetUpdateFunction(this.u.Update_Normal);
+	this.exp = 5;
+	this.score = 500;
+}
+
+function Init_Enemy1A_Slave( t )
+{
+	this.level = 2;
+	this.lifeMax = 22;
+	this.baseAtk = 10;
+	this.EnemyInit(t);
+	this.CompileFile("data/actor/Enemy1A.nut", this.u);
+	this.callbackGroup = 2;
+	this.callbackMask = 1;
+	this.collisionMask = 8 | 4;
+	this.u.CA = 2000;
+	this.sx = 0.69999999;
+	this.sy = 0.69999999;
+	this.u.sizeRate = 0.69999999;
+	this.SetCollisionScaling(this.u.sizeRate, this.u.sizeRate, 1.0);
+	this.fallLabel = this.u.BeginFall;
+	this.SetMotion(this.u.CA, 0);
+	this.SetUpdateFunction(this.u.Update_Normal);
+	this.exp = 1;
+	this.score = 0;
+}
+
+function Init_Enemy1B( t )
+{
+	this.lifeMax = 10;
+	this.level = 3;
+	this.baseAtk = 10;
+	this.EnemyInit(t);
+	this.CompileFile("data/actor/Enemy1B.nut", this.u);
+	this.collisionMask = 0;
+	this.isAir = true;
+	this.immuneGravity = true;
+	this.u.CA = 2100;
+	this.SetCollisionScaling(this.u.sizeRate, this.u.sizeRate, 1.0);
+	this.SetMotion(this.u.CA, 0);
+	this.SetUpdateFunction(this.u.Update_Normal);
+	this.exp = 1;
+	this.score = 100;
+}
+
+function Init_Enemy1B_Hide( t )
+{
+	this.Init_Enemy1B(t);
+	this.isActive = false;
+	this.SetOnScreenCallbackFunction(this.u.CameraIN_Common, 96);
+}
+
+function Init_Enemy1B_Thorn( t )
+{
+	this.Init_Enemy1B_Hide(t);
+	this.aList = [];
+	local l = this.ActionData();
+	l.script = this.u.BeginSlideWalk;
+	l.time = 20;
+	this.aList.append(l);
+	local l = this.ActionData();
+	l.script = this.u.BeginAttackA;
+	l.val = 0;
+	this.aList.append(l);
+}
+
+function Init_Enemy1B_BackThorn( t )
+{
+	this.Init_Enemy1B(t);
+	this.isActive = false;
+	this.SetOnScreenCallbackFunction(function ()
+	{
+		this.direction = 1.0;
+		this.x = this.camera2d.left - 128;
+	}, 96);
+	this.aList = [];
+	local l = this.ActionData();
+	l.script = this.u.BeginSlideWalk;
+	l.time = 20;
+	this.aList.append(l);
+	local l = this.ActionData();
+	l.script = this.u.BeginAttackA;
+	l.val = 0;
+	this.aList.append(l);
+}
+
+function Init_Enemy1C( t )
+{
+	this.lifeMax = 25;
+	this.level = 3;
+	this.baseAtk = 10;
+	this.EnemyInit(t);
+	this.CompileFile("data/actor/Enemy1C.nut", this.u);
+	this.collisionMask = 8;
+	this.isAir = true;
+	this.immuneGravity = true;
+	this.u.CA = 2200;
+	this.sx = 0.69999999;
+	this.sy = 0.69999999;
+	this.u.sizeRate = 0.69999999;
+	this.SetCollisionScaling(this.u.sizeRate, this.u.sizeRate, 1.0);
+	this.SetMotion(this.u.CA, 0);
+	this.SetUpdateFunction(this.u.Update_Normal);
+	this.owner = this.name;
+	this.exp = 5;
+	this.score = 500;
+}
+
+function Init_Enemy1C_LR( t )
+{
+	this.Init_Enemy1C_Hide(t);
+	this.SetUpdateFunction(this.u.Update_LR_Bell);
+}
+
+function Init_Enemy1C_Hide( t )
+{
+	this.Init_Enemy1C(t);
+	this.isActive = false;
+	this.SetOnScreenCallbackFunction(function ()
+	{
+		this.u.CameraIN_Common.call(this);
+		this.aList = [];
+		local l = this.ActionData();
+		l.script = this.u.BeginSlideWalk;
+		l.time = 20;
+		this.aList.append(l);
+		local l = this.ActionData();
+		l.script = this.u.BeginWalkStop;
+		this.aList.append(l);
+		local l = this.ActionData();
+		l.script = this.u.FreeCheck;
+		this.aList.append(l);
+		local l = this.ActionData();
+		l.script = this.u.BeginAttackB;
+		this.aList.append(l);
+	}, 96);
+}
+
+function Init_Enemy1C_Big( t )
+{
+	this.lifeMax = 100;
+	this.level = 3;
+	this.baseAtk = 15;
+	this.EnemyInit(t);
+	this.CompileFile("data/actor/Enemy1C.nut", this.u);
+	this.collisionMask = 8;
+	this.isAir = true;
+	this.immuneGravity = true;
+	this.priority = 100;
+	this.u.CA = 2200;
+	this.SetCollisionScaling(this.u.sizeRate, this.u.sizeRate, 1.0);
+	this.SetMotion(this.u.CA, 0);
+	this.SetUpdateFunction(this.u.Update_Normal);
+	this.owner = this.name;
+	this.exp = 5;
+	this.score = 500;
+}
+
+function Init_Boss1( t )
+{
+	this.lifeMax = 1500;
+	this.level = 5;
+	this.baseAtk = 10;
+	this.BossInit(t);
+	this.CompileFile("data/actor/Boss1.nut", this.u);
+	this.collisionMask = 8;
+	this.isActive = true;
+	this.priority = 90;
+	this.u.CA = 2900;
+	this.u.List <- [];
+	this.SetMotion(this.u.CA, 0);
+	this.SetUpdateFunction(this.u.Update_Normal);
+	this.fallLabel = this.u.BeginFall;
+	this.exp = 0;
+	this.score = 10000;
+	::StageMainAct.bossAtackable = true;
+	this.u.BattleBegin_Init.call(this);
+	local l = this.ActionData();
+	l.script = this.u.FreeCheck;
+	this.aList.append(l);
+	local l = this.ActionData();
+	l.script = this.u.BeginCry;
+	this.aList.append(l);
+	local l = this.ActionData();
+	l.script = this.u.FreeCheck;
+	this.aList.append(l);
+	local l = this.ActionData();
+	l.script = this.u.BeginStand;
+	l.time = 60;
+	l.val = 0.0;
+	this.aList.append(l);
+}
+
+function Init_ThornBall( t )
+{
+}
+
+function Init_Enemy2A( t )
+{
+	this.lifeMax = 30;
+	this.level = 6;
+	this.baseAtk = 5;
+	this.EnemyInit(t);
+	this.CompileFile("data/actor/Enemy2A.nut", this.u);
+	this.collisionMask = 8 | 4;
+	this.isActive = true;
+	this.u.CA = 3000;
+	this.u.sizeRate = 0.60000002;
+	this.sx = 0.60000002;
+	this.sy = 0.60000002;
+	this.SetCollisionScaling(this.u.sizeRate, this.u.sizeRate, 1.0);
+	this.fallLabel = this.u.BeginFall;
+	this.SetMotion(this.u.CA, 0);
+	this.SetUpdateFunction(this.u.Update_Normal);
+	this.exp = 1;
+	this.score = 100;
+}
+
+function Init_Enemy2A_Hide( t )
+{
+	this.Init_Enemy2A(t);
+	this.isActive = false;
+	this.SetOnScreenCallbackFunction(this.u.CameraIN_Common, 96);
+}
+
+function Init_Enemy2A_BackWait( t )
+{
+	this.Init_Enemy2A(t);
+	this.scrollOut_margin = null;
+	this.u.Begin_WaitA.call(this, null);
+}
+
+function Init_Enemy2A_AttackIn( t )
+{
+	this.Init_Enemy2A(t);
+
+	if (this.x >= (::camera2d.left + ::camera2d.right) * 0.5)
+	{
+		this.u.BeginAttackD_Fast.call(this, -1.0);
+	}
+	else
+	{
+		this.u.BeginAttackD_Fast.call(this, 1.0);
+	}
+}
+
+function Init_Enemy2A_AttackIn_Hide( t )
+{
+	this.Init_Enemy2A(t);
+	this.isActive = false;
+	this.SetOnScreenCallbackFunction(function ()
+	{
+		this.u.CameraIN_Common;
+
+		if (this.x >= (::camera2d.left + ::camera2d.right) * 0.5)
+		{
+			this.u.BeginAttackD_Fast.call(this, -1.0);
+		}
+		else
+		{
+			this.u.BeginAttackD_Fast.call(this, 1.0);
+		}
+	}, 96);
+}
+
+function Init_Enemy2A_Big( t )
+{
+	this.level = 6;
+	this.baseAtk = 10;
+	this.lifeMax = 350;
+	this.endureMax = 600;
+	this.EnemyInit(t);
+	this.CompileFile("data/actor/Enemy2A.nut", this.u);
+	this.collisionMask = 8 | 4;
+	this.isActive = true;
+	this.u.CA = 3000;
+	this.SetMotion(this.u.CA, 0);
+	this.SetUpdateFunction(this.u.Update_Normal);
+	this.fallLabel = this.u.BeginFall;
+	this.exp = 2;
+	this.score = 500;
+}
+
+function Init_Enemy2A_Big_AttackIn( t )
+{
+	this.Init_Enemy2A_Big(t);
+
+	if (this.x >= (::camera2d.left + ::camera2d.right) * 0.5)
+	{
+		this.u.BeginAttackD_Fast.call(this, -1.0);
+	}
+	else
+	{
+		this.u.BeginAttackD_Fast.call(this, 1.0);
+	}
+}
+
+function Init_Enemy2A_Slave( t )
+{
+	this.lifeMax = 25;
+	this.level = 5;
+	this.baseAtk = 5;
+	this.EnemyInit(t);
+	this.CompileFile("data/actor/Enemy2A.nut", this.u);
+	this.collisionMask = 8 | 4;
+	this.isActive = true;
+	this.u.CA = 3000;
+	this.u.sizeRate = 0.60000002;
+	this.sx = 0.60000002;
+	this.sy = 0.60000002;
+	this.SetCollisionScaling(this.u.sizeRate, this.u.sizeRate, 1.0);
+	this.fallLabel = this.u.BeginFall;
+	this.SetMotion(this.u.CA, 0);
+	this.SetUpdateFunction(this.u.Update_Normal);
+	this.exp = 1;
+	this.score = 0;
+}
+
+function Init_Boss2_1( t )
+{
+	this.lifeMax = 250;
+	this.level = 8;
+	this.baseAtk = 20;
+	this.BossInit(t);
+	this.CompileFile("data/actor/Boss2_1.nut", this.u);
+	this.collisionMask = 8 | 4;
+	this.isActive = true;
+	this.priority = 90;
+	this.u.CA = 3800;
+	this.SetMotion(this.u.CA, 0);
+	this.SetUpdateFunction(this.u.Update_Normal);
+	this.owner = this.name;
+	this.exp = 0;
+	this.score = 0;
+	::StageMainAct.bossAtackable = true;
+	this.u.BeginFall.call(this);
+}
+
+function Init_Boss2( t )
+{
+	this.lifeMax = 1500;
+	this.level = 8;
+	this.baseAtk = 20;
+	this.BossInit(t);
+	this.CompileFile("data/actor/Boss2.nut", this.u);
+	this.collisionMask = 8;
+	this.isActive = true;
+	this.priority = 90;
+	this.u.CA = 3900;
+	this.SetMotion(this.u.CA, 0);
+	this.SetUpdateFunction(this.u.Update_Normal);
+	this.owner = this.name;
+	this.exp = 0;
+	this.score = 20000;
+	::StageMainAct.bossAtackable = true;
+	this.u.BattleBegin_Init.call(this);
+	local l = this.ActionData();
+	l.script = this.u.FreeCheck;
+	this.aList.append(l);
+	local l = this.ActionData();
+	l.script = this.u.BeginCry;
+	this.aList.append(l);
+	local l = this.ActionData();
+	l.script = this.u.FreeCheck;
+	this.aList.append(l);
+	local l = this.ActionData();
+	l.script = this.u.BeginStand;
+	l.time = 60;
+	l.val = 0.0;
+	this.aList.append(l);
+}
+
+function Init_Enemy3A( t )
+{
+	this.lifeMax = 35;
+	this.level = 9;
+	this.baseAtk = 10;
+	this.EnemyInit(t);
+	this.CompileFile("data/actor/Enemy3A.nut", this.u);
+	this.collisionMask = 0;
+	this.isActive = true;
+	this.isAir = true;
+	this.immuneGravity = true;
+	this.u.CA = 4000;
+	this.u.sizeRate = 0.69999999;
+	this.sx = this.sy = 0.69999999;
+	this.SetCollisionScaling(this.u.sizeRate, this.u.sizeRate, 1.0);
+	this.SetMotion(this.u.CA, 0);
+	this.SetUpdateFunction(this.u.Update_Normal);
+	this.exp = 2;
+	this.score = 100;
+}
+
+function Init_Enemy3A_Hide( t )
+{
+	this.Init_Enemy3A(t);
+	this.isActive = false;
+	this.SetOnScreenCallbackFunction(this.u.CameraIN_Common, 96);
+}
+
+function Init_Enemy3A_Big( t )
+{
+	this.lifeMax = 80;
+	this.level = 9;
+	this.baseAtk = 15;
+	this.EnemyInit(t);
+	this.CompileFile("data/actor/Enemy3A.nut", this.u);
+	this.collisionMask = 0;
+	this.isActive = true;
+	this.isAir = true;
+	this.immuneGravity = true;
+	this.u.CA = 4000;
+	this.SetCollisionScaling(this.u.sizeRate, this.u.sizeRate, 1.0);
+	this.SetMotion(this.u.CA, 0);
+	this.SetUpdateFunction(this.u.Update_Normal);
+	this.owner = this.name;
+	this.exp = 5;
+	this.score = 500;
+}
+
+function Init_Enemy3A_BossSlabe( t )
+{
+	this.lifeMax = 5;
+	this.level = 8;
+	this.baseAtk = 4;
+	this.EnemyInit(t);
+	this.CompileFile("data/actor/Enemy3A.nut", this.u);
+	this.collisionMask = 0;
+	this.isActive = true;
+	this.isAir = true;
+	this.immuneGravity = true;
+	this.u.CA = 4000;
+	this.u.sizeRate = 0.60000002;
+	this.sx = 0.60000002;
+	this.sy = 0.60000002;
+	this.SetCollisionScaling(this.u.sizeRate, this.u.sizeRate, this.u.sizeRate);
+	this.SetMotion(this.u.CA, 0);
+	this.SetUpdateFunction(this.u.Update_Normal);
+	this.exp = 1;
+	this.score = 0;
+}
+
+function Init_Enemy3B( t )
+{
+	this.level = 9;
+	this.baseAtk = 10;
+	this.lifeMax = 65;
+	this.EnemyInit(t);
+	this.CompileFile("data/actor/Enemy3B.nut", this.u);
+	this.collisionMask = 0;
+	this.isActive = true;
+	this.isAir = true;
+	this.immuneGravity = true;
+	this.u.CA = 4100;
+	this.SetCollisionScaling(this.u.sizeRate, this.u.sizeRate, 1.0);
+	this.SetMotion(this.u.CA, 0);
+	this.SetUpdateFunction(this.u.Update_CRT_Fall);
+	this.exp = 3;
+	this.score = 100;
+}
+
+function Init_Enemy3B_CRT( t )
+{
+	this.Init_Enemy3B(t);
+	this.SetUpdateFunction(this.u.Update_CRT_Fall);
+	this.score = 0;
+}
+
+function Init_Enemy3B_CRT_Hide( t )
+{
+	this.Init_Enemy3B(t);
+	this.SetUpdateFunction(this.u.Update_CRT_Fall);
+	this.isActive = false;
+	this.SetOnScreenCallbackFunction(this.u.CameraIN_Common, 96);
+	this.score = 0;
+}
+
+function Init_Enemy3B_CRT_B( t )
+{
+	this.level = 9;
+	this.baseAtk = 10;
+	this.lifeMax = 150;
+	this.EnemyInit(t);
+	this.CompileFile("data/actor/Enemy3B.nut", this.u);
+	this.collisionMask = 0;
+	this.isActive = true;
+	this.isAir = true;
+	this.immuneGravity = true;
+	this.u.CA = 4100;
+	this.SetCollisionScaling(this.u.sizeRate, this.u.sizeRate, 1.0);
+	this.SetMotion(this.u.CA, 0);
+	this.SetUpdateFunction(this.u.Update_CRT_FallB);
+	this.exp = 3;
+	this.score = 100;
+}
+
+function Init_Enemy3B_CRT_B_Hide( t )
+{
+	this.Init_Enemy3B_CRT_B(t);
+	this.isActive = false;
+	this.SetOnScreenCallbackFunction(this.u.CameraIN_Common, 96);
+}
+
+function Init_Enemy3B_Display( t )
+{
+	this.Init_Enemy3B(t);
+	this.endureMax = 500;
+	this.SetUpdateFunction(this.u.Update_CRT_Display);
+}
+
+function Init_Enemy3B_Display_Hide( t )
+{
+	this.Init_Enemy3B_Display;
+	this.isActive = false;
+	this.SetOnScreenCallbackFunction(this.u.CameraIN_Common, 96);
+}
+
+function Init_Enemy3C( t )
+{
+	this.lifeMax = 30;
+	this.level = 9;
+	this.baseAtk = 5;
+	this.EnemyInit(t);
+	this.CompileFile("data/actor/Enemy3C.nut", this.u);
+	this.direction = 1.0;
+	this.isActive = true;
+	this.isAir = true;
+	this.immuneGravity = true;
+	this.u.CA = 4200;
+	this.SetMotion(this.u.CA, 0);
+	this.SetUpdateFunction(this.u.Update_Normal);
+	this.exp = 0;
+	this.score = 0;
+}
+
+function Init_Enemy3Cb( t )
+{
+	this.lifeMax = 30;
+	this.level = 9;
+	this.baseAtk = 5;
+	this.EnemyInit(t);
+	this.CompileFile("data/actor/Enemy3Cb.nut", this.u);
+	this.direction = 1.0;
+	this.isActive = true;
+	this.isAir = true;
+	this.immuneGravity = true;
+	this.u.CA = 4200;
+	this.SetMotion(this.u.CA, 0);
+	this.SetUpdateFunction(this.u.Update_Normal);
+	this.exp = 0;
+	this.score = 0;
+}
+
+function Init_Boss3( t )
+{
+	this.lifeMax = 750;
+	this.level = 11;
+	this.baseAtk = 10;
+	this.BossInit(t);
+	this.CompileFile("data/actor/Boss3.nut", this.u);
+	this.immuneGravity = true;
+	this.isActive = true;
+	this.priority = 90;
+	this.u.CA = 4900;
+	this.SetMotion(this.u.CA, 0);
+	this.SetUpdateFunction(this.u.Update_Normal);
+	this.exp = 0;
+	this.score = 10000;
+	::StageMainAct.bossAtackable = true;
+	this.u.rotatePos <- this.Vector3();
+	this.u.rotateAngle <- 0.0;
+	this.u.rotateRange <- 0.0;
+	this.u.rotateSpeed <- 0.0;
+	this.u.rotateUpdate <- null;
+	this.u.BattleBegin_Init.call(this);
+	local l = this.ActionData();
+	l.script = this.u.FreeCheck;
+	this.aList.append(l);
+}
+
+function Init_Boss3_Dummy( t )
+{
+	this.lifeMax = 2500;
+	this.baseAtk = 10;
+	this.baseDef = 0.0;
+	this.EnemyInit(t);
+	this.CompileFile("data/actor/Boss3_Dummy.nut", this.u);
+	this.immuneGravity = true;
+	this.isActive = true;
+	this.priority = 90;
+	this.u.CA = 4900;
+	this.u.attackType <- 4;
+	this.u.posRotate <- 0.0;
+	this.u.PosID <- 0;
+	this.SetMotion(this.u.CA + 40, 4);
+	this.SetUpdateFunction(this.u.Update_Normal);
+}
+
+function Init_Enemy4A( t )
+{
+	this.lifeMax = 50;
+	this.level = 12;
+	this.endureMax = 400;
+	this.baseAtk = 8;
+	this.EnemyInit(t);
+	this.CompileFile("data/actor/Enemy4A.nut", this.u);
+	this.collisionMask = 8 | 4;
+	this.isActive = true;
+	this.u.CA = 6000;
+	this.u.sizeRate = 0.75;
+	this.sx = 0.75;
+	this.sy = 0.75;
+	this.SetCollisionScaling(this.u.sizeRate, this.u.sizeRate, 1.0);
+	this.SetMotion(this.u.CA, 0);
+	this.SetUpdateFunction(this.u.Update_Normal);
+	this.exp = 3;
+	this.score = 500;
+	this.u.BeginPop.call(this);
+}
+
+function Init_Enemy4A_Boss( t )
+{
+	this.lifeMax = 50;
+	this.level = 11;
+	this.endureMax = 400;
+	this.baseAtk = 5;
+	this.EnemyInit(t);
+	this.CompileFile("data/actor/Enemy4A.nut", this.u);
+	this.collisionMask = 8 | 4;
+	this.isActive = true;
+	this.u.CA = 6000;
+	this.u.sizeRate = 0.75;
+	this.sx = 0.75;
+	this.sy = 0.75;
+	this.SetCollisionScaling(this.u.sizeRate, this.u.sizeRate, 1.0);
+	this.SetMotion(this.u.CA, 0);
+	this.SetUpdateFunction(this.u.Update_Normal);
+	this.exp = 1;
+	this.score = 0;
+	this.u.BeginPop.call(this);
+}
+
+function Init_Enemy4A_Small( t )
+{
+	this.lifeMax = 30;
+	this.level = 12;
+	this.endureMax = 200;
+	this.baseAtk = 4;
+	this.EnemyInit(t);
+	this.CompileFile("data/actor/Enemy4A.nut", this.u);
+	this.collisionMask = 8 | 4;
+	this.isActive = true;
+	this.u.CA = 6000;
+	this.u.sizeRate = 0.5;
+	this.sx = 0.5;
+	this.sy = 0.5;
+	this.SetCollisionScaling(this.u.sizeRate, this.u.sizeRate, 1.0);
+	this.SetMotion(this.u.CA, 0);
+	this.SetUpdateFunction(this.u.Update_Normal);
+	this.exp = 1;
+	this.score = 100;
+	this.u.BeginPop.call(this);
+}
+
+function Init_Enemy4A_Boss_Small( t )
+{
+	this.lifeMax = 15;
+	this.level = 11;
+	this.endureMax = 200;
+	this.baseAtk = 3;
+	this.EnemyInit(t);
+	this.CompileFile("data/actor/Enemy4A.nut", this.u);
+	this.collisionMask = 8 | 4;
+	this.isActive = true;
+	this.u.CA = 6000;
+	this.u.sizeRate = 0.5;
+	this.sx = 0.5;
+	this.sy = 0.5;
+	this.SetCollisionScaling(this.u.sizeRate, this.u.sizeRate, 1.0);
+	this.SetMotion(this.u.CA, 0);
+	this.SetUpdateFunction(this.u.Update_Normal);
+	this.exp = 1;
+	this.score = 0;
+	this.u.BeginPop.call(this);
+}
+
+function Init_Enemy4A_Big( t )
+{
+	this.lifeMax = 100;
+	this.level = 12;
+	this.endureMax = 600;
+	this.baseAtk = 10;
+	this.EnemyInit(t);
+	this.CompileFile("data/actor/Enemy4A.nut", this.u);
+	this.collisionMask = 8 | 4;
+	this.isActive = true;
+	this.u.CA = 6000;
+	this.SetCollisionScaling(this.u.sizeRate, this.u.sizeRate, 1.0);
+	this.SetMotion(this.u.CA, 0);
+	this.SetUpdateFunction(this.u.Update_Normal);
+	this.exp = 5;
+	this.score = 1000;
+	this.u.BeginPop.call(this);
+}
+
+function Init_Enemy4B( t )
+{
+	this.lifeMax = 60;
+	this.level = 12;
+	this.endureMax = 400;
+	this.baseAtk = 8;
+	this.EnemyInit(t);
+	this.CompileFile("data/actor/Enemy4B.nut", this.u);
+	this.collisionMask = 8 | 4;
+	this.isActive = true;
+	this.u.CA = 6100;
+	this.u.sizeRate = 0.75;
+	this.sx = 0.75;
+	this.sy = 0.75;
+	this.SetCollisionScaling(this.u.sizeRate, this.u.sizeRate, 1.0);
+	this.SetMotion(this.u.CA, 0);
+	this.SetUpdateFunction(this.u.Update_Normal);
+	this.exp = 3;
+	this.score = 500;
+	this.u.BeginPop.call(this);
+}
+
+function Init_Enemy4B_Boss( t )
+{
+	this.lifeMax = 40;
+	this.level = 11;
+	this.endureMax = 400;
+	this.baseAtk = 4;
+	this.EnemyInit(t);
+	this.CompileFile("data/actor/Enemy4B.nut", this.u);
+	this.collisionMask = 8 | 4;
+	this.isActive = true;
+	this.u.CA = 6100;
+	this.u.sizeRate = 0.75;
+	this.sx = 0.75;
+	this.sy = 0.75;
+	this.SetCollisionScaling(this.u.sizeRate, this.u.sizeRate, 1.0);
+	this.SetMotion(this.u.CA, 0);
+	this.SetUpdateFunction(this.u.Update_Normal);
+	this.exp = 1;
+	this.score = 0;
+	this.u.BeginPop.call(this);
+}
+
+function Init_Enemy4B_Small( t )
+{
+	this.lifeMax = 35;
+	this.level = 12;
+	this.endureMax = 200;
+	this.baseAtk = 4;
+	this.EnemyInit(t);
+	this.CompileFile("data/actor/Enemy4B.nut", this.u);
+	this.collisionMask = 8 | 4;
+	this.isActive = true;
+	this.u.CA = 6100;
+	this.u.sizeRate = 0.5;
+	this.sx = 0.5;
+	this.sy = 0.5;
+	this.SetCollisionScaling(this.u.sizeRate, this.u.sizeRate, 1.0);
+	this.SetMotion(this.u.CA, 0);
+	this.SetUpdateFunction(this.u.Update_Normal);
+	this.exp = 1;
+	this.score = 100;
+	this.u.BeginPop.call(this);
+}
+
+function Init_Enemy4B_Boss_Small( t )
+{
+	this.lifeMax = 25;
+	this.level = 11;
+	this.endureMax = 200;
+	this.baseAtk = 3;
+	this.EnemyInit(t);
+	this.CompileFile("data/actor/Enemy4B.nut", this.u);
+	this.collisionMask = 8 | 4;
+	this.isActive = true;
+	this.u.CA = 6100;
+	this.u.sizeRate = 0.5;
+	this.sx = 0.5;
+	this.sy = 0.5;
+	this.SetCollisionScaling(this.u.sizeRate, this.u.sizeRate, 1.0);
+	this.SetMotion(this.u.CA, 0);
+	this.SetUpdateFunction(this.u.Update_Normal);
+	this.exp = 1;
+	this.score = 0;
+	this.u.BeginPop.call(this);
+}
+
+function Init_Enemy4B_Big( t )
+{
+	this.lifeMax = 110;
+	this.level = 12;
+	this.endureMax = 600;
+	this.baseAtk = 12;
+	this.EnemyInit(t);
+	this.CompileFile("data/actor/Enemy4B.nut", this.u);
+	this.collisionMask = 8 | 4;
+	this.isActive = true;
+	this.u.CA = 6100;
+	this.SetCollisionScaling(this.u.sizeRate, this.u.sizeRate, 1.0);
+	this.SetMotion(this.u.CA, 0);
+	this.SetUpdateFunction(this.u.Update_Normal);
+	this.exp = 5;
+	this.score = 1000;
+	this.u.BeginPop.call(this);
+}
+
+function Init_Enemy4B_ShotOnly( t )
+{
+	this.Init_Enemy4B(t);
+	this.SetUpdateFunction(this.u.Update_ShotOnly);
+}
+
+function Init_Enemy4B_ShotOnly_Small( t )
+{
+	this.Init_Enemy4B_Small(t);
+	this.SetUpdateFunction(this.u.Update_ShotOnly);
+}
+
+function Init_Enemy4C( t )
+{
+	this.lifeMax = 100;
+	this.level = 12;
+	this.endureMax = 500;
+	this.baseAtk = 11;
+	this.EnemyInit(t);
+	this.CompileFile("data/actor/Enemy4C.nut", this.u);
+	this.collisionMask = 8 | 4;
+	this.isActive = true;
+	this.u.CA = 6200;
+	this.u.sizeRate = 0.75;
+	this.sx = 0.75;
+	this.sy = 0.75;
+	this.SetCollisionScaling(this.u.sizeRate, this.u.sizeRate, 1.0);
+	this.SetMotion(this.u.CA, 0);
+	this.SetUpdateFunction(this.u.Update_Normal);
+	this.exp = 3;
+	this.score = 1000;
+	this.u.BeginPop.call(this);
+}
+
+function Init_Enemy4C_Boss( t )
+{
+	this.lifeMax = 40;
+	this.level = 11;
+	this.endureMax = 500;
+	this.baseAtk = 9;
+	this.EnemyInit(t);
+	this.CompileFile("data/actor/Enemy4C.nut", this.u);
+	this.collisionMask = 8 | 4;
+	this.isActive = true;
+	this.u.CA = 6200;
+	this.u.sizeRate = 0.75;
+	this.sx = 0.75;
+	this.sy = 0.75;
+	this.SetCollisionScaling(this.u.sizeRate, this.u.sizeRate, 1.0);
+	this.SetMotion(this.u.CA, 0);
+	this.SetUpdateFunction(this.u.Update_Normal);
+	this.exp = 1;
+	this.score = 0;
+	this.u.BeginPop.call(this);
+}
+
+function Init_Enemy4C_Small( t )
+{
+	this.lifeMax = 50;
+	this.level = 12;
+	this.endureMax = 300;
+	this.baseAtk = 8;
+	this.EnemyInit(t);
+	this.CompileFile("data/actor/Enemy4C.nut", this.u);
+	this.collisionMask = 8 | 4;
+	this.isActive = true;
+	this.u.CA = 6200;
+	this.u.sizeRate = 0.5;
+	this.sx = 0.5;
+	this.sy = 0.5;
+	this.SetCollisionScaling(this.u.sizeRate, this.u.sizeRate, 1.0);
+	this.SetMotion(this.u.CA, 0);
+	this.SetUpdateFunction(this.u.Update_Normal);
+	this.exp = 1;
+	this.score = 200;
+	this.u.BeginPop.call(this);
+}
+
+function Init_Enemy4C_Boss_Small( t )
+{
+	this.lifeMax = 30;
+	this.level = 11;
+	this.endureMax = 300;
+	this.baseAtk = 6;
+	this.EnemyInit(t);
+	this.CompileFile("data/actor/Enemy4C.nut", this.u);
+	this.collisionMask = 8 | 4;
+	this.isActive = true;
+	this.u.CA = 6200;
+	this.u.sizeRate = 0.5;
+	this.sx = 0.5;
+	this.sy = 0.5;
+	this.SetCollisionScaling(this.u.sizeRate, this.u.sizeRate, 1.0);
+	this.SetMotion(this.u.CA, 0);
+	this.SetUpdateFunction(this.u.Update_Normal);
+	this.exp = 1;
+	this.score = 0;
+	this.u.BeginPop.call(this);
+}
+
+function Init_Enemy4C_Big( t )
+{
+	this.lifeMax = 200;
+	this.level = 12;
+	this.endureMax = 800;
+	this.baseAtk = 15;
+	this.EnemyInit(t);
+	this.CompileFile("data/actor/Enemy4C.nut", this.u);
+	this.collisionMask = 8 | 4;
+	this.isActive = true;
+	this.u.CA = 6200;
+	this.SetCollisionScaling(this.u.sizeRate, this.u.sizeRate, 1.0);
+	this.SetMotion(this.u.CA, 0);
+	this.SetUpdateFunction(this.u.Update_Normal);
+	this.exp = 5;
+	this.score = 2000;
+	this.u.BeginPop.call(this);
+}
+
+function Init_Boss4( t )
+{
+	this.lifeMax = 2000;
+	this.level = 14;
+	this.baseAtk = 10;
+	this.BossInit(t);
+	this.CompileFile("data/actor/Boss4.nut", this.u);
+	this.collisionMask = 8;
+	this.isActive = true;
+	this.priority = 90;
+	this.u.CA = 5900;
+	this.u.List <- [];
+	this.SetMotion(this.u.CA, 0);
+	this.SetUpdateFunction(this.u.Update_Normal);
+	this.exp = 0;
+	this.score = 50000;
+	::StageMainAct.bossAtackable = true;
+	this.u.BattleBegin_Init.call(this);
+}
+
+function Init_Boss5( t )
+{
+	this.level = 17;
+	this.baseAtk = 30;
+	this.lifeMax = 3000;
+	this.BossInit(t);
+	this.CompileFile("data/actor/Boss5.nut", this.u);
+	this.immuneGravity = true;
+	this.isActive = true;
+	this.priority = 90;
+	this.u.CA = 6900;
+	this.SetMotion(this.u.CA, 0);
+	this.SetUpdateFunction(this.u.Update_Normal);
+	this.exp = 0;
+	this.score = 50000;
+	this.u.BattleBegin_Init.call(this);
+	local l = this.ActionData();
+	l.script = this.u.FreeCheck;
+	this.aList.append(l);
+	local l = this.ActionData();
+	l.script = this.u.BeginStand;
+	l.time = 120;
+	l.val = 0.0;
+	this.aList.append(l);
+}
+
+function Init_Enemy6A( t )
+{
+	this.lifeMax = 50;
+	this.level = 18;
+	this.baseAtk = 10;
+	this.EnemyInit(t);
+	this.CompileFile("data/actor/Enemy6A.nut", this.u);
+	this.collisionMask = 0;
+	this.isActive = true;
+	this.isAir = true;
+	this.immuneGravity = true;
+	this.u.CA = 7000;
+	this.SetCollisionScaling(this.u.sizeRate, this.u.sizeRate, 1.0);
+	this.SetMotion(this.u.CA, 0);
+	this.SetUpdateFunction(this.u.Update_Normal);
+	this.exp = 2;
+	this.score = 100;
+}
+
+function Init_Enemy6A_WarpOut( t )
+{
+	this.Init_Enemy6A(t);
+	this.u.BeginWarpOut.call(this, 0);
+}
+
+function Init_Enemy6A_Hide( t )
+{
+	this.Init_Enemy6A(t);
+	this.isActive = false;
+	this.SetOnScreenCallbackFunction(function ()
+	{
+		this.u.CameraIN_Common.call(this);
+		this.u.BeginWarpOut.call(this, 0);
+	}, 96);
+}
+
+function Init_Enemy6A_ShotOnly_Hide( t )
+{
+	this.Init_Enemy6A(t);
+	this.isActive = false;
+	this.SetUpdateFunction(this.u.Update_ShotOnly);
+	this.SetOnScreenCallbackFunction(function ()
+	{
+		this.u.CameraIN_Common.call(this);
+		this.u.BeginWarpOut.call(this, 0);
+	}, 96);
+}
+
+function Init_Enemy6A_BeamAway( t )
+{
+	this.Init_Enemy6A(t);
+	this.SetUpdateFunction(this.u.Update_Away);
+	this.score = 0;
+	this.aList = [];
+	local l = this.ActionData();
+	l.script = this.u.FreeCheck;
+	this.aList.append(l);
+	local l = this.ActionData();
+	l.script = this.u.BeginWalk;
+	l.time = 30;
+	this.aList.append(l);
+	local l = this.ActionData();
+	l.script = this.u.BeginAttackC;
+	this.aList.append(l);
+	local l = this.ActionData();
+	l.script = this.u.FreeCheck;
+	this.aList.append(l);
+}
+
+function Init_Enemy6A_Boss( t )
+{
+	this.lifeMax = 50;
+	this.level = 17;
+	this.baseAtk = 10;
+	this.EnemyInit(t);
+	this.CompileFile("data/actor/Enemy6A.nut", this.u);
+	this.collisionMask = 16;
+	this.isActive = true;
+	this.isAir = true;
+	this.immuneGravity = true;
+	this.u.CA = 7000;
+	this.SetCollisionScaling(this.u.sizeRate, this.u.sizeRate, 1.0);
+	this.SetMotion(this.u.CA, 0);
+	this.SetUpdateFunction(this.u.Update_Normal);
+	this.exp = 1;
+	this.score = 0;
+}
+
+function Init_Enemy6B( t )
+{
+	this.level = 18;
+	this.lifeMax = 75;
+	this.baseAtk = 10;
+	this.EnemyInit(t);
+	this.CompileFile("data/actor/Enemy6B.nut", this.u);
+	this.callbackGroup = 2;
+	this.callbackMask = 1;
+	this.collisionMask = 8 | 4;
+	this.u.CA = 7100;
+	this.fallLabel = this.u.BeginFall;
+	this.SetMotion(this.u.CA, 0);
+	this.SetUpdateFunction(this.u.Update_Normal);
+	this.exp = 2;
+	this.score = 100;
+}
+
+function Init_Enemy6B_Hide( t )
+{
+	this.Init_Enemy6B(t);
+	this.isActive = false;
+	this.SetOnScreenCallbackFunction(this.u.CameraIN_Common, 96);
+}
+
+function Init_Enemy6C( t )
+{
+	this.level = 18;
+	this.lifeMax = 100;
+	this.baseAtk = 10;
+	this.EnemyInit(t);
+	this.CompileFile("data/actor/Enemy6C.nut", this.u);
+	this.callbackGroup = 2;
+	this.callbackMask = 1;
+	this.collisionMask = 8 | 4;
+	this.u.CA = 7200;
+	this.fallLabel = this.u.BeginFall;
+	this.SetMotion(this.u.CA, 0);
+	this.SetUpdateFunction(this.u.Update_Normal);
+	this.exp = 2;
+	this.score = 100;
+}
+
+function Init_Enemy6C_Hide( t )
+{
+	this.Init_Enemy6C(t);
+	this.isActive = false;
+	this.SetOnScreenCallbackFunction(this.u.CameraIN_Common, 96);
+}
+
+function Init_Enemy6C_Atk( t )
+{
+	this.Init_Enemy6C(t);
+	this.u.BeginAttackD.call(this, 0.0);
+}
+
+function Init_Enemy6C_WarpOut( t )
+{
+	this.Init_Enemy6C(t);
+	this.u.BeginWarpOut.call(this, 0.0);
+}
+
+function Init_Boss6( t )
+{
+	this.lifeMax = 3000;
+	this.level = 20;
+	this.baseAtk = 10;
+	this.BossInit(t);
+	this.CompileFile("data/actor/Boss6.nut", this.u);
+	this.immuneGravity = true;
+	this.isActive = true;
+	this.u.sizeRate = 2.0;
+	this.sx = 2.0;
+	this.sy = 2.0;
+	this.priority = 80;
+	this.u.CA = 7900;
+	this.SetMotion(this.u.CA, 0);
+	this.SetUpdateFunction(this.u.Update_Normal);
+	this.u.offSet_x <- 0;
+	this.u.offSet_y <- 0;
+	this.u.posShift <- 0;
+	this.u.FireLine <- 0.0;
+	this.u.FireAngle <- 0.0;
+	this.u.billFall <- true;
+	this.u.FuncCount <- 0;
+	this.u.FuncFlag <- 0;
+	this.u.FuncFlagB <- 0;
+	this.SetCollisionScaling(this.u.sizeRate, this.u.sizeRate, 1.0);
+	this.exp = 0;
+	this.score = 100000;
+	::StageMainAct.bossAtackable = false;
+	this.world2d.CreateActor(this.point0_x, this.point0_y, this.direction, this.Boss6_magic, this.DefaultShotTable());
+	this.u.BattleBegin_Init.call(this);
+}
+
