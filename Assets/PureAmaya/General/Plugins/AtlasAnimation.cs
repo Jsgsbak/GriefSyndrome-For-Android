@@ -26,6 +26,9 @@ namespace PureAmaya.General
         [Header("含有动画的图集")]
         public SpriteAtlas spriteAtlas;
         public SpriteRenderer SpriteRenderer;
+        [Header("使用新的动画播放器")]
+        public bool UseNewAnimPlayer = false;
+
         [Header("同一组动画的统一id（用于控制动画的停止）")]
         public string GroupName = "DefaultGroup";
         [Header("{0}表示GroupName，{1}表示name,{2}表示Length")]
@@ -58,6 +61,10 @@ namespace PureAmaya.General
         /// 在一个动画中正在使用的图片的id
         /// </summary>
         private int PlayingSpriteId = 0;
+
+
+
+
 
         #region 事件组
         public class CommonEvent : UnityEvent { }
@@ -106,9 +113,24 @@ namespace PureAmaya.General
             {
                 if (AnimationId != PlayingId)//阻止多次调用同一动画
                 {
-                    Timing.KillCoroutines(GroupName);
-                    Timing.RunCoroutine(PlayAnimation(AnimationId), GroupName);
 
+                    BeDisabled = false;
+                    PlayingId = AnimationId;
+
+                    if (!UseNewAnimPlayer)
+                    {
+                        //旧的动画播放器
+                        Timing.KillCoroutines(GroupName);
+                        Timing.RunCoroutine(PlayAnimation(AnimationId), GroupName);
+                    }
+                    else
+                    {
+                        //新的动画播放器
+                        CancelInvoke("NewPlayAnimation");
+                        InvokeRepeating("NewPlayAnimation", 0f, AtlasAnimations[AnimationId].Interval);
+                    }
+
+                    //判断该动画是否从0开始，但是仅用来在检查视图中显示
                     if (AtlasAnimations[AnimationId].StartFromZero)
                     {
                         PlayingSpriteId = 0;
@@ -118,14 +140,23 @@ namespace PureAmaya.General
                         PlayingSpriteId = 1;
                     }
 
-                    BeDisabled = false;
-                    PlayingId = AnimationId;
                 }
             }
             else//如果上一帧是因为被禁用物体而停止播放动画，则强制播放动画
             {
-                Timing.KillCoroutines(GroupName);
-                Timing.RunCoroutine(PlayAnimation(AnimationId), GroupName);
+
+                if (!UseNewAnimPlayer)
+                {
+                   //旧的动画播放器
+                    Timing.KillCoroutines(GroupName);
+                    Timing.RunCoroutine(PlayAnimation(AnimationId), GroupName);
+                }
+                else
+                {
+                    //新的动画播放器
+                    CancelInvoke("NewPlayAnimation");
+                    InvokeRepeating("NewPlayAnimation", 0f, AtlasAnimations[AnimationId].Interval);
+                }
 
                 if (AtlasAnimations[AnimationId].StartFromZero)
                 {
@@ -146,6 +177,67 @@ namespace PureAmaya.General
         /// </summary>
         /// <param name="id">数组中一组动画的id</param>
         /// <returns></returns>
+        void NewPlayAnimation()
+        {
+            //  while (true)
+            //  {
+
+            //设置图像
+            SpriteRenderer.sprite = spriteAtlas.GetSprite(string.Format(Format, GroupName,
+                                                                         AtlasAnimations[PlayingId].name, PlayingSpriteId.ToString()));
+
+            //处理 另一个循环（修复起始点循环和常规循环）
+            if (PlayingSpriteId == AtlasAnimations[PlayingId].Length - 1)
+            {
+                if (AtlasAnimations[PlayingId].Cycle)//允许循环
+                {
+
+                    //修复起始点循环
+                    if (AtlasAnimations[PlayingId].BeginningRepair) { PlayingSpriteId = AtlasAnimations[PlayingId].RepairedFirstAtlasId; }
+                    //不修复起始点循环
+                    else
+                    {
+                        if (AtlasAnimations[PlayingId].StartFromZero)
+                        {
+                            PlayingSpriteId = 0;
+                        }
+                        else
+                        {
+                            PlayingSpriteId = 1;
+                        }
+                    }
+                }
+
+                //不循环动画
+                else
+                    {
+                        //调用非循环动画结束事件
+                        AnimStop.Invoke();
+                    //停止该动画播放
+                    CancelInvoke("NewPlayAnimation");
+
+                    //  break;
+                }
+            }
+
+                //动画没有播放到最后一张图片，继续
+                else
+                {
+                    PlayingSpriteId++;
+                }
+
+
+
+          //  }
+        }
+
+
+        /// <summary>
+        /// 控制播放的东西
+        /// </summary>
+        /// <param name="id">数组中一组动画的id</param>
+        /// <returns></returns>
+        [Obsolete("short time animation won't work properly")]
         IEnumerator<float> PlayAnimation(int id)
         {
 

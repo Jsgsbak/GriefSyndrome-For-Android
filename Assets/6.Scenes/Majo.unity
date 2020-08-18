@@ -471,8 +471,8 @@ GameObject:
   - component: {fileID: 1609930913}
   - component: {fileID: 1609930912}
   - component: {fileID: 1609930911}
-  - component: {fileID: 1609930915}
   - component: {fileID: 1609930914}
+  - component: {fileID: 1609930915}
   - component: {fileID: 1609930916}
   m_Layer: 0
   m_Name: Sayaka
@@ -496,6 +496,7 @@ MonoBehaviour:
   spriteAtlas: {fileID: 4343727234628468602, guid: 93ae529101d7a0e429b5f07aeac428bd,
     type: 2}
   SpriteRenderer: {fileID: 0}
+  UseNewAnimPlayer: 1
   GroupName: Sayaka
   Format: '{0}_{1} ({2})'
   PlayDefaultAnimation: 1
@@ -720,7 +721,7 @@ Transform:
   m_GameObject: {fileID: 1609930910}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 3.781913, y: -2.103995, z: 247.61621}
-  m_LocalScale: {x: 1.8, y: 1.8, z: 1}
+  m_LocalScale: {x: 1.6, y: 1.6, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
@@ -739,7 +740,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedMahoshaojo: 4
   Speed: 1
-  JumpForce: 10
+  JumpForce: 3000
+  JumpSpeed: 10
   atlasAnimation: {fileID: 1609930911}
   StandAnimId: 0
   MoveAnimId: 1
@@ -763,7 +765,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 4
+  m_Constraints: 0
 --- !u!61 &1609930916
 BoxCollider2D:
   m_ObjectHideFlags: 0
