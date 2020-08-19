@@ -65,7 +65,7 @@ namespace PureAmaya.General
 
 
         #region 事件组
-        public class CommonEvent : UnityEvent { }
+        public class CommonEvent : UnityEvent<string> { }
         /// <summary>
         /// 非循环动画结束事件
         /// </summary>
@@ -200,7 +200,7 @@ namespace PureAmaya.General
                 else
                 {
                     //调用非循环动画结束事件
-                    AnimStop.Invoke();
+                    AnimStop.Invoke(AtlasAnimations[PlayingId].name);
                     //停止该动画播放
                     CancelInvoke("NewPlayAnimation");
 

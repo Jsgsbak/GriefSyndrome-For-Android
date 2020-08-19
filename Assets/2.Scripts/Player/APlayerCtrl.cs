@@ -21,8 +21,8 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// <summary>
     /// 向左看
     /// </summary>
-    [Header("动画机")]
     readonly Quaternion LookLeft = new Quaternion(0f, 1f, 0f, 0f);
+    [Header("角色移动动画机")]
     public AtlasAnimation atlasAnimation;
     //这些动画ID如果取值-1则直接无视该动画
     public int StandAnimId = 0;
@@ -30,6 +30,15 @@ public abstract class APlayerCtrl : MonoBehaviour
     public int JumpAnimId = 19;
     [Header("平A n段攻击")]
     public int[] zAttackAnimId;
+    [Space(20)]
+    [Header("角色效果动画机")]
+    public AtlasAnimation EffectAnimation;
+    /// <summary>
+    /// 显示攻击效果的物体
+    /// </summary>
+    GameObject Effect;
+    [Header("EffectAnimation中Z的效果动画ID")]
+    public int[] zAttackEffectId;
 
     #region 状态
     /// <summary>
@@ -66,13 +75,17 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// <summary>
     /// 正在用Z攻击
     /// </summary>
-    public bool IsZattacking = false;
+   public bool IsZattacking = false;
+    /// <summary>
+    /// Z可以继续连段
+    /// </summary>
+    public bool ZattackCanGoOn = true;
     #endregion
 
     #region 自带组件
-    Rigidbody2D rigidbody2D;
-    Transform tr;
-    SpriteRenderer spriteRenderer;
+    [HideInInspector]public  Rigidbody2D rigidbody2D;
+    [HideInInspector] public Transform tr;
+    [HideInInspector] public SpriteRenderer spriteRenderer;
     #endregion
 
     private void Awake()
@@ -81,13 +94,14 @@ public abstract class APlayerCtrl : MonoBehaviour
         rigidbody2D = GetComponent<Rigidbody2D>();
         tr = transform;
         spriteRenderer = GetComponent<SpriteRenderer>();
+        Effect = EffectAnimation.gameObject;//显示攻击效果的物体
         #endregion
 
         //注册事件
         UpdateManager.FastUpdate.AddListener(FastUpdate);
         UpdateManager.FastUpdate.AddListener(RayGround);
         //允许 能够停止的动画 停止后 出现 站立动作
-        atlasAnimation.AnimStop.AddListener(delegate () {BanStandWalkAnim = false;});
+        atlasAnimation.AnimStop.AddListener(CheckAnimStop);
 
     }
 
@@ -95,8 +109,10 @@ public abstract class APlayerCtrl : MonoBehaviour
     public  void FastUpdate()
     {
         //注意，所有的攻击（Z X A）以及其衍生版本（比如在天上白给）都用抽象方法来实现
-        if (RebindableInput.GetKeyDown("Attack"))
+        if (RebindableInput.GetKeyDown("Attack") && ZattackCanGoOn)//ZattackCanGoOn:用于阻止玩家在动画结束前再次攻击 
         {
+
+            IsZattacking = true;
             //防止意外出现站立动作
             BanStandWalkAnim = true;
             //Z攻击
@@ -104,7 +120,9 @@ public abstract class APlayerCtrl : MonoBehaviour
         }
         else
         {
-        }
+            //不攻击的时候
+
+}
 
 
 
@@ -123,11 +141,16 @@ public abstract class APlayerCtrl : MonoBehaviour
         //跳跃
         if (RebindableInput.GetKeyDown("Jump") && JumpCount < 1)//这里很迷emmm 1是二段跳 2就成三段了
         {
+            CanJumpTwice = true;
             atlasAnimation.ChangeAnimation(JumpAnimId, true);//托管的动作在这里
             JumpCount++;
             JumpTimer = Time.timeSinceLevelLoad;
             IsJumping = true;
             //rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, JumpSpeed);
+        }
+        else if(JumpCount >= 1)
+        {
+            CanJumpTwice = false;
         }
         Jump();
 
@@ -192,6 +215,13 @@ public abstract class APlayerCtrl : MonoBehaviour
 
 
     }
+
+    /// <summary>
+    /// 不循环的动画结束后调用这个来进行检查
+    /// </summary>
+    /// <param name="AnimName"></param>
+    public abstract void CheckAnimStop(string AnimName);
+    
 
     /// <summary>
     /// Z键平A

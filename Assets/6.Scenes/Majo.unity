@@ -121,6 +121,136 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &134496169
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 134496170}
+  - component: {fileID: 134496172}
+  - component: {fileID: 134496171}
+  m_Layer: 8
+  m_Name: AttackEffect
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &134496170
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 134496169}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1609930913}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &134496171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 134496169}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 159351ef07e2f5044ad0b17a92595d01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteAtlas: {fileID: 4343727234628468602, guid: eb805d8520b9a694babd2cc1117604f9,
+    type: 2}
+  SpriteRenderer: {fileID: 134496172}
+  GroupName: Sayaka
+  Format: Sayaka_Effect_{1}{2}
+  PlayDefaultAnimation: 0
+  DefaultAnimationNameInAtlas: 0
+  AtlasAnimations:
+  - name: Z
+    Description: "Z \u4E00\u6BB5"
+    Length: 5
+    StartFromId: 0
+    EndWithId: 4
+    Cycle: 0
+    Interval: 0.1
+    BeginningRepair: 0
+    RepairedFirstAtlasId: 0
+  - name: Z
+    Description: "Z \u4E8C\u6BB5"
+    Length: 5
+    StartFromId: 5
+    EndWithId: 9
+    Cycle: 0
+    Interval: 0.1
+    BeginningRepair: 0
+    RepairedFirstAtlasId: 0
+  - name: Z
+    Description: "Z \u4E09\u6BB5\u6BB5"
+    Length: 5
+    StartFromId: 10
+    EndWithId: 14
+    Cycle: 0
+    Interval: 0.1
+    BeginningRepair: 0
+    RepairedFirstAtlasId: 0
+--- !u!212 &134496172
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 134496169}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 2
+  m_Sprite: {fileID: -8851806819437066493, guid: 20d9bad3e0319bd40933974ccdb70f9e,
+    type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 0.04, y: 0.08}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1001 &508847054
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -741,7 +871,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 3.781913, y: -2.103995, z: 247.61621}
   m_LocalScale: {x: 1.6, y: 1.6, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 134496170}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
@@ -758,12 +889,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SelectedMahoshaojo: 4
-  Speed: 1
+  Speed: 1.5
   atlasAnimation: {fileID: 1609930911}
   StandAnimId: 0
   MoveAnimId: 1
   JumpAnimId: 19
   zAttackAnimId: 0f000000040000000e000000
+  EffectAnimation: {fileID: 134496171}
+  Effect: {fileID: 134496169}
+  zAttackEffectId: 000000000100000002000000
   BanStandWalkAnim: 0
   IsHanging: 0
   IsJumping: 0
@@ -772,6 +906,10 @@ MonoBehaviour:
   CanJumpTwice: 0
   ZattackCount: 0
   IsZattacking: 0
+  ZattackCanGoOn: 1
+  rigidbody2D: {fileID: 0}
+  tr: {fileID: 0}
+  spriteRenderer: {fileID: 0}
 --- !u!50 &1609930915
 Rigidbody2D:
   serializedVersion: 4
@@ -787,7 +925,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 40
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
