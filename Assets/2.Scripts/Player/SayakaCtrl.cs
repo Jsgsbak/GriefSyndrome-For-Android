@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using MEC;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,17 +14,29 @@ public class SayakaCtrl : APlayerCtrl
         BanStandWalkAnim = false;
 
         //平A 1 2 3 段连段判断，用于阻止玩家在动画结束前再次攻击
-        if (AnimName.Equals("AttackA") || AnimName.Equals("Rush") || AnimName.Equals("AttackD"))
+        if (AnimName.Equals("AttackA") || AnimName.Equals("Rush") || AnimName.Equals("Rush_fin"))
         {
             ZattackCanGoOn = true;
             IsZattacking = false;//动画停止了，也就停止了攻击
+            Effect.SetActive(false);//动画停止后，禁用角色效果动画机（有的角色可能无需禁用）
+
+            //最后一击僵直
+            if (AnimName.Equals("Rush_fin"))
+            {
+                Timing.RunCoroutine(JiangZhi(0.5f));
+            }
         }
+
+
+
     }
 
     public override void PlayerAttackZ()
     {
         //用于阻止玩家在动画结束前再次攻击 
         ZattackCanGoOn = false;
+        //开始攻击，启用角色效果动画机
+        Effect.SetActive(true);
 
         #region 动画
         //Z 一段动画
@@ -64,6 +77,14 @@ public class SayakaCtrl : APlayerCtrl
 
 
             //僵直，移动
+            if (EffectRenderer.flipX)
+            {
+                rigidbody2D.MovePosition(rigidbody2D.position + new Vector2(1f, 0f));
+            }
+            else
+            {
+                rigidbody2D.MovePosition(rigidbody2D.position + new Vector2(-1f, 0f));
+            }
         }
     }
         #endregion

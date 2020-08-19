@@ -1380,8 +1380,8 @@ TextureImporter:
       name: Sayaka_Effect_Z9
       rect:
         serializedVersion: 2
-        x: 175
-        y: 595
+        x: 174
+        y: 596
         width: 180
         height: 50
       alignment: 0

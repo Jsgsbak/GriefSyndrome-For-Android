@@ -9,11 +9,6 @@ using System;
 [RequireComponent(typeof(Rigidbody2D))]
 public abstract class APlayerCtrl : MonoBehaviour
 {
-    /// <summary>
-    /// 所选的魔法少女
-    /// </summary>
-    [Header("所选的魔法少女")]
-    public Variable.PlayerFaceType SelectedMahoshaojo;
 
     [Header("玩家移动")]
     public float Speed = 10f;
@@ -28,17 +23,58 @@ public abstract class APlayerCtrl : MonoBehaviour
     public int StandAnimId = 0;
     public int MoveAnimId = 1;
     public int JumpAnimId = 19;
+    public int HurtAnimId;
+    public Sprite ForBodyDie;
     [Header("平A n段攻击")]
     public int[] zAttackAnimId;
     [Space(20)]
     [Header("角色效果动画机")]
     public AtlasAnimation EffectAnimation;
+    public SpriteRenderer EffectRenderer;
     /// <summary>
     /// 显示攻击效果的物体
     /// </summary>
-    GameObject Effect;
+  [HideInInspector] public GameObject Effect;
     [Header("EffectAnimation中Z的效果动画ID")]
     public int[] zAttackEffectId;
+
+    #region 玩家信息
+    /// <summary>
+    /// 所选的魔法少女
+    /// </summary>
+    [Header("所选的魔法少女")]
+    public Variable.PlayerFaceType SelectedMahoshaojo;
+    /// <summary>
+    /// 人物等级
+    /// </summary>
+    [HideInInspector] public int Level = 1;
+    /// <summary>
+    /// 灵魂值
+    /// </summary>
+    [HideInInspector] public int SoulLimit;
+    /// <summary>
+    /// HP
+    /// </summary>
+    [HideInInspector] public int Vit;
+    /// <summary>
+    /// 攻击力
+    /// </summary>
+   [HideInInspector] public int Pow;
+    /// <summary>
+    /// 回复消耗的Soul Limit关于损失Vit的倍数
+    /// </summary>
+    [HideInInspector] public int Recovery = 18;
+    /// <summary>
+    /// 复活消耗的Soul Limit关于损失Vit最大值的倍数
+    /// </summary>
+    [HideInInspector] public int Rebirth = 30;
+    /// <summary>
+    /// 发动时Maiga消耗Vit数
+    /// </summary>
+    [HideInInspector] public int MaigaVit = 45;
+
+    #endregion
+
 
     #region 状态
     /// <summary>
@@ -80,7 +116,19 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// Z可以继续连段
     /// </summary>
     public bool ZattackCanGoOn = true;
+    /// <summary>
+    /// 被攻击
+    /// </summary>
+    public bool IsHurt = false;
+    /// <summary>
+    /// 玩家身体死亡
+    /// </summary>
+    public bool IsBodyDie = false;
+
+
     #endregion
+
+
 
     #region 自带组件
     [HideInInspector]public  Rigidbody2D rigidbody2D;
@@ -105,9 +153,22 @@ public abstract class APlayerCtrl : MonoBehaviour
 
     }
 
+    private void Start()
+    {
+        //根据已有数据获取玩家信息
+    }
+
 
     public  void FastUpdate()
     {
+        if (IsBodyDie || IsHurt)
+        {
+            //如果玩家死亡，直接返回，不接受后续处理
+            return;
+        }
+
+
+
         //注意，所有的攻击（Z X A）以及其衍生版本（比如在天上白给）都用抽象方法来实现
         if (RebindableInput.GetKeyDown("Attack") && ZattackCanGoOn)//ZattackCanGoOn:用于阻止玩家在动画结束前再次攻击 
         {
@@ -118,11 +179,7 @@ public abstract class APlayerCtrl : MonoBehaviour
             //Z攻击
             PlayerAttackZ();
         }
-        else
-        {
-            //不攻击的时候
 
-}
 
 
 
@@ -158,10 +215,10 @@ public abstract class APlayerCtrl : MonoBehaviour
 
 
 
-        #region 动作
+        #region 动画
         //先转向（这样子弄是为了允许不动的时候保持原朝向）
-        if (RebindableInput.GetAxis("Horizontal") > 0) spriteRenderer.flipX = true;
-        else if (RebindableInput.GetAxis("Horizontal") < 0) spriteRenderer.flipX = false;
+        if (RebindableInput.GetAxis("Horizontal") > 0) { spriteRenderer.flipX = true; EffectRenderer.flipX = true; }
+        else if (RebindableInput.GetAxis("Horizontal") < 0) { spriteRenderer.flipX = false; EffectRenderer.flipX = false; }
 
         //不受是否挂在天上影响的动画
 
@@ -206,6 +263,9 @@ public abstract class APlayerCtrl : MonoBehaviour
             IsHanging = false;
             JumpCount = 0;
             CanJumpTwice = true;
+
+            //如果身体死了，并且接触到了地面，换上死亡贴图
+           if(IsBodyDie) spriteRenderer.sprite = ForBodyDie;
         }
         else
         {
@@ -228,9 +288,69 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// </summary>
     public abstract void PlayerAttackZ();
 
+    /// <summary>
+    /// 收上
+    /// </summary>
+    /// <param name="collision"></param>
+    [ContextMenu("受伤")]
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Attack"))
+        {
+            IsHurt = true;
+            atlasAnimation.ChangeAnimation(HurtAnimId, true);
 
+            //!!!!!!测试用
+            rigidbody2D.AddForce(new Vector2(1f, 1f) * 40f);
+            BodyDie();
+
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        IsHurt = false;
+      
+        
+
+    }
+
+    /// <summary>
+    /// 身体挂了
+    /// </summary>
+    public void BodyDie()
+    {
+        IsBodyDie = true;
+        //动画在射线那里
+
+    }
 
     #region 内部方法
+
+    public void GetExperience(int exp)
+    {
+
+    }
+    public void LevelUp()
+    {
+
+    }
+
+
+    /// <summary>
+    /// 玩家僵直
+    /// </summary>
+    /// <param name="Time">僵直事件</param>
+    public IEnumerator<float> JiangZhi(float Time)
+    {
+        EffectAnimation.PauseAnimation();
+        atlasAnimation.PauseAnimation();
+        yield return Timing.WaitForSeconds(Time);
+        EffectAnimation.ContinueAnimation();
+        atlasAnimation.ContinueAnimation();
+
+    }
+
     void Jump()
     {
         //正在跳跃的时候才跳

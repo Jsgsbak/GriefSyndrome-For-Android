@@ -60,7 +60,12 @@ namespace PureAmaya.General
         /// </summary>
         private int PlayingSpriteId = 0;
 
-
+        #region 用于储存暂停的动画
+        bool IsPaused = false;
+        /// <summary>
+        /// 被暂停的动画的id
+        /// </summary>
+        #endregion
 
 
 
@@ -90,18 +95,18 @@ namespace PureAmaya.General
         public void OnEnable()
         {
             //重启动画
-                ChangeAnimation(PlayingId);
+                ChangeAnimation(PlayingId,true);
         }
         private void OnDisable()
         {
             BeDisabled = true;
-            Timing.KillCoroutines(GroupName);
+            CancelInvoke("NewPlayAnimation");
         }
 
         [ContextMenu("播放DefaultAnimationNameInAtlas动画")]
         public void PlayAnimInEditor()
         {
-                ChangeAnimation(DefaultAnimationNameInAtlas);
+          ChangeAnimation(DefaultAnimationNameInAtlas);
         }
 
 
@@ -150,6 +155,29 @@ namespace PureAmaya.General
                 PlayingId = AnimationId;
             }
 
+        }
+
+        /// <summary>
+        /// 暂停动画
+        /// </summary>
+        /// <param name="time"></param>
+        public void PauseAnimation()
+        {
+            //取消播放
+            CancelInvoke("NewPlayAnimation");
+            //修改状态
+            IsPaused = true;
+        }
+
+        /// <summary>
+        /// 从暂停位置继续播放
+        /// </summary>
+        public void ContinueAnimation()
+        {
+            if (IsPaused)
+            {
+                InvokeRepeating("NewPlayAnimation", 0f, AtlasAnimations[PlayingId].Interval);
+            }
         }
 
         /// <summary>
