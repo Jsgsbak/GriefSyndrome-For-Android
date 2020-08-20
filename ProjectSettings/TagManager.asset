@@ -7,6 +7,9 @@ TagManager:
   - Ground
   - Enemy
   - Attack
+  - Player1
+  - Player2
+  - Player3
   layers:
   - Default
   - TransparentFX
@@ -20,7 +23,7 @@ TagManager:
   - Enemy
   - Ground
   - Attack
-  - 
+  - PlayerWeapon
   - 
   - 
   - 

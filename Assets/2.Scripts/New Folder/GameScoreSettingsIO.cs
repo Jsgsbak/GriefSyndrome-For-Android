@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Text;
 using UnityEngine;
 using UnityEngine.U2D;
@@ -120,7 +121,7 @@ public class GameScoreSettingsIO : ScriptableObject
     /// <summary>
     /// 存档读取
     /// </summary>
-    public void Load()
+    public  void Load()
     {
         HiScore = SaveGame.Load<int>("HighestScore", 10000);
         HiScoreFace = SaveGame.Load("HiScoreFace", new Variable.PlayerFaceType[] { Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null });

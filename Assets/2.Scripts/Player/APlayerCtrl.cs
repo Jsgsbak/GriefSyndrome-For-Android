@@ -42,34 +42,36 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// </summary>
     [Header("所选的魔法少女")]
     public Variable.PlayerFaceType SelectedMahoshaojo;
+    [Header("玩家信息")]
+    int playerId = 0;
     /// <summary>
     /// 人物等级
     /// </summary>
-    [HideInInspector] public int Level = 1;
+     public int Level = 1;
     /// <summary>
     /// 灵魂值
     /// </summary>
-    [HideInInspector] public int SoulLimit;
+     public int SoulLimit;
     /// <summary>
     /// HP
     /// </summary>
-    [HideInInspector] public int Vit;
+     public int Vit;
     /// <summary>
     /// 攻击力
     /// </summary>
-    [HideInInspector] public int Pow;
+    public int Pow;
     /// <summary>
     /// 回复消耗的Soul Limit关于损失Vit的倍数
     /// </summary>
-    [HideInInspector] public int Recovery = 18;
+     public int RecoverySoul = 18;
     /// <summary>
     /// 复活消耗的Soul Limit关于损失Vit最大值的倍数
     /// </summary>
-    [HideInInspector] public int Rebirth = 30;
+    public int RebirthSoul = 30;
     /// <summary>
     /// 发动时Maiga消耗Vit数
     /// </summary>
-    [HideInInspector] public int MaigaVit = 45;
+     public int MaigaVit = 45;
 
     #endregion
 
@@ -166,6 +168,32 @@ public abstract class APlayerCtrl : MonoBehaviour
         UpdateManager.FastUpdate.AddListener(FastUpdate);
         UpdateManager.FakeLateUpdate.AddListener(RayGround);
         UpdateManager.FastUpdate.AddListener(Jump);
+
+        //获取playerId
+        for (int i = 0; i < 3; i++)
+        {
+            if (SelectedMahoshaojo == StageCtrl.gameScoreSettings.PlayerType[i])
+            {
+                playerId = i+1;
+                break;
+            }
+
+        }
+        //注册受伤事件以及设置tag
+        tag = string.Format("{0}{1}", "Player", playerId.ToString());
+        if(playerId == 1)
+        {
+            StageCtrl.Player1Hurt.AddListener(GetHurted);
+        }
+        else if(playerId == 2)
+        {
+            StageCtrl.Player2Hurt.AddListener(GetHurted);
+        }
+        else
+        {
+            StageCtrl.Player3Hurt.AddListener(GetHurted);
+
+        }
 
     }
 
@@ -365,24 +393,29 @@ public abstract class APlayerCtrl : MonoBehaviour
     public abstract void PlayerAttack();
 
     /// <summary>
-    /// 收上
+    /// 受伤
     /// </summary>
-    /// <param name="collision"></param>
     [ContextMenu("受伤")]
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void GetHurted(int damage)
     {
-        if (collision.gameObject.CompareTag("Attack") && !IsWuDi)
+
+        if (!IsWuDi)
         {
+            Vit -= damage;
+
             IsHurt = true;
             atlasAnimation.ChangeAnimation(HurtAnimId, true);
-
-            //!!!!!!测试用
             BanStandWalk = true;
             BanJump = true;
             BanAnyAttack = true;
-            rigidbody2D.AddForce(new Vector2(2f, 1f) * 300f);
+            rigidbody2D.AddForce(new Vector2(2f, 1f) * 400f);
             PlayerJiangZhi(0.15f);
             PlayerWuDi();
+
+            if(Vit <= 0)
+            {
+                BodyDie();
+            }
         }
     }
     /// <summary>
@@ -394,7 +427,9 @@ public abstract class APlayerCtrl : MonoBehaviour
         BanStandWalk = true;
         BanJump = true;
         BanAnyAttack = true;
-        rigidbody2D.AddForce(new Vector2(1f, 4f) * 600f);
+        PlayerReBirth();
+        rigidbody2D.AddForce(new Vector2(1f, 4f) * 400f);
+        spriteRenderer.sprite = ForBodyDie;
         //动画在射线那里
 
     }
@@ -414,6 +449,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     public void PlayerWuDi()
     {
         IsWuDi = true;
+        CancelInvoke("WuDi");
         InvokeRepeating("WuDi", 0f, 0.1f);
 
     }
@@ -430,8 +466,9 @@ public abstract class APlayerCtrl : MonoBehaviour
         }
         if(wudiCount == 20)
         {
-            IsWuDi = false;
+            IsWuDi = false; 
             CancelInvoke("WuDi");
+            wudiCount = 0;
         }
         else
         {
@@ -440,6 +477,54 @@ public abstract class APlayerCtrl : MonoBehaviour
     }
     #endregion
 
+    #region 玩家复活
+    /// <summary>
+    /// 玩家僵直调用
+    /// </summary>
+    /// <param name="Time"></param>
+    public void PlayerReBirth()
+    {
+        //取消滞留
+        CancelInvoke("Rebirth");
+
+        //前半段处理
+        BanStandWalk = true;
+        BanJump = true;
+        BanAnyAttack = true;
+        AllowRay = false;
+        Effect.SetActive(false);
+        atlasAnimation.PauseAnimation();
+
+
+        //后半段恢复处理
+        Invoke("Rebirth",2f);
+    }
+
+    /// <summary>
+    /// 玩家恢复处理
+    /// </summary>
+    /// <param name="Time">僵直事件</param>
+    void Rebirth()
+    {
+        PlayerWuDi();
+        BanStandWalk = false;
+        BanJump = true;
+        BanAnyAttack = true;
+        AllowRay = false;
+
+
+    }
+    /// <summary>
+    /// 灵魂变回人
+    /// </summary>
+    void SoulToPlayer()
+    {
+
+    }
+    #endregion
+
+
+    #region 玩家僵直
     /// <summary>
     /// 玩家僵直调用
     /// </summary>
@@ -474,6 +559,7 @@ public abstract class APlayerCtrl : MonoBehaviour
         BanAnyAttack = false;
         AllowRay = true;
     }
+    #endregion
 
     /// <summary>
     /// 改变重力
@@ -540,6 +626,9 @@ public abstract class APlayerCtrl : MonoBehaviour
 
     }
 
+
+   readonly Quaternion LookAtLeft = new Quaternion(0f, 1f, 0f, 0f);
+    readonly Quaternion LookAtRight = new Quaternion(0f, 0f, 0f, 1f);
     /// <summary>
     /// 动画翻转
     /// </summary>
@@ -547,13 +636,15 @@ public abstract class APlayerCtrl : MonoBehaviour
     {
         if(RebindableInput.GetAxis("Horizontal") > 0)
         {
-            spriteRenderer.flipX = true;
-            EffectRenderer.flipX = true;
+            // spriteRenderer.flipX = true;
+            //  EffectRenderer.flipX = true;
+            tr.rotation = LookAtRight;
         }
         else if(RebindableInput.GetAxis("Horizontal") < 0)
         {
-            spriteRenderer.flipX = false;
-            EffectRenderer.flipX = false;
+            //  spriteRenderer.flipX = false;
+            //   EffectRenderer.flipX = false;
+            tr.rotation = LookAtLeft;
 
         }
     }

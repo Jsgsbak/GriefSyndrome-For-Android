@@ -121,248 +121,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!213 &83717724
-Sprite:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Sayaka_Jump (8)(Clone)
-  m_Rect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 128
-    height: 160
-  m_Offset: {x: 0, y: 0}
-  m_Border: {x: 0, y: 0, z: 0, w: 0}
-  m_PixelsToUnits: 100
-  m_Pivot: {x: 0.5, y: 0.5}
-  m_Extrude: 1
-  m_IsPolygon: 0
-  m_AtlasName: 
-  m_PackingTag: 
-  m_RenderDataKey:
-    0505bb9b7500c844784604dcf44efd78: 21300000
-  m_AtlasTags:
-  - SayakaCharacter
-  m_SpriteAtlas: {fileID: 4343727234628468602, guid: 93ae529101d7a0e429b5f07aeac428bd,
-    type: 2}
-  m_RD:
-    serializedVersion: 3
-    texture: {fileID: 2800000, guid: 0505bb9b7500c844784604dcf44efd78, type: 3}
-    alphaTexture: {fileID: 0}
-    secondaryTextures: []
-    m_SubMeshes:
-    - serializedVersion: 2
-      firstByte: 0
-      indexCount: 15
-      topology: 0
-      baseVertex: 0
-      firstVertex: 0
-      vertexCount: 7
-      localAABB:
-        m_Center: {x: 0, y: 0, z: 0}
-        m_Extent: {x: 0, y: 0, z: 0}
-    m_IndexBuffer: 060005000400030004000500010004000300000001000300020001000000
-    m_VertexData:
-      serializedVersion: 3
-      m_VertexCount: 7
-      m_Channels:
-      - stream: 0
-        offset: 0
-        format: 0
-        dimension: 3
-      - stream: 0
-        offset: 0
-        format: 0
-        dimension: 0
-      - stream: 0
-        offset: 0
-        format: 0
-        dimension: 0
-      - stream: 0
-        offset: 0
-        format: 0
-        dimension: 0
-      - stream: 1
-        offset: 0
-        format: 0
-        dimension: 2
-      - stream: 0
-        offset: 0
-        format: 0
-        dimension: 0
-      - stream: 0
-        offset: 0
-        format: 0
-        dimension: 0
-      - stream: 0
-        offset: 0
-        format: 0
-        dimension: 0
-      - stream: 0
-        offset: 0
-        format: 0
-        dimension: 0
-      - stream: 0
-        offset: 0
-        format: 0
-        dimension: 0
-      - stream: 0
-        offset: 0
-        format: 0
-        dimension: 0
-      - stream: 0
-        offset: 0
-        format: 0
-        dimension: 0
-      - stream: 1
-        offset: 8
-        format: 0
-        dimension: 4
-      - stream: 1
-        offset: 24
-        format: 10
-        dimension: 4
-      m_DataSize: 376
-      _typelessdata: 6666e63e295c0f3f000000005c8fc23e713d0abf000000006666e63e6666e6be00000000a470bd3e9a99193f000000000ad7233d713d0abf000000008fc2f5be9a99193f000000008fc2f5bef628dc3e0000000000000000000000000000000000005a3f9a99593f0000803f0000000000000000000000000000000000000000000000000000000000004c3f6566263e0000803f0000000000000000000000000000000000000000000000000000000000005a3f0000603e0000803f0000000000000000000000000000000000000000000000000000000000004a3f0000603f0000803f000000000000000000000000000000000000000000000000000000000000083f6566263e0000803f000000000000000000000000000000000000000000000000000000000000003e0000603f0000803f000000000000000000000000000000000000000000000000000000000000003ecdcc443f0000803f00000000000000000000000000000000000000000000000000000000
-    m_Bindpose: []
-    textureRect:
-      serializedVersion: 2
-      x: 16.02675
-      y: 26.07612
-      width: 92.89713
-      height: 113.847755
-    textureRectOffset: {x: 16.02675, y: 26.07612}
-    atlasRectOffset: {x: -1, y: -1}
-    settingsRaw: 64
-    uvTransform: {x: 100, y: 64, z: 100, w: 80}
-    downscaleMultiplier: 1
-  m_AtlasRD:
-    serializedVersion: 3
-    texture: {fileID: 2, guid: 00000000000000000000000000000000, type: 0}
-    alphaTexture: {fileID: 0}
-    secondaryTextures: []
-    m_SubMeshes:
-    - serializedVersion: 2
-      firstByte: 0
-      indexCount: 15
-      topology: 0
-      baseVertex: 0
-      firstVertex: 0
-      vertexCount: 7
-      localAABB:
-        m_Center: {x: 0, y: 0, z: 0}
-        m_Extent: {x: 0, y: 0, z: 0}
-    m_IndexBuffer: 060005000400030004000500010004000300000001000300020001000000
-    m_VertexData:
-      serializedVersion: 3
-      m_VertexCount: 7
-      m_Channels:
-      - stream: 0
-        offset: 0
-        format: 0
-        dimension: 3
-      - stream: 0
-        offset: 0
-        format: 0
-        dimension: 0
-      - stream: 0
-        offset: 0
-        format: 0
-        dimension: 0
-      - stream: 0
-        offset: 0
-        format: 0
-        dimension: 0
-      - stream: 1
-        offset: 0
-        format: 0
-        dimension: 2
-      - stream: 0
-        offset: 0
-        format: 0
-        dimension: 0
-      - stream: 0
-        offset: 0
-        format: 0
-        dimension: 0
-      - stream: 0
-        offset: 0
-        format: 0
-        dimension: 0
-      - stream: 0
-        offset: 0
-        format: 0
-        dimension: 0
-      - stream: 0
-        offset: 0
-        format: 0
-        dimension: 0
-      - stream: 0
-        offset: 0
-        format: 0
-        dimension: 0
-      - stream: 0
-        offset: 0
-        format: 0
-        dimension: 0
-      - stream: 1
-        offset: 8
-        format: 0
-        dimension: 4
-      - stream: 1
-        offset: 24
-        format: 10
-        dimension: 4
-      m_DataSize: 376
-      _typelessdata: 6666e63e295c0f3f000000005c8fc23e713d0abf000000006666e63e6666e6be00000000a470bd3e9a99193f000000000ad7233d713d0abf000000008fc2f5be9a99193f000000008fc2f5bef628dc3e0000000000000000000000000000000000005a3f9a99593f0000803f0000000000000000000000000000000000000000000000000000000000004c3f6566263e0000803f0000000000000000000000000000000000000000000000000000000000005a3f0000603e0000803f0000000000000000000000000000000000000000000000000000000000004a3f0000603f0000803f000000000000000000000000000000000000000000000000000000000000083f6566263e0000803f000000000000000000000000000000000000000000000000000000000000003e0000603f0000803f000000000000000000000000000000000000000000000000000000000000003ecdcc443f0000803f00000000000000000000000000000000000000000000000000000000
-    m_Bindpose: []
-    textureRect:
-      serializedVersion: 2
-      x: 370.02676
-      y: 97.07612
-      width: 92.89713
-      height: 113.847755
-    textureRectOffset: {x: 16.02675, y: 26.07612}
-    atlasRectOffset: {x: 354, y: 71}
-    settingsRaw: 65
-    uvTransform: {x: 100, y: 418, z: 100, w: 151}
-    downscaleMultiplier: 1
-  m_PhysicsShape:
-  - - {x: 0.32, y: 0.02}
-    - {x: 0.28, y: 0.099999994}
-    - {x: 0.39999998, y: 0.16}
-    - {x: 0.45, y: 0.21}
-    - {x: 0.45, y: 0.32999998}
-    - {x: 0.42, y: 0.42999998}
-    - {x: 0.35999998, y: 0.53}
-    - {x: 0.28, y: 0.59999996}
-    - {x: 0.089999996, y: 0.59999996}
-    - {x: -0.07, y: 0.57}
-    - {x: -0.26999998, y: 0.59999996}
-    - {x: -0.45999998, y: 0.59999996}
-    - {x: -0.48, y: 0.59}
-    - {x: -0.48, y: 0.53999996}
-    - {x: -0.47, y: 0.48999998}
-    - {x: -0.13, y: 0.12}
-    - {x: 0.01, y: 0.089999996}
-    - {x: 0.049999997, y: 0.02}
-    - {x: -0.03, y: -0.099999994}
-    - {x: 0.08, y: -0.52}
-    - {x: 0.13, y: -0.53999996}
-    - {x: 0.19999999, y: -0.53999996}
-    - {x: 0.21, y: -0.51}
-    - {x: 0.26999998, y: -0.14999999}
-    - {x: 0.39999998, y: -0.12}
-  - - {x: -0.31, y: 0.47}
-    - {x: -0.28, y: 0.45999998}
-    - {x: -0.26999998, y: 0.42999998}
-    - {x: -0.25, y: 0.41}
-    - {x: -0.25, y: 0.42}
-  m_Bones: []
-  m_SpriteID: 5e97eb03825dee720800000000000000
 --- !u!1 &134496169
 GameObject:
   m_ObjectHideFlags: 0
@@ -692,8 +450,9 @@ GameObject:
   - component: {fileID: 730131201}
   - component: {fileID: 730131200}
   - component: {fileID: 730131199}
-  m_Layer: 10
-  m_Name: GameObject (1)
+  - component: {fileID: 730131202}
+  m_Layer: 11
+  m_Name: sasada
   m_TagString: Attack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -789,6 +548,63 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &730131202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 730131198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 661b2fa1a83c9b64b98f9c067c3af319, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collider2D: {fileID: 730131199}
+  Damage: 20
+--- !u!1 &1047142526
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1047142528}
+  - component: {fileID: 1047142527}
+  m_Layer: 0
+  m_Name: StageCtrl
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1047142527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1047142526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abb5944fdc75b5f4695273d48677cec3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1047142528
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1047142526}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.0800655, y: -5.080232, z: 151.96323}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1086607864
 GameObject:
   m_ObjectHideFlags: 0
@@ -832,6 +648,120 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28d40ae3821cee44a8fc23e830156f84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1306259828
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1306259829}
+  - component: {fileID: 1306259830}
+  m_Layer: 12
+  m_Name: SwordTilt.
+  m_TagString: Player
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1306259829
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1306259828}
+  m_LocalRotation: {x: 0, y: 0, z: 0.4402526, w: 0.89787394}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1609930913}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 52.24}
+--- !u!61 &1306259830
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1306259828}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.3132543, y: -0.092103794}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.0001992, y: 0.46042082}
+  m_EdgeRadius: 0
+--- !u!1 &1443483868
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1443483869}
+  - component: {fileID: 1443483870}
+  m_Layer: 12
+  m_Name: SwordAll
+  m_TagString: Player
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1443483869
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1443483868}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1609930913}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &1443483870
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1443483868}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.17602238, y: -0.060749948}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.3987343, y: 0.96402395}
+  m_EdgeRadius: 0
 --- !u!1 &1609930910
 GameObject:
   m_ObjectHideFlags: 0
@@ -1092,7 +1022,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 83717724}
+  m_Sprite: {fileID: 21300000, guid: 6d5cb363130c6dc4eaea1f6b6d0c632a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1110,11 +1040,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1609930910}
-  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3.781913, y: -2.103995, z: 247.61621}
   m_LocalScale: {x: 1.6, y: 1.6, z: 1}
   m_Children:
   - {fileID: 134496170}
+  - {fileID: 2110790778}
+  - {fileID: 1443483869}
+  - {fileID: 1306259829}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
@@ -1165,6 +1098,7 @@ MonoBehaviour:
   AttackCanGoOn: 1
   IsHurt: 0
   IsBodyDie: 0
+  IsWuDi: 0
   BanAnimFlip: 0
   AllowRay: 1
   rigidbody2D: {fileID: 0}
@@ -1391,6 +1325,63 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2110790777
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2110790778}
+  - component: {fileID: 2110790779}
+  m_Layer: 12
+  m_Name: SwordForward
+  m_TagString: Player
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2110790778
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2110790777}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1609930913}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &2110790779
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2110790777}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.40616173, y: -0.060749948}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.69553053, y: 0.96402395}
+  m_EdgeRadius: 0
 --- !u!1 &2144131353
 GameObject:
   m_ObjectHideFlags: 0
