@@ -231,7 +231,6 @@ namespace PureAmaya.General
                     AnimStop.Invoke(AtlasAnimations[PlayingId].name);
                     //停止该动画播放
                     CancelInvoke("NewPlayAnimation");
-
                     //  break;
                 }
             }
