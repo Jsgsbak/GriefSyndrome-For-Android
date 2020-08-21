@@ -21,8 +21,11 @@ public abstract class APlayerCtrl : MonoBehaviour
     public int StandAnimId = 0;
     public int MoveAnimId = 1;
     public int JumpAnimId = 19;
+    public int DropAnimId;
     public int HurtAnimId;
-    public Sprite ForBodyDie;
+    public Sprite BodyDieImage;
+    public Sprite SoulBall;
+    public Color SoulBallColor;
     [Header("平A n段攻击")]
     public int[] zAttackAnimId;
     [Space(20)]
@@ -53,9 +56,17 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// </summary>
      public int SoulLimit;
     /// <summary>
+    /// 最大灵魂值
+    /// </summary>
+    public int MaxSoulLimit;
+    /// <summary>
     /// HP
     /// </summary>
      public int Vit;
+    /// <summary>
+    /// 最大HP
+    /// </summary>
+    public int MaxVit;
     /// <summary>
     /// 攻击力
     /// </summary>
@@ -135,7 +146,13 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// 玩家身体死亡
     /// </summary>
     public bool IsBodyDie = false;
-
+    /// <summary>
+    /// 是灵魂球的状态
+    /// </summary>
+    public bool IsSoulBall = false;
+    /// <summary>
+    /// 无敌了吗
+    /// </summary>
     public bool IsWuDi = false;
     /// <summary>
     /// 禁用动画翻转
@@ -153,6 +170,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     [HideInInspector] public Rigidbody2D rigidbody2D;
     [HideInInspector] public Transform tr;
     [HideInInspector] public SpriteRenderer spriteRenderer;
+    [HideInInspector] public Collider2D collider2D;
     #endregion
 
     private void Awake()
@@ -162,6 +180,7 @@ public abstract class APlayerCtrl : MonoBehaviour
         tr = transform;
         spriteRenderer = GetComponent<SpriteRenderer>();
         Effect = EffectAnimation.gameObject;//显示攻击效果的物体
+        collider2D = GetComponent<Collider2D>();//碰撞箱
         #endregion
 
         //注册事件
@@ -201,10 +220,20 @@ public abstract class APlayerCtrl : MonoBehaviour
     {
 
         //根据已有数据获取玩家信息
+
     }
 
     public void FastUpdate()
     {
+        if (IsSoulBall)
+        {
+            //灵魂球，允许自由移动
+            rigidbody2D.MovePosition(rigidbody2D.position + new Vector2(RebindableInput.GetAxis("Horizontal"), RebindableInput.GetAxis("Vertical")) * 0.1f * Speed);
+
+        }
+
+
+
         if (IsBodyDie || IsHurt)
         {
             //如果玩家死亡，直接返回，不接受后续处理
@@ -215,7 +244,7 @@ public abstract class APlayerCtrl : MonoBehaviour
         if (!BanAnimFlip && RebindableInput.GetAxis("Horizontal") != 0) { AnimFlip(); }
 
         
-        if (!BanStandWalk)
+        if (!BanStandWalk && !IsHanging)
         {
             //常规的站立与行走，跳跃时候的移动不归他管理
             WalkAndStand();
@@ -241,98 +270,6 @@ public abstract class APlayerCtrl : MonoBehaviour
         if (!BanAnyAttack && RebindableInput.GetKeyDown("Attack")) { PlayerAttack(); BanStandWalk = true; IsAttacking = true; Effect.SetActive(true); }
 
     }
-
-    #region 旧版FastUpdate()
-    public void OldFU()
-    {
-        if (IsBodyDie || IsHurt)
-        {
-            //如果玩家死亡，直接返回，不接受后续处理
-            return;
-        }
-
-        //注意，所有的攻击（Z X A）以及其衍生版本（比如在天上白给）都用抽象方法来实现
-        if (RebindableInput.GetKeyDown("Attack") && AttackCanGoOn)//ZattackCanGoOn:用于阻止玩家在动画结束前再次攻击 
-        {
-            //用于阻止玩家在动画结束前再次攻击 
-            AttackCanGoOn = false;
-            //开始攻击，启用角色效果动画机
-            Effect.SetActive(true);
-
-
-            //防止意外出现站立动作
-            BanStandWalk = true;
-            //Z攻击
-            PlayerAttack();
-        }
-
-
-
-
-
-        #region 移动
-        //行走
-        //   if (!IsZattacking)   
-        //   {
-        //常规行走
-
-        //关于按着Z键行走的说明：因为每个角色不一样，放在对应的角色脚本中写（PlayerAttackZ方法中）
-        //     }
-        //tr.Translate(new Vector2(RebindableInput.GetAxis("Horizontal"), 0) * Time.deltaTime * Speed, Space.World);
-
-        //跳跃
-        if (RebindableInput.GetKeyDown("Jump") && JumpCount < 1)//这里很迷emmm 1是二段跳 2就成三段了
-        {
-            CanJumpTwice = true;
-            atlasAnimation.ChangeAnimation(JumpAnimId, true);//托管的动作在这里
-            JumpCount++;
-            JumpTimer = Time.timeSinceLevelLoad;
-            IsJumping = true;
-            //rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, JumpSpeed);
-        }
-        else if (JumpCount >= 1)
-        {
-            CanJumpTwice = false;
-        }
-        Jump();
-
-        #endregion
-
-
-
-        #region 动画
-        //先转向（这样子弄是为了允许不动的时候保持原朝向）
-        if (RebindableInput.GetAxis("Horizontal") > 0) { spriteRenderer.flipX = true; EffectRenderer.flipX = true; }
-        else if (RebindableInput.GetAxis("Horizontal") < 0) { spriteRenderer.flipX = false; EffectRenderer.flipX = false; }
-
-        //不受是否挂在天上影响的动画
-
-        //跳跃（放在上面跳跃移动那里）
-
-
-
-        //没挂在天上时的动画
-        if (!IsHanging)
-        {
-
-            //行走walk
-            if (RebindableInput.GetAxis("Horizontal") != 0 && !BanStandWalk) { atlasAnimation.ChangeAnimation(MoveAnimId); }
-            else if (!BanStandWalk) { atlasAnimation.ChangeAnimation(StandAnimId); }
-
-        }
-
-        //挂在天上用的动画
-        else
-        {
-
-        }
-
-
-
-        #endregion
-    }
-    #endregion
-
 
     /// <summary>
     /// 使用射线判断是否在地上
@@ -369,11 +306,17 @@ public abstract class APlayerCtrl : MonoBehaviour
             }
 
             //如果身体死了，并且接触到了地面，换上死亡贴图
-            if (IsBodyDie) spriteRenderer.sprite = ForBodyDie;
+            if (IsBodyDie) spriteRenderer.sprite = BodyDieImage;
+        }
+        else if (hit.collider == null && rigidbody2D.gravityScale > 0)
+        {
+            //没有接触到地面，并且在下降，用下降动画
+            IsHanging = true;
+            atlasAnimation.ChangeAnimation(DropAnimId);
         }
         else
         {
-            IsHanging = true;
+            IsHanging = true;//其他没有接触到地面的情况
         }
 
 
@@ -409,15 +352,20 @@ public abstract class APlayerCtrl : MonoBehaviour
             BanJump = true;
             BanAnyAttack = true;
             rigidbody2D.AddForce(new Vector2(2f, 1f) * 400f);
-            PlayerJiangZhi(0.15f);
-            PlayerWuDi();
+            PlayerJiangZhi(0.2f);
 
             if(Vit <= 0)
             {
                 BodyDie();
             }
+            else
+            {
+                PlayerWuDi();//防止魔女化时无敌
+            }
+
         }
     }
+
     /// <summary>
     /// 身体挂了
     /// </summary>
@@ -427,14 +375,27 @@ public abstract class APlayerCtrl : MonoBehaviour
         BanStandWalk = true;
         BanJump = true;
         BanAnyAttack = true;
-        PlayerReBirth();
-        rigidbody2D.AddForce(new Vector2(1f, 4f) * 400f);
-        spriteRenderer.sprite = ForBodyDie;
+        if (SoulLimit <= 0)
+        {
+            //魔女化
+        }
+        else
+        {
+            //普通死亡，复活
+
+            PlayerReBirth();
+        }
+        rigidbody2D.AddForce(new Vector2(1f, 2f) * 400f);
+        spriteRenderer.sprite = BodyDieImage;
         //动画在射线那里
 
     }
 
     #region 内部方法
+
+
+
+
 
     public void GetExperience(int exp)
     {
@@ -484,8 +445,11 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// <param name="Time"></param>
     public void PlayerReBirth()
     {
+        //为了无敌忽闪忽闪的效果
+        PlayerWuDi();
+
         //取消滞留
-        CancelInvoke("Rebirth");
+        CancelInvoke("PlayerToSoul");
 
         //前半段处理
         BanStandWalk = true;
@@ -497,28 +461,51 @@ public abstract class APlayerCtrl : MonoBehaviour
 
 
         //后半段恢复处理
-        Invoke("Rebirth",2f);
+        Invoke("PlayerToSoul", 2f);
     }
 
     /// <summary>
-    /// 玩家恢复处理
+    /// 玩家变成灵魂
     /// </summary>
-    /// <param name="Time">僵直事件</param>
-    void Rebirth()
+    void PlayerToSoul()
     {
+        //恢复soul，恢复vit
+        //代码还没写
+
         PlayerWuDi();
         BanStandWalk = false;
         BanJump = true;
         BanAnyAttack = true;
         AllowRay = false;
-
-
+        //灵魂变回人
+        //先变成灵魂
+        atlasAnimation.StopAnimation();//停止动画，防止意外占用SoulBall
+        spriteRenderer.color = SoulBallColor;//变色
+        spriteRenderer.sprite = SoulBall;//变成灵魂
+        IsSoulBall = true;//允许FastUpdate中的自由移动
+                          //    collider2D.enabled = false;//禁用物理引擎
+                          //  rigidbody2D.bodyType = RigidbodyType2D.Kinematic;//禁用动力学，以运动学取代
+        ChangeGravity(0);//0重力
+       Invoke("SoulToPlayer",3f);//3秒复活
     }
     /// <summary>
     /// 灵魂变回人
     /// </summary>
     void SoulToPlayer()
     {
+        IsBodyDie = false;
+        BanStandWalk = false;
+        BanJump = false;
+        BanAnyAttack = false;
+        AllowRay = true;
+        atlasAnimation.ChangeAnimation(DropAnimId);//防止不恢复动作的bug出现
+        ChangeGravity(40);//重力
+
+        //2秒无敌
+        PlayerWuDi();
+
+        //变色
+        spriteRenderer.color = Color.white;//变色
 
     }
     #endregion
@@ -647,6 +634,15 @@ public abstract class APlayerCtrl : MonoBehaviour
             tr.rotation = LookAtLeft;
 
         }
+    }
+
+    /// <summary>
+    /// 更新玩家属性
+    /// </summary>
+    public void UpdatePlayerInformation()
+    {
+        Level = StageCtrl.gameScoreSettings.Level[playerId - 1];
+        //MAX
     }
 }
 #endregion

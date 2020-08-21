@@ -13,16 +13,6 @@ namespace PureAmaya.General
     [RequireComponent(typeof(SpriteRenderer))]
   public class AtlasAnimation : MonoBehaviour
     {
-        /*放这里一个例子
-        [BurstCompile]
-        struct ddddddd : IJobParallelForTransform
-        {
-            public void Execute(int index, TransformAccess transform)
-            {
-                throw new NotImplementedException();
-            }
-        }
-        */
         [Header("含有动画的图集")]
         public SpriteAtlas spriteAtlas;
         public SpriteRenderer SpriteRenderer;
@@ -167,6 +157,14 @@ namespace PureAmaya.General
             CancelInvoke("NewPlayAnimation");
             //修改状态
             IsPaused = true;
+        }
+
+        /// <summary>
+        /// 停止动画
+        /// </summary>
+        public void StopAnimation()
+        {
+            CancelInvoke("NewPlayAnimation");
         }
 
         /// <summary>

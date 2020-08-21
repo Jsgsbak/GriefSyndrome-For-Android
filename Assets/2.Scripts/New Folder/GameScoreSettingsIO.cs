@@ -44,9 +44,10 @@ public class GameScoreSettingsIO : ScriptableObject
     /// </summary>
     [Header("玩家选择的魔法少女")]//null用于占位子
     public Variable.PlayerFaceType[] PlayerType = new Variable.PlayerFaceType[3] { Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null };
-  
-    [Header("玩家选择的魔法少女的信息")]
-    ////!!!!!!!!!!!!
+
+    [Header("玩家选择的魔法少女的等级")]
+    public int[] Level = new int[] { 1,1,1};
+
     
     /// <summary>
     /// 魔法少女是否挂掉(2个吼姆拉放在一起了)
@@ -104,6 +105,7 @@ public class GameScoreSettingsIO : ScriptableObject
         AllowOktavia = false;
         MagicalGirlsDie = new bool[] { false, false, false, false, false };
         MajoKeikaiToSelectPart = false;
+        Level = new int[] { 1, 1, 1 };
     }
 
     /// <summary>
