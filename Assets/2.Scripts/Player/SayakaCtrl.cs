@@ -5,17 +5,11 @@ using UnityEngine;
 
 public class SayakaCtrl : APlayerCtrl
 {
-    private void Start()
-    {
-
-        //允许 能够停止的动画 停止后 出现 站立动作
-        atlasAnimation.AnimStop.AddListener(CheckAnimStop);
-
-    }
 
     //注意：该方法注册在玩家身上的角色移动动画机，即根据玩家动作动画来进行判断
     public override void CheckAnimStop(string AnimName)
     {
+        Debug.Log("SSS");
 
         //平A 1 2 3 段连段判断，用于阻止玩家在动画结束前再次攻击
         if (AnimName.Equals("AttackA") || AnimName.Equals("Rush") || AnimName.Equals("Rush_fin"))
@@ -37,15 +31,18 @@ public class SayakaCtrl : APlayerCtrl
             }
         }
 
+        //X 冲刺后
+        else if (AnimName.Equals("NA"))
+        {
+
+        }
+
 
 
     }
 
     public override void PlayerAttack()
     {
-        //如果悬空Z攻击，滞缓下降
-        if (IsHanging) ChangeGravity(1);
-
 
         #region 动画
             //Z 一段动画
@@ -108,8 +105,20 @@ public class SayakaCtrl : APlayerCtrl
             }
         }
     }
-        #endregion
+
+    public override void PlayerGreatAttack(int i)
+    {
+        if(i == 1)
+        {
+
+        }
+        else
+        {
+
+        }
     }
+    #endregion
+}
 
 
 

@@ -961,20 +961,20 @@ MonoBehaviour:
     Interval: 0.1
     BeginningRepair: 0
     RepairedFirstAtlasId: 0
-  - name: NA_air
-    Description: 
+  - name: NA
+    Description: " 6 X\u51B2"
     Length: 7
-    StartFromId: 1
-    EndWithId: -1
-    Cycle: 1
+    StartFromId: 3
+    EndWithId: 9
+    Cycle: 0
     Interval: 0.1
     BeginningRepair: 0
     RepairedFirstAtlasId: 0
   - name: NA
-    Description: 7
+    Description: "7 \uFF08X\u51C6\u5907\uFF09"
     Length: 11
     StartFromId: 1
-    EndWithId: -1
+    EndWithId: 2
     Cycle: 1
     Interval: 0.1
     BeginningRepair: 0
@@ -1189,6 +1189,7 @@ MonoBehaviour:
   SoulBall: {fileID: 21300000, guid: 54bc2a47d1641ba4da5085152d13dfb7, type: 3}
   SoulBallColor: {r: 0, g: 0.5921569, b: 1, a: 0.9019608}
   zAttackAnimId: 0f0000000400000002000000
+  GreatAttackAnimId: 0700000006000000
   EffectAnimation: {fileID: 134496171}
   EffectRenderer: {fileID: 134496172}
   Effect: {fileID: 0}

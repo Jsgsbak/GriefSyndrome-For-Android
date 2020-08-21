@@ -15,6 +15,8 @@ public abstract class APlayerCtrl : MonoBehaviour
     public float Speed = 10f;
     [Header("允许悬停吗(true=空中停止)")]
     public bool AllowHanging = false; //这个放在Jump那里，因为重力由Jump控制
+    [Header("不允许悬停时滞空的重力值（攻击用）")]
+    public int GravityForAttack = 1;
     [Header("角色移动动画机")]
     public AtlasAnimation atlasAnimation;
     //这些动画ID如果取值-1则直接无视该动画
@@ -28,7 +30,8 @@ public abstract class APlayerCtrl : MonoBehaviour
     public Color SoulBallColor;
     [Header("平A n段攻击")]
     public int[] zAttackAnimId;
-    [Space(20)]
+    [Header("X攻击N段攻击")]
+    public int[] GreatAttackAnimId;
     [Header("角色效果动画机")]
     public AtlasAnimation EffectAnimation;
     public SpriteRenderer EffectRenderer;
@@ -135,9 +138,25 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// </summary>
     public bool IsAttacking = false;
     /// <summary>
+    /// Z计时器
+    /// </summary>
+    public float AttackTimer = 0f;
+    /// <summary>
     /// Z可以继续连段
     /// </summary>
     public bool AttackCanGoOn = true;
+    /// <summary>
+    /// 正在X蓄力
+    /// </summary>
+    public bool IsPreparingAttacking = false;
+    /// <summary>
+    /// 正在X攻击
+    /// </summary>
+    public bool IsGreatAttacking = false;
+    /// <summary>
+    /// X攻击阶段
+    /// </summary>
+    public int GteatAttackPart = 1;
     /// <summary>
     /// 被攻击
     /// </summary>
@@ -187,6 +206,7 @@ public abstract class APlayerCtrl : MonoBehaviour
         UpdateManager.FastUpdate.AddListener(FastUpdate);
         UpdateManager.FakeLateUpdate.AddListener(RayGround);
         UpdateManager.FastUpdate.AddListener(Jump);
+        atlasAnimation.AnimStop.AddListener(CheckAnimStop);
 
         //获取playerId
         for (int i = 0; i < 3; i++)
@@ -246,8 +266,8 @@ public abstract class APlayerCtrl : MonoBehaviour
         
         if (!BanStandWalk && !IsHanging)
         {
-            //常规的站立与行走，跳跃时候的移动不归他管理
-            WalkAndStand();
+            //常规的站立与行走（包含下降），跳跃时候的移动不归他管理
+            WalkDropAndStand();
         }
 
 
@@ -267,8 +287,33 @@ public abstract class APlayerCtrl : MonoBehaviour
      
         }
 
-        if (!BanAnyAttack && RebindableInput.GetKeyDown("Attack")) { PlayerAttack(); BanStandWalk = true; IsAttacking = true; Effect.SetActive(true); }
+        if (!BanAnyAttack && RebindableInput.GetKeyDown("Attack")) 
+        {
+            if (!AllowHanging && IsHanging)
+            { 
+                //如果不允许滞空，但是在空中，则缓降
+                ChangeGravity(GravityForAttack); 
+            }
+            else if(AllowHanging && IsHanging)
+            {
+                //如果允许滞空，则呆着
+                ChangeGravity(0);
+            }
 
+                PlayerAttack(); 
+            BanStandWalk = true; 
+            IsAttacking = true; 
+            Effect.SetActive(true); 
+        }
+        else if (!BanAnyAttack && RebindableInput.GetKeyUp("Attack"))
+        {
+            IsAttacking = false;
+        }
+        //X蓄力 人物动作，特效另做处理
+        else if (!BanAnyAttack && RebindableInput.GetKeyDown("GreatAttack") && !IsGreatAttacking) { Effect.SetActive(true); BanStandWalk = true; IsGreatAttacking = true; PlayerGreatAttack(1); }
+        //X攻击 
+        else if (!BanAnyAttack && RebindableInput.GetKeyUp("GreatAttack") && IsPreparingAttacking) { IsGreatAttacking = true; PlayerGreatAttack(2); }
+        else if (RebindableInput.GetKeyUp("Attack")) { IsAttacking = false; }//解决跳跃攻击后落地不会回复站立的bug
     }
 
     /// <summary>
@@ -293,7 +338,7 @@ public abstract class APlayerCtrl : MonoBehaviour
             JumpCount = 0;
             CanJumpTwice = true;
             ChangeGravity(40, false);
-            if (IsJumping) BanStandWalk= !true; 
+            if (IsJumping) BanStandWalk= false; 
            IsJumping = false;//没有刚好能跳上去的平台
 
             //如果受伤了，并且接触到了地面，恢复被禁用的输入
@@ -307,12 +352,6 @@ public abstract class APlayerCtrl : MonoBehaviour
 
             //如果身体死了，并且接触到了地面，换上死亡贴图
             if (IsBodyDie) spriteRenderer.sprite = BodyDieImage;
-        }
-        else if (hit.collider == null && rigidbody2D.gravityScale > 0)
-        {
-            //没有接触到地面，并且在下降，用下降动画
-            IsHanging = true;
-            atlasAnimation.ChangeAnimation(DropAnimId);
         }
         else
         {
@@ -331,9 +370,14 @@ public abstract class APlayerCtrl : MonoBehaviour
     
 
     /// <summary>
-    /// Z键平A
+    /// Z键
     /// </summary>
     public abstract void PlayerAttack();
+/// <summary>
+/// x键攻击
+/// </summary>
+/// <param name="i">阶段数，从1开始</param>
+    public abstract void PlayerGreatAttack(int i);
 
     /// <summary>
     /// 受伤
@@ -602,14 +646,18 @@ public abstract class APlayerCtrl : MonoBehaviour
     }
 
 
-    void WalkAndStand()
+    void WalkDropAndStand()
     {
+        //为啥要加上Drop：下降的时候没有禁用这个方法，并且如果这个方法能执行的话，说明没有干别的，比较适合做下落动作
+
+
         //动作
         rigidbody2D.MovePosition(rigidbody2D.position + new Vector2(RebindableInput.GetAxis("Horizontal"), 0f) * 0.1f * Speed);
 
         //动画
-        if (RebindableInput.GetAxis("Horizontal") == 0) atlasAnimation.ChangeAnimation(StandAnimId);
-        else atlasAnimation.ChangeAnimation(MoveAnimId);
+        if (RebindableInput.GetAxis("Horizontal") == 0 && !IsHanging) atlasAnimation.ChangeAnimation(StandAnimId);
+        else if (RebindableInput.GetAxis("Horizontal") == 0 && !IsHanging) atlasAnimation.ChangeAnimation(MoveAnimId);
+        else if (IsHanging && rigidbody2D.gravityScale > 0) atlasAnimation.ChangeAnimation(DropAnimId);
 
     }
 
