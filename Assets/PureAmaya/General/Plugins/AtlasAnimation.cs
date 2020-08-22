@@ -185,9 +185,6 @@ namespace PureAmaya.General
         /// <returns></returns>
         void NewPlayAnimation()
         {
-            //  while (true)
-            //  {
-
             //旋转物体
           if(AtlasAnimations[PlayingId].RotateObjectBeforeAnim)transform.rotation = AtlasAnimations[PlayingId].Rotation;
 
@@ -243,9 +240,6 @@ namespace PureAmaya.General
                 PlayingSpriteId++;
             }
 
-
-
-            //  }
         }
 
         /// <summary>

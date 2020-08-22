@@ -1,10 +1,16 @@
 ﻿using MEC;
+using PureAmaya.General;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class SayakaCtrl : APlayerCtrl
 {
+    private void Start()
+    {
+        //注册私有事件
+        UpdateManager.FastUpdate.AddListener(PlayerUpX);
+    }
 
     //注意：该方法注册在玩家身上的角色移动动画机，即根据玩家动作动画来进行判断
     public override void CheckAnimStop(string AnimName)
@@ -14,10 +20,9 @@ public class SayakaCtrl : APlayerCtrl
         //平A 1 2 3 段连段判断，用于阻止玩家在动画结束前再次攻击
         if (AnimName.Equals("AttackA") || AnimName.Equals("Rush") || AnimName.Equals("Rush_fin"))
         {
-            AttackCanGoOn = true;
             IsAttacking = false;//动画停止了，也就停止了攻击
             Effect.SetActive(false);//动画停止后，禁用角色效果动画机（有的角色可能无需禁用）
-            ChangeGravity(40);//恢复重力
+            ChangeGravity(5);//这样才能以比较正常的速度下降
 
 
             //最后一击僵直
@@ -37,8 +42,6 @@ public class SayakaCtrl : APlayerCtrl
 
     public override void PlayerAttack()
     {
-
-        #region 动画
             //Z 一段动画
         if (ZattackCount == 0 || ZattackCount == 2 || ZattackCount == 4)
         {
@@ -100,6 +103,9 @@ public class SayakaCtrl : APlayerCtrl
         }
     }
 
+
+
+
     public override void PlayerGreatAttack()
     {
         //蓄力状态
@@ -138,13 +144,28 @@ public class SayakaCtrl : APlayerCtrl
                 PlayerJiangZhi(0.1f);
                 IsGreatAttacking = false;
                 GteatAttackPart = 0;
-                ChangeGravity(40);
+                ChangeGravity(5);//这样才能以比较正常的速度下降
+                rigidbody2D.velocity = Vector2.zero;
+
+                //修正停止冲刺后动作异常的Bug
+                BanStandWalk = false;
+                if (IsHanging)
+                {
+                    atlasAnimation.ChangeAnimation(DropAnimId);
+                }
 
             }
 
         }
     }
-    #endregion
+
+    public override void PlayerUpX()
+    {
+        if (IsUpX)
+        {
+
+        }
+    }
 }
 
 

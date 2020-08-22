@@ -28,6 +28,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     public int JumpAnimId = 19;
     public int DropAnimId;
     public int HurtAnimId;
+    public int UpXAnimId;
     public Sprite BodyDieImage;
     public Sprite SoulBall;
     public Color SoulBallColor;
@@ -141,17 +142,18 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// </summary>
     public int ZattackCount = 0;
     /// <summary>
-    /// 正在用Z攻击（未实装）
+    /// 正在用Z攻击
     /// </summary>
     public bool IsAttacking = false;
+    /// <summary>
+    /// 禁止Z攻击
+    /// </summary>
+    public bool BanAttacking = false;
     /// <summary>
     /// X计时器
     /// </summary>
     public float GreatAttackTimer = 0f;
-    /// <summary>
-    /// Z可以继续连段
-    /// </summary>
-    public bool AttackCanGoOn = true;
+
     /// <summary>
     /// 正在X蓄力
     /// </summary>
@@ -161,9 +163,18 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// </summary>
     public bool IsGreatAttacking = false;
     /// <summary>
+    /// 禁止X攻击
+    /// </summary>
+    public bool BanGreatAttack = false;
+    /// <summary>
     /// X攻击阶段
     /// </summary>
     public int GteatAttackPart = 1;
+    /// <summary>
+    /// 正在UP+x攻击
+    /// </summary>
+    public bool IsUpX = false;
+
     /// <summary>
     /// 被攻击
     /// </summary>
@@ -242,14 +253,12 @@ public abstract class APlayerCtrl : MonoBehaviour
 
         }
 
-    }
 
-    private void Start()
-    {
 
         //根据已有数据获取玩家信息
 
     }
+
 
     public void FastUpdate()
     {
@@ -297,7 +306,7 @@ public abstract class APlayerCtrl : MonoBehaviour
      
         }
 
-        if (!BanAnyAttack && RebindableInput.GetKeyDown("Attack")) 
+        if (!BanAnyAttack && RebindableInput.GetKeyDown("Attack") && !BanAttacking) 
         {
             if (!AllowHanging && IsHanging)
             { 
@@ -315,22 +324,23 @@ public abstract class APlayerCtrl : MonoBehaviour
             IsAttacking = true; 
             Effect.SetActive(true); 
         }
-        else if (!BanAnyAttack && RebindableInput.GetKeyUp("Attack"))
+        else if (!BanAnyAttack && RebindableInput.GetKeyUp("Attack") && !BanAttacking)
         {
             IsAttacking = false;
         }
         //X蓄力 人物动作，特效另做处理
-        else if (!BanAnyAttack && RebindableInput.GetKeyDown("GreatAttack") && !IsGreatAttacking)
+        else if (!BanAnyAttack && RebindableInput.GetKeyDown("GreatAttack") && !IsGreatAttacking && !BanGreatAttack)
         { 
             Effect.SetActive(true); 
             BanStandWalk = true;
+      
             IsPreparingAttacking = true;
             GreatAttackTimer = Time.timeSinceLevelLoad;
             BanAnimFlip = true;
             AllowRay = false;
         }
         //X攻击 
-        else if (!BanAnyAttack && RebindableInput.GetKeyUp("GreatAttack") && IsPreparingAttacking) 
+        else if (!BanAnyAttack && RebindableInput.GetKeyUp("GreatAttack") && IsPreparingAttacking && !BanGreatAttack) 
         {
             IsGreatAttacking = true; 
             IsPreparingAttacking = false;
@@ -338,6 +348,12 @@ public abstract class APlayerCtrl : MonoBehaviour
             AllowRay = false;
             GreatAttackTimer = Time.timeSinceLevelLoad; 
         }
+        else if(!BanAnyAttack && RebindableInput.GetKeyUp("GreatAttack") && RebindableInput.GetAxis("Vertical") >= 1)
+        {
+            IsUpX = true;
+        }
+
+
         else if (RebindableInput.GetKeyUp("Attack")) { IsAttacking = false; }//解决跳跃攻击后落地不会回复站立的bug
     }
 
@@ -405,13 +421,18 @@ public abstract class APlayerCtrl : MonoBehaviour
     public abstract void PlayerGreatAttack();
 
     /// <summary>
+    ///↑+X
+    /// </summary>
+    public abstract void PlayerUpX();
+
+    /// <summary>
     /// 受伤
     /// </summary>
     [ContextMenu("受伤")]
     private void GetHurted(int damage)
     {
 
-        if (!IsWuDi)
+        if (!IsWuDi && !IsBodyDie && !IsSoulBall)
         {
             Vit -= damage;
 
@@ -420,7 +441,7 @@ public abstract class APlayerCtrl : MonoBehaviour
             BanStandWalk = true;
             BanJump = true;
             BanAnyAttack = true;
-            rigidbody2D.AddForce(new Vector2(2f, 1f) * 400f);
+            rigidbody2D.AddForce(new Vector2(2f, 1f) * 4f, ForceMode2D.Impulse);
             PlayerJiangZhi(0.2f);
 
             if(Vit <= 0)
@@ -438,7 +459,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// <summary>
     /// 身体挂了
     /// </summary>
-    public void BodyDie()
+    public void BodyDie()  //先放着，找个时间用曲线来代替力
     {
         IsBodyDie = true;
         BanStandWalk = true;
@@ -454,7 +475,7 @@ public abstract class APlayerCtrl : MonoBehaviour
 
             PlayerReBirth();
         }
-        rigidbody2D.AddForce(new Vector2(1f, 2f) * 400f);
+        rigidbody2D.AddForce(new Vector2(1f, 2f) * 4f,ForceMode2D.Impulse);
         spriteRenderer.sprite = BodyDieImage;
         //动画在射线那里
 
@@ -567,6 +588,7 @@ public abstract class APlayerCtrl : MonoBehaviour
         BanJump = false;
         BanAnyAttack = false;
         AllowRay = true;
+        IsSoulBall = false;
         atlasAnimation.ChangeAnimation(DropAnimId);//防止不恢复动作的bug出现
         ChangeGravity(40);//重力
 
