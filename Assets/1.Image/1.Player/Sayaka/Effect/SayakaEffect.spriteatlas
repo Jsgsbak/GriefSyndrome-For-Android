@@ -35,6 +35,9 @@ SpriteAtlas:
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
+  - {fileID: 3219025720082990978, guid: 20d9bad3e0319bd40933974ccdb70f9e, type: 3}
+  - {fileID: 4891113837123160397, guid: 20d9bad3e0319bd40933974ccdb70f9e, type: 3}
+  - {fileID: -9162697081818717350, guid: 20d9bad3e0319bd40933974ccdb70f9e, type: 3}
   - {fileID: -3208864672916024822, guid: 20d9bad3e0319bd40933974ccdb70f9e, type: 3}
   - {fileID: 7905515322706889515, guid: 20d9bad3e0319bd40933974ccdb70f9e, type: 3}
   - {fileID: -4357859634014068376, guid: 20d9bad3e0319bd40933974ccdb70f9e, type: 3}
@@ -48,7 +51,6 @@ SpriteAtlas:
   - {fileID: 6570191530616777822, guid: 20d9bad3e0319bd40933974ccdb70f9e, type: 3}
   - {fileID: -724510498961915118, guid: 20d9bad3e0319bd40933974ccdb70f9e, type: 3}
   - {fileID: 8852227458764213462, guid: 20d9bad3e0319bd40933974ccdb70f9e, type: 3}
-  - {fileID: 3219025720082990978, guid: 20d9bad3e0319bd40933974ccdb70f9e, type: 3}
   - {fileID: 1507685923116890278, guid: 20d9bad3e0319bd40933974ccdb70f9e, type: 3}
   - {fileID: 2727118033279391123, guid: 20d9bad3e0319bd40933974ccdb70f9e, type: 3}
   - {fileID: 2867588125544839057, guid: 20d9bad3e0319bd40933974ccdb70f9e, type: 3}
@@ -69,7 +71,6 @@ SpriteAtlas:
   - {fileID: -5368360890156386955, guid: 20d9bad3e0319bd40933974ccdb70f9e, type: 3}
   - {fileID: 1886816544667614289, guid: 20d9bad3e0319bd40933974ccdb70f9e, type: 3}
   - {fileID: 2870942671138140124, guid: 20d9bad3e0319bd40933974ccdb70f9e, type: 3}
-  - {fileID: 4891113837123160397, guid: 20d9bad3e0319bd40933974ccdb70f9e, type: 3}
   - {fileID: -8023132453371612825, guid: 20d9bad3e0319bd40933974ccdb70f9e, type: 3}
   - {fileID: 6722940388147864463, guid: 20d9bad3e0319bd40933974ccdb70f9e, type: 3}
   - {fileID: 2842133861101277650, guid: 20d9bad3e0319bd40933974ccdb70f9e, type: 3}
@@ -82,7 +83,6 @@ SpriteAtlas:
   - {fileID: -1759078032865019369, guid: 20d9bad3e0319bd40933974ccdb70f9e, type: 3}
   - {fileID: -2775789198816546891, guid: 20d9bad3e0319bd40933974ccdb70f9e, type: 3}
   - {fileID: 800609930642993194, guid: 20d9bad3e0319bd40933974ccdb70f9e, type: 3}
-  - {fileID: -9162697081818717350, guid: 20d9bad3e0319bd40933974ccdb70f9e, type: 3}
   - {fileID: 1002475447430512203, guid: 20d9bad3e0319bd40933974ccdb70f9e, type: 3}
   - {fileID: 2345851151241792699, guid: 20d9bad3e0319bd40933974ccdb70f9e, type: 3}
   - {fileID: 3222995964009796373, guid: 20d9bad3e0319bd40933974ccdb70f9e, type: 3}
@@ -90,6 +90,9 @@ SpriteAtlas:
   - {fileID: -5570554273138099002, guid: 20d9bad3e0319bd40933974ccdb70f9e, type: 3}
   - {fileID: -3423228185709083350, guid: 20d9bad3e0319bd40933974ccdb70f9e, type: 3}
   m_PackedSpriteNamesToIndex:
+  - X_circle_1
+  - X_circle_0
+  - X_circle_2
   - Sayaka_Effect_51
   - Sayaka_Effect_50
   - Sayaka_Effect_53
@@ -103,7 +106,6 @@ SpriteAtlas:
   - Sayaka_Effect_34
   - Sayaka_Effect_33
   - Sayaka_Effect_32
-  - Sayaka_Effect_31
   - Sayaka_Effect_28
   - Sayaka_Effect_Z8
   - Sayaka_Effect_29
@@ -124,7 +126,6 @@ SpriteAtlas:
   - Sayaka_Effect_49
   - Sayaka_Effect_15
   - Sayaka_Effect_46
-  - Sayaka_Effect_47
   - Sayaka_Effect_17
   - Sayaka_Effect_16
   - Sayaka_Effect_45
@@ -137,7 +138,6 @@ SpriteAtlas:
   - Sayaka_Effect_40
   - Sayaka_Effect_41
   - Sayaka_Effect_4
-  - Sayaka_Effect_5
   - Sayaka_Effect_3
   - Sayaka_Effect_Z14
   - Sayaka_Effect_Z13

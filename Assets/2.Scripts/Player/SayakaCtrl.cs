@@ -31,12 +31,6 @@ public class SayakaCtrl : APlayerCtrl
             }
         }
 
-        //X 冲刺后
-        else if (AnimName.Equals("NA"))
-        {
-
-        }
-
 
 
     }
@@ -95,7 +89,7 @@ public class SayakaCtrl : APlayerCtrl
             BanAnyAttack = true;
 
             //僵直(结束动画调用)，移动
-            if (EffectRenderer.flipX)
+            if (IsLookAtRoght)
             {
                 rigidbody2D.MovePosition(rigidbody2D.position + new Vector2(1f, 0f));
             }
@@ -106,14 +100,47 @@ public class SayakaCtrl : APlayerCtrl
         }
     }
 
-    public override void PlayerGreatAttack(int i)
+    public override void PlayerGreatAttack()
     {
-        if(i == 1)
+        //蓄力状态
+        if (IsPreparingAttacking)
         {
+            atlasAnimation.ChangeAnimation(GreatAttackAnimId[0]);
+            
+            ChangeGravity(GravityForAttack);
 
+            //真 * 蓄力
+            if(Time.timeSinceLevelLoad - GreatAttackTimer > 0.8f && GteatAttackPart <= 2)
+            {
+                GreatAttackTimer = Time.timeSinceLevelLoad;
+                GteatAttackPart++;
+            }
         }
-        else
+        //攻击状态
+        else if (IsGreatAttacking)
         {
+            //自带防止多次调用的处理
+            atlasAnimation.ChangeAnimation(GreatAttackAnimId[1]);
+
+            //冲刺
+            if (IsLookAtRoght)
+            {
+                rigidbody2D.MovePosition(rigidbody2D.position + new Vector2(0.2f, 0f) * ((GteatAttackPart/10) + 0.9f)) ;
+            }
+            else
+            {
+                rigidbody2D.MovePosition(rigidbody2D.position + new Vector2(-0.2f, 0f) * ((GteatAttackPart / 10) + 0.9f));
+            }
+
+            if(Time.timeSinceLevelLoad - GreatAttackTimer >= 0.3f)
+            {
+                //停止冲刺
+                PlayerJiangZhi(0.1f);
+                IsGreatAttacking = false;
+                GteatAttackPart = 0;
+                ChangeGravity(40);
+
+            }
 
         }
     }

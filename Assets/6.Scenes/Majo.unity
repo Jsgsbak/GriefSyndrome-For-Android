@@ -178,6 +178,7 @@ MonoBehaviour:
     Length: 5
     StartFromId: 0
     EndWithId: 4
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
     Cycle: 0
     Interval: 0.1
     BeginningRepair: 0
@@ -187,6 +188,7 @@ MonoBehaviour:
     Length: 5
     StartFromId: 5
     EndWithId: 9
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
     Cycle: 0
     Interval: 0.1
     BeginningRepair: 0
@@ -196,6 +198,27 @@ MonoBehaviour:
     Length: 5
     StartFromId: 10
     EndWithId: 14
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Cycle: 0
+    Interval: 0.18
+    BeginningRepair: 0
+    RepairedFirstAtlasId: 0
+  - name: Z
+    Description: "Z \u4E09\u6BB5\u6BB5"
+    Length: 5
+    StartFromId: 10
+    EndWithId: 14
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Cycle: 0
+    Interval: 0.18
+    BeginningRepair: 0
+    RepairedFirstAtlasId: 0
+  - name: Z
+    Description: "Z \u4E09\u6BB5\u6BB5"
+    Length: 5
+    StartFromId: 10
+    EndWithId: 14
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
     Cycle: 0
     Interval: 0.18
     BeginningRepair: 0
@@ -912,6 +935,7 @@ MonoBehaviour:
     Length: 6
     StartFromId: 1
     EndWithId: -1
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
     Cycle: 1
     Interval: 0.1
     BeginningRepair: 0
@@ -921,6 +945,7 @@ MonoBehaviour:
     Length: 9
     StartFromId: 1
     EndWithId: -1
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
     Cycle: 1
     Interval: 0.1
     BeginningRepair: 0
@@ -930,6 +955,7 @@ MonoBehaviour:
     Length: 13
     StartFromId: 1
     EndWithId: -1
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
     Cycle: 0
     Interval: 0.08
     BeginningRepair: 0
@@ -939,6 +965,7 @@ MonoBehaviour:
     Length: 13
     StartFromId: 1
     EndWithId: -1
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
     Cycle: 1
     Interval: 0.1
     BeginningRepair: 0
@@ -948,6 +975,7 @@ MonoBehaviour:
     Length: 14
     StartFromId: 7
     EndWithId: 12
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
     Cycle: 0
     Interval: 0.1
     BeginningRepair: 0
@@ -957,6 +985,7 @@ MonoBehaviour:
     Length: 11
     StartFromId: 1
     EndWithId: -1
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
     Cycle: 1
     Interval: 0.1
     BeginningRepair: 0
@@ -966,6 +995,7 @@ MonoBehaviour:
     Length: 7
     StartFromId: 3
     EndWithId: 9
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
     Cycle: 0
     Interval: 0.1
     BeginningRepair: 0
@@ -975,7 +1005,8 @@ MonoBehaviour:
     Length: 11
     StartFromId: 1
     EndWithId: 2
-    Cycle: 1
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Cycle: 0
     Interval: 0.1
     BeginningRepair: 0
     RepairedFirstAtlasId: 0
@@ -984,6 +1015,7 @@ MonoBehaviour:
     Length: 7
     StartFromId: 1
     EndWithId: -1
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
     Cycle: 1
     Interval: 0.1
     BeginningRepair: 0
@@ -993,6 +1025,7 @@ MonoBehaviour:
     Length: 4
     StartFromId: 1
     EndWithId: -1
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
     Cycle: 1
     Interval: 0.1
     BeginningRepair: 0
@@ -1002,6 +1035,7 @@ MonoBehaviour:
     Length: 11
     StartFromId: 1
     EndWithId: -1
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
     Cycle: 0
     Interval: 0.1
     BeginningRepair: 0
@@ -1011,6 +1045,7 @@ MonoBehaviour:
     Length: 7
     StartFromId: 1
     EndWithId: -1
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
     Cycle: 0
     Interval: 0.1
     BeginningRepair: 0
@@ -1020,6 +1055,7 @@ MonoBehaviour:
     Length: 5
     StartFromId: 1
     EndWithId: -1
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
     Cycle: 0
     Interval: 0.1
     BeginningRepair: 0
@@ -1029,6 +1065,7 @@ MonoBehaviour:
     Length: 5
     StartFromId: 1
     EndWithId: -1
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
     Cycle: 0
     Interval: 0.05
     BeginningRepair: 0
@@ -1038,6 +1075,7 @@ MonoBehaviour:
     Length: 7
     StartFromId: 1
     EndWithId: -1
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
     Cycle: 0
     Interval: 0.1
     BeginningRepair: 0
@@ -1047,6 +1085,7 @@ MonoBehaviour:
     Length: 4
     StartFromId: 1
     EndWithId: -1
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
     Cycle: 0
     Interval: 0.15
     BeginningRepair: 0
@@ -1056,6 +1095,7 @@ MonoBehaviour:
     Length: 4
     StartFromId: 1
     EndWithId: -1
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
     Cycle: 0
     Interval: 0.1
     BeginningRepair: 0
@@ -1065,6 +1105,7 @@ MonoBehaviour:
     Length: 9
     StartFromId: 1
     EndWithId: -1
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
     Cycle: 0
     Interval: 0.1
     BeginningRepair: 0
@@ -1074,6 +1115,7 @@ MonoBehaviour:
     Length: 12
     StartFromId: 1
     EndWithId: -1
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
     Cycle: 0
     Interval: 0.1
     BeginningRepair: 0
@@ -1083,6 +1125,7 @@ MonoBehaviour:
     Length: 10
     StartFromId: 1
     EndWithId: -1
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
     Cycle: 1
     Interval: 0.08
     BeginningRepair: 1
@@ -1092,6 +1135,7 @@ MonoBehaviour:
     Length: 10
     StartFromId: 8
     EndWithId: -1
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
     Cycle: 1
     Interval: 0.08
     BeginningRepair: 0
@@ -1179,6 +1223,7 @@ MonoBehaviour:
   JumpGravity: 40
   Speed: 1.5
   AllowHanging: 0
+  GravityForAttack: 1
   atlasAnimation: {fileID: 1609930911}
   StandAnimId: 0
   MoveAnimId: 1
@@ -1194,6 +1239,7 @@ MonoBehaviour:
   EffectRenderer: {fileID: 134496172}
   Effect: {fileID: 0}
   zAttackEffectId: 000000000100000002000000
+  GreatAttackEffectId: 
   SelectedMahoshaojo: 4
   Level: 1
   SoulLimit: 156
@@ -1205,6 +1251,7 @@ MonoBehaviour:
   RebirthSoul: 30
   MaigaVit: 45
   BanStandWalk: 0
+  IsLookAtRoght: 1
   IsHanging: 0
   BanJump: 0
   IsJumping: 0
@@ -1214,7 +1261,11 @@ MonoBehaviour:
   BanAnyAttack: 0
   ZattackCount: 0
   IsAttacking: 0
+  GreatAttackTimer: 0
   AttackCanGoOn: 1
+  IsPreparingAttacking: 0
+  IsGreatAttacking: 0
+  GteatAttackPart: 1
   IsHurt: 0
   IsBodyDie: 0
   IsSoulBall: 0

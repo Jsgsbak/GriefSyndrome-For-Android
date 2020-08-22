@@ -188,6 +188,10 @@ namespace PureAmaya.General
             //  while (true)
             //  {
 
+            //旋转物体
+          if(AtlasAnimations[PlayingId].RotateObjectBeforeAnim)transform.rotation = AtlasAnimations[PlayingId].Rotation;
+
+
             //设置图像
             SpriteRenderer.sprite = spriteAtlas.GetSprite(string.Format(Format, GroupName,
                                                                          AtlasAnimations[PlayingId].name, PlayingSpriteId.ToString()));
@@ -272,6 +276,13 @@ namespace PureAmaya.General
             public int StartFromId = 0;
             [Header("动画到哪里结束(-1:直接播放完)")]
             public int EndWithId = -1;
+
+            [Header("播放动画前要先旋转物体吗")]
+            public bool RotateObjectBeforeAnim = false;
+            [Header("播放动画时物体旋转")]
+            public Quaternion Rotation = Quaternion.identity;
+
+
             /// <summary>
             /// 动画循环吗
             /// </summary>

@@ -15,6 +15,9 @@ public abstract class APlayerCtrl : MonoBehaviour
     public float Speed = 10f;
     [Header("允许悬停吗(true=空中停止)")]
     public bool AllowHanging = false; //这个放在Jump那里，因为重力由Jump控制
+    /// <summary>
+    /// 不允许悬停时滞空的重力值（攻击用）
+    /// </summary>
     [Header("不允许悬停时滞空的重力值（攻击用）")]
     public int GravityForAttack = 1;
     [Header("角色移动动画机")]
@@ -41,6 +44,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     [HideInInspector] public GameObject Effect;
     [Header("EffectAnimation中Z的效果动画ID")]
     public int[] zAttackEffectId;
+    public int[] GreatAttackEffectId;
 
     #region 玩家信息
     /// <summary>
@@ -96,7 +100,10 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// </summary>
     [Header("玩家状态")]
     public bool BanStandWalk = false;
-
+    /// <summary>
+    /// 正在向右看
+    /// </summary>
+    public bool IsLookAtRoght = true;
     /// <summary>
     /// 悬空
     /// </summary>
@@ -138,9 +145,9 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// </summary>
     public bool IsAttacking = false;
     /// <summary>
-    /// Z计时器
+    /// X计时器
     /// </summary>
-    public float AttackTimer = 0f;
+    public float GreatAttackTimer = 0f;
     /// <summary>
     /// Z可以继续连段
     /// </summary>
@@ -206,6 +213,7 @@ public abstract class APlayerCtrl : MonoBehaviour
         UpdateManager.FastUpdate.AddListener(FastUpdate);
         UpdateManager.FakeLateUpdate.AddListener(RayGround);
         UpdateManager.FastUpdate.AddListener(Jump);
+        UpdateManager.FastUpdate.AddListener(PlayerGreatAttack);
         atlasAnimation.AnimStop.AddListener(CheckAnimStop);
 
         //获取playerId
@@ -245,6 +253,8 @@ public abstract class APlayerCtrl : MonoBehaviour
 
     public void FastUpdate()
     {
+        //对玩家状态的判断与修改尽量往这里放
+
         if (IsSoulBall)
         {
             //灵魂球，允许自由移动
@@ -310,9 +320,24 @@ public abstract class APlayerCtrl : MonoBehaviour
             IsAttacking = false;
         }
         //X蓄力 人物动作，特效另做处理
-        else if (!BanAnyAttack && RebindableInput.GetKeyDown("GreatAttack") && !IsGreatAttacking) { Effect.SetActive(true); BanStandWalk = true; IsGreatAttacking = true; PlayerGreatAttack(1); }
+        else if (!BanAnyAttack && RebindableInput.GetKeyDown("GreatAttack") && !IsGreatAttacking)
+        { 
+            Effect.SetActive(true); 
+            BanStandWalk = true;
+            IsPreparingAttacking = true;
+            GreatAttackTimer = Time.timeSinceLevelLoad;
+            BanAnimFlip = true;
+            AllowRay = false;
+        }
         //X攻击 
-        else if (!BanAnyAttack && RebindableInput.GetKeyUp("GreatAttack") && IsPreparingAttacking) { IsGreatAttacking = true; PlayerGreatAttack(2); }
+        else if (!BanAnyAttack && RebindableInput.GetKeyUp("GreatAttack") && IsPreparingAttacking) 
+        {
+            IsGreatAttacking = true; 
+            IsPreparingAttacking = false;
+            BanAnimFlip = true;
+            AllowRay = false;
+            GreatAttackTimer = Time.timeSinceLevelLoad; 
+        }
         else if (RebindableInput.GetKeyUp("Attack")) { IsAttacking = false; }//解决跳跃攻击后落地不会回复站立的bug
     }
 
@@ -377,7 +402,7 @@ public abstract class APlayerCtrl : MonoBehaviour
 /// x键攻击
 /// </summary>
 /// <param name="i">阶段数，从1开始</param>
-    public abstract void PlayerGreatAttack(int i);
+    public abstract void PlayerGreatAttack();
 
     /// <summary>
     /// 受伤
@@ -570,6 +595,8 @@ public abstract class APlayerCtrl : MonoBehaviour
         BanJump = true;
         BanAnyAttack = true;
         AllowRay = false;
+        BanAnimFlip = true;
+
 
         Effect.SetActive(false);
         atlasAnimation.PauseAnimation();
@@ -589,6 +616,8 @@ public abstract class APlayerCtrl : MonoBehaviour
         BanJump = false;
         BanAnyAttack = false;
         AllowRay = true;
+        BanAnimFlip = false;
+
     }
     #endregion
 
@@ -656,7 +685,7 @@ public abstract class APlayerCtrl : MonoBehaviour
 
         //动画
         if (RebindableInput.GetAxis("Horizontal") == 0 && !IsHanging) atlasAnimation.ChangeAnimation(StandAnimId);
-        else if (RebindableInput.GetAxis("Horizontal") == 0 && !IsHanging) atlasAnimation.ChangeAnimation(MoveAnimId);
+        else if (RebindableInput.GetAxis("Horizontal") != 0 && !IsHanging) atlasAnimation.ChangeAnimation(MoveAnimId);
         else if (IsHanging && rigidbody2D.gravityScale > 0) atlasAnimation.ChangeAnimation(DropAnimId);
 
     }
@@ -674,12 +703,15 @@ public abstract class APlayerCtrl : MonoBehaviour
             // spriteRenderer.flipX = true;
             //  EffectRenderer.flipX = true;
             tr.rotation = LookAtRight;
+            IsLookAtRoght = true;
         }
         else if(RebindableInput.GetAxis("Horizontal") < 0)
         {
             //  spriteRenderer.flipX = false;
             //   EffectRenderer.flipX = false;
             tr.rotation = LookAtLeft;
+            IsLookAtRoght = false;
+
 
         }
     }
