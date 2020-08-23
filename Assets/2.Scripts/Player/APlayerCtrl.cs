@@ -102,9 +102,9 @@ public abstract class APlayerCtrl : MonoBehaviour
     [Header("玩家状态")]
     public bool BanStandWalk = false;
     /// <summary>
-    /// 正在向右看
+    /// 玩家僵直？
     /// </summary>
-    public bool IsLookAtRoght = true;
+    public bool IsJiangZhi = false;
     /// <summary>
     /// 悬空
     /// </summary>
@@ -127,10 +127,6 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// 跳跃用计时器
     /// </summary>
     public float JumpTimer = 0f;
-    /// <summary>
-    /// 可以二段跳
-    /// </summary>
-    public bool CanJumpTwice = true;
 
     /// <summary>
     /// 禁止任何攻击
@@ -174,7 +170,10 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// 正在UP+x攻击
     /// </summary>
     public bool IsUpX = false;
-
+    /// <summary>
+    /// Up+X攻击的计时器
+    /// </summary>
+    public float UpXTimer = 0f;
     /// <summary>
     /// 被攻击
     /// </summary>
@@ -207,23 +206,26 @@ public abstract class APlayerCtrl : MonoBehaviour
     [HideInInspector] public Rigidbody2D rigidbody2D;
     [HideInInspector] public Transform tr;
     [HideInInspector] public SpriteRenderer spriteRenderer;
-    [HideInInspector] public Collider2D collider2D;
+    //[HideInInspector] public Collider2D collider2D;
+    [HideInInspector] public BoxCollider2D collider2D;
     #endregion
 
     private void Awake()
     {
         #region 初始化组件
         rigidbody2D = GetComponent<Rigidbody2D>();
+        rigidbody2D.gravityScale = 0;
         tr = transform;
         spriteRenderer = GetComponent<SpriteRenderer>();
         Effect = EffectAnimation.gameObject;//显示攻击效果的物体
-        collider2D = GetComponent<Collider2D>();//碰撞箱
+        collider2D = GetComponent<BoxCollider2D>();//碰撞箱
         #endregion
 
         //注册事件
         UpdateManager.FastUpdate.AddListener(FastUpdate);
         UpdateManager.FakeLateUpdate.AddListener(RayGround);
         UpdateManager.FastUpdate.AddListener(Jump);
+        UpdateManager.FakeLateUpdate.AddListener(SimulatedGravity);
         UpdateManager.FastUpdate.AddListener(PlayerGreatAttack);
         atlasAnimation.AnimStop.AddListener(CheckAnimStop);
 
@@ -273,7 +275,7 @@ public abstract class APlayerCtrl : MonoBehaviour
 
 
 
-        if (IsBodyDie || IsHurt)
+        if (IsBodyDie || IsHurt || IsJiangZhi)
         {
             //如果玩家死亡，直接返回，不接受后续处理
             return;
@@ -339,6 +341,7 @@ public abstract class APlayerCtrl : MonoBehaviour
             BanAnimFlip = true;
             AllowRay = false;
         }
+
         //X攻击 
         else if (!BanAnyAttack && RebindableInput.GetKeyUp("GreatAttack") && IsPreparingAttacking && !BanGreatAttack) 
         {
@@ -348,9 +351,18 @@ public abstract class APlayerCtrl : MonoBehaviour
             AllowRay = false;
             GreatAttackTimer = Time.timeSinceLevelLoad; 
         }
-        else if(!BanAnyAttack && RebindableInput.GetKeyUp("GreatAttack") && RebindableInput.GetAxis("Vertical") >= 1)
+
+        //X + Up 攻击 
+        else if(!BanAnyAttack && RebindableInput.GetKey("GreatAttack") && RebindableInput.GetAxis("Vertical") >= 1 &&!IsUpX)
         {
+            IsGreatAttacking = false;//解决攻击动画中断的问题
+            IsPreparingAttacking = false;
             IsUpX = true;
+            BanGreatAttack = true;
+            BanAnimFlip = true;
+            AllowRay = false;
+            atlasAnimation.ChangeAnimation(UpXAnimId);
+            UpXTimer = Time.timeSinceLevelLoad;
         }
 
 
@@ -366,35 +378,44 @@ public abstract class APlayerCtrl : MonoBehaviour
         {
             return;
         }
-
-        Debug.DrawRay(transform.position, Vector2.down, Color.red);
+#if UNITY_EDITOR
+        Debug.DrawRay(new Vector2(tr.position.x - 0.8f, tr.position.y), Vector2.down, Color.red);
+        Debug.DrawRay(new Vector2(tr.position.x + 0.8f, tr.position.y), Vector2.down, Color.red);
+#endif
         //仅对10（Ground）碰撞检测
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 1f, 1 << 10);//10:Ground层ID
+        RaycastHit2D hitLeft = Physics2D.Raycast(new Vector2(tr.position.x - 0.8f, tr.position.y), Vector2.down, 1f, 1 << 10);//10:Ground层ID
+        RaycastHit2D hitRight = Physics2D.Raycast(new Vector2(tr.position.x + 0.8f, tr.position.y), Vector2.down, 1f, 1 << 10);//10:Ground层ID
 
-
-        if (hit.collider != null && rigidbody2D.gravityScale > 0)//大于零：防止在上升的时候碰到平台意外初始化
+        if (rigidbody2D.gravityScale > 0)//大于零：防止在上升的时候碰到平台意外初始化
         {
             //在地上，初始化
-            IsHanging = false;
-            JumpCount = 0;
-            CanJumpTwice = true;
-            ChangeGravity(40, false);
-            if (IsJumping) BanStandWalk= false; 
-           IsJumping = false;//没有刚好能跳上去的平台
-
-            //如果受伤了，并且接触到了地面，恢复被禁用的输入
-            if (IsHurt)
+            if (hitLeft.collider != null || hitRight.collider != null)
             {
-                BanStandWalk = false;
-                BanJump = false;
-                BanAnyAttack = false;
-                IsHurt = false;
+                Debug.Log("在地上，初始化");
+
+                IsHanging = false;
+                JumpCount = 0;
+                ChangeGravity(40, false);
+                if (IsJumping) BanStandWalk = false;
+                IsJumping = false;//没有刚好能跳上去的平台
+
+                //如果受伤了，并且接触到了地面，恢复被禁用的输入
+                if (IsHurt)
+                {
+                    BanStandWalk = false;
+                    BanJump = false;
+                    BanAnyAttack = false;
+                    IsHurt = false;
+                }
+
+                //如果身体死了，并且接触到了地面，换上死亡贴图
+                if (IsBodyDie) spriteRenderer.sprite = BodyDieImage;
             }
 
-            //如果身体死了，并且接触到了地面，换上死亡贴图
-            if (IsBodyDie) spriteRenderer.sprite = BodyDieImage;
         }
-        else
+
+        //这个就不怕受到平台的影响了
+         if(hitLeft.collider == null && hitRight.collider == null)
         {
             IsHanging = true;//其他没有接触到地面的情况
         }
@@ -609,10 +630,13 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// <param name="Time"></param>
     public void PlayerJiangZhi(float Time)
     {
+        Debug.Log("僵直");
+
         //取消滞留的僵直
         CancelInvoke("JiangZhiRecovery");
 
         //前半段僵直处理
+        IsJiangZhi = true;
         BanStandWalk = true;
         BanJump = true;
         BanAnyAttack = true;
@@ -639,7 +663,7 @@ public abstract class APlayerCtrl : MonoBehaviour
         BanAnyAttack = false;
         AllowRay = true;
         BanAnimFlip = false;
-
+        IsJiangZhi = false;//修复意外移动的bug
     }
     #endregion
 
@@ -655,7 +679,7 @@ public abstract class APlayerCtrl : MonoBehaviour
             IsJumping = false;
         }
         rigidbody2D.velocity = Vector2.zero;
-        rigidbody2D.gravityScale = value;
+      //  rigidbody2D.gravityScale = value;
         
     }
 
@@ -708,7 +732,8 @@ public abstract class APlayerCtrl : MonoBehaviour
         //动画
         if (RebindableInput.GetAxis("Horizontal") == 0 && !IsHanging) atlasAnimation.ChangeAnimation(StandAnimId);
         else if (RebindableInput.GetAxis("Horizontal") != 0 && !IsHanging) atlasAnimation.ChangeAnimation(MoveAnimId);
-        else if (IsHanging && rigidbody2D.gravityScale > 0) atlasAnimation.ChangeAnimation(DropAnimId);
+        //下落动画
+        if (IsHanging && rigidbody2D.gravityScale > 0) atlasAnimation.ChangeAnimation(DropAnimId);
 
     }
 
@@ -725,17 +750,24 @@ public abstract class APlayerCtrl : MonoBehaviour
             // spriteRenderer.flipX = true;
             //  EffectRenderer.flipX = true;
             tr.rotation = LookAtRight;
-            IsLookAtRoght = true;
         }
         else if(RebindableInput.GetAxis("Horizontal") < 0)
         {
             //  spriteRenderer.flipX = false;
             //   EffectRenderer.flipX = false;
             tr.rotation = LookAtLeft;
-            IsLookAtRoght = false;
 
 
         }
+    }
+
+
+    /// <summary>
+    /// 模拟重力
+    /// </summary>
+    public void SimulatedGravity()
+    {
+        rigidbody2D.MovePosition(rigidbody2D.position - new Vector2(rigidbody2D.position.x, 2f));
     }
 
     /// <summary>

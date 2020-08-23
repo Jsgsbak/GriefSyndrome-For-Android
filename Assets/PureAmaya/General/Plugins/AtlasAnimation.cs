@@ -96,7 +96,7 @@ namespace PureAmaya.General
         [ContextMenu("播放DefaultAnimationNameInAtlas动画")]
         public void PlayAnimInEditor()
         {
-          ChangeAnimation(DefaultAnimationNameInAtlas);
+          ChangeAnimation(DefaultAnimationNameInAtlas,true);
         }
 
 
@@ -114,7 +114,7 @@ namespace PureAmaya.General
 
             if(!BeDisabled)//上一帧正常运行
             {
-                if (AnimationId != PlayingId || Forced)//阻止多次调用同一动画
+                if (AnimationId != PlayingId || Forced)//阻止多次调用同一动画，外加是否强制播放
                 {
 
                     BeDisabled = false;

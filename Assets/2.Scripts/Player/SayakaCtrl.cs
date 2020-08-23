@@ -15,14 +15,14 @@ public class SayakaCtrl : APlayerCtrl
     //注意：该方法注册在玩家身上的角色移动动画机，即根据玩家动作动画来进行判断
     public override void CheckAnimStop(string AnimName)
     {
-        Debug.Log("SSS");
+
 
         //平A 1 2 3 段连段判断，用于阻止玩家在动画结束前再次攻击
         if (AnimName.Equals("AttackA") || AnimName.Equals("Rush") || AnimName.Equals("Rush_fin"))
         {
             IsAttacking = false;//动画停止了，也就停止了攻击
             Effect.SetActive(false);//动画停止后，禁用角色效果动画机（有的角色可能无需禁用）
-            ChangeGravity(5);//这样才能以比较正常的速度下降
+            ChangeGravity(4);//这样才能以比较正常的速度下降
 
 
             //最后一击僵直
@@ -92,7 +92,7 @@ public class SayakaCtrl : APlayerCtrl
             BanAnyAttack = true;
 
             //僵直(结束动画调用)，移动
-            if (IsLookAtRoght)
+            if (tr.rotation.w == 1)
             {
                 rigidbody2D.MovePosition(rigidbody2D.position + new Vector2(1f, 0f));
             }
@@ -129,7 +129,7 @@ public class SayakaCtrl : APlayerCtrl
             atlasAnimation.ChangeAnimation(GreatAttackAnimId[1]);
 
             //冲刺
-            if (IsLookAtRoght)
+            if (tr.rotation.w == 1)
             {
                 rigidbody2D.MovePosition(rigidbody2D.position + new Vector2(0.2f, 0f) * ((GteatAttackPart/10) + 0.9f)) ;
             }
@@ -144,7 +144,7 @@ public class SayakaCtrl : APlayerCtrl
                 PlayerJiangZhi(0.1f);
                 IsGreatAttacking = false;
                 GteatAttackPart = 0;
-                ChangeGravity(5);//这样才能以比较正常的速度下降
+                ChangeGravity(4);//这样才能以比较正常的速度下降
                 rigidbody2D.velocity = Vector2.zero;
 
                 //修正停止冲刺后动作异常的Bug
@@ -163,7 +163,36 @@ public class SayakaCtrl : APlayerCtrl
     {
         if (IsUpX)
         {
+            ChangeGravity(0);
+            atlasAnimation.ChangeAnimation(UpXAnimId);
 
+            if(Time.timeSinceLevelLoad - UpXTimer <= 0.5f)
+            {
+                //不到点，冲
+                if(tr.rotation.w == 1)
+                {
+                    //向右
+                    rigidbody2D.MovePosition(rigidbody2D.position + new Vector2(0.3f, 0.5f) *0.2f);
+
+                }
+                else
+                {
+                    rigidbody2D.MovePosition(rigidbody2D.position + new Vector2(-0.3f, 0.5f) * 0.2f);
+                }
+            }
+            else
+            {
+                //到点了，掉下来
+                PlayerJiangZhi(0.2f);
+                IsUpX = false;
+                IsGreatAttacking = false;//解决攻击动画中断的问题
+                IsPreparingAttacking = false;
+                BanGreatAttack = false;
+                BanAnimFlip = false;
+                AllowRay = true;
+                ChangeGravity(4);
+
+            }
         }
     }
 }
