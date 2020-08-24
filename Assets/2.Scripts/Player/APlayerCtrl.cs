@@ -29,6 +29,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     public int DropAnimId;
     public int HurtAnimId;
     public int UpXAnimId;
+    public int DownXAnimId;
     public Sprite BodyDieImage;
     public Sprite SoulBall;
     public Color SoulBallColor;
@@ -175,6 +176,14 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// Up+X攻击的计时器
     /// </summary>
     public float UpXTimer = 0f;
+    /// <summary>
+    /// 正在down+x攻击
+    /// </summary>
+    public bool IsDownX = false;
+    /// <summary>
+    /// DOWN+X计时器
+    /// </summary>
+    public float DownXTimer = 0f;
     /// <summary>
     /// 被攻击
     /// </summary>
@@ -354,7 +363,7 @@ public abstract class APlayerCtrl : MonoBehaviour
         }
 
         //X + Up 攻击 
-        else if(!BanAnyAttack && RebindableInput.GetKey("GreatAttack") && RebindableInput.GetAxis("Vertical") >= 1 &&!IsUpX && GteatAttackPart <= 2)
+        else if(!BanAnyAttack && RebindableInput.GetKey("GreatAttack") && RebindableInput.GetAxis("Vertical") >= 1 &&!IsUpX && GteatAttackPart <= 1)
         {
             GteatAttackPart++;
             IsGreatAttacking = false;//解决攻击动画中断的问题
@@ -365,6 +374,19 @@ public abstract class APlayerCtrl : MonoBehaviour
             AllowRay = false;
             atlasAnimation.ChangeAnimation(UpXAnimId);
             UpXTimer = Time.timeSinceLevelLoad;
+        }
+
+        //X + Down 攻击 
+        else if (!BanAnyAttack && RebindableInput.GetKey("GreatAttack") && RebindableInput.GetAxis("Vertical") <= -1 && !IsDownX)
+        {
+            IsDownX = true;
+            IsGreatAttacking = false;//解决攻击动画中断的问题
+            IsPreparingAttacking = false;
+            BanGreatAttack = true;
+            BanAnimFlip = true;
+            AllowRay = false;
+            atlasAnimation.ChangeAnimation(DownXAnimId);
+            DownXTimer = Time.timeSinceLevelLoad;
         }
 
 
@@ -448,6 +470,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// </summary>
     public abstract void PlayerUpX();
 
+    public abstract void PlayerDownX();
     /// <summary>
     /// 受伤
     /// </summary>
@@ -736,7 +759,7 @@ public abstract class APlayerCtrl : MonoBehaviour
         if (RebindableInput.GetAxis("Horizontal") == 0 && !IsHanging) atlasAnimation.ChangeAnimation(StandAnimId);
         else if (RebindableInput.GetAxis("Horizontal") != 0 && !IsHanging) atlasAnimation.ChangeAnimation(MoveAnimId);
         //下落动画
-        if (IsHanging && Gravity > 0) { atlasAnimation.ChangeAnimation(DropAnimId); Debug.Log("下落"); }
+        if (IsHanging && Gravity > 0) { atlasAnimation.ChangeAnimation(DropAnimId);}
 
     }
 

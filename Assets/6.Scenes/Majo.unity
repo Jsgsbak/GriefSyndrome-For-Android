@@ -1670,7 +1670,7 @@ MonoBehaviour:
     RotateObjectBeforeAnim: 0
     Rotation: {x: 0, y: 0, z: 0, w: 1}
     Cycle: 0
-    Interval: 0.1
+    Interval: 0.05
     BeginningRepair: 0
     RepairedFirstAtlasId: 0
   - name: NB_air
@@ -1817,7 +1817,7 @@ MonoBehaviour:
     BeginningRepair: 1
     RepairedFirstAtlasId: 4
   - name: 2B
-    Description: 18
+    Description: "18 \u2193 X"
     Length: 12
     StartFromId: 1
     EndWithId: -1
@@ -1940,6 +1940,7 @@ MonoBehaviour:
   DropAnimId: 20
   HurtAnimId: 13
   UpXAnimId: 17
+  DownXAnimId: 18
   BodyDieImage: {fileID: 21300000, guid: 14a18b4040e85ec43b85ccdcbacf8324, type: 3}
   SoulBall: {fileID: 21300000, guid: 54bc2a47d1641ba4da5085152d13dfb7, type: 3}
   SoulBallColor: {r: 0, g: 0.5921569, b: 1, a: 0.9019608}
@@ -1978,6 +1979,8 @@ MonoBehaviour:
   GteatAttackPart: 1
   IsUpX: 0
   UpXTimer: 0
+  IsDownX: 0
+  DownXTimer: 0
   IsHurt: 0
   IsBodyDie: 0
   IsSoulBall: 0

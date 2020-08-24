@@ -116,7 +116,7 @@ public class SayakaCtrl : APlayerCtrl
             ChangeGravity(GravityForAttack);
 
             //真 * 蓄力
-            if(Time.timeSinceLevelLoad - GreatAttackTimer > 0.8f && GteatAttackPart <= 2)
+            if(Time.timeSinceLevelLoad - GreatAttackTimer > 0.8f && GteatAttackPart <= 2)//0 1 2 3段 分别代表4个不同阶段
             {
                 GreatAttackTimer = Time.timeSinceLevelLoad;
                 GteatAttackPart++;
@@ -131,11 +131,11 @@ public class SayakaCtrl : APlayerCtrl
             //冲刺
             if (tr.rotation.w == 1)
             {
-               Move(new Vector2(0.5f, 0f) * ((GteatAttackPart/10) + 0.9f)) ;
+               Move(new Vector2(0.3f, 0f) * ((GteatAttackPart/10) + 0.9f)) ;
             }
             else
             {
-                Move(new Vector2(-0.5f, 0f) * ((GteatAttackPart / 10) + 0.9f));
+                Move(new Vector2(-0.3f, 0f) * ((GteatAttackPart / 10) + 0.9f));
             }
 
             if(Time.timeSinceLevelLoad - GreatAttackTimer >= 0.2f)
@@ -172,12 +172,12 @@ public class SayakaCtrl : APlayerCtrl
                 if(tr.rotation.w == 1)
                 {
                     //向右
-                    Move(new Vector2(0.3f, 0.5f) *0.2f);
+                    Move(new Vector2(0.3f, 0.5f) *0.25f);
 
                 }
                 else
                 {
-                   Move( new Vector2(-0.3f, 0.5f) * 0.2f);
+                   Move( new Vector2(-0.3f, 0.5f) * 0.25f);
                 }
             }
             else
@@ -195,6 +195,15 @@ public class SayakaCtrl : APlayerCtrl
             }
         }
     }
+
+    public override void PlayerDownX()
+    {
+        if (IsDownX)
+        {
+
+        }
+    }
+
 }
 
 
