@@ -22,7 +22,7 @@ public class SayakaCtrl : APlayerCtrl
         {
             IsAttacking = false;//动画停止了，也就停止了攻击
             Effect.SetActive(false);//动画停止后，禁用角色效果动画机（有的角色可能无需禁用）
-            ChangeGravity(4);//这样才能以比较正常的速度下降
+            ChangeGravity(25);
 
 
             //最后一击僵直
@@ -50,7 +50,7 @@ public class SayakaCtrl : APlayerCtrl
             ZattackCount++;
 
             //按Z行走
-            rigidbody2D.MovePosition(rigidbody2D.position + new Vector2(RebindableInput.GetAxis("Horizontal"), 0f) * 0.01f * Speed);
+            Move(new Vector2(RebindableInput.GetAxis("Horizontal"), 0f) * 0.01f * Speed);
             //下降或减缓重力
             
 
@@ -65,7 +65,7 @@ public class SayakaCtrl : APlayerCtrl
             ZattackCount++;
 
             //按Z行走
-            rigidbody2D.MovePosition(rigidbody2D.position + new Vector2(RebindableInput.GetAxis("Horizontal"), 0f) * 0.01f * Speed);
+            Move(new Vector2(RebindableInput.GetAxis("Horizontal"), 0f) * 0.01f * Speed);
           
             //效果动画
             EffectAnimation.ChangeAnimation(zAttackEffectId[1]);
@@ -94,11 +94,11 @@ public class SayakaCtrl : APlayerCtrl
             //僵直(结束动画调用)，移动
             if (tr.rotation.w == 1)
             {
-                rigidbody2D.MovePosition(rigidbody2D.position + new Vector2(1f, 0f));
+                Move(new Vector2(1f, 0f));
             }
             else
             {
-                rigidbody2D.MovePosition(rigidbody2D.position + new Vector2(-1f, 0f));
+                Move(new Vector2(-1f, 0f));
             }
         }
     }
@@ -131,20 +131,20 @@ public class SayakaCtrl : APlayerCtrl
             //冲刺
             if (tr.rotation.w == 1)
             {
-                rigidbody2D.MovePosition(rigidbody2D.position + new Vector2(0.2f, 0f) * ((GteatAttackPart/10) + 0.9f)) ;
+               Move(new Vector2(0.5f, 0f) * ((GteatAttackPart/10) + 0.9f)) ;
             }
             else
             {
-                rigidbody2D.MovePosition(rigidbody2D.position + new Vector2(-0.2f, 0f) * ((GteatAttackPart / 10) + 0.9f));
+                Move(new Vector2(-0.5f, 0f) * ((GteatAttackPart / 10) + 0.9f));
             }
 
-            if(Time.timeSinceLevelLoad - GreatAttackTimer >= 0.3f)
+            if(Time.timeSinceLevelLoad - GreatAttackTimer >= 0.2f)
             {
                 //停止冲刺
                 PlayerJiangZhi(0.1f);
                 IsGreatAttacking = false;
                 GteatAttackPart = 0;
-                ChangeGravity(4);//这样才能以比较正常的速度下降
+                ChangeGravity(25);
                 rigidbody2D.velocity = Vector2.zero;
 
                 //修正停止冲刺后动作异常的Bug
@@ -172,12 +172,12 @@ public class SayakaCtrl : APlayerCtrl
                 if(tr.rotation.w == 1)
                 {
                     //向右
-                    rigidbody2D.MovePosition(rigidbody2D.position + new Vector2(0.3f, 0.5f) *0.2f);
+                    Move(new Vector2(0.3f, 0.5f) *0.2f);
 
                 }
                 else
                 {
-                    rigidbody2D.MovePosition(rigidbody2D.position + new Vector2(-0.3f, 0.5f) * 0.2f);
+                   Move( new Vector2(-0.3f, 0.5f) * 0.2f);
                 }
             }
             else
@@ -190,7 +190,7 @@ public class SayakaCtrl : APlayerCtrl
                 BanGreatAttack = false;
                 BanAnimFlip = false;
                 AllowRay = true;
-                ChangeGravity(4);
+                ChangeGravity(25);
 
             }
         }

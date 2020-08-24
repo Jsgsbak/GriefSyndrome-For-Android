@@ -107,6 +107,8 @@ namespace PureAmaya.General
         /// <param name="Forced">强制播放</param>
         public void ChangeAnimation(int AnimationId,bool Forced = false)
         {
+
+
             //id小于-1直接无视
             if(AnimationId < 0) { return; }
 

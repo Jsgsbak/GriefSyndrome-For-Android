@@ -13,13 +13,13 @@ TextureImporter:
     second: Sayaka_Effect_Z13
   - first:
       213: 1002475447430512203
-    second: Sayaka_Effect_3
+    second: Sayaka_Effect_X_rush_0
   - first:
       213: 800609930642993194
     second: Sayaka_Effect_4
   - first:
       213: -9162697081818717350
-    second: X_circle_2
+    second: Sayaka_Effect_X_circle_2
   - first:
       213: -850078727642345832
     second: Sayaka_Effect_6
@@ -97,7 +97,7 @@ TextureImporter:
     second: Sayaka_Effect_30
   - first:
       213: 3219025720082990978
-    second: X_circle_1
+    second: Sayaka_Effect_X_circle_1
   - first:
       213: 8852227458764213462
     second: Sayaka_Effect_32
@@ -145,7 +145,7 @@ TextureImporter:
     second: Sayaka_Effect_46
   - first:
       213: 4891113837123160397
-    second: X_circle_0
+    second: Sayaka_Effect_X_circle_0
   - first:
       213: 6138800372239849292
     second: Sayaka_Effect_48
@@ -327,7 +327,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sayaka_Effect_3
+      name: Sayaka_Effect_X_rush_0
       rect:
         serializedVersion: 2
         x: 733
@@ -772,7 +772,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 552
-        y: 386
+        y: 387
         width: 341
         height: 126
       alignment: 0
@@ -789,7 +789,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: X_circle_1
+      name: Sayaka_Effect_X_circle_1
       rect:
         serializedVersion: 2
         x: 578
@@ -1125,7 +1125,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: X_circle_0
+      name: Sayaka_Effect_X_circle_0
       rect:
         serializedVersion: 2
         x: 567
@@ -1314,7 +1314,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: X_circle_2
+      name: Sayaka_Effect_X_circle_2
       rect:
         serializedVersion: 2
         x: 554

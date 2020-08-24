@@ -35,8 +35,8 @@ SpriteAtlas:
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
-  - {fileID: 3219025720082990978, guid: 20d9bad3e0319bd40933974ccdb70f9e, type: 3}
   - {fileID: 4891113837123160397, guid: 20d9bad3e0319bd40933974ccdb70f9e, type: 3}
+  - {fileID: 3219025720082990978, guid: 20d9bad3e0319bd40933974ccdb70f9e, type: 3}
   - {fileID: -9162697081818717350, guid: 20d9bad3e0319bd40933974ccdb70f9e, type: 3}
   - {fileID: -3208864672916024822, guid: 20d9bad3e0319bd40933974ccdb70f9e, type: 3}
   - {fileID: 7905515322706889515, guid: 20d9bad3e0319bd40933974ccdb70f9e, type: 3}
@@ -90,9 +90,9 @@ SpriteAtlas:
   - {fileID: -5570554273138099002, guid: 20d9bad3e0319bd40933974ccdb70f9e, type: 3}
   - {fileID: -3423228185709083350, guid: 20d9bad3e0319bd40933974ccdb70f9e, type: 3}
   m_PackedSpriteNamesToIndex:
-  - X_circle_1
-  - X_circle_0
-  - X_circle_2
+  - Sayaka_Effect_X_circle_0
+  - Sayaka_Effect_X_circle_1
+  - Sayaka_Effect_X_circle_2
   - Sayaka_Effect_51
   - Sayaka_Effect_50
   - Sayaka_Effect_53
@@ -138,7 +138,7 @@ SpriteAtlas:
   - Sayaka_Effect_40
   - Sayaka_Effect_41
   - Sayaka_Effect_4
-  - Sayaka_Effect_3
+  - Sayaka_Effect_X_rush_0
   - Sayaka_Effect_Z14
   - Sayaka_Effect_Z13
   - Sayaka_Effect_Z12

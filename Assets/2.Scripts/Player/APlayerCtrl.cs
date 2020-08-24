@@ -9,7 +9,7 @@ using System;
 [RequireComponent(typeof(Rigidbody2D))]
 public abstract class APlayerCtrl : MonoBehaviour
 {
-    public int JumpGravity = 40;
+    public int Gravity = 25;
 
     [Header("玩家移动")]
     public float Speed = 10f;
@@ -19,7 +19,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// 不允许悬停时滞空的重力值（攻击用）
     /// </summary>
     [Header("不允许悬停时滞空的重力值（攻击用）")]
-    public int GravityForAttack = 1;
+    public int GravityForAttack = 10;
     [Header("角色移动动画机")]
     public AtlasAnimation atlasAnimation;
     //这些动画ID如果取值-1则直接无视该动画
@@ -141,6 +141,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// 正在用Z攻击
     /// </summary>
     public bool IsAttacking = false;
+
     /// <summary>
     /// 禁止Z攻击
     /// </summary>
@@ -225,7 +226,7 @@ public abstract class APlayerCtrl : MonoBehaviour
         UpdateManager.FastUpdate.AddListener(FastUpdate);
         UpdateManager.FakeLateUpdate.AddListener(RayGround);
         UpdateManager.FastUpdate.AddListener(Jump);
-        UpdateManager.FakeLateUpdate.AddListener(SimulatedGravity);
+        UpdateManager.FakeLateUpdate.AddListener(SimulatedGravityAndMove);
         UpdateManager.FastUpdate.AddListener(PlayerGreatAttack);
         atlasAnimation.AnimStop.AddListener(CheckAnimStop);
 
@@ -285,7 +286,7 @@ public abstract class APlayerCtrl : MonoBehaviour
         if (!BanAnimFlip && RebindableInput.GetAxis("Horizontal") != 0) { AnimFlip(); }
 
         
-        if (!BanStandWalk && !IsHanging)
+        if (!BanStandWalk)
         {
             //常规的站立与行走（包含下降），跳跃时候的移动不归他管理
             WalkDropAndStand();
@@ -353,8 +354,9 @@ public abstract class APlayerCtrl : MonoBehaviour
         }
 
         //X + Up 攻击 
-        else if(!BanAnyAttack && RebindableInput.GetKey("GreatAttack") && RebindableInput.GetAxis("Vertical") >= 1 &&!IsUpX)
+        else if(!BanAnyAttack && RebindableInput.GetKey("GreatAttack") && RebindableInput.GetAxis("Vertical") >= 1 &&!IsUpX && GteatAttackPart <= 2)
         {
+            GteatAttackPart++;
             IsGreatAttacking = false;//解决攻击动画中断的问题
             IsPreparingAttacking = false;
             IsUpX = true;
@@ -386,16 +388,16 @@ public abstract class APlayerCtrl : MonoBehaviour
         RaycastHit2D hitLeft = Physics2D.Raycast(new Vector2(tr.position.x - 0.8f, tr.position.y), Vector2.down, 1f, 1 << 10);//10:Ground层ID
         RaycastHit2D hitRight = Physics2D.Raycast(new Vector2(tr.position.x + 0.8f, tr.position.y), Vector2.down, 1f, 1 << 10);//10:Ground层ID
 
-        if (rigidbody2D.gravityScale > 0)//大于零：防止在上升的时候碰到平台意外初始化
+        if (Gravity > 0)//大于零：防止在上升的时候碰到平台意外初始化
         {
             //在地上，初始化
             if (hitLeft.collider != null || hitRight.collider != null)
             {
-                Debug.Log("在地上，初始化");
 
                 IsHanging = false;
                 JumpCount = 0;
-                ChangeGravity(40, false);
+                GteatAttackPart = 0;
+                ChangeGravity(25, false);
                 if (IsJumping) BanStandWalk = false;
                 IsJumping = false;//没有刚好能跳上去的平台
 
@@ -611,7 +613,7 @@ public abstract class APlayerCtrl : MonoBehaviour
         AllowRay = true;
         IsSoulBall = false;
         atlasAnimation.ChangeAnimation(DropAnimId);//防止不恢复动作的bug出现
-        ChangeGravity(40);//重力
+        ChangeGravity(25);//重力
 
         //2秒无敌
         PlayerWuDi();
@@ -630,7 +632,6 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// <param name="Time"></param>
     public void PlayerJiangZhi(float Time)
     {
-        Debug.Log("僵直");
 
         //取消滞留的僵直
         CancelInvoke("JiangZhiRecovery");
@@ -679,6 +680,7 @@ public abstract class APlayerCtrl : MonoBehaviour
             IsJumping = false;
         }
         rigidbody2D.velocity = Vector2.zero;
+        Gravity = value;
       //  rigidbody2D.gravityScale = value;
         
     }
@@ -695,10 +697,11 @@ public abstract class APlayerCtrl : MonoBehaviour
             BanStandWalk = true;
 
             //跳跃时动作（移动）
-            rigidbody2D.MovePosition(rigidbody2D.position + new Vector2(RebindableInput.GetAxis("Horizontal"), 0f) * 0.1f * Speed);
+            //rigidbody2D.MovePosition(rigidbody2D.position + );
+            Move(new Vector2(RebindableInput.GetAxis("Horizontal"), 0f) * 0.1f * Speed);
 
             //起飞
-            ChangeGravity(-40,false);
+            ChangeGravity(-15,false);
 
             /*
             if (Time.timeSinceLevelLoad - JumpTimer   > 0.25f)
@@ -711,7 +714,7 @@ public abstract class APlayerCtrl : MonoBehaviour
             if (Time.timeSinceLevelLoad - JumpTimer > 0.3f)
             {
                 //时间到，下降
-                ChangeGravity(40,false);
+                ChangeGravity(25,false);
 
             }
 
@@ -725,15 +728,15 @@ public abstract class APlayerCtrl : MonoBehaviour
     {
         //为啥要加上Drop：下降的时候没有禁用这个方法，并且如果这个方法能执行的话，说明没有干别的，比较适合做下落动作
 
-
         //动作
-        rigidbody2D.MovePosition(rigidbody2D.position + new Vector2(RebindableInput.GetAxis("Horizontal"), 0f) * 0.1f * Speed);
+        // rigidbody2D.MovePosition(rigidbody2D.position + new Vector2(RebindableInput.GetAxis("Horizontal"), 0f) * Speed);
+        Move(new Vector2(RebindableInput.GetAxis("Horizontal"), 0f) * 0.1F *Speed);
 
         //动画
         if (RebindableInput.GetAxis("Horizontal") == 0 && !IsHanging) atlasAnimation.ChangeAnimation(StandAnimId);
         else if (RebindableInput.GetAxis("Horizontal") != 0 && !IsHanging) atlasAnimation.ChangeAnimation(MoveAnimId);
         //下落动画
-        if (IsHanging && rigidbody2D.gravityScale > 0) atlasAnimation.ChangeAnimation(DropAnimId);
+        if (IsHanging && Gravity > 0) { atlasAnimation.ChangeAnimation(DropAnimId); Debug.Log("下落"); }
 
     }
 
@@ -757,17 +760,40 @@ public abstract class APlayerCtrl : MonoBehaviour
             //   EffectRenderer.flipX = false;
             tr.rotation = LookAtLeft;
 
-
         }
     }
 
 
     /// <summary>
-    /// 模拟重力
+    /// 模拟重力 执行移动
     /// </summary>
-    public void SimulatedGravity()
+    public void SimulatedGravityAndMove()
     {
-        rigidbody2D.MovePosition(rigidbody2D.position - new Vector2(rigidbody2D.position.x, 2f));
+        if (IsHanging || IsJumping)//仅允许跳跃/悬空的时候有重力加成，解决抖动的问题
+        {
+            Move(new Vector2(0f, -Gravity * 0.01f));
+        }
+        Move(Vector2.zero, true);//移动
+    }
+
+    /// <summary>
+    /// 移动
+    /// </summary>
+    /// <param name="vector2"></param>
+    /// <param name="StartMove">开始移动吗，否的话就计算移动的位置（用FakeLateUpdate调用true）</param>
+    /// <returns></returns>
+    Vector2 vector = Vector2.zero;
+    public void Move(Vector2 vector2, bool StartMove = false)
+    {
+        if (StartMove) 
+        {
+            rigidbody2D.position = rigidbody2D.position + vector * Time.deltaTime * 35f;
+            vector = Vector2.zero;
+        }
+        else
+        {
+            vector += vector2;
+        }
     }
 
     /// <summary>
