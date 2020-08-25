@@ -30,6 +30,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     public int HurtAnimId;
     public int UpXAnimId;
     public int DownXAnimId;
+    public int DieAnimId;
     public Sprite BodyDieImage;
     public Sprite SoulBall;
     public Color SoulBallColor;
@@ -370,6 +371,7 @@ public abstract class APlayerCtrl : MonoBehaviour
             IsPreparingAttacking = false;
             IsUpX = true;
             BanGreatAttack = true;
+            BanStandWalk = true;
             BanAnimFlip = true;
             AllowRay = false;
             atlasAnimation.ChangeAnimation(UpXAnimId);
@@ -377,12 +379,14 @@ public abstract class APlayerCtrl : MonoBehaviour
         }
 
         //X + Down 攻击 
-        else if (!BanAnyAttack && RebindableInput.GetKey("GreatAttack") && RebindableInput.GetAxis("Vertical") <= -1 && !IsDownX)
+        else if (!BanAnyAttack && RebindableInput.GetKey("GreatAttack") && RebindableInput.GetAxis("Vertical") <= -1 && GteatAttackPart == 0)
         {
+            GteatAttackPart = 0;
             IsDownX = true;
             IsGreatAttacking = false;//解决攻击动画中断的问题
             IsPreparingAttacking = false;
             BanGreatAttack = true;
+            BanStandWalk = true;
             BanAnimFlip = true;
             AllowRay = false;
             atlasAnimation.ChangeAnimation(DownXAnimId);
@@ -410,42 +414,70 @@ public abstract class APlayerCtrl : MonoBehaviour
         RaycastHit2D hitLeft = Physics2D.Raycast(new Vector2(tr.position.x - 0.8f, tr.position.y), Vector2.down, 1f, 1 << 10);//10:Ground层ID
         RaycastHit2D hitRight = Physics2D.Raycast(new Vector2(tr.position.x + 0.8f, tr.position.y), Vector2.down, 1f, 1 << 10);//10:Ground层ID
 
-        if (Gravity > 0)//大于零：防止在上升的时候碰到平台意外初始化
+        if (SoulLimit > 0)
         {
-            //在地上，初始化
-            if (hitLeft.collider != null || hitRight.collider != null)
+
+            if (Gravity > 0)//大于零：防止在上升的时候碰到平台意外初始化
             {
-
-                IsHanging = false;
-                JumpCount = 0;
-                GteatAttackPart = 0;
-                ChangeGravity(25, false);
-                if (IsJumping) BanStandWalk = false;
-                IsJumping = false;//没有刚好能跳上去的平台
-
-                //如果受伤了，并且接触到了地面，恢复被禁用的输入
-                if (IsHurt)
+                //在地上，初始化
+                if (hitLeft.collider != null || hitRight.collider != null)
                 {
-                    BanStandWalk = false;
-                    BanJump = false;
-                    BanAnyAttack = false;
-                    IsHurt = false;
+
+                    IsHanging = false;
+                    JumpCount = 0;
+                    GteatAttackPart = 0;
+                    ChangeGravity(25, false);
+                    if (IsJumping) BanStandWalk = false;
+                    if (IsDownX) { IsDownX = false; BanStandWalk = false; BanGreatAttack = false; }
+                    IsUpX = false;
+                    IsJumping = false;//没有刚好能跳上去的平台
+
+                    //如果受伤了，并且接触到了地面，恢复被禁用的输入
+                    if (IsHurt)
+                    {
+                        BanStandWalk = false;
+                        BanJump = false;
+                        BanAnyAttack = false;
+                        IsHurt = false;
+                    }
+
+                    //如果身体死了，并且接触到了地面，换上死亡贴图
+                 //   if (IsBodyDie) spriteRenderer.sprite = BodyDieImage;
                 }
 
-                //如果身体死了，并且接触到了地面，换上死亡贴图
-                if (IsBodyDie) spriteRenderer.sprite = BodyDieImage;
+            }
+
+            //这个就不怕受到平台的影响了
+            if (hitLeft.collider == null && hitRight.collider == null)
+            {
+                IsHanging = true;//其他没有接触到地面的情况
             }
 
         }
 
-        //这个就不怕受到平台的影响了
-         if(hitLeft.collider == null && hitRight.collider == null)
+
+        else
         {
-            IsHanging = true;//其他没有接触到地面的情况
+            Debug.Log("WDNMD");
+            //魔女化
+            //在地上，取消重力，取消刚体，结束游戏*
+            if (hitLeft.collider != null || hitRight.collider != null)
+            {
+                Debug.Log("MD");
+                Gravity = 0;
+                rigidbody2D.bodyType = RigidbodyType2D.Static;
+                rigidbody2D.Sleep();
+                collider2D.enabled = false;
+                //死亡动画
+                atlasAnimation.ChangeAnimation(DieAnimId);
+                //射线自我了解
+                AllowRay = false;
+
+                UpdateManager.FakeLateUpdate.RemoveAllListeners();
+
+            }
+
         }
-
-
-
     }
 
     /// <summary>
@@ -478,7 +510,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     private void GetHurted(int damage)
     {
 
-        if (!IsWuDi && !IsBodyDie && !IsSoulBall)
+        if (!IsWuDi && !IsBodyDie && !IsSoulBall && SoulLimit >= 0)
         {
             Vit -= damage;
 
@@ -487,16 +519,24 @@ public abstract class APlayerCtrl : MonoBehaviour
             BanStandWalk = true;
             BanJump = true;
             BanAnyAttack = true;
-            rigidbody2D.AddForce(new Vector2(2f, 1f) * 4f, ForceMode2D.Impulse);
+            rigidbody2D.AddForce(new Vector2(2f, 1f) * 4f, ForceMode2D.Impulse);//先放着，找个时间用曲线来代替力
             PlayerJiangZhi(0.2f);
 
-            if(Vit <= 0)
+            if (SoulLimit <= 0)//有的时候vit（hp）还有但是没灵魂了，变成魔女
+            {
+                BecomeWitch();
+                return;
+            }
+
+
+            if (Vit <= 0)
             {
                 BodyDie();
             }
             else
             {
-                PlayerWuDi();//防止魔女化时无敌
+                PlayerWuDi();//防止死亡时无敌
+
             }
 
         }
@@ -514,6 +554,7 @@ public abstract class APlayerCtrl : MonoBehaviour
         if (SoulLimit <= 0)
         {
             //魔女化
+            BecomeWitch();
         }
         else
         {
@@ -521,7 +562,7 @@ public abstract class APlayerCtrl : MonoBehaviour
 
             PlayerReBirth();
         }
-        rigidbody2D.AddForce(new Vector2(1f, 2f) * 4f,ForceMode2D.Impulse);
+        rigidbody2D.AddForce(new Vector2(1f, 2f) * 4f,ForceMode2D.Impulse);//先放着，找个时间用曲线来代替力
         spriteRenderer.sprite = BodyDieImage;
         //动画在射线那里
 
@@ -529,8 +570,31 @@ public abstract class APlayerCtrl : MonoBehaviour
 
     #region 内部方法
 
+    /// <summary>
+    /// 转生为魔女
+    /// </summary>
+    public void BecomeWitch()
+    {
+        //死亡动画在射线里
+        //状态修改
+        BanGreatAttack = true;
+        BanStandWalk = true;
+        BanJump = true;
+        BanAnyAttack = true;
+        IsBodyDie = true;
 
+        UpdateManager.FastUpdate.RemoveListener(Jump);
+        UpdateManager.FakeLateUpdate.RemoveListener(SimulatedGravityAndMove);
+        UpdateManager.FastUpdate.RemoveListener(PlayerGreatAttack);
 
+        rigidbody2D.AddForce(new Vector2(1f, 2f) * 4f, ForceMode2D.Impulse);//先放着，找个时间用曲线来代替力
+        Gravity = 0;
+        rigidbody2D.gravityScale = 5;
+
+        Debug.Log("d");
+        //黑烟
+
+    }
 
 
     public void GetExperience(int exp)
@@ -605,6 +669,8 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// </summary>
     void PlayerToSoul()
     {
+       
+
         //恢复soul，恢复vit
         //代码还没写
 

@@ -10,6 +10,7 @@ public class SayakaCtrl : APlayerCtrl
     {
         //注册私有事件
         UpdateManager.FastUpdate.AddListener(PlayerUpX);
+        UpdateManager.FastUpdate.AddListener(PlayerDownX);
     }
 
     //注意：该方法注册在玩家身上的角色移动动画机，即根据玩家动作动画来进行判断
@@ -28,7 +29,7 @@ public class SayakaCtrl : APlayerCtrl
             //最后一击僵直
             if (AnimName.Equals("Rush_fin"))
             {
-               PlayerJiangZhi(0.2f);
+                PlayerJiangZhi(0.2f);
             }
             else
             {
@@ -42,7 +43,7 @@ public class SayakaCtrl : APlayerCtrl
 
     public override void PlayerAttack()
     {
-            //Z 一段动画
+        //Z 一段动画
         if (ZattackCount == 0 || ZattackCount == 2 || ZattackCount == 4)
         {
             //玩家动画
@@ -52,7 +53,7 @@ public class SayakaCtrl : APlayerCtrl
             //按Z行走
             Move(new Vector2(RebindableInput.GetAxis("Horizontal"), 0f) * 0.01f * Speed);
             //下降或减缓重力
-            
+
 
             //效果动画
             EffectAnimation.ChangeAnimation(zAttackEffectId[0]);
@@ -66,13 +67,13 @@ public class SayakaCtrl : APlayerCtrl
 
             //按Z行走
             Move(new Vector2(RebindableInput.GetAxis("Horizontal"), 0f) * 0.01f * Speed);
-          
+
             //效果动画
             EffectAnimation.ChangeAnimation(zAttackEffectId[1]);
 
         }
         //Z 三段动画
-        else 
+        else
         {
             if (IsHanging)
             {
@@ -112,11 +113,11 @@ public class SayakaCtrl : APlayerCtrl
         if (IsPreparingAttacking)
         {
             atlasAnimation.ChangeAnimation(GreatAttackAnimId[0]);
-            
+
             ChangeGravity(GravityForAttack);
 
             //真 * 蓄力
-            if(Time.timeSinceLevelLoad - GreatAttackTimer > 0.8f && GteatAttackPart <= 2)//0 1 2 3段 分别代表4个不同阶段
+            if (Time.timeSinceLevelLoad - GreatAttackTimer > 0.8f && GteatAttackPart <= 2)//0 1 2 3段 分别代表4个不同阶段
             {
                 GreatAttackTimer = Time.timeSinceLevelLoad;
                 GteatAttackPart++;
@@ -131,14 +132,14 @@ public class SayakaCtrl : APlayerCtrl
             //冲刺
             if (tr.rotation.w == 1)
             {
-               Move(new Vector2(0.3f, 0f) * ((GteatAttackPart/10) + 0.9f)) ;
+                Move(new Vector2(0.3f, 0f) * ((GteatAttackPart / 10) + 0.9f));
             }
             else
             {
                 Move(new Vector2(-0.3f, 0f) * ((GteatAttackPart / 10) + 0.9f));
             }
 
-            if(Time.timeSinceLevelLoad - GreatAttackTimer >= 0.2f)
+            if (Time.timeSinceLevelLoad - GreatAttackTimer >= 0.2f)
             {
                 //停止冲刺
                 PlayerJiangZhi(0.1f);
@@ -166,18 +167,18 @@ public class SayakaCtrl : APlayerCtrl
             ChangeGravity(0);
             atlasAnimation.ChangeAnimation(UpXAnimId);
 
-            if(Time.timeSinceLevelLoad - UpXTimer <= 0.5f)
+            if (Time.timeSinceLevelLoad - UpXTimer <= 0.5f)
             {
                 //不到点，冲
-                if(tr.rotation.w == 1)
+                if (tr.rotation.w == 1)
                 {
                     //向右
-                    Move(new Vector2(0.3f, 0.5f) *0.25f);
+                    Move(new Vector2(0.3f, 0.5f) * 0.25f);
 
                 }
                 else
                 {
-                   Move( new Vector2(-0.3f, 0.5f) * 0.25f);
+                    Move(new Vector2(-0.3f, 0.5f) * 0.25f);
                 }
             }
             else
@@ -189,6 +190,7 @@ public class SayakaCtrl : APlayerCtrl
                 IsPreparingAttacking = false;
                 BanGreatAttack = false;
                 BanAnimFlip = false;
+                BanStandWalk = false;
                 AllowRay = true;
                 ChangeGravity(25);
 
@@ -200,7 +202,43 @@ public class SayakaCtrl : APlayerCtrl
     {
         if (IsDownX)
         {
+            if (Time.timeSinceLevelLoad - DownXTimer <= 0.2f && GteatAttackPart == 0)
+            {
+                //不到点，冲
+                if (tr.rotation.w == 1)
+                {
+                    //向右
+                    Move(new Vector2(0.5f, 0.5f) * 0.4f);
 
+                }
+                else
+                {
+                    Move(new Vector2(0.5f, 0.5f) * 0.4f);
+                }
+            }
+
+
+            else
+            {
+                GteatAttackPart = 1;
+                DownXTimer = Time.timeSinceLevelLoad;
+            }
+
+            if (Time.timeSinceLevelLoad - DownXTimer <= 0.2f && GteatAttackPart == 1)
+            {
+                //天上挂一会，然后冲下来
+                if (tr.rotation.w == 1)
+                {
+                    //向右
+                    Move(new Vector2(0.5f, 0.5f) * -0.4f);
+
+                }
+                else
+                {
+                    Move(new Vector2(0.5f, 0.5f) * -0.4f);
+                }
+
+            }
         }
     }
 
