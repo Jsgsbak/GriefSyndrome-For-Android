@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class SayakaCtrl : APlayerCtrl
 {
+    private bool EnableZ3Rush = false;
+
     private void Start()
     {
         //注册私有事件
@@ -25,11 +27,14 @@ public class SayakaCtrl : APlayerCtrl
             Effect.SetActive(false);//动画停止后，禁用角色效果动画机（有的角色可能无需禁用）
             ChangeGravity(25);
 
-
-            //最后一击僵直
+            //最后一击僵直与移动
             if (AnimName.Equals("Rush_fin"))
             {
+                //僵直
                 PlayerJiangZhi(0.2f);
+                //禁用移动
+                EnableZ3Rush = false;
+                UpdateManager.FastUpdate.RemoveListener(FastUpdateForSayaka);
             }
             else
             {
@@ -40,6 +45,24 @@ public class SayakaCtrl : APlayerCtrl
 
 
     }
+
+    public void FastUpdateForSayaka()
+    {
+        if (EnableZ3Rush)
+        {
+            //以防万一，加个限制
+            if (tr.rotation.w == 1)
+            {
+                Move(new Vector2(0.05f, 0f));
+            }
+            else
+            {
+                Move(new Vector2(-0.05f, 0f));
+            }
+
+        }
+    }
+
 
     public override void PlayerAttack()
     {
@@ -92,15 +115,13 @@ public class SayakaCtrl : APlayerCtrl
             //禁止再次攻击
             BanAnyAttack = true;
 
-            //僵直(结束动画调用)，移动
-            if (tr.rotation.w == 1)
+            //僵直(结束动画调用)，移动调用
+            if (atlasAnimation.PlayingSpriteId == 4)
             {
-                Move(new Vector2(1f, 0f));
+                UpdateManager.FastUpdate.AddListener(FastUpdateForSayaka);
+                EnableZ3Rush = true;
             }
-            else
-            {
-                Move(new Vector2(-1f, 0f));
-            }
+
         }
     }
 
@@ -202,8 +223,10 @@ public class SayakaCtrl : APlayerCtrl
     {
         if (IsDownX)
         {
-            if (Time.timeSinceLevelLoad - DownXTimer <= 0.2f && GteatAttackPart == 0)
+            if (Time.timeSinceLevelLoad - DownXTimer <= 0.2f && GteatAttackPart == 1)
             {
+
+                ChangeGravity(0);
                 //不到点，冲
                 if (tr.rotation.w == 1)
                 {
@@ -216,16 +239,19 @@ public class SayakaCtrl : APlayerCtrl
                     Move(new Vector2(0.5f, 0.5f) * 0.4f);
                 }
             }
-
-
-            else
+            else if(GteatAttackPart == 1)
             {
-                GteatAttackPart = 1;
+                GteatAttackPart = 2;
+                IsHanging = true;//解决迷之悬空的bug
                 DownXTimer = Time.timeSinceLevelLoad;
             }
 
-            if (Time.timeSinceLevelLoad - DownXTimer <= 0.2f && GteatAttackPart == 1)
+            //>= 悬空一会
+            if (Time.timeSinceLevelLoad - DownXTimer >= 0.1f && GteatAttackPart == 2)
             {
+                ChangeGravity(25);
+                Debug.Log("sda");
+
                 //天上挂一会，然后冲下来
                 if (tr.rotation.w == 1)
                 {
@@ -239,6 +265,30 @@ public class SayakaCtrl : APlayerCtrl
                 }
 
             }
+
+            if (GteatAttackPart == 2 && !IsHanging)
+            {
+                GteatAttackPart = 3;
+                DownXTimer = Time.timeSinceLevelLoad;
+            }
+
+            //反弹下
+            if (Time.timeSinceLevelLoad - DownXTimer <= 0.1f && !IsHanging && GteatAttackPart == 1)
+            {
+                //不到点，冲
+                if (tr.rotation.w == 1)
+                {
+                    //向右
+                    Move(new Vector2(0.5f, 0.5f) * 0.3f);
+
+                }
+                else
+                {
+                    Move(new Vector2(0.5f, 0.5f) * 0.3f);
+                }
+
+            }
+
         }
     }
 

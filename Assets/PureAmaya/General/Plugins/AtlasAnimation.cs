@@ -48,7 +48,7 @@ namespace PureAmaya.General
         /// <summary>
         /// 在一个动画中正在使用的图片的id
         /// </summary>
-        private int PlayingSpriteId = 0;
+       [HideInInspector] public int PlayingSpriteId = 0;
 
         #region 用于储存暂停的动画
         bool IsPaused = false;

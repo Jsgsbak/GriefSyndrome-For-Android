@@ -5,6 +5,9 @@ using PureAmaya.General;
 using MEC;
 using System;
 
+
+//还需要限制一下地板防止出界
+
 [DisallowMultipleComponent]
 [RequireComponent(typeof(Rigidbody2D))]
 public abstract class APlayerCtrl : MonoBehaviour
@@ -184,7 +187,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// <summary>
     /// DOWN+X计时器
     /// </summary>
-    public float DownXTimer = 0f;
+   public float DownXTimer = 0f;
     /// <summary>
     /// 被攻击
     /// </summary>
@@ -350,7 +353,7 @@ public abstract class APlayerCtrl : MonoBehaviour
             IsPreparingAttacking = true;
             GreatAttackTimer = Time.timeSinceLevelLoad;
             BanAnimFlip = true;
-            AllowRay = false;
+          //  AllowRay = false;
         }
 
         //X攻击 
@@ -359,7 +362,7 @@ public abstract class APlayerCtrl : MonoBehaviour
             IsGreatAttacking = true; 
             IsPreparingAttacking = false;
             BanAnimFlip = true;
-            AllowRay = false;
+        //    AllowRay = false;
             GreatAttackTimer = Time.timeSinceLevelLoad; 
         }
 
@@ -373,22 +376,21 @@ public abstract class APlayerCtrl : MonoBehaviour
             BanGreatAttack = true;
             BanStandWalk = true;
             BanAnimFlip = true;
-            AllowRay = false;
+      //      AllowRay = false;
             atlasAnimation.ChangeAnimation(UpXAnimId);
             UpXTimer = Time.timeSinceLevelLoad;
         }
 
         //X + Down 攻击 
-        else if (!BanAnyAttack && RebindableInput.GetKey("GreatAttack") && RebindableInput.GetAxis("Vertical") <= -1 && GteatAttackPart == 0)
+        else if (!BanAnyAttack && RebindableInput.GetKey("GreatAttack") && RebindableInput.GetAxis("Vertical") <= -1 && GteatAttackPart == 1)
         {
-            GteatAttackPart = 0;
+            GteatAttackPart = 1;
             IsDownX = true;
             IsGreatAttacking = false;//解决攻击动画中断的问题
             IsPreparingAttacking = false;
             BanGreatAttack = true;
             BanStandWalk = true;
             BanAnimFlip = true;
-            AllowRay = false;
             atlasAnimation.ChangeAnimation(DownXAnimId);
             DownXTimer = Time.timeSinceLevelLoad;
         }
@@ -425,10 +427,8 @@ public abstract class APlayerCtrl : MonoBehaviour
 
                     IsHanging = false;
                     JumpCount = 0;
-                    GteatAttackPart = 0;
                     ChangeGravity(25, false);
                     if (IsJumping) BanStandWalk = false;
-                    if (IsDownX) { IsDownX = false; BanStandWalk = false; BanGreatAttack = false; }
                     IsUpX = false;
                     IsJumping = false;//没有刚好能跳上去的平台
 
@@ -458,12 +458,10 @@ public abstract class APlayerCtrl : MonoBehaviour
 
         else
         {
-            Debug.Log("WDNMD");
             //魔女化
             //在地上，取消重力，取消刚体，结束游戏*
             if (hitLeft.collider != null || hitRight.collider != null)
             {
-                Debug.Log("MD");
                 Gravity = 0;
                 rigidbody2D.bodyType = RigidbodyType2D.Static;
                 rigidbody2D.Sleep();
@@ -519,7 +517,17 @@ public abstract class APlayerCtrl : MonoBehaviour
             BanStandWalk = true;
             BanJump = true;
             BanAnyAttack = true;
-            rigidbody2D.AddForce(new Vector2(2f, 1f) * 4f, ForceMode2D.Impulse);//先放着，找个时间用曲线来代替力
+            //弹开
+            rigidbody2D.velocity = Vector2.zero;
+            if (tr.rotation.w == 1)
+            {
+                rigidbody2D.AddForce(new Vector2(2f, 1f) * 4f, ForceMode2D.Impulse);//先放着，找个时间用曲线来代替力
+            }
+            else
+            {
+                rigidbody2D.AddForce(new Vector2(-2f, 1f) * 4f, ForceMode2D.Impulse);//先放着，找个时间用曲线来代替力
+            }
+
             PlayerJiangZhi(0.2f);
 
             if (SoulLimit <= 0)//有的时候vit（hp）还有但是没灵魂了，变成魔女
@@ -562,7 +570,18 @@ public abstract class APlayerCtrl : MonoBehaviour
 
             PlayerReBirth();
         }
-        rigidbody2D.AddForce(new Vector2(1f, 2f) * 4f,ForceMode2D.Impulse);//先放着，找个时间用曲线来代替力
+
+        //（额外的）弹开
+        rigidbody2D.velocity = Vector2.zero;
+        if (tr.rotation.w == 1)
+        {
+            rigidbody2D.AddForce(new Vector2(1f, 2f) * 4f, ForceMode2D.Impulse);//先放着，找个时间用曲线来代替力
+        }
+        else
+        {
+            rigidbody2D.AddForce(new Vector2(-1f, 2f) * 4f, ForceMode2D.Impulse);//先放着，找个时间用曲线来代替力
+        }
+
         spriteRenderer.sprite = BodyDieImage;
         //动画在射线那里
 
@@ -587,7 +606,16 @@ public abstract class APlayerCtrl : MonoBehaviour
         UpdateManager.FakeLateUpdate.RemoveListener(SimulatedGravityAndMove);
         UpdateManager.FastUpdate.RemoveListener(PlayerGreatAttack);
 
-        rigidbody2D.AddForce(new Vector2(1f, 2f) * 4f, ForceMode2D.Impulse);//先放着，找个时间用曲线来代替力
+        rigidbody2D.velocity = Vector2.zero;
+        //（额外的）弹开
+        if (tr.rotation.w == 1)
+        {
+            rigidbody2D.AddForce(new Vector2(1f, 2f) * 4f, ForceMode2D.Impulse);//先放着，找个时间用曲线来代替力
+        }
+        else
+        {
+            rigidbody2D.AddForce(new Vector2(-1f, 2f) * 4f, ForceMode2D.Impulse);//先放着，找个时间用曲线来代替力
+        }
         Gravity = 0;
         rigidbody2D.gravityScale = 5;
 
@@ -872,6 +900,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// <param name="StartMove">开始移动吗，否的话就计算移动的位置（用FakeLateUpdate调用true）</param>
     /// <returns></returns>
     Vector2 vector = Vector2.zero;
+    Vector2 vecAlways = Vector2.zero;
     public void Move(Vector2 vector2, bool StartMove = false)
     {
         if (StartMove) 
