@@ -171,7 +171,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// <summary>
     /// X攻击阶段
     /// </summary>
-    public int GteatAttackPart = 1;
+    public int GteatAttackPart = 0;
     /// <summary>
     /// 正在UP+x攻击
     /// </summary>
@@ -367,7 +367,7 @@ public abstract class APlayerCtrl : MonoBehaviour
         }
 
         //X + Up 攻击 
-        else if(!BanAnyAttack && RebindableInput.GetKey("GreatAttack") && RebindableInput.GetAxis("Vertical") >= 1 &&!IsUpX && GteatAttackPart <= 1)
+        else if(!BanAnyAttack && RebindableInput.GetKey("GreatAttack") && RebindableInput.GetAxis("Vertical") >= 1 &&!IsUpX && GteatAttackPart <= 0)
         {
             GteatAttackPart++;
             IsGreatAttacking = false;//解决攻击动画中断的问题
@@ -382,7 +382,7 @@ public abstract class APlayerCtrl : MonoBehaviour
         }
 
         //X + Down 攻击 
-        else if (!BanAnyAttack && RebindableInput.GetKey("GreatAttack") && RebindableInput.GetAxis("Vertical") <= -1 && GteatAttackPart == 1)
+        else if (!IsDownX &&!BanAnyAttack && RebindableInput.GetKey("GreatAttack") && RebindableInput.GetAxis("Vertical") <= -1 && GteatAttackPart == 0)
         {
             GteatAttackPart = 1;
             IsDownX = true;

@@ -239,7 +239,7 @@ public class SayakaCtrl : APlayerCtrl
                     Move(new Vector2(0.5f, 0.5f) * 0.4f);
                 }
             }
-            else if(GteatAttackPart == 1)
+            else if(GteatAttackPart == 1 && IsDownX)
             {
                 GteatAttackPart = 2;
                 IsHanging = true;//解决迷之悬空的bug
@@ -249,7 +249,7 @@ public class SayakaCtrl : APlayerCtrl
             //>= 悬空一会
             if (Time.timeSinceLevelLoad - DownXTimer >= 0.1f && GteatAttackPart == 2)
             {
-                ChangeGravity(25);
+                ChangeGravity(1);//解决异常滞空
                 Debug.Log("sda");
 
                 //天上挂一会，然后冲下来
@@ -266,27 +266,43 @@ public class SayakaCtrl : APlayerCtrl
 
             }
 
-            if (GteatAttackPart == 2 && !IsHanging)
+            if (GteatAttackPart == 2 && !IsHanging && IsDownX)//IsDownX解决意外跳跃的Bug
             {
+                Debug.Log("fff");
                 GteatAttackPart = 3;
                 DownXTimer = Time.timeSinceLevelLoad;
             }
 
             //反弹下
-            if (Time.timeSinceLevelLoad - DownXTimer <= 0.1f && !IsHanging && GteatAttackPart == 1)
+            if (Time.timeSinceLevelLoad - DownXTimer <= 0.2f && !IsHanging && GteatAttackPart == 3)
             {
+                Debug.Log("dffd");
                 //不到点，冲
                 if (tr.rotation.w == 1)
                 {
                     //向右
-                    Move(new Vector2(0.5f, 0.5f) * 0.3f);
+                    Move(new Vector2(5f, 5f) * 0.2f);
 
                 }
                 else
                 {
-                    Move(new Vector2(0.5f, 0.5f) * 0.3f);
+                    Move(new Vector2(5f, 5f) * 0.2f);
                 }
 
+            }
+            else if(Time.timeSinceLevelLoad - DownXTimer >= 0.2f && !IsHanging && GteatAttackPart == 3)
+            {
+                //结束了
+                ChangeGravity(25);
+                IsDownX = false;
+                IsGreatAttacking = false;//解决攻击动画中断的问题
+                IsPreparingAttacking = false;
+                BanGreatAttack = false;
+                BanStandWalk = false;
+                BanAnimFlip = false;
+                AllowRay = true;
+                GteatAttackPart = 0;
+                PlayerJiangZhi(0.1f);
             }
 
         }
