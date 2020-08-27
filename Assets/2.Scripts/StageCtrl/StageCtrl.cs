@@ -22,7 +22,7 @@ public class StageCtrl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-       // Application.targetFrameRate = 60;
+        Application.targetFrameRate = gameScoreSettings.MaxFps;
     }
 
     // Update is called once per frame

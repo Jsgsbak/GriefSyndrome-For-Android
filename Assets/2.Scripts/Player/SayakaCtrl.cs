@@ -2,17 +2,22 @@
 using PureAmaya.General;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
+using TMPro;
 using UnityEngine;
 
 public class SayakaCtrl : APlayerCtrl
 {
     private bool EnableZ3Rush = false;
+    private bool EnableMagiaRush = false;
 
     private void Start()
     {
         //注册私有事件
         UpdateManager.FastUpdate.AddListener(PlayerUpX);
         UpdateManager.FastUpdate.AddListener(PlayerDownX);
+        UpdateManager.FastUpdate.AddListener(FastUpdateForSayaka);//MD毛病真多
+
     }
 
     //注意：该方法注册在玩家身上的角色移动动画机，即根据玩家动作动画来进行判断
@@ -34,14 +39,12 @@ public class SayakaCtrl : APlayerCtrl
                 PlayerJiangZhi(0.2f);
                 //禁用移动
                 EnableZ3Rush = false;
-                UpdateManager.FastUpdate.RemoveListener(FastUpdateForSayaka);
             }
             else
             {
                 PlayerJiangZhi(0.05f);
             }
         }
-
 
 
     }
@@ -60,6 +63,11 @@ public class SayakaCtrl : APlayerCtrl
                 Move(new Vector2(-0.05f, 0f));
             }
 
+        }
+
+        if (IsMagia)
+        {
+            Magia(1);
         }
     }
 
@@ -218,7 +226,8 @@ public class SayakaCtrl : APlayerCtrl
             }
         }
     }
-
+    
+    //会突刺两次emmmm就当特性好了）
     public override void PlayerDownX()
     {
         if (IsDownX)
@@ -231,7 +240,7 @@ public class SayakaCtrl : APlayerCtrl
                 if (tr.rotation.w == 1)
                 {
                     //向右
-                    Move(new Vector2(0.5f, 0.5f) * 0.4f);
+                    Move(new Vector2(-0.5f, 0.5f) * 0.4f);
 
                 }
                 else
@@ -256,7 +265,7 @@ public class SayakaCtrl : APlayerCtrl
                 if (tr.rotation.w == 1)
                 {
                     //向右
-                    Move(new Vector2(0.5f, 0.5f) * -0.4f);
+                    Move(new Vector2(-0.5f, 0.5f) * -0.4f);
 
                 }
                 else
@@ -281,7 +290,7 @@ public class SayakaCtrl : APlayerCtrl
                 if (tr.rotation.w == 1)
                 {
                     //向右
-                    Move(new Vector2(5f, 5f) * 0.2f);
+                    Move(new Vector2(-5f, 5f) * 0.2f);
 
                 }
                 else
@@ -308,6 +317,79 @@ public class SayakaCtrl : APlayerCtrl
         }
     }
 
+    public override void Magia(int index)
+    {
+        //准备
+        if (index == 0)
+        {
+            //状态设定
+            BanAnimFlip = true;
+            BanStandWalk = true;
+            BanJump = true;
+            AllowRay = false;
+            atlasAnimation.ChangeAnimation(MagiaAnimId[0]);
+
+            ChangeGravity(0);
+        }
+        //向冲刺缓冲
+        if(atlasAnimation.PlayingSpriteId == 4 && !EnableMagiaRush)
+        {
+            EnableMagiaRush = true;
+            MagiaTimer = Time.timeSinceLevelLoad;
+        }
+
+        //冲刺
+         if(EnableMagiaRush)
+        {
+            if(Time.timeSinceLevelLoad - MagiaTimer <= 0.5f)
+            {
+                ChangeGravity(0);//防止意外出现重力
+
+
+                //冲刺中按下了X，带有攻击性
+                if (RebindableInput.GetKeyDown("GreatAttack"))
+                {
+                    atlasAnimation.ChangeAnimation(GreatAttackAnimId[1]);
+                }
+                else
+                {
+                    atlasAnimation.ChangeAnimation(MagiaAnimId[1]);
+                }
+
+                Debug.Log("yidong");
+
+                //魔法冲刺
+                if (tr.rotation.w == 1)
+                {
+                    Move(new Vector2(0.2f, 0f));
+                }
+                else
+                {
+                    Move(new Vector2(-0.2f, 0f));
+                }
+            }
+
+            else
+            {
+                //停止
+                IsMagia = false;
+                EnableMagiaRush = false;
+                atlasAnimation.ChangeAnimation(StandAnimId);
+                PlayerJiangZhi(0.1f);
+                BanAnimFlip = false;
+                BanStandWalk = false;
+                BanJump = false;
+                AllowRay = true;
+
+
+
+            }
+
+
+        }
+
+
+    }
 }
 
 

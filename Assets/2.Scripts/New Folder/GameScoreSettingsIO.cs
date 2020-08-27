@@ -13,6 +13,10 @@ using UnityEngine.U2D;
 public class GameScoreSettingsIO : ScriptableObject
 {
     #region 正式玩的变量
+
+    [Header("最大帧率")]
+    public int MaxFps = 60;
+
     [Header("正式玩的变量")]
     [Header("当前玩家分数")]
     public int[] Score = new int[3] { -1, -1, -1 };//-1:该位子没有玩家

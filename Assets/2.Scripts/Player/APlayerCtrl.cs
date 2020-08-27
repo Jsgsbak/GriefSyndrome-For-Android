@@ -33,6 +33,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     public int HurtAnimId;
     public int UpXAnimId;
     public int DownXAnimId;
+    public int[] MagiaAnimId;//有的角色magia有蓄力之类的动作
     public int DieAnimId;
     public Sprite BodyDieImage;
     public Sprite SoulBall;
@@ -189,6 +190,15 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// </summary>
    public float DownXTimer = 0f;
     /// <summary>
+    /// 在用魔法吗
+    /// </summary>
+    public bool IsMagia = false;
+
+    /// <summary>
+    /// Magia计时器
+    /// </summary>
+    public float MagiaTimer = 0f;
+    /// <summary>
     /// 被攻击
     /// </summary>
     public bool IsHurt = false;
@@ -279,7 +289,6 @@ public abstract class APlayerCtrl : MonoBehaviour
     public void FastUpdate()
     {
         //对玩家状态的判断与修改尽量往这里放
-
         if (IsSoulBall)
         {
             //灵魂球，允许自由移动
@@ -288,24 +297,22 @@ public abstract class APlayerCtrl : MonoBehaviour
         }
 
 
-
+        //如果玩家死亡，直接返回，不接受后续处理
         if (IsBodyDie || IsHurt || IsJiangZhi)
         {
-            //如果玩家死亡，直接返回，不接受后续处理
             return;
         }
 
         //尽量对状态的修改拿到这里
         if (!BanAnimFlip && RebindableInput.GetAxis("Horizontal") != 0) { AnimFlip(); }
 
-        
+        //常规的站立与行走（包含下降），跳跃时候的移动不归他管理
         if (!BanStandWalk)
         {
-            //常规的站立与行走（包含下降），跳跃时候的移动不归他管理
             WalkDropAndStand();
         }
 
-
+        //跳跃
         if (!BanJump && RebindableInput.GetKeyDown("Jump") && JumpCount <= 1) 
         {
 
@@ -322,6 +329,7 @@ public abstract class APlayerCtrl : MonoBehaviour
      
         }
 
+        //Z
         if (!BanAnyAttack && RebindableInput.GetKeyDown("Attack") && !BanAttacking) 
         {
             if (!AllowHanging && IsHanging)
@@ -344,6 +352,10 @@ public abstract class APlayerCtrl : MonoBehaviour
         {
             IsAttacking = false;
         }
+
+        //解决跳跃攻击后落地不会回复站立的bug
+        else if (RebindableInput.GetKeyUp("Attack")) { IsAttacking = false; }
+
         //X蓄力 人物动作，特效另做处理
         else if (!BanAnyAttack && RebindableInput.GetKeyDown("GreatAttack") && !IsGreatAttacking && !BanGreatAttack)
         { 
@@ -395,8 +407,23 @@ public abstract class APlayerCtrl : MonoBehaviour
             DownXTimer = Time.timeSinceLevelLoad;
         }
 
+        //这里是简化的处理，具体要在每个人的脚本里写
+        if(!BanAnyAttack && !IsMagia && RebindableInput.GetKeyDown("Magia"))
+        {
+            MagiaTimer = Time.timeSinceLevelLoad;
+            Magia(0);
+        }
+        else if (!BanAnyAttack && !IsMagia && RebindableInput.GetKey("Magia"))
+        {
+            Magia(1);
+            IsMagia = true;
+        }
+        else if (IsMagia && RebindableInput.GetKeyUp("Magia"))
+        {
+            Magia(2);
+           // IsMagia = false; 有的角色不能在这里取消状态
+        }
 
-        else if (RebindableInput.GetKeyUp("Attack")) { IsAttacking = false; }//解决跳跃攻击后落地不会回复站立的bug
     }
 
     /// <summary>
@@ -501,6 +528,8 @@ public abstract class APlayerCtrl : MonoBehaviour
     public abstract void PlayerUpX();
 
     public abstract void PlayerDownX();
+
+    public abstract void Magia(int index);
     /// <summary>
     /// 受伤
     /// </summary>
@@ -588,6 +617,10 @@ public abstract class APlayerCtrl : MonoBehaviour
     }
 
     #region 内部方法
+
+
+
+
 
     /// <summary>
     /// 转生为魔女
@@ -749,7 +782,6 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// <param name="Time"></param>
     public void PlayerJiangZhi(float Time)
     {
-
         //取消滞留的僵直
         CancelInvoke("JiangZhiRecovery");
 
@@ -761,6 +793,10 @@ public abstract class APlayerCtrl : MonoBehaviour
         AllowRay = false;
         BanAnimFlip = true;
 
+        //重力
+        ChangeGravity(25);
+
+
 
         Effect.SetActive(false);
         atlasAnimation.PauseAnimation();
@@ -768,6 +804,8 @@ public abstract class APlayerCtrl : MonoBehaviour
 
         //后半段恢复处理
         Invoke("JiangZhiRecovery", Time);
+
+
     }
 
     /// <summary>
