@@ -13,6 +13,7 @@
 
 - [背景](#背景)
 - [使用说明](#使用说明)
+- [FAQ](#FAQ)
 - [更新日志](#更新日志)
 - [使用许可](#使用许可)
 
@@ -23,6 +24,12 @@
 ## 使用说明
 
 下载后在unity hub中按照软件提示打开
+
+## FAQ
+
+Q:**何时使用Issue？(https://gitee.com/pureamaya/GriefSyndrome-For-Android/issues)
+
+A:等第一个release
 
 ## 更新日志
 
