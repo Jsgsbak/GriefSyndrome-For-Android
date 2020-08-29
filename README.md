@@ -27,7 +27,7 @@
 
 ## FAQ
 
-Q:**何时使用Issue？(https://gitee.com/pureamaya/GriefSyndrome-For-Android/issues)
+Q:**何时使用[Issue](https://gitee.com/pureamaya/GriefSyndrome-For-Android/issues)?
 
 A:等第一个release
 
