@@ -1,4 +1,4 @@
-###  GriefSyndrome For Android
+#  GriefSyndrome For Android
 
 [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 
@@ -6,9 +6,9 @@
 除了游戏代码外，基本上基于原作
 
  
-# 如果您希望尽一份力，欢迎fork
+### 如果您希望尽一份力，欢迎fork
 
-# 未完成（~~学车~~沉迷小圆 沉迷学习）
+### 未完成（~~学车~~沉迷小圆 沉迷学习）
 
 
 
@@ -36,7 +36,7 @@ A:等第一个release
 
 ## 更新日志
 
-  ** 2020年8月29日（build 0.0.2a） ** 
+ ###  2020年8月29日（build 0.0.2a） 
 
 1.沙耶加，角色通用脚本算是做完了（不包含特效及某些处理，后续会补上）*bug很多
 
@@ -46,7 +46,7 @@ A:等第一个release
 
 6.工作重心转移了，后续不会做新角色，因为做不好。。。现在以游戏系统为主
 
-  ** 2020年8月22日（build 0.0.1a） ** 
+ ### 2020年8月22日（build 0.0.1a） 
 
 1.跳跃攻击后下降奇快的bug
 
@@ -65,7 +65,7 @@ A:等第一个release
 
 [Apache](LICENSE) 
 
-# 额外的许可
+### 额外的许可
 
 1.请遵守使用的Apache，如果后续条款与该Apache冲突，以后续条款为准
 
