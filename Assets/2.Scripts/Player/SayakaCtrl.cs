@@ -232,7 +232,7 @@ public class SayakaCtrl : APlayerCtrl
     {
         if (IsDownX)
         {
-            if (Time.timeSinceLevelLoad - DownXTimer <= 0.2f && GteatAttackPart == 1)
+            if (Time.timeSinceLevelLoad - DownXTimer <= 0.2f && GteatAttackPart == 0)
             {
 
                 ChangeGravity(0);
@@ -248,7 +248,7 @@ public class SayakaCtrl : APlayerCtrl
                     Move(new Vector2(0.5f, 0.5f) * 0.4f);
                 }
             }
-            else if(GteatAttackPart == 1 && IsDownX)
+            else if(GteatAttackPart == 0 && IsDownX)
             {
                 GteatAttackPart = 2;
                 IsHanging = true;//解决迷之悬空的bug
@@ -390,6 +390,8 @@ public class SayakaCtrl : APlayerCtrl
 
 
     }
+
+
 }
 
 

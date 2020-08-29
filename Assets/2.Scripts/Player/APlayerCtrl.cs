@@ -66,6 +66,10 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// </summary>
      public int Level = 1;
     /// <summary>
+    /// 当前经验（升级所需经验：12+2 * (level - 1)）  未验证，猜测
+    /// </summary>
+    public int Experience = 0;
+    /// <summary>
     /// 灵魂值
     /// </summary>
      public int SoulLimit;
@@ -245,15 +249,16 @@ public abstract class APlayerCtrl : MonoBehaviour
         collider2D = GetComponent<BoxCollider2D>();//碰撞箱
         #endregion
 
-        //注册事件
+        #region 注册事件
         UpdateManager.FastUpdate.AddListener(FastUpdate);
         UpdateManager.FakeLateUpdate.AddListener(RayGround);
         UpdateManager.FastUpdate.AddListener(Jump);
         UpdateManager.FakeLateUpdate.AddListener(SimulatedGravityAndMove);
         UpdateManager.FastUpdate.AddListener(PlayerGreatAttack);
         atlasAnimation.AnimStop.AddListener(CheckAnimStop);
+        #endregion
 
-        //获取playerId
+        #region 获取playerId
         for (int i = 0; i < 3; i++)
         {
             if (SelectedMahoshaojo == StageCtrl.gameScoreSettings.PlayerType[i])
@@ -263,7 +268,9 @@ public abstract class APlayerCtrl : MonoBehaviour
             }
 
         }
-        //注册受伤事件以及设置tag
+        #endregion
+
+        #region 注册受伤事件以及设置tag
         tag = string.Format("{0}{1}", "Player", playerId.ToString());
         if(playerId == 1)
         {
@@ -278,11 +285,11 @@ public abstract class APlayerCtrl : MonoBehaviour
             StageCtrl.Player3Hurt.AddListener(GetHurted);
 
         }
-
+        #endregion
 
 
         //根据已有数据获取玩家信息
-
+        UpdatePlayerInformation();
     }
 
 
@@ -396,7 +403,7 @@ public abstract class APlayerCtrl : MonoBehaviour
         //X + Down 攻击 
         else if (!IsDownX &&!BanAnyAttack && RebindableInput.GetKey("GreatAttack") && RebindableInput.GetAxis("Vertical") <= -1 && GteatAttackPart == 0)
         {
-            GteatAttackPart = 1;
+            GteatAttackPart = 0;
             IsDownX = true;
             IsGreatAttacking = false;//解决攻击动画中断的问题
             IsPreparingAttacking = false;
@@ -424,6 +431,16 @@ public abstract class APlayerCtrl : MonoBehaviour
            // IsMagia = false; 有的角色不能在这里取消状态
         }
 
+        /*
+        //没有操控输入的时候（除了移动），回复状态
+        if(!RebindableInput.GetKey("Attack") && !RebindableInput.GetKey("Magia") && !RebindableInput.GetKey("GreatAttack") && !RebindableInput.GetKeyDown("Jump"))
+        {
+            BanStandWalk = false;
+            AllowRay = true;
+            IsPreparingAttacking = false;
+            BanAnyAttack = false;
+            BanJump = false;
+        }*/
     }
 
     /// <summary>
@@ -660,11 +677,29 @@ public abstract class APlayerCtrl : MonoBehaviour
 
     public void GetExperience(int exp)
     {
+        Experience = Experience + exp;
 
+        if(Experience >= 12 + 2*(Level - 1))
+        {
+            LevelUp();
+            Experience = 0;
+        }
     }
+
+
+#if UNITY_EDITOR
+    [ContextMenu("初始化gss")]
+    public void Initial()
+    {
+        StageCtrl.gameScoreSettings.Initial();
+    }
+#endif
+
+    [ContextMenu("升级")]
     public void LevelUp()
     {
-
+        Level++;
+        UpdatePlayerInformation();
     }
 
     #region 玩家无敌
@@ -895,8 +930,9 @@ public abstract class APlayerCtrl : MonoBehaviour
 
     }
 
+    #region     动画翻转
 
-   readonly Quaternion LookAtLeft = new Quaternion(0f, 1f, 0f, 0f);
+    readonly Quaternion LookAtLeft = new Quaternion(0f, 1f, 0f, 0f);
     readonly Quaternion LookAtRight = new Quaternion(0f, 0f, 0f, 1f);
     /// <summary>
     /// 动画翻转
@@ -918,6 +954,7 @@ public abstract class APlayerCtrl : MonoBehaviour
         }
     }
 
+    #endregion 
 
     /// <summary>
     /// 模拟重力 执行移动
@@ -958,8 +995,37 @@ public abstract class APlayerCtrl : MonoBehaviour
     public void UpdatePlayerInformation()
     {
         Level = StageCtrl.gameScoreSettings.Level[playerId - 1];
-        //MAX
+
+        //Pow
+        Pow = Mathf.Clamp(StageCtrl.gameScoreSettings.mahouShoujos[(int)SelectedMahoshaojo].BasicPow + StageCtrl.gameScoreSettings.mahouShoujos[(int)SelectedMahoshaojo].PowGrowth * (Level - 1), StageCtrl.gameScoreSettings.mahouShoujos[(int)SelectedMahoshaojo].BasicPow, StageCtrl.gameScoreSettings.mahouShoujos[(int)SelectedMahoshaojo].MaxPow);
+
+        //Max SoulLimit
+        MaxSoulLimit = Mathf.Clamp(StageCtrl.gameScoreSettings.mahouShoujos[(int)SelectedMahoshaojo].BasicSoulLimit + StageCtrl.gameScoreSettings.mahouShoujos[(int)SelectedMahoshaojo].SoulGrowth * (Level - 1), StageCtrl.gameScoreSettings.mahouShoujos[(int)SelectedMahoshaojo].BasicSoulLimit, StageCtrl.gameScoreSettings.mahouShoujos[(int)SelectedMahoshaojo].MaxSoul);
+
+        //MAX vit(hp)
+        for (int i = 0; i < StageCtrl.gameScoreSettings.mahouShoujos[(int)SelectedMahoshaojo].VitGrowth.Length; i++)
+        {
+            if (Level <= StageCtrl.gameScoreSettings.mahouShoujos[(int)SelectedMahoshaojo].VitGrowth[i])
+            {
+                MaxVit = Mathf.Clamp(StageCtrl.gameScoreSettings.mahouShoujos[(int)SelectedMahoshaojo].BasicVit + StageCtrl.gameScoreSettings.mahouShoujos[(int)SelectedMahoshaojo].VitGrowth[i] * (Level - 1), StageCtrl.gameScoreSettings.mahouShoujos[(int)SelectedMahoshaojo].BasicVit, StageCtrl.gameScoreSettings.mahouShoujos[(int)SelectedMahoshaojo].MaxVit);
+                break;
+            }
+        }
+
+        RebirthSoul = StageCtrl.gameScoreSettings.mahouShoujos[(int)SelectedMahoshaojo].Rebirth;
+        RecoverySoul = StageCtrl.gameScoreSettings.mahouShoujos[(int)SelectedMahoshaojo].Recovery;
+
     }
+
+    /// <summary>
+    /// 向gss保存玩家信息（等级）
+    /// </summary>
+    public void SavePlayerInformation()
+    {
+        StageCtrl.gameScoreSettings.Level[playerId - 1] = Level;
+    }
+
+
 }
 #endregion
 
