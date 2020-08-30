@@ -60,7 +60,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     [Header("所选的魔法少女")]
     public Variable.PlayerFaceType SelectedMahoshaojo;
     [Header("玩家信息")]
-    int playerId = 0;
+   public  int playerId = 0;
     /// <summary>
     /// 人物等级
     /// </summary>
@@ -265,6 +265,7 @@ public abstract class APlayerCtrl : MonoBehaviour
             if (SelectedMahoshaojo == StageCtrl.gameScoreSettings.SelectedGirlInGame[i])
             {
                 playerId = i+1;
+                Debug.Log("ID " + playerId);
                 break;
             }
 
@@ -670,7 +671,6 @@ public abstract class APlayerCtrl : MonoBehaviour
         Gravity = 0;
         rigidbody2D.gravityScale = 5;
 
-        Debug.Log("d");
         //黑烟
 
     }

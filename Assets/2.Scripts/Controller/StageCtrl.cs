@@ -8,11 +8,12 @@ public class StageCtrl : MonoBehaviour
     public static GameScoreSettingsIO gameScoreSettings;
 
 
+    #region 事件组
     public class intEvent : UnityEvent<int> { }
     public static intEvent Player1Hurt = new intEvent();
     public static intEvent Player2Hurt = new intEvent();
     public static intEvent Player3Hurt = new intEvent();
-
+    #endregion
 
     private void Awake()
     {
