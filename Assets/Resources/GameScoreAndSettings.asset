@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 313b2d6938c7ddd4890779c79cd6dffe, type: 3}
   m_Name: GameScoreAndSettings
   m_EditorClassIdentifier: 
-  Score: ffffffffffffffffffffffff
+  MaxFps: 60
+  Score: 000000000000000000000000
   HiScore: 10000
   HiScoreFace: 060000000600000006000000
   Hits: 0
@@ -23,7 +24,8 @@ MonoBehaviour:
   BestTimeFace: 060000000600000006000000
   lap: 6666
   LastLap: 1
-  PlayerType: 040000000600000006000000
+  SelectedGirlInGame: 040000000600000006000000
+  Level: 010000000100000001000000
   MagicalGirlsDie: 0000000000
   MajoBeingBattled: 0
   NewestMajo: 0

@@ -202,12 +202,12 @@ public class TitleCtrl : MonoBehaviour
         if (gameScoreSettingsIO.MagicalGirlsDie[id])
         {
             //挂了，选择为QB
-            gameScoreSettingsIO.PlayerType[0] = Variable.PlayerFaceType.QB;//玩家1，联机的话要在处理
+            gameScoreSettingsIO.SelectedGirlInGame[0] = Variable.PlayerFaceType.QB;//玩家1，联机的话要在处理 0：玩家1
         }
         else
         {
             //没挂，正常选择
-            gameScoreSettingsIO.PlayerType[0] = (Variable.PlayerFaceType)id;//玩家1，联机的话要在处理
+            gameScoreSettingsIO.SelectedGirlInGame[0] = (Variable.PlayerFaceType)id;//玩家1，联机的话要在处理0：玩家1
         }
 
         //应该所有玩家都选择完在进行处理
@@ -326,7 +326,7 @@ public class TitleCtrl : MonoBehaviour
     /// </summary>
     /// <param name="playerFaceType"></param>
     /// <returns></returns>
-    internal string[] PlayerFaceToRichText(Variable.PlayerFaceType[] playerFaceType)
+    public static string[] PlayerFaceToRichText(Variable.PlayerFaceType[] playerFaceType)
     {
         //用于返回的临时变量
         string[] j = new string[3];

@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.U2D;
 
 /// <summary>
-/// 控制游戏中的分数，设置，IO
+/// 控制游戏中的分数，设置，IO (不包含图片)
 /// </summary>
 public class GameScoreSettingsIO : ScriptableObject
 {
@@ -19,7 +19,7 @@ public class GameScoreSettingsIO : ScriptableObject
 
     [Header("正式玩的变量")]
     [Header("当前玩家分数")]
-    public int[] Score = new int[3] { -1, -1, -1 };//-1:该位子没有玩家
+    public int[] Score = new int[3] { 0,0, 0 };
     [Header("历史最高分数")]
     public int HiScore = 10000;
     [Header("历史最高分数头像")]
@@ -47,7 +47,7 @@ public class GameScoreSettingsIO : ScriptableObject
     /// 玩家选择的魔法少女
     /// </summary>
     [Header("玩家选择的魔法少女")]//null用于占位子
-    public Variable.PlayerFaceType[] PlayerType = new Variable.PlayerFaceType[3] { Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null };
+    public Variable.PlayerFaceType[] SelectedGirlInGame = new Variable.PlayerFaceType[3] { Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null };
 
     [Header("玩家选择的魔法少女的等级")]
     public int[] Level = new int[] { 1,1,1};
@@ -97,38 +97,43 @@ public class GameScoreSettingsIO : ScriptableObject
     {
         //被赋值的属于临时数据，不保存
 
-        Score = new int[3] { -1, -1, -1 };//-1:该位子没有玩家
+        Score = new int[3] { 0, 0, 0 };
         Hits = 0;
         Time = 0;
-        //从存档文件中读取上次游戏的周目数
-        //lastLap = .....
         lap = LastLap;
-        PlayerType = new Variable.PlayerFaceType[3] { Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null };
+        SelectedGirlInGame = new Variable.PlayerFaceType[3] { Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null };
         MajoBeingBattled = Variable.Majo.Gertrud;
         NewestMajo = Variable.Majo.Gertrud;
         AllowOktavia = false;
         MagicalGirlsDie = new bool[] { false, false, false, false, false };
         MajoKeikaiToSelectPart = false;
         Level = new int[] { 1, 1, 1 };
+
+        //初始化的时候顺便加载下存档与设置
+        Load();
     }
 
     /// <summary>
-    /// 存档保存
+    /// 保存
     /// </summary>
     [Obsolete]
     public void Save()
     {
+        //存档
         SaveGame.Save<int>("HighestScore", HiScore);
         SaveGame.Save<int>("MaxHits", MaxHits);
         SaveGame.Save("BestTime", BestTime);
         SaveGame.Save("LastLap", lap);
+
+        //设置
     }
 
     /// <summary>
-    /// 存档读取
+    /// 读取
     /// </summary>
     public  void Load()
     {
+        //存档
         HiScore = SaveGame.Load<int>("HighestScore", 10000);
         HiScoreFace = SaveGame.Load("HiScoreFace", new Variable.PlayerFaceType[] { Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null });
         MaxHits = SaveGame.Load<int>("MaxHits", 0);
@@ -136,6 +141,8 @@ public class GameScoreSettingsIO : ScriptableObject
         BestTime = SaveGame.Load("BestTime", 0);
         BestTimeFace = SaveGame.Load("BestTimeFace", new Variable.PlayerFaceType[] { Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null });
         lap = SaveGame.Load("LastLap", 1);
+
+        //设置
     }
 
 }

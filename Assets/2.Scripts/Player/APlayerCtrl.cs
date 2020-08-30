@@ -258,10 +258,11 @@ public abstract class APlayerCtrl : MonoBehaviour
         atlasAnimation.AnimStop.AddListener(CheckAnimStop);
         #endregion
 
-        #region 获取playerId
+        #region 获取playerId，并将所选魔法少女的id信息录入gss中
         for (int i = 0; i < 3; i++)
         {
-            if (SelectedMahoshaojo == StageCtrl.gameScoreSettings.PlayerType[i])
+            //注意：SelectedGirlInGame是在标题界面的魔法少女选择part决定的，在Majo场景不会被修改，所以debug的时候要手动修改
+            if (SelectedMahoshaojo == StageCtrl.gameScoreSettings.SelectedGirlInGame[i])
             {
                 playerId = i+1;
                 break;
