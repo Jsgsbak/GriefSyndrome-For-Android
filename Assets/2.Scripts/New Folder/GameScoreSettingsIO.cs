@@ -52,6 +52,8 @@ public class GameScoreSettingsIO : ScriptableObject
     [Header("玩家选择的魔法少女的等级")]
     public int[] Level = new int[] { 1,1,1};
 
+    [Header("玩家选择的魔法少女的soullimit")]
+    public int[] SoulLimitInGame = new int[] { 0, 0, 0 };
     
     /// <summary>
     /// 魔法少女是否挂掉(2个吼姆拉放在一起了)

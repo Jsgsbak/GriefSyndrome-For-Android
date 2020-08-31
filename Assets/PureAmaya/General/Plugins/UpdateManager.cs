@@ -22,10 +22,14 @@ namespace PureAmaya.General
         /// </summary>
         public static UpdateEventClass FakeLateUpdate = new UpdateEventClass();
 
+        public static UpdateEventClass SlowUpdate = new UpdateEventClass();
+
 
         private void Start()
         {
             DontDestroyOnLoad(gameObject);
+            Timing.RunCoroutine(SlowUpdatea(), Segment.SlowUpdate);
+            Debug.Log(name);
         }
 
         private void Update()
@@ -33,6 +37,15 @@ namespace PureAmaya.General
             FastUpdate.Invoke();
 
             FakeLateUpdate.Invoke();
+        }
+
+        private IEnumerator<float> SlowUpdatea()
+        {
+            while(true)
+            {
+                SlowUpdate.Invoke();
+                yield return 0f;
+            }
         }
     }
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Variable
 {
@@ -107,4 +108,7 @@ public class Variable
         [Header("发动时Maiga消耗Vit数")]
         public int MaigaVit = 45;
     }
+
+
+    public class OrdinaryEvent : UnityEvent { }
 }

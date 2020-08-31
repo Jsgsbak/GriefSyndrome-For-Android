@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GameScoreAndSettings
   m_EditorClassIdentifier: 
   MaxFps: 60
-  Score: 000000000000000000000000
+  Score: ffffff7f0000000000000000
   HiScore: 10000
   HiScoreFace: 060000000600000006000000
   Hits: 0
@@ -26,6 +26,7 @@ MonoBehaviour:
   LastLap: 1
   SelectedGirlInGame: 040000000600000006000000
   Level: 010000000100000001000000
+  SoulLimitInGame: b84d00000000000000000000
   MagicalGirlsDie: 0000000000
   MajoBeingBattled: 0
   NewestMajo: 0

@@ -48,16 +48,11 @@ SpriteAtlas:
     - {fileID: 5735238407672244771, guid: 3dc45afcb65e55e458144c82a8d2656b, type: 3}
     - {fileID: 1594096210759172400, guid: 3dc45afcb65e55e458144c82a8d2656b, type: 3}
     - {fileID: 1501139532262753209, guid: 3dc45afcb65e55e458144c82a8d2656b, type: 3}
-    - {fileID: 102900000, guid: 16f31c9edaede2e459347d1e5814ef85, type: 3}
-    totalSpriteSurfaceArea: 2127370
+    - {fileID: 2800000, guid: 9d71cc144b9dbac478406c4a92a065e6, type: 3}
+    totalSpriteSurfaceArea: 2132030
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
-  - {fileID: -1484381120438497654, guid: 948f8261c53d5464cb591d81abffe8f2, type: 3}
-  - {fileID: -2640634939818114846, guid: 948f8261c53d5464cb591d81abffe8f2, type: 3}
-  - {fileID: 3189497570347824614, guid: 948f8261c53d5464cb591d81abffe8f2, type: 3}
-  - {fileID: 2132703135357743543, guid: 948f8261c53d5464cb591d81abffe8f2, type: 3}
-  - {fileID: 6543741711894789768, guid: 948f8261c53d5464cb591d81abffe8f2, type: 3}
   - {fileID: 3629140102137727142, guid: 9d71cc144b9dbac478406c4a92a065e6, type: 3}
   - {fileID: 3052294857720932668, guid: 9d71cc144b9dbac478406c4a92a065e6, type: 3}
   - {fileID: -9009210520496403008, guid: 9d71cc144b9dbac478406c4a92a065e6, type: 3}
@@ -70,11 +65,6 @@ SpriteAtlas:
   - {fileID: -2230002818210899402, guid: 3dc45afcb65e55e458144c82a8d2656b, type: 3}
   - {fileID: 5735238407672244771, guid: 3dc45afcb65e55e458144c82a8d2656b, type: 3}
   m_PackedSpriteNamesToIndex:
-  - SoulGem_Mami
-  - SoulGem_Kyoko
-  - SoulGem_Homura
-  - SoulGem_Madoka
-  - SoulGem_Sayaka
   - HP Bar_Death
   - HP Bar_Magia
   - HP Bar_Rebirth

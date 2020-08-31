@@ -117,10 +117,10 @@ TextureImporter:
       name: SoulGem_Madoka
       rect:
         serializedVersion: 2
-        x: 8
-        y: 197
-        width: 113
-        height: 179
+        x: 5
+        y: 196
+        width: 120
+        height: 183
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -138,10 +138,10 @@ TextureImporter:
       name: SoulGem_Homura
       rect:
         serializedVersion: 2
-        x: 137
-        y: 197
-        width: 113
-        height: 171
+        x: 132
+        y: 195
+        width: 120
+        height: 180
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -159,10 +159,10 @@ TextureImporter:
       name: SoulGem_Mami
       rect:
         serializedVersion: 2
-        x: 261
-        y: 197
-        width: 113
-        height: 171
+        x: 257
+        y: 195
+        width: 120
+        height: 180
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -180,10 +180,10 @@ TextureImporter:
       name: SoulGem_Sayaka
       rect:
         serializedVersion: 2
-        x: 8
-        y: 5
-        width: 113
-        height: 171
+        x: 4
+        y: 4
+        width: 120
+        height: 180
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -201,10 +201,10 @@ TextureImporter:
       name: SoulGem_Kyoko
       rect:
         serializedVersion: 2
-        x: 137
-        y: 5
-        width: 113
-        height: 179
+        x: 134
+        y: 3
+        width: 120
+        height: 180
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}

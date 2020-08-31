@@ -265,7 +265,6 @@ public abstract class APlayerCtrl : MonoBehaviour
             if (SelectedMahoshaojo == StageCtrl.gameScoreSettings.SelectedGirlInGame[i])
             {
                 playerId = i+1;
-                Debug.Log("ID " + playerId);
                 break;
             }
 
@@ -292,6 +291,13 @@ public abstract class APlayerCtrl : MonoBehaviour
 
         //根据已有数据获取玩家信息
         UpdatePlayerInformation();
+        //恢复soullimit
+        SoulLimit = MaxSoulLimit;
+        //恢复hp
+        Vit = MaxVit;
+
+        //调用每秒扣除soullimt的方法
+        InvokeRepeating("SoulLimitDecrease", 0f, 1f);
     }
 
 
@@ -559,6 +565,8 @@ public abstract class APlayerCtrl : MonoBehaviour
         if (!IsWuDi && !IsBodyDie && !IsSoulBall && SoulLimit >= 0)
         {
             Vit -= damage;
+            SoulLimit -= damage * RecoverySoul;
+            
 
             IsHurt = true;
             atlasAnimation.ChangeAnimation(HurtAnimId, true);
@@ -607,6 +615,9 @@ public abstract class APlayerCtrl : MonoBehaviour
         BanStandWalk = true;
         BanJump = true;
         BanAnyAttack = true;
+
+        SoulLimit -= RecoverySoul * MaxVit;
+
         if (SoulLimit <= 0)
         {
             //魔女化
@@ -636,8 +647,21 @@ public abstract class APlayerCtrl : MonoBehaviour
     }
 
     #region 内部方法
-
-
+    /// <summary>
+    /// 每秒扣除soulLimit顺便告知UI更新
+    /// </summary>
+    internal void SoulLimitDecrease()
+    {
+        if(SoulLimit >= 1)
+        {
+            SoulLimit--;
+            StageCtrl.gameScoreSettings.SoulLimitInGame[playerId - 1] = SoulLimit;
+        }
+        else
+        {
+            BecomeWitch();
+        }
+    }
 
 
 
@@ -991,7 +1015,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     }
 
     /// <summary>
-    /// 更新玩家属性
+    /// 更新玩家属性（最大量与等级）
     /// </summary>
     public void UpdatePlayerInformation()
     {
