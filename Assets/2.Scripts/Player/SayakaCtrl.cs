@@ -356,7 +356,6 @@ public class SayakaCtrl : APlayerCtrl
                     atlasAnimation.ChangeAnimation(MagiaAnimId[1]);
                 }
 
-                Debug.Log("yidong");
 
                 //魔法冲刺
                 if (tr.rotation.w == 1)

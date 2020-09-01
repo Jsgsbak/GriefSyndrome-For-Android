@@ -82,6 +82,11 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// </summary>
      public int Vit;
     /// <summary>
+    /// 受伤损失的Vit，用于制作红色血条
+    /// </summary>
+    int HurtVit;
+
+    /// <summary>
     /// 最大HP
     /// </summary>
     public int MaxVit;
@@ -269,21 +274,22 @@ public abstract class APlayerCtrl : MonoBehaviour
             }
 
         }
+
         #endregion
 
         #region 注册受伤事件以及设置tag
         tag = string.Format("{0}{1}", "Player", playerId.ToString());
         if(playerId == 1)
         {
-            StageCtrl.Player1Hurt.AddListener(GetHurted);
+            StageCtrl.Player1Hurt.AddListener(GetHurt);
         }
         else if(playerId == 2)
         {
-            StageCtrl.Player2Hurt.AddListener(GetHurted);
+            StageCtrl.Player2Hurt.AddListener(GetHurt);
         }
         else
         {
-            StageCtrl.Player3Hurt.AddListener(GetHurted);
+            StageCtrl.Player3Hurt.AddListener(GetHurt);
 
         }
         #endregion
@@ -291,11 +297,14 @@ public abstract class APlayerCtrl : MonoBehaviour
 
         //根据已有数据获取玩家信息
         UpdatePlayerInformation();
+
+
         //恢复soullimit
         SoulLimit = MaxSoulLimit;
         //恢复hp
         Vit = MaxVit;
-
+        //向gss储存信息
+        SavePlayerInformation();
         //调用每秒扣除soullimt的方法
         InvokeRepeating("SoulLimitDecrease", 0f, 1f);
     }
@@ -423,10 +432,13 @@ public abstract class APlayerCtrl : MonoBehaviour
         }
 
         //这里是简化的处理，具体要在每个人的脚本里写
-        if(!BanAnyAttack && !IsMagia && RebindableInput.GetKeyDown("Magia"))
+        if(!BanAnyAttack && !IsMagia && RebindableInput.GetKeyDown("Magia") && Vit >= MaigaVit)
         {
             MagiaTimer = Time.timeSinceLevelLoad;
             Magia(0);
+            Vit = Vit - MaigaVit;
+
+            
         }
         else if (!BanAnyAttack && !IsMagia && RebindableInput.GetKey("Magia"))
         {
@@ -559,12 +571,13 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// 受伤
     /// </summary>
     [ContextMenu("受伤")]
-    private void GetHurted(int damage)
+    private void GetHurt(int damage)
     {
 
         if (!IsWuDi && !IsBodyDie && !IsSoulBall && SoulLimit >= 0)
         {
             Vit -= damage;
+            HurtVit = HurtVit + damage;
             SoulLimit -= damage * RecoverySoul;
             
 
@@ -611,6 +624,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// </summary>
     public void BodyDie()  //先放着，找个时间用曲线来代替力
     {
+        HurtVit = 0;
         IsBodyDie = true;
         BanStandWalk = true;
         BanJump = true;
@@ -648,7 +662,7 @@ public abstract class APlayerCtrl : MonoBehaviour
 
     #region 内部方法
     /// <summary>
-    /// 每秒扣除soulLimit顺便告知UI更新
+    /// 每秒扣除soulLimit，恢复vit顺便告知UI更新
     /// </summary>
     internal void SoulLimitDecrease()
     {
@@ -661,6 +675,25 @@ public abstract class APlayerCtrl : MonoBehaviour
         {
             BecomeWitch();
         }
+
+        if (Vit > 0)
+        {
+            if(SelectedMahoshaojo == Variable.PlayerFaceType.Sayaka)
+            {
+                Vit++;
+                HurtVit--;
+            }
+            Vit++;
+            HurtVit--;
+
+            HurtVit = Mathf.Clamp(HurtVit, 0, MaxVit);
+            Vit = Mathf.Clamp(Vit, 0, MaxVit);
+
+
+            StageCtrl.gameScoreSettings.VitInGame[playerId - 1] = Vit;
+        }
+
+
     }
 
 
@@ -672,6 +705,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     {
         //死亡动画在射线里
         //状态修改
+        HurtVit = 0;
         BanGreatAttack = true;
         BanStandWalk = true;
         BanJump = true;
@@ -724,6 +758,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     public void LevelUp()
     {
         Level++;
+        SavePlayerInformation();
         UpdatePlayerInformation();
     }
 
@@ -1043,11 +1078,13 @@ public abstract class APlayerCtrl : MonoBehaviour
     }
 
     /// <summary>
-    /// 向gss保存玩家信息（等级）
+    /// 向gss保存玩家信息
     /// </summary>
     public void SavePlayerInformation()
     {
         StageCtrl.gameScoreSettings.Level[playerId - 1] = Level;
+        StageCtrl.gameScoreSettings.MaxVitInGame[playerId - 1] = MaxVit;
+        StageCtrl.gameScoreSettings.VitInGame[playerId - 1] = Vit;
     }
 
 

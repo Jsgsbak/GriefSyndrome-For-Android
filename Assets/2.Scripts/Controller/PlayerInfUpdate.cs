@@ -31,12 +31,16 @@ public class PlayerInfUpdate : MonoBehaviour
 
     public void RegEvent()
     {
-        UICtrl.UpdateInf.AddListener(UpdateLevel);
-        UICtrl.UpdateInf.AddListener(UpdateScore);
-        UICtrl.UpdateInf.AddListener(UpdateSoulLimit);
+        UICtrl.UpdateInf.AddListener(UpdateInf);
 
     }
-
+    public void UpdateInf()
+    {
+        UpdateScore();
+        UpdateLevel();
+        UpdateHPBar();
+        UpdateSoulLimit();
+    }
 
 
     [ContextMenu("更新分数")]
@@ -56,6 +60,13 @@ public void UpdateScore()
     {
         //Soul  limit <size=25> 19926</size>
         SoulLimit.text = string.Format("Soul limit  <size=25>{0}</size>", StageCtrl.gameScoreSettings.SoulLimitInGame[PlayerId - 1]);
+    }
+
+
+    public void UpdateHPBar()
+    {
+        Health.fillAmount = (float)StageCtrl.gameScoreSettings.VitInGame[PlayerId - 1] / (float)StageCtrl.gameScoreSettings.MaxVitInGame[PlayerId - 1];
+        Damaged.fillAmount = Health.fillAmount + (float)StageCtrl.gameScoreSettings.HurtVitInGame[PlayerId - 1] / (float)StageCtrl.gameScoreSettings.MaxVitInGame[PlayerId - 1];
     }
 
     [ContextMenu("设置名称，灵魂宝石图片 顺便剔除qb")]

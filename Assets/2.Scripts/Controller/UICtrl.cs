@@ -46,12 +46,6 @@ public class UICtrl : MonoBehaviour
         //创建相应的玩家信息预设，展示并且便于管理
         PlayerInfInGame = new PlayerInfUpdate[PlayerCount];
 
-        //设置灵魂宝石
-        for (int i = 0; i < PlayerCount; i++)
-        {
-
-        }
-
         //设置名称，注册事件，设置灵魂宝石图片，顺便剔除qb
         for (int i = 0; i < PlayerCount; i++)
         {

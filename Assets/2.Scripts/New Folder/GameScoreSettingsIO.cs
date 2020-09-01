@@ -49,12 +49,35 @@ public class GameScoreSettingsIO : ScriptableObject
     [Header("玩家选择的魔法少女")]//null用于占位子
     public Variable.PlayerFaceType[] SelectedGirlInGame = new Variable.PlayerFaceType[3] { Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null };
 
-    [Header("玩家选择的魔法少女的等级")]
+    /// <summary>
+    /// 玩家选择的魔法少女的等级
+    /// </summary>
+   [HideInInspector]
     public int[] Level = new int[] { 1,1,1};
 
-    [Header("玩家选择的魔法少女的soullimit")]
+    /// <summary>
+    /// 玩家选择的魔法少女的soullimit
+    /// </summary>
+    [HideInInspector]
     public int[] SoulLimitInGame = new int[] { 0, 0, 0 };
-    
+
+    /// <summary>
+    /// 玩家选择的魔法少女的VIT
+    /// </summary>
+    [HideInInspector]
+    public int[] VitInGame = new int[] { 0, 0, 0 };
+
+    /// <summary>
+    /// 玩家选择的魔法少女的最大vit
+    /// </summary>
+    [HideInInspector]
+    public int[] MaxVitInGame = new int[] { 0, 0, 0 };
+    /// <summary>
+    /// 玩家受伤损失的vit
+    /// </summary>
+    [HideInInspector]
+    public int[] HurtVitInGame = new int[] { 0, 0, 0 };
+
     /// <summary>
     /// 魔法少女是否挂掉(2个吼姆拉放在一起了)
     /// </summary>
@@ -110,6 +133,10 @@ public class GameScoreSettingsIO : ScriptableObject
         MagicalGirlsDie = new bool[] { false, false, false, false, false };
         MajoKeikaiToSelectPart = false;
         Level = new int[] { 1, 1, 1 };
+        VitInGame = new int[] { 0, 0, 0 };
+        SoulLimitInGame = new int[] { 0, 0, 0 };
+        MaxVitInGame = new int[] { 0, 0, 0 };
+        HurtVitInGame = new int[] { 0, 0, 0 };
 
         //初始化的时候顺便加载下存档与设置
         Load();
