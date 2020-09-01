@@ -2,7 +2,7 @@
 
 ## 包含了贴图（修复，现在可用），代码，不包含BGM
 
-## BGM位于[4.BGM文件夹中](http://https://gitee.com/pureamaya/GriefSyndrome-For-Android/tree/develop/Assets/4.BGM)
+## BGM位于[4.BGM文件夹中](https://gitee.com/pureamaya/GriefSyndrome-For-Android/tree/develop/Assets/4.BGM)
 
 
 
