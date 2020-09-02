@@ -10,7 +10,6 @@ public class UICtrl : MonoBehaviour
 {
 
     //控制方法：调用相应的PlayerInf方法，更新UI信息
-
     [Header("预设生成")]
     public PlayerInfUpdate PlayerInf;
     public Transform Parent;

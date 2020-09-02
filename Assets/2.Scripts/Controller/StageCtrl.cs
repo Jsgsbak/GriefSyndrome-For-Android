@@ -18,20 +18,16 @@ public class StageCtrl : MonoBehaviour
     private void Awake()
     {
         gameScoreSettings = (GameScoreSettingsIO)Resources.Load("GameScoreAndSettings");
+        Application.targetFrameRate = gameScoreSettings.MaxFps;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        Application.targetFrameRate = gameScoreSettings.MaxFps;
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        //初始化
+        gameScoreSettings.MajoInitial();
     }
-
 
     public static void HurtPlayer(int damage, int PlayerId)
     {

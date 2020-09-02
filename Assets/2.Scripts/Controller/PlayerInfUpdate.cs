@@ -22,7 +22,7 @@ public class PlayerInfUpdate : MonoBehaviour
 
     public Image Health;
     public Image Damaged;
-    public Image Magia;
+    public Image Magia;//魔法放在前面
     public Image Rebirth;
     public Image SoulGem;
 
@@ -39,7 +39,7 @@ public class PlayerInfUpdate : MonoBehaviour
         UpdateScore();
         UpdateLevel();
         UpdateHPBar();
-        UpdateSoulLimit();
+        UpdateSoulLimit();        
     }
 
 
@@ -65,8 +65,68 @@ public void UpdateScore()
 
     public void UpdateHPBar()
     {
-        Health.fillAmount = (float)StageCtrl.gameScoreSettings.VitInGame[PlayerId - 1] / (float)StageCtrl.gameScoreSettings.MaxVitInGame[PlayerId - 1];
-        Damaged.fillAmount = Health.fillAmount + (float)StageCtrl.gameScoreSettings.HurtVitInGame[PlayerId - 1] / (float)StageCtrl.gameScoreSettings.MaxVitInGame[PlayerId - 1];
+        Debug.Log(StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId - 1]);
+
+        if(!StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId - 1])
+        {
+
+            if (StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId - 1])
+            {
+                Magia.fillAmount = 0;
+                Damaged.fillAmount = 1;
+                StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId - 1] = false;
+            }
+            else if (StageCtrl.gameScoreSettings.MagiaKeyDown[PlayerId - 1] && Magia.fillAmount < Health.fillAmount)
+            {
+                StageCtrl.gameScoreSettings.MagiaKeyDown[PlayerId - 1] = false;
+                Magia.fillAmount = Health.fillAmount;
+            }
+
+            //放在这里的话Magia就能变得正常了
+            Health.fillAmount = (float)StageCtrl.gameScoreSettings.VitInGame[PlayerId - 1] / (float)StageCtrl.gameScoreSettings.MaxVitInGame[PlayerId - 1];
+
+        }
+        else
+        {
+            Magia.fillAmount = 0;
+            Damaged.fillAmount = 0;
+            Health.fillAmount = 0;
+            Rebirth.fillAmount = (float)StageCtrl.gameScoreSettings.VitInGame[PlayerId - 1] / (float)StageCtrl.gameScoreSettings.MaxVitInGame[PlayerId - 1];
+        }
+        /*旧版
+        //魔法hp条减少
+        if (StageCtrl.gameScoreSettings.MagiaVitInGame[PlayerId - 1] > 0 && MagiaForward.fillAmount - Health.fillAmount < -0.01f)
+        {
+            MagiaForward.fillAmount = Health.fillAmount + (float)StageCtrl.gameScoreSettings.MagiaVitInGame[PlayerId - 1] / (float)StageCtrl.gameScoreSettings.MaxVitInGame[PlayerId - 1];
+            MagiaBack.fillAmount = Health.fillAmount + (float)StageCtrl.gameScoreSettings.MagiaVitInGame[PlayerId - 1] / (float)StageCtrl.gameScoreSettings.MaxVitInGame[PlayerId - 1];
+
+        }
+        //魔法 hp变长（二者几乎相等时一起变长）
+        else if (Mathf.Abs(MagiaForward.fillAmount - Health.fillAmount) <= 0.01f)
+        {
+            MagiaForward.fillAmount = Health.fillAmount + (float)StageCtrl.gameScoreSettings.MagiaVitInGame[PlayerId - 1] / (float)StageCtrl.gameScoreSettings.MaxVitInGame[PlayerId - 1];
+            MagiaBack.fillAmount = Health.fillAmount + (float)StageCtrl.gameScoreSettings.MagiaVitInGame[PlayerId - 1] / (float)StageCtrl.gameScoreSettings.MaxVitInGame[PlayerId - 1];
+
+        }
+
+
+        //受伤hp条减少
+        if (StageCtrl.gameScoreSettings.HurtVitInGame[PlayerId - 1] > 0 && Damaged.fillAmount - Health.fillAmount < -0.01f)
+        {
+            Damaged.fillAmount = Health.fillAmount + (float)StageCtrl.gameScoreSettings.HurtVitInGame[PlayerId - 1] / (float)StageCtrl.gameScoreSettings.MaxVitInGame[PlayerId - 1];
+        }
+        //魔法hp变长（二者几乎相等时一起变长）
+        else if (Mathf.Abs(MagiaForward.fillAmount - Health.fillAmount) <= 0.01f)
+        {
+            MagiaForward.fillAmount = Health.fillAmount;
+        }
+
+
+        //根据长度，显示先后修正
+        MagiaForward.enabled = MagiaForward.fillAmount < Damaged.fillAmount;
+        MagiaBack.enabled = MagiaForward.fillAmount > Damaged.fillAmount;
+        */
+
     }
 
     [ContextMenu("设置名称，灵魂宝石图片 顺便剔除qb")]

@@ -12,14 +12,14 @@ public class EnemyAttack : MonoBehaviour
         collider2D = GetComponent<Collider2D>();
         gameObject.tag = "Attack";
         gameObject.layer = 11;
-        collider2D.isTrigger = false;
+        collider2D.isTrigger = true;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player1"))
         {
-           StageCtrl.Player1Hurt.Invoke(Damage);
+            StageCtrl.Player1Hurt.Invoke(Damage);
         }
         else if (collision.gameObject.CompareTag("Player2"))
         {
@@ -30,5 +30,7 @@ public class EnemyAttack : MonoBehaviour
             StageCtrl.Player3Hurt.Invoke(Damage);
         }
 
+
     }
+
 }

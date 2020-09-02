@@ -11,6 +11,7 @@ public class SayakaCtrl : APlayerCtrl
     private bool EnableZ3Rush = false;
     private bool EnableMagiaRush = false;
 
+
     private void Start()
     {
         //注册私有事件
@@ -380,7 +381,8 @@ public class SayakaCtrl : APlayerCtrl
                 BanJump = false;
                 AllowRay = true;
 
-
+                //解决冲刺后不会恢复状态的bug
+                WalkDropAndStand();
 
             }
 

@@ -75,6 +75,8 @@ public class TitleCtrl : MonoBehaviour
         titleCtrl = this;
         gameScoreSettingsIO = Resources.Load("GameScoreAndSettings") as GameScoreSettingsIO;
 
+        //存档与设置获取
+        gameScoreSettingsIO.Load();
     }
 
 
@@ -279,7 +281,7 @@ public class TitleCtrl : MonoBehaviour
         else
         {
             //回到主标题part则直接初始化临时数据
-            gameScoreSettingsIO.Initial();
+            gameScoreSettingsIO.TitleInitial();
 
             #region 从存档中读取主标题part中的保存数据，lap 
             gameScoreSettingsIO.Load();

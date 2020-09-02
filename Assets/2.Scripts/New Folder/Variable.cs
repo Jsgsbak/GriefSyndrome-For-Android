@@ -105,7 +105,7 @@ public class Variable
         public int Rebirth = 30;
 
         [Space]
-        [Header("发动时Maiga消耗Vit数")]
+        [Header("发动时Maiga消耗Vit数")]//写错了，不改了
         public int MaigaVit = 45;
     }
 

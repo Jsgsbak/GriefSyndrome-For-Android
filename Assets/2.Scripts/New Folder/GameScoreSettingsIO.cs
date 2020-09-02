@@ -24,12 +24,18 @@ public class GameScoreSettingsIO : ScriptableObject
     public int HiScore = 10000;
     [Header("历史最高分数头像")]
     public Variable.PlayerFaceType[] HiScoreFace = new Variable.PlayerFaceType[]{ Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null , Variable.PlayerFaceType.Null };
+    /// <summary>
+    /// 当前连击
+    /// </summary>
     [Header("当前连击")]
     public int Hits = 0;
     [Header("历史最高hit")]
     public int MaxHits = 0;
     [Header("历史最高hit头像")]
     public Variable.PlayerFaceType[] MaxHitsFace = new Variable.PlayerFaceType[] { Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null };
+    /// <summary>
+    /// 本周目游玩时间
+    /// </summary>
     [Header("本周目游玩时间")]
     public int Time = 0;
     [Header("历史最短时间")]
@@ -52,7 +58,6 @@ public class GameScoreSettingsIO : ScriptableObject
     /// <summary>
     /// 玩家选择的魔法少女的等级
     /// </summary>
-   [HideInInspector]
     public int[] Level = new int[] { 1,1,1};
 
     /// <summary>
@@ -60,26 +65,37 @@ public class GameScoreSettingsIO : ScriptableObject
     /// </summary>
     [HideInInspector]
     public int[] SoulLimitInGame = new int[] { 0, 0, 0 };
-
     /// <summary>
     /// 玩家选择的魔法少女的VIT
     /// </summary>
-    [HideInInspector]
     public int[] VitInGame = new int[] { 0, 0, 0 };
-
+    /// <summary>
+    /// 是否按下Magia键
+    /// </summary>
+    public bool[] MagiaKeyDown = new bool[] { false, false, false };
     /// <summary>
     /// 玩家选择的魔法少女的最大vit
     /// </summary>
-    [HideInInspector]
     public int[] MaxVitInGame = new int[] { 0, 0, 0 };
     /// <summary>
     /// 玩家受伤损失的vit
     /// </summary>
-    [HideInInspector]
     public int[] HurtVitInGame = new int[] { 0, 0, 0 };
+    /// <summary>
+    /// 玩家受伤损失的vit
+    /// </summary>
+    public int[] MagiaVitInGame = new int[] { 0, 0, 0 };
+    /// <summary>
+    /// 受伤了吗
+    /// </summary>
+    public bool[] GetHurtInGame = new bool[] { false, false, false };
+    /// <summary>
+    /// 身体挂了吗
+    /// </summary>
+    public bool[] IsBodyDieInGame = new bool[] { false, false, false };
 
     /// <summary>
-    /// 魔法少女是否挂掉(2个吼姆拉放在一起了)
+    /// 魔法少女是否变成魔女(2个吼姆拉放在一起了)
     /// </summary>
     [Header("魔法少女是否挂掉")]
     public bool[] MagicalGirlsDie = new bool[] { false,false,false,false,false };
@@ -116,16 +132,15 @@ public class GameScoreSettingsIO : ScriptableObject
 
 
     /// <summary>
-    /// GSS初始化
+    /// GSS初始化（主标题part使用）
     /// </summary>
-    public void Initial()
+    public void TitleInitial()
     {
         //被赋值的属于临时数据，不保存
+        //用于恢复开发时便于调试而弄的参数
 
         Score = new int[3] { 0, 0, 0 };
-        Hits = 0;
         Time = 0;
-        lap = LastLap;
         SelectedGirlInGame = new Variable.PlayerFaceType[3] { Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null };
         MajoBeingBattled = Variable.Majo.Gertrud;
         NewestMajo = Variable.Majo.Gertrud;
@@ -133,17 +148,25 @@ public class GameScoreSettingsIO : ScriptableObject
         MagicalGirlsDie = new bool[] { false, false, false, false, false };
         MajoKeikaiToSelectPart = false;
         Level = new int[] { 1, 1, 1 };
-        VitInGame = new int[] { 0, 0, 0 };
-        SoulLimitInGame = new int[] { 0, 0, 0 };
-        MaxVitInGame = new int[] { 0, 0, 0 };
-        HurtVitInGame = new int[] { 0, 0, 0 };
-
-        //初始化的时候顺便加载下存档与设置
-        Load();
     }
 
     /// <summary>
-    /// 保存
+    /// 每次进入魔女结界时初始化
+    /// </summary>
+    public void MajoInitial()
+    {
+        Hits = 0;
+        VitInGame = new int[] { 0, 0, 0 };
+        SoulLimitInGame = new int[] { 0, 0, 0 }; 
+        MaxVitInGame = new int[] { 0, 0, 0 };
+        HurtVitInGame = new int[] { 0, 0, 0 };
+        MagiaVitInGame = new int[] { 0, 0, 0 };
+        GetHurtInGame = new bool[] { false, false, false };
+        MagiaKeyDown = new bool[] { false, false, false };
+    }
+
+    /// <summary>
+    /// 保存（结算界面使用）
     /// </summary>
     [Obsolete]
     public void Save()
@@ -158,7 +181,7 @@ public class GameScoreSettingsIO : ScriptableObject
     }
 
     /// <summary>
-    /// 读取
+    /// 读取（标题界面使用）
     /// </summary>
     public  void Load()
     {

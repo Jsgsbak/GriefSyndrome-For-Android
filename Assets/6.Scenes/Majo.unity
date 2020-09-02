@@ -146,8 +146,7 @@ Sprite:
     7f8da7ec344128e429a1d0f1c7ba8d07: 21300000
   m_AtlasTags:
   - SayakaCharacter
-  m_SpriteAtlas: {fileID: 4343727234628468602, guid: 93ae529101d7a0e429b5f07aeac428bd,
-    type: 2}
+  m_SpriteAtlas: {fileID: 0}
   m_RD:
     serializedVersion: 3
     texture: {fileID: 2800000, guid: 7f8da7ec344128e429a1d0f1c7ba8d07, type: 3}
@@ -241,7 +240,7 @@ Sprite:
     downscaleMultiplier: 1
   m_AtlasRD:
     serializedVersion: 3
-    texture: {fileID: 2, guid: 00000000000000000000000000000000, type: 0}
+    texture: {fileID: 0}
     alphaTexture: {fileID: 0}
     secondaryTextures: []
     m_SubMeshes:
@@ -321,14 +320,14 @@ Sprite:
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
-      x: 509.0761
-      y: 1319.0762
+      x: 5.0761204
+      y: 27.07612
       width: 72.89713
       height: 90.84776
     textureRectOffset: {x: 5.0761204, y: 27.07612}
-    atlasRectOffset: {x: 504, y: 1292}
-    settingsRaw: 65
-    uvTransform: {x: 100, y: 584, z: 100, w: 1356}
+    atlasRectOffset: {x: -1, y: -1}
+    settingsRaw: 64
+    uvTransform: {x: 100, y: 80, z: 100, w: 64}
     downscaleMultiplier: 1
   m_PhysicsShape:
   - - {x: -0.11, y: 0.049999997}
@@ -907,8 +906,7 @@ Sprite:
     20d9bad3e0319bd40933974ccdb70f9e: 3219025720082990978
   m_AtlasTags:
   - SayakaEffect
-  m_SpriteAtlas: {fileID: 4343727234628468602, guid: eb805d8520b9a694babd2cc1117604f9,
-    type: 2}
+  m_SpriteAtlas: {fileID: 0}
   m_RD:
     serializedVersion: 3
     texture: {fileID: 2800000, guid: 20d9bad3e0319bd40933974ccdb70f9e, type: 3}
@@ -1002,7 +1000,7 @@ Sprite:
     downscaleMultiplier: 1
   m_AtlasRD:
     serializedVersion: 3
-    texture: {fileID: 2, guid: 00000000000000000000000000000000, type: 0}
+    texture: {fileID: 0}
     alphaTexture: {fileID: 0}
     secondaryTextures: []
     m_SubMeshes:
@@ -1082,14 +1080,14 @@ Sprite:
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
-      x: 345
-      y: 808
+      x: 578
+      y: 545
       width: 274
       height: 75
     textureRectOffset: {x: 0, y: 0}
-    atlasRectOffset: {x: -233, y: 263}
-    settingsRaw: 65
-    uvTransform: {x: 100, y: 482, z: 100, w: 845.5}
+    atlasRectOffset: {x: -1, y: -1}
+    settingsRaw: 64
+    uvTransform: {x: 100, y: 715, z: 100, w: 582.5}
     downscaleMultiplier: 1
   m_PhysicsShape:
   - - {x: 0.82, y: -0.265}
@@ -1448,7 +1446,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -1971,7 +1969,7 @@ Canvas:
   m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 1
-  m_Camera: {fileID: 0}
+  m_Camera: {fileID: 519420031}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -2497,7 +2495,7 @@ MonoBehaviour:
   Pow: 113
   RecoverySoul: 18
   RebirthSoul: 30
-  MaigaVit: 45
+  MagiaNeedVit: 45
   BanStandWalk: 0
   IsJiangZhi: 0
   IsHanging: 0

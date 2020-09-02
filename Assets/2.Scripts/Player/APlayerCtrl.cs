@@ -85,7 +85,10 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// 受伤损失的Vit，用于制作红色血条
     /// </summary>
     int HurtVit;
-
+    /// <summary>
+    /// 使用魔法损失的Vit，用于制作蓝色血条
+    /// </summary>
+    int MagiaVit;
     /// <summary>
     /// 最大HP
     /// </summary>
@@ -105,12 +108,14 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// <summary>
     /// 发动时Maiga消耗Vit数
     /// </summary>
-     public int MaigaVit = 45;
+     public int MagiaNeedVit = 45;
 
     #endregion
 
 
     #region 状态
+    //下面这些变量大部分是为了debug方便，等后面全都换成gss里相应的变量
+
     /// <summary>
     /// 不允许执行站立/行走
     /// </summary>
@@ -256,10 +261,11 @@ public abstract class APlayerCtrl : MonoBehaviour
 
         #region 注册事件
         UpdateManager.FastUpdate.AddListener(FastUpdate);
-        UpdateManager.FakeLateUpdate.AddListener(RayGround);
-        UpdateManager.FastUpdate.AddListener(Jump);
-        UpdateManager.FakeLateUpdate.AddListener(SimulatedGravityAndMove);
         UpdateManager.FastUpdate.AddListener(PlayerGreatAttack);
+        UpdateManager.FastUpdate.AddListener(Jump);
+        UpdateManager.FakeLateUpdate.AddListener(RayGround);
+        UpdateManager.FakeLateUpdate.AddListener(SimulatedGravityAndMove);
+      //  UpdateManager.SlowUpdate.AddListener(VitRefresh);
         atlasAnimation.AnimStop.AddListener(CheckAnimStop);
         #endregion
 
@@ -294,19 +300,21 @@ public abstract class APlayerCtrl : MonoBehaviour
         }
         #endregion
 
-
         //根据已有数据获取玩家信息
         UpdatePlayerInformation();
-
 
         //恢复soullimit
         SoulLimit = MaxSoulLimit;
         //恢复hp
         Vit = MaxVit;
+
+        StageCtrl.gameScoreSettings.MaxVitInGame[playerId - 1] = MaxVit;
+
         //向gss储存信息
         SavePlayerInformation();
         //调用每秒扣除soullimt的方法
         InvokeRepeating("SoulLimitDecrease", 0f, 1f);
+        InvokeRepeating("VitRefresh", 0f, 0.1f);
     }
 
 
@@ -432,13 +440,16 @@ public abstract class APlayerCtrl : MonoBehaviour
         }
 
         //这里是简化的处理，具体要在每个人的脚本里写
-        if(!BanAnyAttack && !IsMagia && RebindableInput.GetKeyDown("Magia") && Vit >= MaigaVit)
+        if(!BanAnyAttack && !IsMagia && RebindableInput.GetKeyDown("Magia") && Vit >= MagiaNeedVit)
         {
+            StageCtrl.gameScoreSettings.MagiaKeyDown[playerId - 1] = true;//ui里设置为false
             MagiaTimer = Time.timeSinceLevelLoad;
             Magia(0);
-            Vit = Vit - MaigaVit;
+            Vit -= MagiaNeedVit;
+            MagiaVit += MagiaNeedVit;
 
-            
+
+
         }
         else if (!BanAnyAttack && !IsMagia && RebindableInput.GetKey("Magia"))
         {
@@ -450,17 +461,6 @@ public abstract class APlayerCtrl : MonoBehaviour
             Magia(2);
            // IsMagia = false; 有的角色不能在这里取消状态
         }
-
-        /*
-        //没有操控输入的时候（除了移动），回复状态
-        if(!RebindableInput.GetKey("Attack") && !RebindableInput.GetKey("Magia") && !RebindableInput.GetKey("GreatAttack") && !RebindableInput.GetKeyDown("Jump"))
-        {
-            BanStandWalk = false;
-            AllowRay = true;
-            IsPreparingAttacking = false;
-            BanAnyAttack = false;
-            BanJump = false;
-        }*/
     }
 
     /// <summary>
@@ -576,10 +576,19 @@ public abstract class APlayerCtrl : MonoBehaviour
 
         if (!IsWuDi && !IsBodyDie && !IsSoulBall && SoulLimit >= 0)
         {
-            Vit -= damage;
-            HurtVit = HurtVit + damage;
-            SoulLimit -= damage * RecoverySoul;
-            
+            if(SelectedMahoshaojo == Variable.PlayerFaceType.Sayaka && IsMagia)
+            {
+                Vit -= damage / 2;
+                HurtVit = HurtVit + damage /2;
+                SoulLimit -= damage * RecoverySoul;
+            }
+            else
+            {
+                Vit -= damage;
+                HurtVit = HurtVit + damage;
+                SoulLimit -= damage * RecoverySoul;
+            }
+
 
             IsHurt = true;
             atlasAnimation.ChangeAnimation(HurtAnimId, true);
@@ -588,6 +597,7 @@ public abstract class APlayerCtrl : MonoBehaviour
             BanAnyAttack = true;
             //弹开
             rigidbody2D.velocity = Vector2.zero;
+            /*
             if (tr.rotation.w == 1)
             {
                 rigidbody2D.AddForce(new Vector2(2f, 1f) * 4f, ForceMode2D.Impulse);//先放着，找个时间用曲线来代替力
@@ -595,7 +605,7 @@ public abstract class APlayerCtrl : MonoBehaviour
             else
             {
                 rigidbody2D.AddForce(new Vector2(-2f, 1f) * 4f, ForceMode2D.Impulse);//先放着，找个时间用曲线来代替力
-            }
+            }*/
 
             PlayerJiangZhi(0.2f);
 
@@ -622,9 +632,12 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// <summary>
     /// 身体挂了
     /// </summary>
+    [ContextMenu("自杀")]
     public void BodyDie()  //先放着，找个时间用曲线来代替力
     {
+        MagiaVit = 0;
         HurtVit = 0;
+        Vit = 0;
         IsBodyDie = true;
         BanStandWalk = true;
         BanJump = true;
@@ -644,6 +657,7 @@ public abstract class APlayerCtrl : MonoBehaviour
             PlayerReBirth();
         }
 
+        /*
         //（额外的）弹开
         rigidbody2D.velocity = Vector2.zero;
         if (tr.rotation.w == 1)
@@ -653,7 +667,7 @@ public abstract class APlayerCtrl : MonoBehaviour
         else
         {
             rigidbody2D.AddForce(new Vector2(-1f, 2f) * 4f, ForceMode2D.Impulse);//先放着，找个时间用曲线来代替力
-        }
+        }*/
 
         spriteRenderer.sprite = BodyDieImage;
         //动画在射线那里
@@ -666,34 +680,55 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// </summary>
     internal void SoulLimitDecrease()
     {
-        if(SoulLimit >= 1)
+        if (!IsBodyDie)
         {
-            SoulLimit--;
-            StageCtrl.gameScoreSettings.SoulLimitInGame[playerId - 1] = SoulLimit;
-        }
-        else
-        {
-            BecomeWitch();
+
+            if (SoulLimit >= 1)
+            {
+                SoulLimit--;
+                StageCtrl.gameScoreSettings.SoulLimitInGame[playerId - 1] = SoulLimit;
+            }
+            else
+            {
+                BecomeWitch();
+            }
         }
 
-        if (Vit > 0)
+
+
+    }
+
+    /// <summary>
+    /// 刷新vit
+    /// </summary>
+    void VitRefresh()
+    {
+        //只有在一般情况下才能恢复
+        if (Vit > 0 && !IsMagia && !IsHurt && !IsBodyDie &&!IsWuDi)
         {
-            if(SelectedMahoshaojo == Variable.PlayerFaceType.Sayaka)
+            //逐渐恢复Vit，减少魔法和受伤损失的vit，便于制作血条
+            if (SelectedMahoshaojo == Variable.PlayerFaceType.Sayaka && Vit % 5 == 0)
             {
                 Vit++;
                 HurtVit--;
+                MagiaVit--;
             }
+            //逐渐恢复Vit，减少魔法和受伤损失的vit，便于制作血条
             Vit++;
             HurtVit--;
+            MagiaVit--;
 
+            //限制大小，防止出现0
+            MagiaVit = Mathf.Clamp(MagiaVit, 0, MaxVit);
             HurtVit = Mathf.Clamp(HurtVit, 0, MaxVit);
             Vit = Mathf.Clamp(Vit, 0, MaxVit);
-
-
-            StageCtrl.gameScoreSettings.VitInGame[playerId - 1] = Vit;
         }
 
-
+        StageCtrl.gameScoreSettings.VitInGame[playerId - 1] = Vit;
+        StageCtrl.gameScoreSettings.HurtVitInGame[playerId - 1] = HurtVit;
+        StageCtrl.gameScoreSettings.MaxVitInGame[playerId - 1] = MaxVit;//服了
+        StageCtrl.gameScoreSettings.MagiaVitInGame[playerId - 1] = MagiaVit;
+        StageCtrl.gameScoreSettings.GetHurtInGame[playerId - 1] = IsHurt;
     }
 
 
@@ -711,11 +746,13 @@ public abstract class APlayerCtrl : MonoBehaviour
         BanJump = true;
         BanAnyAttack = true;
         IsBodyDie = true;
+        StageCtrl.gameScoreSettings.MagicalGirlsDie[(int)SelectedMahoshaojo] = true;//ui里设置为false
 
         UpdateManager.FastUpdate.RemoveListener(Jump);
         UpdateManager.FakeLateUpdate.RemoveListener(SimulatedGravityAndMove);
         UpdateManager.FastUpdate.RemoveListener(PlayerGreatAttack);
 
+        /*
         rigidbody2D.velocity = Vector2.zero;
         //（额外的）弹开
         if (tr.rotation.w == 1)
@@ -725,10 +762,10 @@ public abstract class APlayerCtrl : MonoBehaviour
         else
         {
             rigidbody2D.AddForce(new Vector2(-1f, 2f) * 4f, ForceMode2D.Impulse);//先放着，找个时间用曲线来代替力
-        }
+        }*/
         Gravity = 0;
         rigidbody2D.gravityScale = 5;
-
+        
         //黑烟
 
     }
@@ -750,7 +787,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     [ContextMenu("初始化gss")]
     public void Initial()
     {
-        StageCtrl.gameScoreSettings.Initial();
+        StageCtrl.gameScoreSettings.TitleInitial();
     }
 #endif
 
@@ -758,8 +795,16 @@ public abstract class APlayerCtrl : MonoBehaviour
     public void LevelUp()
     {
         Level++;
+        //更新soul limit
+        SoulLimit += StageCtrl.gameScoreSettings.mahouShoujos[(int)SelectedMahoshaojo].SoulGrowth;
+
+        //先保存后读取，这样子升级才能正常刷新数值
         SavePlayerInformation();
         UpdatePlayerInformation();
+
+        //防止溢出
+        SoulLimit = Mathf.Clamp(SoulLimit, 0, MaxSoulLimit);
+
     }
 
     #region 玩家无敌
@@ -851,6 +896,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// </summary>
     void SoulToPlayer()
     {
+        Vit = MaxVit;
         IsBodyDie = false;
         BanStandWalk = false;
         BanJump = false;
@@ -974,7 +1020,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     }
 
 
-    void WalkDropAndStand()
+   public  void WalkDropAndStand()
     {
         //为啥要加上Drop：下降的时候没有禁用这个方法，并且如果这个方法能执行的话，说明没有干别的，比较适合做下落动作
 
@@ -1074,17 +1120,19 @@ public abstract class APlayerCtrl : MonoBehaviour
 
         RebirthSoul = StageCtrl.gameScoreSettings.mahouShoujos[(int)SelectedMahoshaojo].Rebirth;
         RecoverySoul = StageCtrl.gameScoreSettings.mahouShoujos[(int)SelectedMahoshaojo].Recovery;
+        MagiaNeedVit = StageCtrl.gameScoreSettings.mahouShoujos[(int)SelectedMahoshaojo].MaigaVit;
 
     }
 
     /// <summary>
-    /// 向gss保存玩家信息
+    /// 向gss保存玩家信息（并不是存档）
     /// </summary>
     public void SavePlayerInformation()
     {
         StageCtrl.gameScoreSettings.Level[playerId - 1] = Level;
         StageCtrl.gameScoreSettings.MaxVitInGame[playerId - 1] = MaxVit;
         StageCtrl.gameScoreSettings.VitInGame[playerId - 1] = Vit;
+        StageCtrl.gameScoreSettings.SoulLimitInGame[playerId - 1] = SoulLimit;
     }
 
 

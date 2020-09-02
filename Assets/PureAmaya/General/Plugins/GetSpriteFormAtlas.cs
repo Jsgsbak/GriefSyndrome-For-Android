@@ -14,7 +14,6 @@ public class GetSpriteFormAtlas : MonoBehaviour
     public SpriteRenderer spriteRenderer;
     public Image image;
     public string SpriteName;
-    public int AtlasId;
     public bool DestroyAfterGettingSprite = true;
 
     // Start is called before the first frame update
