@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: GamePause
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+    variantMultiplier: 1
+    packables:
+    - {fileID: -8540504917331962801, guid: 3dc45afcb65e55e458144c82a8d2656b, type: 3}
+    - {fileID: -2230002818210899402, guid: 3dc45afcb65e55e458144c82a8d2656b, type: 3}
+    - {fileID: 5735238407672244771, guid: 3dc45afcb65e55e458144c82a8d2656b, type: 3}
+    - {fileID: 1594096210759172400, guid: 3dc45afcb65e55e458144c82a8d2656b, type: 3}
+    - {fileID: 1501139532262753209, guid: 3dc45afcb65e55e458144c82a8d2656b, type: 3}
+    - {fileID: 1743543073810817000, guid: 3dc45afcb65e55e458144c82a8d2656b, type: 3}
+    - {fileID: 21300000, guid: f03505dd88aff8744a8ac8b20231a19b, type: 3}
+    totalSpriteSurfaceArea: 2253598
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 1743543073810817000, guid: 3dc45afcb65e55e458144c82a8d2656b, type: 3}
+  - {fileID: 1594096210759172400, guid: 3dc45afcb65e55e458144c82a8d2656b, type: 3}
+  - {fileID: 1501139532262753209, guid: 3dc45afcb65e55e458144c82a8d2656b, type: 3}
+  - {fileID: -8540504917331962801, guid: 3dc45afcb65e55e458144c82a8d2656b, type: 3}
+  - {fileID: -2230002818210899402, guid: 3dc45afcb65e55e458144c82a8d2656b, type: 3}
+  - {fileID: 5735238407672244771, guid: 3dc45afcb65e55e458144c82a8d2656b, type: 3}
+  - {fileID: 21300000, guid: f03505dd88aff8744a8ac8b20231a19b, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Kyoko
+  - Homura
+  - Homura_m
+  - Sayaka
+  - Mami
+  - Madoka
+  - frame.cv2
+  m_Tag: GamePause
+  m_IsVariant: 0

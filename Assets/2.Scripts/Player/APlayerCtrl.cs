@@ -674,7 +674,7 @@ public abstract class APlayerCtrl : MonoBehaviour
         else
         {
             //普通死亡，复活
-
+            spriteRenderer.sprite = BodyDieImage;
             PlayerReBirth();
         }
 

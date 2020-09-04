@@ -7,6 +7,7 @@ public class StageCtrl : MonoBehaviour
 {
     public static GameScoreSettingsIO gameScoreSettings;
 
+   public int BGMid = 1;//通常都为1，是魔女狩猎
 
     #region 事件组
     public class intEvent : UnityEvent<int> { }
@@ -26,6 +27,9 @@ public class StageCtrl : MonoBehaviour
 
         //初始化
         gameScoreSettings.MajoInitial();
+
+        //播放BGM
+        EasyBGMCtrl.easyBGMCtrl.PlayBGM(BGMid);
     }
 
     public static void HurtPlayer(int damage, int PlayerId)

@@ -31,28 +31,7 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 2800000, guid: 8505807f5e7a368418b6ea21c2b035cf, type: 3}
-    - {fileID: 4845946918894555040, guid: 3dc45afcb65e55e458144c82a8d2656b, type: 3}
-    - {fileID: 8136710130675492332, guid: 3dc45afcb65e55e458144c82a8d2656b, type: 3}
-    - {fileID: 4676927256621686358, guid: 3dc45afcb65e55e458144c82a8d2656b, type: 3}
-    - {fileID: 3985654948791652660, guid: 3dc45afcb65e55e458144c82a8d2656b, type: 3}
-    - {fileID: -3868090303665839443, guid: 3dc45afcb65e55e458144c82a8d2656b, type: 3}
-    - {fileID: 9084104736623251643, guid: 3dc45afcb65e55e458144c82a8d2656b, type: 3}
-    - {fileID: 6168716860045255432, guid: 3dc45afcb65e55e458144c82a8d2656b, type: 3}
-    - {fileID: 4393339232655258629, guid: 3dc45afcb65e55e458144c82a8d2656b, type: 3}
-    - {fileID: 5591921962209487030, guid: 3dc45afcb65e55e458144c82a8d2656b, type: 3}
-    - {fileID: 5134221921996524213, guid: 3dc45afcb65e55e458144c82a8d2656b, type: 3}
-    - {fileID: 1594096210759172400, guid: 3dc45afcb65e55e458144c82a8d2656b, type: 3}
-    - {fileID: 1501139532262753209, guid: 3dc45afcb65e55e458144c82a8d2656b, type: 3}
-    - {fileID: -8540504917331962801, guid: 3dc45afcb65e55e458144c82a8d2656b, type: 3}
-    - {fileID: -2230002818210899402, guid: 3dc45afcb65e55e458144c82a8d2656b, type: 3}
-    - {fileID: 1743543073810817000, guid: 3dc45afcb65e55e458144c82a8d2656b, type: 3}
-    - {fileID: 5735238407672244771, guid: 3dc45afcb65e55e458144c82a8d2656b, type: 3}
-    - {fileID: 997243601692206168, guid: 3dc45afcb65e55e458144c82a8d2656b, type: 3}
-    - {fileID: -1769510634890371425, guid: 3dc45afcb65e55e458144c82a8d2656b, type: 3}
-    - {fileID: 5594094411109539170, guid: 3dc45afcb65e55e458144c82a8d2656b, type: 3}
-    - {fileID: -1459217407209300922, guid: 3dc45afcb65e55e458144c82a8d2656b, type: 3}
-    - {fileID: 856905764964590021, guid: 3dc45afcb65e55e458144c82a8d2656b, type: 3}
-    - {fileID: -8918268372864261744, guid: 3dc45afcb65e55e458144c82a8d2656b, type: 3}
+    - {fileID: 2800000, guid: 3dc45afcb65e55e458144c82a8d2656b, type: 3}
     totalSpriteSurfaceArea: 3109602
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
