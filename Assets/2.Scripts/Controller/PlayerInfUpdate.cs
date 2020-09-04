@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// 单独拿出一个玩家信息更新，方便维护
+/// （隶属于UICtrl）单独拿出一个玩家信息更新，方便维护
 /// </summary>
 public class PlayerInfUpdate : MonoBehaviour
 {
@@ -28,6 +28,15 @@ public class PlayerInfUpdate : MonoBehaviour
 
     public Sprite[] SoulGems;
 
+    private void Awake()
+    {
+        UICtrl[] go = FindObjectsOfType<UICtrl>();
+        if(go.Length != 1)
+        {
+            Debug.LogError("PlayerInfUpdate can't work,because the number of UICtrl isn't proper");
+            this.enabled = false;
+        }
+    }
 
     public void RegEvent()
     {
@@ -65,8 +74,6 @@ public void UpdateScore()
 
     public void UpdateHPBar()
     {
-        Debug.Log(StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId - 1]);
-
         if(!StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId - 1])
         {
 
@@ -86,12 +93,22 @@ public void UpdateScore()
             Health.fillAmount = (float)StageCtrl.gameScoreSettings.VitInGame[PlayerId - 1] / (float)StageCtrl.gameScoreSettings.MaxVitInGame[PlayerId - 1];
 
         }
-        else
+        else if(!StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId - 1] && StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId - 1])
         {
             Magia.fillAmount = 0;
             Damaged.fillAmount = 0;
-            Health.fillAmount = 0;
-            Rebirth.fillAmount = (float)StageCtrl.gameScoreSettings.VitInGame[PlayerId - 1] / (float)StageCtrl.gameScoreSettings.MaxVitInGame[PlayerId - 1];
+            Health.fillAmount = 0; 
+            Rebirth.fillAmount = 0;
+
+        }
+        //复活处理
+       else if (StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId - 1] && StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId - 1])
+        {
+            //  Rebirth.fillAmount = (float)StageCtrl.gameScoreSettings.VitInGame[PlayerId - 1] / (float)StageCtrl.gameScoreSettings.MaxVitInGame[PlayerId - 1];
+            //一秒七次，3秒回满血，恢复21次
+            Rebirth.fillAmount = Rebirth.fillAmount + 1f / 20f;
+            Debug.Log(Rebirth.fillAmount);
+
         }
         /*旧版
         //魔法hp条减少

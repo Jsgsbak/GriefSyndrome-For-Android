@@ -82,17 +82,17 @@ public class GameScoreSettingsIO : ScriptableObject
     /// </summary>
     public int[] HurtVitInGame = new int[] { 0, 0, 0 };
     /// <summary>
-    /// 玩家受伤损失的vit
-    /// </summary>
-    public int[] MagiaVitInGame = new int[] { 0, 0, 0 };
-    /// <summary>
     /// 受伤了吗
     /// </summary>
     public bool[] GetHurtInGame = new bool[] { false, false, false };
     /// <summary>
-    /// 身体挂了吗
+    /// 玩家身体死了吗
     /// </summary>
     public bool[] IsBodyDieInGame = new bool[] { false, false, false };
+    /// <summary>
+    /// 变成灵魂球了吗
+    /// </summary>
+    public bool[] IsSoulBallInGame = new bool[] { false, false, false };
 
     /// <summary>
     /// 魔法少女是否变成魔女(2个吼姆拉放在一起了)
@@ -125,6 +125,9 @@ public class GameScoreSettingsIO : ScriptableObject
     #endregion
 
     #region 玩家设置
+    /// <summary>
+    /// 魔法少女属性设置
+    /// </summary>
     [Header("魔法少女属性设置")]
     [SerializeField] public Variable.MahouShoujo[] mahouShoujos;
     #endregion
@@ -160,9 +163,10 @@ public class GameScoreSettingsIO : ScriptableObject
         SoulLimitInGame = new int[] { 0, 0, 0 }; 
         MaxVitInGame = new int[] { 0, 0, 0 };
         HurtVitInGame = new int[] { 0, 0, 0 };
-        MagiaVitInGame = new int[] { 0, 0, 0 };
         GetHurtInGame = new bool[] { false, false, false };
         MagiaKeyDown = new bool[] { false, false, false };
+        IsBodyDieInGame = new bool[] { false, false, false };
+        IsSoulBallInGame = new bool[] { false, false, false };
     }
 
     /// <summary>

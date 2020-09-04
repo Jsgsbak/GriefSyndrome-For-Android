@@ -35,11 +35,11 @@ namespace PureAmaya.General
         /// <summary>
         /// 正在播放的动画id（数组里的）
         /// </summary>
-        private int PlayingId = -1;
+        [HideInInspector] public int PlayingId = -1;
         /// <summary>
         /// 上一帧是否被禁用
         /// </summary>
-       bool BeDisabled = false;
+        [HideInInspector] bool BeDisabled = false;
         /// <summary>
         /// 用数组来储存动画
         /// </summary>
@@ -49,6 +49,11 @@ namespace PureAmaya.General
         /// 在一个动画中正在使用的图片的id
         /// </summary>
        [HideInInspector] public int PlayingSpriteId = 0;
+
+        /// <summary>
+        /// 不循环动画播放完成
+        /// </summary>
+        [HideInInspector] public bool NoCycleAnimPlayComplete = false;
 
         #region 用于储存暂停的动画
         bool IsPaused = false;
@@ -108,9 +113,8 @@ namespace PureAmaya.General
         public void ChangeAnimation(int AnimationId,bool Forced = false)
         {
 
-
             //id小于-1直接无视
-            if(AnimationId < 0) { return; }
+            if (AnimationId < 0) { return; }
 
             //垃圾代码
 
@@ -187,8 +191,11 @@ namespace PureAmaya.General
         /// <returns></returns>
         void NewPlayAnimation()
         {
+            //非循环动画未完成播放
+            NoCycleAnimPlayComplete = false;
+
             //旋转物体
-          if(AtlasAnimations[PlayingId].RotateObjectBeforeAnim)transform.rotation = AtlasAnimations[PlayingId].Rotation;
+            if (AtlasAnimations[PlayingId].RotateObjectBeforeAnim)transform.rotation = AtlasAnimations[PlayingId].Rotation;
 
 
             //设置图像
@@ -230,6 +237,8 @@ namespace PureAmaya.General
                 {
                     //调用非循环动画结束事件
                     AnimStop.Invoke(AtlasAnimations[PlayingId].name);
+                    //非循环动画播放完
+                    NoCycleAnimPlayComplete = true;
                     //停止该动画播放
                     CancelInvoke("NewPlayAnimation");
                     //  break;

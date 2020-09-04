@@ -105,8 +105,12 @@ public class Variable
         public int Rebirth = 30;
 
         [Space]
-        [Header("发动时Maiga消耗Vit数")]//写错了，不改了
+        [Header("发动时Magia消耗Vit数")]//写错了，不改了
         public int MaigaVit = 45;
+
+        [Space]
+        [Header("是能够蓄力的Magia吗")]
+        public bool LongMagia = true;
     }
 
 

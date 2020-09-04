@@ -146,7 +146,8 @@ Sprite:
     7f8da7ec344128e429a1d0f1c7ba8d07: 21300000
   m_AtlasTags:
   - SayakaCharacter
-  m_SpriteAtlas: {fileID: 0}
+  m_SpriteAtlas: {fileID: 4343727234628468602, guid: 93ae529101d7a0e429b5f07aeac428bd,
+    type: 2}
   m_RD:
     serializedVersion: 3
     texture: {fileID: 2800000, guid: 7f8da7ec344128e429a1d0f1c7ba8d07, type: 3}
@@ -240,7 +241,7 @@ Sprite:
     downscaleMultiplier: 1
   m_AtlasRD:
     serializedVersion: 3
-    texture: {fileID: 0}
+    texture: {fileID: 2, guid: 00000000000000000000000000000000, type: 0}
     alphaTexture: {fileID: 0}
     secondaryTextures: []
     m_SubMeshes:
@@ -320,14 +321,14 @@ Sprite:
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
-      x: 5.0761204
-      y: 27.07612
+      x: 509.0761
+      y: 1319.0762
       width: 72.89713
       height: 90.84776
     textureRectOffset: {x: 5.0761204, y: 27.07612}
-    atlasRectOffset: {x: -1, y: -1}
-    settingsRaw: 64
-    uvTransform: {x: 100, y: 80, z: 100, w: 64}
+    atlasRectOffset: {x: 504, y: 1292}
+    settingsRaw: 65
+    uvTransform: {x: 100, y: 584, z: 100, w: 1356}
     downscaleMultiplier: 1
   m_PhysicsShape:
   - - {x: -0.11, y: 0.049999997}
@@ -600,6 +601,7 @@ MonoBehaviour:
   Format: '{0}_Effect_{1}{2}'
   PlayDefaultAnimation: 0
   DefaultAnimationNameInAtlas: 3
+  PlayingId: -1
   AtlasAnimations:
   - name: Z
     Description: "Z \u4E00\u6BB5"
@@ -657,6 +659,7 @@ MonoBehaviour:
     BeginningRepair: 0
     RepairedFirstAtlasId: 0
   PlayingSpriteId: 0
+  NoCycleAnimPlayComplete: 0
 --- !u!212 &134496172
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -873,7 +876,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1609930913}
-  - {fileID: 2144131355}
   - {fileID: 1086607865}
   - {fileID: 1677099379}
   - {fileID: 730131201}
@@ -906,7 +908,8 @@ Sprite:
     20d9bad3e0319bd40933974ccdb70f9e: 3219025720082990978
   m_AtlasTags:
   - SayakaEffect
-  m_SpriteAtlas: {fileID: 0}
+  m_SpriteAtlas: {fileID: 4343727234628468602, guid: eb805d8520b9a694babd2cc1117604f9,
+    type: 2}
   m_RD:
     serializedVersion: 3
     texture: {fileID: 2800000, guid: 20d9bad3e0319bd40933974ccdb70f9e, type: 3}
@@ -1000,7 +1003,7 @@ Sprite:
     downscaleMultiplier: 1
   m_AtlasRD:
     serializedVersion: 3
-    texture: {fileID: 0}
+    texture: {fileID: 2, guid: 00000000000000000000000000000000, type: 0}
     alphaTexture: {fileID: 0}
     secondaryTextures: []
     m_SubMeshes:
@@ -1080,14 +1083,14 @@ Sprite:
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
-      x: 578
-      y: 545
+      x: 345
+      y: 808
       width: 274
       height: 75
     textureRectOffset: {x: 0, y: 0}
-    atlasRectOffset: {x: -1, y: -1}
-    settingsRaw: 64
-    uvTransform: {x: 100, y: 715, z: 100, w: 582.5}
+    atlasRectOffset: {x: -233, y: 263}
+    settingsRaw: 65
+    uvTransform: {x: 100, y: 482, z: 100, w: 845.5}
     downscaleMultiplier: 1
   m_PhysicsShape:
   - - {x: 0.82, y: -0.265}
@@ -1524,7 +1527,7 @@ Transform:
   m_LocalScale: {x: 4.4858694, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 362900780}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &730131202
 MonoBehaviour:
@@ -1539,7 +1542,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collider2D: {fileID: 730131199}
-  Damage: 20
+  Damage: 80
 --- !u!1 &880099709
 GameObject:
   m_ObjectHideFlags: 0
@@ -1569,7 +1572,7 @@ Transform:
   m_Children:
   - {fileID: 362900780}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &931072168
 GameObject:
@@ -1690,7 +1693,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1086607864
 GameObject:
@@ -1721,7 +1724,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 362900780}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1086607866
 MonoBehaviour:
@@ -1765,7 +1768,7 @@ Transform:
   m_LocalScale: {x: 4.4858694, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 362900780}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &1205017410
 BoxCollider2D:
@@ -1995,7 +1998,7 @@ RectTransform:
   - {fileID: 1934718373}
   - {fileID: 87408161}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -2047,7 +2050,7 @@ Transform:
   m_Children:
   - {fileID: 159391664}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1443483868
 GameObject:
@@ -2121,7 +2124,7 @@ GameObject:
   - component: {fileID: 1609930915}
   - component: {fileID: 1609930916}
   m_Layer: 8
-  m_Name: Sayaka
+  m_Name: Sayaka[Debug]
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2146,6 +2149,7 @@ MonoBehaviour:
   Format: '{0}_{1} ({2})'
   PlayDefaultAnimation: 0
   DefaultAnimationNameInAtlas: 10
+  PlayingId: -1
   AtlasAnimations:
   - name: Stand
     Description: 
@@ -2379,6 +2383,7 @@ MonoBehaviour:
     BeginningRepair: 0
     RepairedFirstAtlasId: 8
   PlayingSpriteId: 0
+  NoCycleAnimPlayComplete: 0
 --- !u!212 &1609930912
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2488,10 +2493,10 @@ MonoBehaviour:
   playerId: 0
   Level: 1
   Experience: 0
-  SoulLimit: 156
-  MaxSoulLimit: 72
   Vit: 77
+  SoulLimit: 156
   MaxVit: 35
+  MaxSoulLimit: 72
   Pow: 113
   RecoverySoul: 18
   RebirthSoul: 30
@@ -2681,7 +2686,7 @@ Transform:
   m_LocalScale: {x: 4.4858694, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 362900780}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1934718372
 GameObject:
@@ -2935,9 +2940,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2144131353}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.841807, y: 4.77942, z: -123.990715}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 362900780}
-  m_RootOrder: 1
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

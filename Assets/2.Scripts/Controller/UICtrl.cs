@@ -49,7 +49,8 @@ public class UICtrl : MonoBehaviour
         for (int i = 0; i < PlayerCount; i++)
         {
             PlayerInfInGame[i] = Instantiate(PlayerInf);
-            PlayerInfInGame[i].transform.SetParent(Parent);
+            PlayerInfInGame[i].PlayerId = i +1;
+            PlayerInfInGame[i].transform.SetParent(Parent);//设置父对象，排版
             PlayerInfInGame[i].transform.localScale = 0.8f * Vector2.one;//修正规模
             PlayerInfInGame[i].SetNameAndSG(StageCtrl.gameScoreSettings.SelectedGirlInGame[i].ToString());
             PlayerInfInGame[i].RegEvent();

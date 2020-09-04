@@ -382,7 +382,14 @@ public class SayakaCtrl : APlayerCtrl
                 AllowRay = true;
 
                 //解决冲刺后不会恢复状态的bug
-                WalkDropAndStand();
+                if (IsHanging)
+                {
+                    atlasAnimation.ChangeAnimation(DropAnimId);
+                }
+                else
+                {
+                    atlasAnimation.ChangeAnimation(StandAnimId);
+                }
 
             }
 

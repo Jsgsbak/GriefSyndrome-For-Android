@@ -25,12 +25,15 @@ MonoBehaviour:
   lap: 1
   LastLap: 1
   SelectedGirlInGame: 040000000600000006000000
-  Level: 020000000100000001000000
-  SoulLimitInGame: 2d4e00000000000000000000
-  VitInGame: 5e0000000000000000000000
-  MaxVitInGame: 5e0000000000000000000000
+  Level: 010000000100000001000000
+  SoulLimitInGame: 054800000000000000000000
+  VitInGame: 580000000000000000000000
+  MagiaKeyDown: 000000
+  MaxVitInGame: 580000000000000000000000
   HurtVitInGame: 000000000000000000000000
-  MagiaVitInGame: 000000000000000000000000
+  GetHurtInGame: 000000
+  IsBodyDieInGame: 000000
+  IsSoulBallInGame: 000000
   MagicalGirlsDie: 0000000000
   MajoBeingBattled: 0
   NewestMajo: 0
@@ -51,6 +54,7 @@ MonoBehaviour:
     Recovery: 18
     Rebirth: 30
     MaigaVit: 50
+    LongMagia: 0
   - name: Kyoko
     BasicPow: 10
     PowGrowth: 1
@@ -65,6 +69,7 @@ MonoBehaviour:
     Recovery: 18
     Rebirth: 30
     MaigaVit: 35
+    LongMagia: 0
   - name: Madoka
     BasicPow: 10
     PowGrowth: 1
@@ -79,6 +84,7 @@ MonoBehaviour:
     Recovery: 18
     Rebirth: 30
     MaigaVit: 45
+    LongMagia: 1
   - name: Mami
     BasicPow: 10
     PowGrowth: 1
@@ -93,6 +99,7 @@ MonoBehaviour:
     Recovery: 18
     Rebirth: 30
     MaigaVit: 100
+    LongMagia: 1
   - name: Sayaka
     BasicPow: 10
     PowGrowth: 1
@@ -107,6 +114,7 @@ MonoBehaviour:
     Recovery: 6
     Rebirth: 9
     MaigaVit: 20
+    LongMagia: 0
   - name: Homura_m
     BasicPow: 10
     PowGrowth: 1
@@ -121,3 +129,4 @@ MonoBehaviour:
     Recovery: 18
     Rebirth: 30
     MaigaVit: 50
+    LongMagia: 0

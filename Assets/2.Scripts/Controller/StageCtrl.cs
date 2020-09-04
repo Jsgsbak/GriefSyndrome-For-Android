@@ -14,7 +14,6 @@ public class StageCtrl : MonoBehaviour
     public static intEvent Player2Hurt = new intEvent();
     public static intEvent Player3Hurt = new intEvent();
     #endregion
-
     private void Awake()
     {
         gameScoreSettings = (GameScoreSettingsIO)Resources.Load("GameScoreAndSettings");
