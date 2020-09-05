@@ -77,8 +77,6 @@ public class TitleCtrl : MonoBehaviour
 
         //存档与设置获取
         gameScoreSettingsIO.Load();
-        //初始化
-        gameScoreSettingsIO.TitleInitial();
     }
 
 
@@ -316,8 +314,6 @@ public class TitleCtrl : MonoBehaviour
 
             for (int i = 0; i < 40; i++)
             {
-                Debug.Log("ds");
-
                 ChangePart[InId].alpha += 0.025f;
                 yield return Timing.WaitForSeconds(0.015f);
             }

@@ -101,12 +101,15 @@ public class UICtrl : MonoBehaviour
         if(Time.timeScale != 0)
         {
             Time.timeScale = 0;
+            EasyBGMCtrl.easyBGMCtrl.BGMPlayer.Pause();
             Pause.SetActive(true);
             MEC.Timing.TimeBetweenSlowUpdateCalls = 0f;
         }
+        //暂停恢复
         else
         {
             Time.timeScale = 1;
+            EasyBGMCtrl.easyBGMCtrl.BGMPlayer.UnPause();
             Pause.SetActive(false);
             MEC.Timing.TimeBetweenSlowUpdateCalls = 1f / 7f;
         }
@@ -118,6 +121,7 @@ public class UICtrl : MonoBehaviour
     public void ReturnToTitle()
     {
         //  LoadingCtrl.LoadScene(0);
+        Time.timeScale = 1;//回复时间
         UnityEngine.SceneManagement.SceneManager.LoadScene(0,UnityEngine.SceneManagement.LoadSceneMode.Single);
     }
 }

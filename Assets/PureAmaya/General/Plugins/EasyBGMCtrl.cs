@@ -10,8 +10,8 @@ public class EasyBGMCtrl : MonoBehaviour
 
     public static EasyBGMCtrl easyBGMCtrl;
 
-     AudioSource BGMPlayer;
-     AudioSource SEPlayer;
+   [HideInInspector] public  AudioSource BGMPlayer;
+    [HideInInspector] public  AudioSource SEPlayer;
 
     private void Awake()
     {
