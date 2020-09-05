@@ -12,6 +12,7 @@ public class GetSpriteFormAtlas : MonoBehaviour
 {
     public SpriteAtlas spriteAtlas;
     public SpriteRenderer spriteRenderer;
+    public bool AutoGetComponentAtTheObject = true;
     public Image image;
     public string SpriteName;
     public bool DestroyAfterGettingSprite = true;
@@ -20,7 +21,21 @@ public class GetSpriteFormAtlas : MonoBehaviour
     [ContextMenu("GetSprite")]
     private void Start()
     {
-        if(spriteRenderer != null)
+        if (AutoGetComponentAtTheObject)
+        {
+
+            try
+            {
+                spriteRenderer = GetComponent<SpriteRenderer>();
+            }
+            catch (System.Exception)
+            {
+                image = GetComponent<Image>();
+            }
+        }
+
+
+        if (spriteRenderer != null)
         {
             spriteRenderer.sprite= spriteAtlas.GetSprite(SpriteName);
         }

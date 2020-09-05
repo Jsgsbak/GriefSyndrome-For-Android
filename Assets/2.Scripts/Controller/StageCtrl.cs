@@ -1,8 +1,12 @@
-﻿using System.Collections;
+﻿using PureAmaya.General;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+/// <summary>
+/// ！不负责敌人的控制，游戏里敌人是固定生成的
+/// </summary>
 public class StageCtrl : MonoBehaviour
 {
     public static GameScoreSettingsIO gameScoreSettings;
@@ -28,8 +32,15 @@ public class StageCtrl : MonoBehaviour
         //初始化
         gameScoreSettings.MajoInitial();
 
+        //注册事件
+     //   UpdateManager.FastUpdate.AddListener(FastUpdate);
+
         //播放BGM
         EasyBGMCtrl.easyBGMCtrl.PlayBGM(BGMid);
+    }
+
+    public void FastUpdate()
+    {
     }
 
     public static void HurtPlayer(int damage, int PlayerId)

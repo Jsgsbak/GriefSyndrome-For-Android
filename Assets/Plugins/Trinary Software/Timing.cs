@@ -33,7 +33,7 @@ namespace MEC
         /// The time between calls to SlowUpdate.
         /// </summary>
         [Tooltip("How quickly the SlowUpdate segment ticks.")]
-        public float TimeBetweenSlowUpdateCalls = 1f / 7f;
+        public static float TimeBetweenSlowUpdateCalls = 1f / 7f;
         /// <summary>
         /// The amount that each coroutine should be seperated inside the Unity profiler. NOTE: When the profiler window
         /// is not open this value is ignored and all coroutines behave as if "None" is selected.

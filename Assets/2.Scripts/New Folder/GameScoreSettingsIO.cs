@@ -70,6 +70,10 @@ public class GameScoreSettingsIO : ScriptableObject
     /// </summary>
     public int[] VitInGame = new int[] { 0, 0, 0 };
     /// <summary>
+    /// 玩家选择的魔法少女的Pow
+    /// </summary>
+    public int[] PowInGame = new int[] { 0, 0, 0 };
+    /// <summary>
     /// 是否按下Magia键
     /// </summary>
     public bool[] MagiaKeyDown = new bool[] { false, false, false };
@@ -167,6 +171,7 @@ public class GameScoreSettingsIO : ScriptableObject
         MagiaKeyDown = new bool[] { false, false, false };
         IsBodyDieInGame = new bool[] { false, false, false };
         IsSoulBallInGame = new bool[] { false, false, false };
+        PowInGame = new int[] { 0, 0, 0 };
     }
 
     /// <summary>

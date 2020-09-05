@@ -344,7 +344,16 @@ public abstract class APlayerCtrl : MonoBehaviour
 
 
         //如果玩家死亡，直接返回，不接受后续处理(被攻击已被动画是否播放完代替，因为被攻击判定只有几帧太短了）
-        if (IsBodyDie ||IsJiangZhi)
+        if (IsBodyDie )
+        {
+            if (!IsSoulBall)
+            {
+                atlasAnimation.PauseAnimation();//反正也不差这点性能了
+                spriteRenderer.sprite = BodyDieImage;//解决令人恶心的Bug
+            }
+            return;
+        }
+        else if(IsJiangZhi)
         {
             return;
         }
@@ -674,6 +683,7 @@ public abstract class APlayerCtrl : MonoBehaviour
         else
         {
             //普通死亡，复活
+            atlasAnimation.PauseAnimation();
             spriteRenderer.sprite = BodyDieImage;
             PlayerReBirth();
         }
@@ -690,8 +700,6 @@ public abstract class APlayerCtrl : MonoBehaviour
             rigidbody2D.AddForce(new Vector2(-1f, 2f) * 4f, ForceMode2D.Impulse);//先放着，找个时间用曲线来代替力
         }*/
 
-        spriteRenderer.sprite = BodyDieImage;
-        //动画在射线那里
 
     }
 
@@ -995,6 +1003,17 @@ public abstract class APlayerCtrl : MonoBehaviour
         AllowRay = true;
         BanAnimFlip = false;
         IsJiangZhi = false;//修复意外移动的bug
+
+        //解决僵直后不会恢复状态的bug
+        if (IsHanging)
+        {
+            atlasAnimation.ChangeAnimation(DropAnimId);
+        }
+        else
+        {
+            atlasAnimation.ChangeAnimation(StandAnimId);
+        }
+
     }
     #endregion
 

@@ -24,6 +24,10 @@ public class SayakaCtrl : APlayerCtrl
     //注意：该方法注册在玩家身上的角色移动动画机，即根据玩家动作动画来进行判断
     public override void CheckAnimStop(string AnimName)
     {
+        if (IsBodyDie || IsHurt)
+        {
+            return;
+        }
 
 
         //平A 1 2 3 段连段判断，用于阻止玩家在动画结束前再次攻击
@@ -52,6 +56,12 @@ public class SayakaCtrl : APlayerCtrl
 
     public void FastUpdateForSayaka()
     {
+        if (IsBodyDie || IsHurt)
+        {
+            return;
+        }
+
+
         if (EnableZ3Rush)
         {
             //以防万一，加个限制
@@ -75,6 +85,13 @@ public class SayakaCtrl : APlayerCtrl
 
     public override void PlayerAttack()
     {
+        if (IsBodyDie || IsHurt)
+        {
+            return;
+        }
+
+
+
         //Z 一段动画
         if (ZattackCount == 0 || ZattackCount == 2 || ZattackCount == 4)
         {
@@ -139,6 +156,13 @@ public class SayakaCtrl : APlayerCtrl
 
     public override void PlayerGreatAttack()
     {
+        if (IsBodyDie || IsHurt)
+        {
+            return;
+        }
+
+
+
         //蓄力状态
         if (IsPreparingAttacking)
         {
@@ -192,6 +216,13 @@ public class SayakaCtrl : APlayerCtrl
 
     public override void PlayerUpX()
     {
+        if (IsBodyDie || IsHurt)
+        {
+            return;
+        }
+
+
+
         if (IsUpX)
         {
             ChangeGravity(0);
@@ -231,6 +262,12 @@ public class SayakaCtrl : APlayerCtrl
     //会突刺两次emmmm就当特性好了）
     public override void PlayerDownX()
     {
+        if (IsBodyDie || IsHurt)
+        {
+            return;
+        }
+
+
         if (IsDownX)
         {
             if (Time.timeSinceLevelLoad - DownXTimer <= 0.2f && GteatAttackPart == 0)
@@ -320,6 +357,10 @@ public class SayakaCtrl : APlayerCtrl
 
     public override void Magia(int index)
     {
+        if (IsBodyDie)
+        {
+            return;
+        }
         //准备
         if (index == 0)
         {
@@ -381,15 +422,6 @@ public class SayakaCtrl : APlayerCtrl
                 BanJump = false;
                 AllowRay = true;
 
-                //解决冲刺后不会恢复状态的bug
-                if (IsHanging)
-                {
-                    atlasAnimation.ChangeAnimation(DropAnimId);
-                }
-                else
-                {
-                    atlasAnimation.ChangeAnimation(StandAnimId);
-                }
 
             }
 

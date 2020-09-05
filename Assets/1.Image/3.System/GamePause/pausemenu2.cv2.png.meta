@@ -40,7 +40,7 @@ TextureImporter:
     second: pausemenu2.cv2_11
   - first:
       213: 5154007695220609252
-    second: Pause_Menu
+    second: Pause_Erase
   - first:
       213: 8230729883411039185
     second: pausemenu2.cv2_13
@@ -386,8 +386,8 @@ TextureImporter:
         serializedVersion: 2
         x: 56
         y: 104
-        width: 650
-        height: 42
+        width: 647
+        height: 44
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -423,7 +423,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Pause_Menu
+      name: Pause_Erase
       rect:
         serializedVersion: 2
         x: 58
@@ -452,7 +452,7 @@ TextureImporter:
         width: 368
         height: 40
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

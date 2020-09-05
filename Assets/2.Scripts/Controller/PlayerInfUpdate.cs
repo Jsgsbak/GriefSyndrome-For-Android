@@ -107,7 +107,6 @@ public void UpdateScore()
             //  Rebirth.fillAmount = (float)StageCtrl.gameScoreSettings.VitInGame[PlayerId - 1] / (float)StageCtrl.gameScoreSettings.MaxVitInGame[PlayerId - 1];
             //一秒七次，3秒回满血，恢复21次
             Rebirth.fillAmount = Rebirth.fillAmount + 1f / 20f;
-            Debug.Log(Rebirth.fillAmount);
 
         }
         /*旧版
