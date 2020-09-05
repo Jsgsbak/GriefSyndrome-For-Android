@@ -2,7 +2,7 @@
 
 ## 脚本简介
 
-- TitleCtrl[输入链接说明](1.TitleCtrl)
+- [TitleCtrl](###1.TitleCtrl)
 
 
 
