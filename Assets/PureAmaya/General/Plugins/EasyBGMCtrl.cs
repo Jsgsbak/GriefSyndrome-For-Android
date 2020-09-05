@@ -15,7 +15,7 @@ public class EasyBGMCtrl : MonoBehaviour
 
     private void Awake()
     {
-        DontDestroyOnLoad(gameObject);
+      //  DontDestroyOnLoad(gameObject);
 
         #region 组件初始化
         easyBGMCtrl = this;

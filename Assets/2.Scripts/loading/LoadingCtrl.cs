@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using PureAmaya.General;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -9,8 +10,7 @@ public class LoadingCtrl : MonoBehaviour
 {
     public Scene Title;
     public Scene Loading;
-    public Scene MajoKeikai;
-    public Scene UIForMajoKeikai;//staff放在这里
+    public Scene MajoKeikai;//UI Staff 结算都在这里
 	/// <summary>
 	/// 目标加载场景
 	/// </summary>
@@ -30,6 +30,11 @@ public class LoadingCtrl : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
+		//清理UpdateManager
+		UpdateManager.FastUpdate.RemoveAllListeners();
+		UpdateManager.SlowUpdate.RemoveAllListeners();
+		UpdateManager.FakeLateUpdate.RemoveAllListeners();
+
 		loadingSlider.value = 0.0f;
 
 		if (SceneManager.GetActiveScene().name == "Loading")
@@ -37,9 +42,6 @@ public class LoadingCtrl : MonoBehaviour
 			//启动协程
 			StartCoroutine(AsyncLoading());
 		}
-
-		//停止BGM
-		EasyBGMCtrl.easyBGMCtrl.PlayBGM(-1);
 	}
 
 	public static void LoadScene(int id)

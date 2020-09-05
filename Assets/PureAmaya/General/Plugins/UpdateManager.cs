@@ -27,7 +27,7 @@ namespace PureAmaya.General
 
         private void Start()
         {
-            DontDestroyOnLoad(gameObject);
+           // DontDestroyOnLoad(gameObject);
             Timing.RunCoroutine(SlowUpdatea(), Segment.SlowUpdate);
         }
 

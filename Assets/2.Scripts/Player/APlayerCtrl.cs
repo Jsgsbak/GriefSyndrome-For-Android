@@ -316,15 +316,12 @@ public abstract class APlayerCtrl : MonoBehaviour
         //根据已有数据获取玩家信息
         UpdatePlayerInformation();
 
-        //恢复soullimit
+        //恢复/更新soullimit
         SoulLimit = MaxSoulLimit;
-        //恢复hp
-//#if UNITY_EDITOR
+        //恢复/更新
+        //#if UNITY_EDITOR
         Vit = MaxVit;
-//#endif
-
-        StageCtrl.gameScoreSettings.MaxVitInGame[playerId - 1] = MaxVit;
-
+        //#endif
         //向gss储存信息
         SavePlayerInformation();
         //调用每秒扣除soullimt的方法
@@ -344,7 +341,7 @@ public abstract class APlayerCtrl : MonoBehaviour
 
 
         //如果玩家死亡，直接返回，不接受后续处理(被攻击已被动画是否播放完代替，因为被攻击判定只有几帧太短了）
-        if (IsBodyDie )
+        if (IsBodyDie)
         {
             if (!IsSoulBall)
             {
@@ -353,7 +350,7 @@ public abstract class APlayerCtrl : MonoBehaviour
             }
             return;
         }
-        else if(IsJiangZhi)
+        else if(IsJiangZhi || Time.timeScale == 0)
         {
             return;
         }
@@ -766,6 +763,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     {
         //死亡动画在射线里
         //状态修改
+        IsSoulBall = false;
         HurtVit = 0;
         BanGreatAttack = true;
         BanStandWalk = true;
@@ -1186,6 +1184,10 @@ public abstract class APlayerCtrl : MonoBehaviour
         StageCtrl.gameScoreSettings.MaxVitInGame[playerId - 1] = MaxVit;
         StageCtrl.gameScoreSettings.VitInGame[playerId - 1] = Vit;
         StageCtrl.gameScoreSettings.SoulLimitInGame[playerId - 1] = SoulLimit;
+        StageCtrl.gameScoreSettings.PowInGame[playerId - 1] = Pow;
+
+        Debug.Log(Pow);
+        Debug.Log("gs" + StageCtrl.gameScoreSettings.PowInGame[playerId - 1]);
     }
 
 

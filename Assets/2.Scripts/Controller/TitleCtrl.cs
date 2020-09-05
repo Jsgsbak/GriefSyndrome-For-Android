@@ -77,6 +77,8 @@ public class TitleCtrl : MonoBehaviour
 
         //存档与设置获取
         gameScoreSettingsIO.Load();
+        //初始化
+        gameScoreSettingsIO.TitleInitial();
     }
 
 
@@ -112,7 +114,7 @@ public class TitleCtrl : MonoBehaviour
             ExitMagicalGirls.onClick.AddListener(delegate () { Timing.RunCoroutine(ChangePartMethod(2, 1)); });//范围到魔女选择part
             #endregion
         }
-        else//不是刚打开游戏，是从魔女结界中返回
+        else//不是刚打开游戏，是从魔女结界中返回（玩家死亡或者胜利）
 
         {
             //禁用其他Part
@@ -264,6 +266,8 @@ public class TitleCtrl : MonoBehaviour
     /// <returns></returns>
     public IEnumerator<float> ChangePartMethod(int OutId, int InId)
     {
+
+
         //禁用输入防止bug
         eventSystem.SetActive(false);
 
@@ -306,11 +310,14 @@ public class TitleCtrl : MonoBehaviour
 
         if (InId >= 0)
         {
+
             ChangePart[InId].alpha = 0;
             ChangePart[InId].gameObject.SetActive(true);
 
             for (int i = 0; i < 40; i++)
             {
+                Debug.Log("ds");
+
                 ChangePart[InId].alpha += 0.025f;
                 yield return Timing.WaitForSeconds(0.015f);
             }

@@ -23,14 +23,16 @@ public class StageCtrl : MonoBehaviour
     {
         gameScoreSettings = (GameScoreSettingsIO)Resources.Load("GameScoreAndSettings");
         Application.targetFrameRate = gameScoreSettings.MaxFps;
+
+        //初始化
+        gameScoreSettings.MajoInitial();
+
     }
 
     // Start is called before the first frame update
     void Start()
     {
 
-        //初始化
-        gameScoreSettings.MajoInitial();
 
         //注册事件
      //   UpdateManager.FastUpdate.AddListener(FastUpdate);

@@ -74,6 +74,7 @@ public void UpdateScore()
 
     public void UpdateHPBar()
     {
+
         if(!StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId - 1])
         {
 
@@ -93,6 +94,7 @@ public void UpdateScore()
             Health.fillAmount = (float)StageCtrl.gameScoreSettings.VitInGame[PlayerId - 1] / (float)StageCtrl.gameScoreSettings.MaxVitInGame[PlayerId - 1];
 
         }
+        //挂了，即魔女化
         else if(!StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId - 1] && StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId - 1])
         {
             Magia.fillAmount = 0;
@@ -102,7 +104,7 @@ public void UpdateScore()
 
         }
         //复活处理
-       else if (StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId - 1] && StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId - 1])
+       else if (StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId - 1] && StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId - 1] && Time.timeScale != 0)
         {
             //  Rebirth.fillAmount = (float)StageCtrl.gameScoreSettings.VitInGame[PlayerId - 1] / (float)StageCtrl.gameScoreSettings.MaxVitInGame[PlayerId - 1];
             //一秒七次，3秒回满血，恢复21次
