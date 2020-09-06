@@ -37,11 +37,12 @@ namespace PureAmaya.General
 
         [Header("单摆转动")]
         public bool AllowPendulum = false;
-        public float Amplitude = 1f;
-        public float Cycle = 10f;
+     //   public float Amplitude = 1f;
+     //   public float Cycle = 10f;
         public Vector3 AxisForPendulum = Vector3.forward;
         public Space PendulumSpace = Space.World;
-        AnimationCurve ac;
+       public AnimationCurve ac;
+        private float Time0;
 
         Transform tr;
         GameObject go;
@@ -58,13 +59,14 @@ namespace PureAmaya.General
                 InvokeRepeating("RotateForTime", 0f, Interval);
             }
 
+            /*
             //初始化单摆的函数曲线
             if (AllowPendulum)
             {
                 ac = new AnimationCurve(new Keyframe(0f, Amplitude, 0f, 0f), new Keyframe(Cycle / 4, 0,-Amplitude, -Amplitude), new Keyframe(Cycle / 2, -Amplitude, 0f, 0f), new Keyframe(Cycle *3 / 4, 0, Amplitude, Amplitude), new Keyframe(Cycle, Amplitude, 0f, 0f));
                 ac.preWrapMode = WrapMode.Loop;
                 ac.postWrapMode = WrapMode.Loop;
-            }
+            }*/
         }
 
         void RotateForTime()
@@ -77,6 +79,7 @@ namespace PureAmaya.General
         {
             //注册Update
             UpdateManager.FastUpdate.AddListener(FastUpdate);
+            Time0 = Time.timeSinceLevelLoad;
         }
 
         private void OnDisable()
@@ -119,7 +122,7 @@ namespace PureAmaya.General
                 //单摆
                 if (AllowPendulum)
                 {
-                    tr.Rotate(AxisForPendulum * ac.Evaluate(Time.timeSinceLevelLoad), PendulumSpace);
+                    tr.Rotate(AxisForPendulum * ac.Evaluate(Time.timeSinceLevelLoad - Time0) * Time.deltaTime, PendulumSpace);
                 }
 
             }

@@ -19,6 +19,11 @@ public class UICtrl : MonoBehaviour
     public Transform PPIParent;
 
     public GameObject Pause;
+
+    [Header("音量滑条")]
+    public Slider BGMVol;
+    public Slider SEVol;
+
     /// <summary>
     /// 真正起到管理作用的在这里
     /// </summary>
@@ -38,6 +43,13 @@ public class UICtrl : MonoBehaviour
     {
         UpdateManager.SlowUpdate.AddListener(SlowUpdate);
         UpdateManager.FastUpdate.AddListener(FastUpdate);
+      
+        //音量事件注册与设置
+        BGMVol.onValueChanged.AddListener(BGMVolChange);
+        SEVol.onValueChanged.AddListener(SEVolChange);
+        BGMVol.value =StageCtrl. gameScoreSettings.BGMVol;
+        SEVol.value = StageCtrl.gameScoreSettings.SEVol;
+
 
         #region 初始化UI界面
         //先记录下玩家人数（当然现在是单机，不过还是为多人留点东西）
@@ -93,6 +105,23 @@ public class UICtrl : MonoBehaviour
         }
 
     }
+
+
+    #region 音量滑块
+    public void BGMVolChange(float vol)
+    {
+        StageCtrl.gameScoreSettings.BGMVol = vol;
+        EasyBGMCtrl.easyBGMCtrl.ChangeVol(vol, true);
+    }
+    public void SEVolChange(float vol)
+    {
+        StageCtrl.gameScoreSettings.SEVol = vol;
+        EasyBGMCtrl.easyBGMCtrl.ChangeVol(vol, false);
+
+    }
+
+    #endregion
+
 
     [ContextMenu("游戏暂停切换")]
     public void GamePauseSwitch()

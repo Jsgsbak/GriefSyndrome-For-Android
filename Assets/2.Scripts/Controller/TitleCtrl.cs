@@ -23,6 +23,9 @@ public class TitleCtrl : MonoBehaviour
     public TMP_InputField LapInput;
     public Button SettingsButton;
     public Button ExitButton;
+    public Slider BGMVol;
+    public Slider SEVol;
+
     /// <summary>
     /// 场景切换控制 顺序：MainTitle，SelectMajo，SelectMaigcalGirl
     /// </summary>
@@ -77,6 +80,7 @@ public class TitleCtrl : MonoBehaviour
 
         //存档与设置获取
         gameScoreSettingsIO.Load();
+
     }
 
 
@@ -103,13 +107,20 @@ public class TitleCtrl : MonoBehaviour
             //主标题part
             LapInput.onValueChanged.AddListener(delegate (string lap) { gameScoreSettingsIO.lap = int.Parse(lap); });//向GSS中写入周目数
             StartGameButton.onClick.AddListener(delegate () { Timing.RunCoroutine(ChangePartMethod(0, 1)); });//进入魔女选择part
-            ExitButton.onClick.AddListener(delegate () { Application.Quit(0); });//关闭游戏
+            ExitButton.onClick.AddListener(delegate () { gameScoreSettingsIO.Save();/*这里保存一下*/   Application.Quit(0); });//关闭游戏
+
+            //音量
+            BGMVol.onValueChanged.AddListener(BGMVolChange);
+            SEVol.onValueChanged.AddListener(SEVolChange);
 
             //魔女选择part
             ExitMajo.onClick.AddListener(delegate () { Timing.RunCoroutine(ChangePartMethod(1, 0)); });//返回到主标题part
 
             //魔法少女选择part
             ExitMagicalGirls.onClick.AddListener(delegate () { Timing.RunCoroutine(ChangePartMethod(2, 1)); });//范围到魔女选择part
+          
+            
+            
             #endregion
         }
         else//不是刚打开游戏，是从魔女结界中返回（玩家死亡或者胜利）
@@ -220,7 +231,20 @@ public class TitleCtrl : MonoBehaviour
 
     #endregion
 
+    #region 音量滑块
+    public void BGMVolChange(float vol)
+    {
+        gameScoreSettingsIO.BGMVol = vol;
+        EasyBGMCtrl.easyBGMCtrl.ChangeVol(vol,true);
+    }
+    public void SEVolChange(float vol)
+    {
+        gameScoreSettingsIO.SEVol = vol;
+        EasyBGMCtrl.easyBGMCtrl.ChangeVol(vol, false);
 
+    }
+
+    #endregion
 
     /// <summary>
     /// 调整标题界面展示的分数
@@ -285,8 +309,10 @@ public class TitleCtrl : MonoBehaviour
             //回到主标题part则直接初始化临时数据
             gameScoreSettingsIO.TitleInitial();
 
-            #region 从存档中读取主标题part中的保存数据，lap 
+            #region 从存档中读取主标题part中的保存数据，lap ,音量
             gameScoreSettingsIO.Load();
+            BGMVol.value = gameScoreSettingsIO.BGMVol;
+            SEVol.value = gameScoreSettingsIO.SEVol;
             AdjustScore(Variable.ScoreType.BestTime, gameScoreSettingsIO.BestTime.ToString(), gameScoreSettingsIO.BestTimeFace);
             AdjustScore(Variable.ScoreType.HiScore, gameScoreSettingsIO.HiScore.ToString(), gameScoreSettingsIO.HiScoreFace);
             AdjustScore(Variable.ScoreType.MaxHits, gameScoreSettingsIO.MaxHits.ToString(), gameScoreSettingsIO.MaxHitsFace);

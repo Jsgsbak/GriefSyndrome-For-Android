@@ -24,18 +24,21 @@ public class StageCtrl : MonoBehaviour
         gameScoreSettings = (GameScoreSettingsIO)Resources.Load("GameScoreAndSettings");
         Application.targetFrameRate = gameScoreSettings.MaxFps;
 
-        //初始化
-        gameScoreSettings.MajoInitial();
-
     }
 
     // Start is called before the first frame update
     void Start()
     {
 
+        //初始化
+        gameScoreSettings.MajoInitial();
+        //音量初始化
+        EasyBGMCtrl.easyBGMCtrl.ChangeVol(gameScoreSettings.BGMVol, true);
+        EasyBGMCtrl.easyBGMCtrl.ChangeVol(gameScoreSettings.SEVol, false);
+
 
         //注册事件
-     //   UpdateManager.FastUpdate.AddListener(FastUpdate);
+        //   UpdateManager.FastUpdate.AddListener(FastUpdate);
 
         //播放BGM
         EasyBGMCtrl.easyBGMCtrl.PlayBGM(BGMid);

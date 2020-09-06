@@ -134,6 +134,10 @@ public class GameScoreSettingsIO : ScriptableObject
     /// </summary>
     [Header("魔法少女属性设置")]
     [SerializeField] public Variable.MahouShoujo[] mahouShoujos;
+
+    [Header("音量")]
+    public float BGMVol = 0.6f;
+    public float SEVol = 0.7f;
     #endregion
 
 
@@ -177,7 +181,6 @@ public class GameScoreSettingsIO : ScriptableObject
     /// <summary>
     /// 保存（结算界面使用）
     /// </summary>
-    [Obsolete]
     public void Save()
     {
         //存档
@@ -185,12 +188,14 @@ public class GameScoreSettingsIO : ScriptableObject
         SaveGame.Save<int>("MaxHits", MaxHits);
         SaveGame.Save("BestTime", BestTime);
         SaveGame.Save("LastLap", lap);
-
         //设置
+        SaveGame.Save("BGMVol", BGMVol);
+        SaveGame.Save("SEVol", SEVol);
+
     }
 
     /// <summary>
-    /// 读取（标题界面使用）
+    /// 读取存档与设置（标题界面使用）
     /// </summary>
     public  void Load()
     {
@@ -204,6 +209,8 @@ public class GameScoreSettingsIO : ScriptableObject
         lap = SaveGame.Load("LastLap", 1);
 
         //设置
+        BGMVol = SaveGame.Load("BGMVol", 0.6f);
+        SEVol = SaveGame.Load("SEVol", 0.7f);
     }
 
 }

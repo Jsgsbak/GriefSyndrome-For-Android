@@ -16,7 +16,7 @@ public class PausePlayerInf : MonoBehaviour
         //放置一开游戏就调用这个函数而引发错误
         if(PlayerId != -1)
         {
-            text.text = string.Format("{0}\n\nLevel:{2}\n\nVit:{3}\n\nSoul:{4}\n\nPow:{5}\n",
+            text.text = string.Format("{0}\n\n\nLevel:{2}\n\n\nVit:{3}\n\n\nSoul:{4}\n\n\nPow:{5}\n",
                                         name,PlayerId.ToString(),StageCtrl.gameScoreSettings.Level[PlayerId - 1].ToString(),
                                        StageCtrl.gameScoreSettings.VitInGame[PlayerId -1].ToString(),StageCtrl.gameScoreSettings.SoulLimitInGame[PlayerId -1].ToString(),StageCtrl.gameScoreSettings.PowInGame[PlayerId  -1].ToString() );
         }

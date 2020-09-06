@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using PureAmaya.General;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -44,7 +45,17 @@ public class EasyBGMCtrl : MonoBehaviour
         }
     }
 
-
+    public void ChangeVol(float vol,bool IsBGM)
+    {
+        if (IsBGM)
+        {
+            BGMPlayer.volume = vol;
+        }
+        else
+        {
+            SEPlayer.volume = vol;
+        }
+    }
 
   public void PlayBGM(int index)
     {
