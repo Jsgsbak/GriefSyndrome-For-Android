@@ -17,6 +17,10 @@ public class TitleCtrl : MonoBehaviour
     public TMP_Text HiScore;
     public TMP_Text BestTime;
     public TMP_Text MaxHits;
+
+    [Header("版本号")]
+    public TMP_Text Version;
+
     [Space]
     [Header("主标题按钮控制")]
     public Button StartGameButton;
@@ -81,6 +85,8 @@ public class TitleCtrl : MonoBehaviour
         //存档与设置获取
         gameScoreSettingsIO.Load();
 
+        //版本 号
+        Version.text = string.Format("Ver.{0}",Application.version) ;
     }
 
 
