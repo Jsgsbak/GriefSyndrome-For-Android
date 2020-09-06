@@ -1,12 +1,26 @@
-# 针对开发者的帮助文档（9月5日）
+# 针对开发者的帮助文档（9月6日）
 
 ## 脚本简介
 
- **_注意，仅限2.Script与Resources文件夹中的脚本，PureAmaya命名空间内的类不做介绍_** 
+ **_注意，仅限 2.Script文件夹中的脚本，PureAmaya命名空间内的类不做介绍_** 
 
 - [TitleCtrl](#TitleCtrl)
 
 - [UICtrl](#UICtrl)
+
+- [LoadingCtrl](#LoadingCtrl)
+
+- [PlayerInfUpdate](#PlayerInfUpdate)
+
+- [PausePlayerInf](#PausePlayerInf)
+
+- [StageCtrl](#StageCtrl)
+
+- [APlayerCtrl](#APlayerCtrl)
+
+- [SayakaCtrl(#SayakaCtrl)
+
+- [GameScoreSettingsIOl(#GameScoreSettingsIO)
 
 
 ### TitleCtrl
@@ -16,6 +30,10 @@
 ### UICtrl
 
 控制Majo场景中的UI与游戏暂停处理，负责调用PlayerInfUpdate和PausePlayerInf，详细内容请阅览相应脚本简介
+
+### LoadingCtrl
+
+控制Loading文本，QB与进度条，并负责在场景之间转换
 
 ### PlayerInfUpdate
 
@@ -27,7 +45,7 @@
 
 ### StageCtrl
 
-托管调用玩家受伤事件，相机控制（未实装，敌人的激活与消除（未实装）
+托管调用玩家受伤事件，音量修改（仅限听觉，视觉上对UI的修改在UICtrl中），相机控制（未实装），敌人的激活与消除（未实装）
 
 ### APlayerCtrl
 
@@ -38,7 +56,9 @@
 
 负责控制沙耶加，重写每个沙耶加不同于其他玩家的逻辑（比如魔法，攻击）
 
-###
+### GameScoreSettingsIO 
+
+负责整个游戏大部分临时变量与设置的存储，输入与输出
 
 
 
