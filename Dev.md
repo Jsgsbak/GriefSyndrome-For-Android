@@ -18,9 +18,9 @@
 
 - [APlayerCtrl](#APlayerCtrl)
 
-- [SayakaCtrl(#SayakaCtrl)
+- [SayakaCtrl](#SayakaCtrl)
 
-- [GameScoreSettingsIOl(#GameScoreSettingsIO)
+- [GameScoreSettingsIO](#GameScoreSettingsIO)
 
 
 ### TitleCtrl
@@ -56,7 +56,7 @@
 
 负责控制沙耶加，重写每个沙耶加不同于其他玩家的逻辑（比如魔法，攻击）
 
-### GameScoreSettingsIO 
+### GameScoreSettingsIO
 
 负责整个游戏大部分临时变量与设置的存储，输入与输出
 
