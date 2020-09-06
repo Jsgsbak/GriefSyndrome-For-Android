@@ -28,6 +28,8 @@
 
 下载后在unity hub中按照软件提示打开
 
+脚本的简介请点击[这里](dev.md) 
+
 ## FAQ
 
 Q:** 何时使用[Issue](https://gitee.com/pureamaya/GriefSyndrome-For-Android/issues)?
