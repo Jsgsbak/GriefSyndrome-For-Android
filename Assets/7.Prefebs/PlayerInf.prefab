@@ -478,6 +478,7 @@ MonoBehaviour:
   spriteAtlas: {fileID: 4343727234628468602, guid: 625084366c240b94a8ee36b6f2dec511,
     type: 2}
   spriteRenderer: {fileID: 0}
+  AutoGetComponentAtTheObject: 1
   image: {fileID: 3023026675536456843}
   SpriteName: HP Bar_Damaged
   DestroyAfterGettingSprite: 1
@@ -732,6 +733,7 @@ MonoBehaviour:
   spriteAtlas: {fileID: 4343727234628468602, guid: 625084366c240b94a8ee36b6f2dec511,
     type: 2}
   spriteRenderer: {fileID: 0}
+  AutoGetComponentAtTheObject: 1
   image: {fileID: 3023026675781999172}
   SpriteName: HP Bar_Death
   DestroyAfterGettingSprite: 1
@@ -825,6 +827,7 @@ MonoBehaviour:
   spriteAtlas: {fileID: 4343727234628468602, guid: 625084366c240b94a8ee36b6f2dec511,
     type: 2}
   spriteRenderer: {fileID: 0}
+  AutoGetComponentAtTheObject: 1
   image: {fileID: 3023026675794354871}
   SpriteName: HP Bar_Magia
   DestroyAfterGettingSprite: 1
@@ -988,6 +991,7 @@ MonoBehaviour:
   spriteAtlas: {fileID: 4343727234628468602, guid: 625084366c240b94a8ee36b6f2dec511,
     type: 2}
   spriteRenderer: {fileID: 0}
+  AutoGetComponentAtTheObject: 1
   image: {fileID: 3023026676324725346}
   SpriteName: HP Bar_Health
   DestroyAfterGettingSprite: 1
@@ -1081,6 +1085,7 @@ MonoBehaviour:
   spriteAtlas: {fileID: 4343727234628468602, guid: 625084366c240b94a8ee36b6f2dec511,
     type: 2}
   spriteRenderer: {fileID: 0}
+  AutoGetComponentAtTheObject: 1
   image: {fileID: 3023026676490292890}
   SpriteName: HP Bar_Rebirth
   DestroyAfterGettingSprite: 1

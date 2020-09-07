@@ -7,6 +7,10 @@ using UnityEngine.Events;
 /// <summary>
 /// ！不负责敌人的控制，游戏里敌人是固定生成的
 /// </summary>
+/// 
+
+//所选角色全挂掉之后，返回魔女选择界面
+//但是五色全挂掉之后，进入CAS场景
 public class StageCtrl : MonoBehaviour
 {
     public static GameScoreSettingsIO gameScoreSettings;

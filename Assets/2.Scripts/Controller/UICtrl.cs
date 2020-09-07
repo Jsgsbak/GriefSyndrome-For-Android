@@ -6,6 +6,8 @@ using PureAmaya.General;
 using UnityEngine.UI;
 using UnityEngine.U2D;
 
+//击杀完魔女之后的 XXX is defeated需要用到魔女的脚本，但是还没写）
+
 [DisallowMultipleComponent]
 public class UICtrl : MonoBehaviour
 {

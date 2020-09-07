@@ -1,7 +1,9 @@
-Title: Decretum (宿命)（无AB循环）
+Title: Decretum (宿命)（无AB循环） 对抗魔女是使命，更是宿命。
 
 WitchStage: Venari strigas(魔女狩り) 
 
 SayakaStage:Symposium magarum
 
 BE:flame of despair（无AB循环）
+
+GE: and I'm home (Instrumental ver)（无AB循环）我希望全五色能够在瓦夜之后对着家人说：I'm home.

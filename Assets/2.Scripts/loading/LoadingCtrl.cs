@@ -10,7 +10,8 @@ public class LoadingCtrl : MonoBehaviour
 {
     public Scene Title;
     public Scene Loading;
-    public Scene MajoKeikai;//UI Staff 结算都在这里
+    public Scene MajoKeikai;//UI 也在这里
+//	public Scene ConcAndStaff;//结果与制作人员名单  这个不使用该加载脚本
 	/// <summary>
 	/// 目标加载场景
 	/// </summary>
