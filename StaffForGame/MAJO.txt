@@ -1,5 +1,5 @@
 <size=19>Staff</size>
-(Online Ver. last:2020/9/7)
+(Online Ver. latest:2020/9/7)
 
 Original：
 griefsyndrome
