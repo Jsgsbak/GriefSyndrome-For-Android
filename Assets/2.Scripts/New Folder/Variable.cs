@@ -25,6 +25,9 @@ public class Variable
         MaxHits,
     }
 
+    /// <summary>
+    /// 魔法少女的全局id，用于面部设置，肖像设置与结局图判断
+    /// </summary>
     public enum PlayerFaceType
     {
         Homura =0,
