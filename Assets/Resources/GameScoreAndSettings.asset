@@ -35,7 +35,7 @@ MonoBehaviour:
   GetHurtInGame: 000000
   IsBodyDieInGame: 000000
   IsSoulBallInGame: 000000
-  MagicalGirlsDie: 0000000000
+  MagicalGirlsDie: 0101010101
   MajoBeingBattled: 0
   NewestMajo: 0
   AllowOktavia: 0
@@ -131,3 +131,5 @@ MonoBehaviour:
     Rebirth: 30
     MaigaVit: 50
     LongMagia: 0
+  BGMVol: 0.6
+  SEVol: 0.7

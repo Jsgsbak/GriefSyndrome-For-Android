@@ -155,8 +155,9 @@ public class StaffCtrl : MonoBehaviour
         {
             //BE BGM
             EasyBGMCtrl.easyBGMCtrl.PlayBGM(3);
+            image.sprite = images[10];
             return;
-            //无结局图
+          
         }
         else
         {

@@ -11,10 +11,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/6.Scenes/Majo.unity
     guid: 2cda990e2423bbf4892e6590ba056729
-  - enabled: 1
-    path: Assets/6.Scenes/UI.unity
-    guid: 5afbc720f79d6a44b8e59dd763519bec
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/6.Scenes/Loading.unity
     guid: 46e1f3f11f2439946bc267a320fa0b6f
+  - enabled: 1
+    path: Assets/6.Scenes/Staff.unity
+    guid: f245494991d322540bab07d7c384e3bc
   m_configObjects: {}
