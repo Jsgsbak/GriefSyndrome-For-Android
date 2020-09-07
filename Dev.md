@@ -1,4 +1,4 @@
-# 针对开发者的帮助文档（9月6日）
+# 针对开发者的帮助文档（最后更新：9月7日）
 
 ## 脚本简介
 
@@ -6,9 +6,11 @@
 
 - [TitleCtrl](#TitleCtrl)
 
-- [UICtrl](#UICtrl)
+- [CASCtrl](#CASCtrl)
 
 - [LoadingCtrl](#LoadingCtrl)
+
+- [UICtrl](#UICtrl)
 
 - [PlayerInfUpdate](#PlayerInfUpdate)
 
@@ -27,13 +29,18 @@
 
 控制Title场景，并负责主标题part，魔女选择part，魔法少女选择part的控制
 
-### UICtrl
+### StaffCtrl
 
-控制Majo场景中的UI与游戏暂停处理，负责调用PlayerInfUpdate和PausePlayerInf，详细内容请阅览相应脚本简介
+staff场景的控制
+
 
 ### LoadingCtrl
 
 控制Loading文本，QB与进度条，并负责在场景之间转换
+
+### UICtrl
+
+控制Majo场景中的UI与游戏暂停处理，负责调用PlayerInfUpdate和PausePlayerInf，详细内容请阅览相应脚本简介
 
 ### PlayerInfUpdate
 
@@ -45,7 +52,7 @@
 
 ### StageCtrl
 
-托管调用玩家受伤事件，音量修改（仅限听觉，视觉上对UI的修改在UICtrl中），相机控制（未实装），敌人的激活与消除（未实装）
+托管调用玩家受伤事件，音量修改（仅限听觉，视觉上对UI的修改在UICtrl中），玩家死亡后的逻辑控制，相机控制（未实装），敌人的激活与消除（未实装）
 
 ### APlayerCtrl
 
@@ -59,6 +66,10 @@
 ### GameScoreSettingsIO
 
 负责整个游戏大部分临时变量与设置的存储，输入与输出
+
+## 场景简介
+
+
 
 
 
