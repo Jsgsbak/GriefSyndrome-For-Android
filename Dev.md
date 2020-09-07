@@ -6,9 +6,11 @@
 
 - [TitleCtrl](#TitleCtrl)
 
-- [UICtrl](#UICtrl)
+- [CASCtrl](#CASCtrl)
 
 - [LoadingCtrl](#LoadingCtrl)
+
+- [UICtrl](#UICtrl)
 
 - [PlayerInfUpdate](#PlayerInfUpdate)
 
@@ -27,9 +29,9 @@
 
 控制Title场景，并负责主标题part，魔女选择part，魔法少女选择part的控制
 
-### CASCtrl
+### StaffCtrl
 
-游戏结果结算与staff场景的控制
+staff场景的控制
 
 
 ### LoadingCtrl
@@ -64,6 +66,10 @@
 ### GameScoreSettingsIO
 
 负责整个游戏大部分临时变量与设置的存储，输入与输出
+
+## 场景简介
+
+
 
 
 
