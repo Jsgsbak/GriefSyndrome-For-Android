@@ -52,7 +52,7 @@ public class LoadingCtrl : MonoBehaviour
 		//停止bgm
 		EasyBGMCtrl.easyBGMCtrl.PlayBGM(-1);
 		//然后进入Loading场景
-		SceneManager.LoadScene(3);
+		SceneManager.LoadScene("Loading");
 		//然后干活（自动）
     }
 

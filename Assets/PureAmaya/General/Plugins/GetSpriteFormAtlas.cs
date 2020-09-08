@@ -6,7 +6,7 @@ using UnityEngine.U2D;
 using UnityEngine.UI;
 
 /// <summary>
-/// 从EasyAtlasToSprite中获取图片
+/// 从Atlas中获取图片
 /// </summary>
 public class GetSpriteFormAtlas : MonoBehaviour
 {

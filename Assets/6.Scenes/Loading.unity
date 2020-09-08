@@ -284,6 +284,7 @@ MonoBehaviour:
   spriteAtlas: {fileID: 4343727234628468602, guid: 08ea87568f13c6447bc48e15f1f975d4,
     type: 2}
   SpriteRenderer: {fileID: 0}
+  UseNewAnimPlayer: 0
   GroupName: DefaultGroup
   Format: '{1}{2}.cv2'
   PlayDefaultAnimation: 1
@@ -893,11 +894,9 @@ MonoBehaviour:
   Title:
     m_Handle: 0
   Loading:
-    m_Handle: 3
+    m_Handle: 2
   MajoKeikai:
     m_Handle: 1
-  UIForMajoKeikai:
-    m_Handle: 2
   loadingSlider: {fileID: 1327064803}
   loadingText: {fileID: 2147468807}
 --- !u!1 &1573576250

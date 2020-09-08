@@ -146,7 +146,8 @@ Sprite:
     7f8da7ec344128e429a1d0f1c7ba8d07: 21300000
   m_AtlasTags:
   - SayakaCharacter
-  m_SpriteAtlas: {fileID: 0}
+  m_SpriteAtlas: {fileID: 4343727234628468602, guid: 93ae529101d7a0e429b5f07aeac428bd,
+    type: 2}
   m_RD:
     serializedVersion: 3
     texture: {fileID: 2800000, guid: 7f8da7ec344128e429a1d0f1c7ba8d07, type: 3}
@@ -240,7 +241,7 @@ Sprite:
     downscaleMultiplier: 1
   m_AtlasRD:
     serializedVersion: 3
-    texture: {fileID: 0}
+    texture: {fileID: 2, guid: 00000000000000000000000000000000, type: 0}
     alphaTexture: {fileID: 0}
     secondaryTextures: []
     m_SubMeshes:
@@ -320,14 +321,14 @@ Sprite:
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
-      x: 5.0761204
-      y: 27.07612
+      x: 509.0761
+      y: 1319.0762
       width: 72.89713
       height: 90.84776
     textureRectOffset: {x: 5.0761204, y: 27.07612}
-    atlasRectOffset: {x: -1, y: -1}
-    settingsRaw: 64
-    uvTransform: {x: 100, y: 80, z: 100, w: 64}
+    atlasRectOffset: {x: 504, y: 1292}
+    settingsRaw: 65
+    uvTransform: {x: 100, y: 584, z: 100, w: 1356}
     downscaleMultiplier: 1
   m_PhysicsShape:
   - - {x: -0.11, y: 0.049999997}
@@ -1236,7 +1237,8 @@ Sprite:
     c24e44023746d7c47a7973d0d0d82cb8: 5154007695220609252
   m_AtlasTags:
   - GamePause
-  m_SpriteAtlas: {fileID: 0}
+  m_SpriteAtlas: {fileID: 4343727234628468602, guid: 20783d1a9406c244187c56961c1abc72,
+    type: 2}
   m_RD:
     serializedVersion: 3
     texture: {fileID: 2800000, guid: c24e44023746d7c47a7973d0d0d82cb8, type: 3}
@@ -1330,7 +1332,7 @@ Sprite:
     downscaleMultiplier: 1
   m_AtlasRD:
     serializedVersion: 3
-    texture: {fileID: 0}
+    texture: {fileID: 2, guid: 00000000000000000000000000000000, type: 0}
     alphaTexture: {fileID: 0}
     secondaryTextures: []
     m_SubMeshes:
@@ -1410,14 +1412,14 @@ Sprite:
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
-      x: 58
-      y: 6
+      x: 0
+      y: 1166
       width: 327
       height: 43.923878
     textureRectOffset: {x: 0, y: 0}
-    atlasRectOffset: {x: -1, y: -1}
-    settingsRaw: 64
-    uvTransform: {x: 100, y: 221.5, z: 100, w: 29}
+    atlasRectOffset: {x: -58, y: 1160}
+    settingsRaw: 65
+    uvTransform: {x: 100, y: 163.5, z: 100, w: 1189}
     downscaleMultiplier: 1
   m_PhysicsShape:
   - - {x: 0.055, y: -0.14999999}
@@ -1947,6 +1949,7 @@ GameObject:
   - component: {fileID: 390185414}
   - component: {fileID: 390185413}
   - component: {fileID: 390185412}
+  - component: {fileID: 390185415}
   m_Layer: 5
   m_Name: Down
   m_TagString: Untagged
@@ -1992,7 +1995,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 3
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -2016,18 +2019,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 390185413}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1318155393}
-        m_MethodName: GamePauseSwitch
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &390185413
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2065,6 +2057,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 390185410}
   m_CullTransparentMesh: 0
+--- !u!95 &390185415
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 390185410}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9ffdf4acdc752d547bb423f15d84f978, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &394800632
 GameObject:
   m_ObjectHideFlags: 0
@@ -2294,7 +2305,8 @@ Sprite:
     20d9bad3e0319bd40933974ccdb70f9e: 3219025720082990978
   m_AtlasTags:
   - SayakaEffect
-  m_SpriteAtlas: {fileID: 0}
+  m_SpriteAtlas: {fileID: 4343727234628468602, guid: eb805d8520b9a694babd2cc1117604f9,
+    type: 2}
   m_RD:
     serializedVersion: 3
     texture: {fileID: 2800000, guid: 20d9bad3e0319bd40933974ccdb70f9e, type: 3}
@@ -2388,7 +2400,7 @@ Sprite:
     downscaleMultiplier: 1
   m_AtlasRD:
     serializedVersion: 3
-    texture: {fileID: 0}
+    texture: {fileID: 2, guid: 00000000000000000000000000000000, type: 0}
     alphaTexture: {fileID: 0}
     secondaryTextures: []
     m_SubMeshes:
@@ -2468,14 +2480,14 @@ Sprite:
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
-      x: 578
-      y: 545
+      x: 345
+      y: 808
       width: 274
       height: 75
     textureRectOffset: {x: 0, y: 0}
-    atlasRectOffset: {x: -1, y: -1}
-    settingsRaw: 64
-    uvTransform: {x: 100, y: 715, z: 100, w: 582.5}
+    atlasRectOffset: {x: -233, y: 263}
+    settingsRaw: 65
+    uvTransform: {x: 100, y: 482, z: 100, w: 845.5}
     downscaleMultiplier: 1
   m_PhysicsShape:
   - - {x: 0.82, y: -0.265}
@@ -2656,70 +2668,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: d294f228be83a314b9679578a11b4844, type: 3}
-      propertyPath: defaultRebindableKeys.Array.size
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: d294f228be83a314b9679578a11b4844, type: 3}
-      propertyPath: defaultRebindableKeys.Array.data[0].input
-      value: 99
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: d294f228be83a314b9679578a11b4844, type: 3}
-      propertyPath: defaultRebindableKeys.Array.data[1].inputName
-      value: Attack
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: d294f228be83a314b9679578a11b4844, type: 3}
-      propertyPath: defaultRebindableKeys.Array.data[1].input
-      value: 122
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: d294f228be83a314b9679578a11b4844, type: 3}
-      propertyPath: defaultRebindableKeys.Array.data[2].inputName
-      value: Pause
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: d294f228be83a314b9679578a11b4844, type: 3}
-      propertyPath: defaultRebindableKeys.Array.data[2].input
-      value: 113
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: d294f228be83a314b9679578a11b4844, type: 3}
-      propertyPath: defaultRebindableKeys.Array.data[3].inputName
-      value: GreatAttack
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: d294f228be83a314b9679578a11b4844, type: 3}
-      propertyPath: defaultRebindableKeys.Array.data[3].input
-      value: 120
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: d294f228be83a314b9679578a11b4844, type: 3}
-      propertyPath: defaultRebindableKeys.Array.data[4].inputName
-      value: Witch
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: d294f228be83a314b9679578a11b4844, type: 3}
-      propertyPath: defaultRebindableKeys.Array.data[4].input
-      value: 98
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: d294f228be83a314b9679578a11b4844, type: 3}
-      propertyPath: defaultRebindableAxes.Array.data[1].axisPos
-      value: 275
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: d294f228be83a314b9679578a11b4844, type: 3}
-      propertyPath: defaultRebindableAxes.Array.data[1].axisNeg
-      value: 276
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: d294f228be83a314b9679578a11b4844, type: 3}
-      propertyPath: defaultRebindableAxes.Array.data[0].axisPos
-      value: 273
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: d294f228be83a314b9679578a11b4844, type: 3}
-      propertyPath: defaultRebindableAxes.Array.data[0].axisNeg
-      value: 274
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: d294f228be83a314b9679578a11b4844, type: 3}
-      propertyPath: defaultRebindableKeys.Array.data[5].inputName
-      value: Magia
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: d294f228be83a314b9679578a11b4844, type: 3}
-      propertyPath: defaultRebindableKeys.Array.data[5].input
-      value: 97
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d294f228be83a314b9679578a11b4844, type: 3}
 --- !u!1 &519420028
@@ -2817,6 +2765,7 @@ GameObject:
   - component: {fileID: 560832114}
   - component: {fileID: 560832113}
   - component: {fileID: 560832112}
+  - component: {fileID: 560832115}
   m_Layer: 5
   m_Name: Right
   m_TagString: Untagged
@@ -2862,7 +2811,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 3
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -2886,18 +2835,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 560832113}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1318155393}
-        m_MethodName: GamePauseSwitch
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &560832113
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2935,6 +2873,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 560832110}
   m_CullTransparentMesh: 0
+--- !u!95 &560832115
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 560832110}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e39572468a913d64f92ea356e5c57ad1, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &586793662
 GameObject:
   m_ObjectHideFlags: 0
@@ -2947,6 +2904,7 @@ GameObject:
   - component: {fileID: 586793666}
   - component: {fileID: 586793665}
   - component: {fileID: 586793664}
+  - component: {fileID: 586793667}
   m_Layer: 5
   m_Name: Up
   m_TagString: Untagged
@@ -2992,7 +2950,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 3
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -3016,18 +2974,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 586793665}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1318155393}
-        m_MethodName: GamePauseSwitch
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &586793665
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3065,6 +3012,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 586793662}
   m_CullTransparentMesh: 0
+--- !u!95 &586793667
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 586793662}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3caf5737b4afb8546864da5e35b2f35b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &622107200
 GameObject:
   m_ObjectHideFlags: 0
@@ -3531,6 +3497,24 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &870998533 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100000, guid: d294f228be83a314b9679578a11b4844,
+    type: 3}
+  m_PrefabInstance: {fileID: 508847054}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &870998534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 870998533}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17c9bbfeb16c56a4a808d2ffe892883f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &880099709
 GameObject:
   m_ObjectHideFlags: 0
@@ -3958,6 +3942,7 @@ GameObject:
   - component: {fileID: 931686350}
   - component: {fileID: 931686349}
   - component: {fileID: 931686348}
+  - component: {fileID: 931686351}
   m_Layer: 5
   m_Name: x
   m_TagString: Untagged
@@ -4003,7 +3988,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 3
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -4027,18 +4012,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 931686349}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1318155393}
-        m_MethodName: GamePauseSwitch
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &931686349
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4076,6 +4050,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 931686346}
   m_CullTransparentMesh: 0
+--- !u!95 &931686351
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 931686346}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a686776d6e325814a96a3d7b353206f1, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1016859705
 GameObject:
   m_ObjectHideFlags: 0
@@ -5135,6 +5128,7 @@ GameObject:
   - component: {fileID: 1408435645}
   - component: {fileID: 1408435644}
   - component: {fileID: 1408435643}
+  - component: {fileID: 1408435646}
   m_Layer: 5
   m_Name: c
   m_TagString: Untagged
@@ -5180,7 +5174,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 3
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -5204,18 +5198,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1408435644}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1318155393}
-        m_MethodName: GamePauseSwitch
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1408435644
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5253,6 +5236,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1408435641}
   m_CullTransparentMesh: 0
+--- !u!95 &1408435646
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1408435641}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e7eec4282fcddd24a95f6ff48e03967c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1443483868
 GameObject:
   m_ObjectHideFlags: 0
@@ -5602,7 +5604,8 @@ Sprite:
     c24e44023746d7c47a7973d0d0d82cb8: 8201190893547904367
   m_AtlasTags:
   - GamePause
-  m_SpriteAtlas: {fileID: 0}
+  m_SpriteAtlas: {fileID: 4343727234628468602, guid: 20783d1a9406c244187c56961c1abc72,
+    type: 2}
   m_RD:
     serializedVersion: 3
     texture: {fileID: 2800000, guid: c24e44023746d7c47a7973d0d0d82cb8, type: 3}
@@ -5696,7 +5699,7 @@ Sprite:
     downscaleMultiplier: 1
   m_AtlasRD:
     serializedVersion: 3
-    texture: {fileID: 0}
+    texture: {fileID: 2, guid: 00000000000000000000000000000000, type: 0}
     alphaTexture: {fileID: 0}
     secondaryTextures: []
     m_SubMeshes:
@@ -5776,14 +5779,14 @@ Sprite:
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
-      x: 56.076122
-      y: 104
+      x: 0.076122284
+      y: 1025
       width: 646.9239
       height: 44
     textureRectOffset: {x: 0.076122284, y: 0}
-    atlasRectOffset: {x: -1, y: -1}
-    settingsRaw: 64
-    uvTransform: {x: 100, y: 379.5, z: 100, w: 126}
+    atlasRectOffset: {x: -56, y: 921}
+    settingsRaw: 65
+    uvTransform: {x: 100, y: 323.5, z: 100, w: 1047}
     downscaleMultiplier: 1
   m_PhysicsShape:
   - - {x: -1.9549999, y: -0.16}
@@ -6847,8 +6850,9 @@ GameObject:
   - component: {fileID: 1735819660}
   - component: {fileID: 1735819659}
   - component: {fileID: 1735819658}
+  - component: {fileID: 1735819661}
   m_Layer: 5
-  m_Name: Up (1)
+  m_Name: Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6892,7 +6896,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 3
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -6916,18 +6920,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1735819659}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1318155393}
-        m_MethodName: GamePauseSwitch
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1735819659
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6965,6 +6958,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1735819656}
   m_CullTransparentMesh: 0
+--- !u!95 &1735819661
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1735819656}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 335707e7621c69f4590aa73d1134cbd1, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1782620279
 GameObject:
   m_ObjectHideFlags: 0
@@ -7120,6 +7132,7 @@ GameObject:
   - component: {fileID: 1837063085}
   - component: {fileID: 1837063084}
   - component: {fileID: 1837063083}
+  - component: {fileID: 1837063086}
   m_Layer: 5
   m_Name: z
   m_TagString: Untagged
@@ -7165,7 +7178,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 3
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -7189,18 +7202,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1837063084}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1318155393}
-        m_MethodName: GamePauseSwitch
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1837063084
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7238,6 +7240,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1837063081}
   m_CullTransparentMesh: 0
+--- !u!95 &1837063086
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1837063081}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a462f405700997f4ab7bd206262537dd, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1926688979
 GameObject:
   m_ObjectHideFlags: 0
@@ -8143,7 +8164,8 @@ Sprite:
     c24e44023746d7c47a7973d0d0d82cb8: 7678553607714889561
   m_AtlasTags:
   - GamePause
-  m_SpriteAtlas: {fileID: 0}
+  m_SpriteAtlas: {fileID: 4343727234628468602, guid: 20783d1a9406c244187c56961c1abc72,
+    type: 2}
   m_RD:
     serializedVersion: 3
     texture: {fileID: 2800000, guid: c24e44023746d7c47a7973d0d0d82cb8, type: 3}
@@ -8237,7 +8259,7 @@ Sprite:
     downscaleMultiplier: 1
   m_AtlasRD:
     serializedVersion: 3
-    texture: {fileID: 0}
+    texture: {fileID: 2, guid: 00000000000000000000000000000000, type: 0}
     alphaTexture: {fileID: 0}
     secondaryTextures: []
     m_SubMeshes:
@@ -8317,14 +8339,14 @@ Sprite:
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
-      x: 56.07612
-      y: 151
+      x: 0.07611847
+      y: 1122
       width: 365.9239
       height: 40
     textureRectOffset: {x: 2.0761185, y: 0}
-    atlasRectOffset: {x: -1, y: -1}
-    settingsRaw: 64
-    uvTransform: {x: 100, y: 238, z: 100, w: 171}
+    atlasRectOffset: {x: -56, y: 971}
+    settingsRaw: 65
+    uvTransform: {x: 100, y: 182, z: 100, w: 1142}
     downscaleMultiplier: 1
   m_PhysicsShape:
   - - {x: 0.79999995, y: 0.14999999}
@@ -8524,6 +8546,7 @@ GameObject:
   - component: {fileID: 2088115673}
   - component: {fileID: 2088115672}
   - component: {fileID: 2088115671}
+  - component: {fileID: 2088115674}
   m_Layer: 5
   m_Name: a
   m_TagString: Untagged
@@ -8569,7 +8592,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 3
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -8593,18 +8616,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2088115672}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1318155393}
-        m_MethodName: GamePauseSwitch
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &2088115672
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8642,6 +8654,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2088115669}
   m_CullTransparentMesh: 0
+--- !u!95 &2088115674
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2088115669}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c3332291f59d27748b51751b53e8a2da, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &2110790777
 GameObject:
   m_ObjectHideFlags: 0
@@ -8862,7 +8893,8 @@ Sprite:
     c24e44023746d7c47a7973d0d0d82cb8: -6261210917686151244
   m_AtlasTags:
   - GamePause
-  m_SpriteAtlas: {fileID: 0}
+  m_SpriteAtlas: {fileID: 4343727234628468602, guid: 20783d1a9406c244187c56961c1abc72,
+    type: 2}
   m_RD:
     serializedVersion: 3
     texture: {fileID: 2800000, guid: c24e44023746d7c47a7973d0d0d82cb8, type: 3}
@@ -8956,7 +8988,7 @@ Sprite:
     downscaleMultiplier: 1
   m_AtlasRD:
     serializedVersion: 3
-    texture: {fileID: 0}
+    texture: {fileID: 2, guid: 00000000000000000000000000000000, type: 0}
     alphaTexture: {fileID: 0}
     secondaryTextures: []
     m_SubMeshes:
@@ -9036,14 +9068,14 @@ Sprite:
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
-      x: 58
-      y: 54
+      x: 0
+      y: 1073
       width: 411
       height: 44.923878
     textureRectOffset: {x: 0, y: 0}
-    atlasRectOffset: {x: -1, y: -1}
-    settingsRaw: 64
-    uvTransform: {x: 100, y: 263.5, z: 100, w: 76.5}
+    atlasRectOffset: {x: -58, y: 1019}
+    settingsRaw: 65
+    uvTransform: {x: 100, y: 205.5, z: 100, w: 1095.5}
     downscaleMultiplier: 1
   m_PhysicsShape:
   - - {x: -0.66499996, y: -0.114999995}
@@ -9285,20 +9317,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fc98219a83dff145947365dc914d06e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TapThreshold: 0.2
-  SwipeThreshold: 100
-  ReferenceDpi: 200
-  GuiLayers:
-    serializedVersion: 2
-    m_Bits: 32
-  RecordFingers: 1
-  RecordThreshold: 5
-  RecordLimit: 10
-  SimulateMultiFingers: 1
-  PinchTwistKey: 306
-  MovePivotKey: 308
-  MultiDragKey: 308
-  FingerTexture: {fileID: 2800000, guid: 25c48be3a87ea0f489a6d41c9c9a2194, type: 3}
 --- !u!4 &2144131355
 Transform:
   m_ObjectHideFlags: 0

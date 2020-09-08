@@ -26,7 +26,7 @@ public class RebindableInput : MonoBehaviour {
 		
 		throw new RebindableNotFoundException ("The rebindable key '" + inputName + "' was not found.\nBe sure you have created it and haven't misspelled it.");
 	}
-	
+
 	public static bool GetKeyDown (string inputName)
 	{
 		List<RebindableKey> keyDatabase = rebindableManager.GetCurrentKeys ();

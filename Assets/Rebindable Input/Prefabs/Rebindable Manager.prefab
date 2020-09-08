@@ -46,20 +46,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultRebindableKeys:
   - inputName: Jump
-    input: 32
-  - inputName: RebindMenu
-    input: 114
+    input: 99
+  - inputName: Attack
+    input: 122
+  - inputName: Pause
+    input: 113
+  - inputName: GreatAttack
+    input: 120
+  - inputName: Witch
+    input: 98
+  - inputName: Magia
+    input: 97
   defaultRebindableAxes:
   - axisName: Vertical
     axisPosName: Forward
     axisNegName: Backward
-    axisPos: 119
-    axisNeg: 115
+    axisPos: 273
+    axisNeg: 274
   - axisName: Horizontal
     axisPosName: Right
     axisNegName: Left
-    axisPos: 100
-    axisNeg: 97
+    axisPos: 275
+    axisNeg: 276
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 0

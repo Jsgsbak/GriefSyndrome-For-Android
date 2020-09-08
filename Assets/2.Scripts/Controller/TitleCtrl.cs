@@ -148,7 +148,7 @@ public class TitleCtrl : MonoBehaviour
     /// <summary>
     /// 检查魔法少女是否可用
     /// </summary>
-    public void CheckMahoshaojo()
+    public void CheckMahoshoujo()
     {
         for (int i = 0; i < 5; i++)
         {
@@ -216,7 +216,7 @@ public class TitleCtrl : MonoBehaviour
     /// <summary>
     /// 选择魔法少女（检查视图注入）
     /// </summary>
-    public void SelectedMahoshaojo(int id)
+    public void SelectedMahoshoujo(int id)
     {
         if (gameScoreSettingsIO.MagicalGirlsDie[id])
         {
@@ -308,14 +308,16 @@ public class TitleCtrl : MonoBehaviour
         else if(InId == 2)
         {
             //如果来的是SelectMagicalGirls，则检查一下马猴烧酒
-            CheckMahoshaojo();
+            CheckMahoshoujo();
         }
         else
         {
             //回到主标题part则直接初始化临时数据
+#if !UNITY_EDITOR
             gameScoreSettingsIO.TitleInitial();
+#endif
 
-            #region 从存档中读取主标题part中的保存数据，lap ,音量
+#region 从存档中读取主标题part中的保存数据，lap ,音量
             gameScoreSettingsIO.Load();
             BGMVol.value = gameScoreSettingsIO.BGMVol;
             SEVol.value = gameScoreSettingsIO.SEVol;
@@ -323,7 +325,7 @@ public class TitleCtrl : MonoBehaviour
             AdjustScore(Variable.ScoreType.HiScore, gameScoreSettingsIO.HiScore.ToString(), gameScoreSettingsIO.HiScoreFace);
             AdjustScore(Variable.ScoreType.MaxHits, gameScoreSettingsIO.MaxHits.ToString(), gameScoreSettingsIO.MaxHitsFace);
             LapInput.text = gameScoreSettingsIO.LastLap.ToString();
-            #endregion
+#endregion
         }
 
         //一个先变黑另外一个才出来
@@ -392,5 +394,5 @@ public class TitleCtrl : MonoBehaviour
 
 
     }
-    #endregion
+#endregion
 }

@@ -5,7 +5,7 @@ using PureAmaya.General;
 using MEC;
 using System;
 
-
+//写的自己都恶心。。。。新手还请见谅orz
 //还需要限制一下地板防止出界
 
 [DisallowMultipleComponent]
@@ -404,10 +404,6 @@ public abstract class APlayerCtrl : MonoBehaviour
             IsAttacking = true; 
             Effect.SetActive(true); 
         }
-        else if (!BanAnyAttack && RebindableInput.GetKeyUp("Attack") && !BanAttacking)
-        {
-            IsAttacking = false;
-        }
 
         //解决跳跃攻击后落地不会回复站立的bug
         else if (RebindableInput.GetKeyUp("Attack")) { IsAttacking = false; }
@@ -431,7 +427,7 @@ public abstract class APlayerCtrl : MonoBehaviour
             IsPreparingAttacking = false;
             BanAnimFlip = true;
         //    AllowRay = false;
-            GreatAttackTimer = Time.timeSinceLevelLoad; 
+            GreatAttackTimer = Time.timeSinceLevelLoad;
         }
 
         //X + Up 攻击 
