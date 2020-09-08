@@ -45,16 +45,29 @@ public class LoadingCtrl : MonoBehaviour
 		}
 	}
 
-	public static void LoadScene(int id)
+	/// <summary>
+	/// 加载场景
+	/// </summary>
+	/// <param name="id">场景id</param>
+	/// <param name="UseLoadScene"></param>
+	public static void LoadScene(int id,bool UseLoadScene = true)
     {
 		//设置好目标场景
 		Target = id;
 		//停止bgm
 		EasyBGMCtrl.easyBGMCtrl.PlayBGM(-1);
-		//然后进入Loading场景
-		SceneManager.LoadScene("Loading");
-		//然后干活（自动）
-    }
+        if (UseLoadScene)
+        {
+			//然后进入Loading场景
+			SceneManager.LoadScene("Loading");
+			//然后干活（自动）
+		}
+        else
+        {
+			//直接进入相应场景
+			SceneManager.LoadScene(Target,LoadSceneMode.Single);
+		}
+	}
 
 	IEnumerator AsyncLoading()
 	{

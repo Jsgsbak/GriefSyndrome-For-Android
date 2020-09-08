@@ -25,8 +25,8 @@ public class TitleCtrl : MonoBehaviour
     [Header("主标题按钮控制")]
     public Button StartGameButton;
     public TMP_InputField LapInput;
-    public Button SettingsButton;
     public Button ExitButton;
+    public Button RandomStaff;
     public Slider BGMVol;
     public Slider SEVol;
 
@@ -114,6 +114,7 @@ public class TitleCtrl : MonoBehaviour
             LapInput.onValueChanged.AddListener(delegate (string lap) { gameScoreSettingsIO.lap = int.Parse(lap); });//向GSS中写入周目数
             StartGameButton.onClick.AddListener(delegate () { Timing.RunCoroutine(ChangePartMethod(0, 1)); });//进入魔女选择part
             ExitButton.onClick.AddListener(delegate () { gameScoreSettingsIO.Save();/*这里保存一下*/   Application.Quit(0); });//关闭游戏
+            RandomStaff.onClick.AddListener(delegate () { RandomKillGirl(); });
 
             //音量
             BGMVol.onValueChanged.AddListener(BGMVolChange);
@@ -235,6 +236,79 @@ public class TitleCtrl : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// 随机staff用。随机杀死魔法少女（？）
+    /// </summary>
+    public void RandomKillGirl()
+    {
+        int i = Random.Range(0, 11);
+        // i == 0 :全员幸存
+         if (i == 1) //只有鹿目圆死亡
+        {
+            gameScoreSettingsIO.MagicalGirlsDie[2] = true;
+        }
+        //只有可怜的蓝毛死亡
+        else if (i == 2 )
+        {
+            gameScoreSettingsIO.MagicalGirlsDie[4] = true;
+        }
+        //只有杏子死亡
+        else if (i == 3)
+        {
+            gameScoreSettingsIO.MagicalGirlsDie[1] = true;
+        }
+        //除了蓝毛红毛都死了
+        else if (i == 4)
+        {
+            gameScoreSettingsIO.MagicalGirlsDie[0] = true;
+            gameScoreSettingsIO.MagicalGirlsDie[2] = true;
+            gameScoreSettingsIO.MagicalGirlsDie[3] = true;
+        }
+        //除了学姐都死了
+        else if (i == 5)
+        {
+            gameScoreSettingsIO.MagicalGirlsDie[0] = true;
+            gameScoreSettingsIO.MagicalGirlsDie[1] = true;
+            gameScoreSettingsIO.MagicalGirlsDie[2] = true;
+            gameScoreSettingsIO.MagicalGirlsDie[4] = true;
+        }
+        //只有学姐死了
+        else if (i == 6)
+        {
+            gameScoreSettingsIO.MagicalGirlsDie[3] = true;
+        }
+        //只有鹿目圆和沙耶加死亡
+        else if ( i == 7)
+        {
+            gameScoreSettingsIO.MagicalGirlsDie[4] = true;
+            gameScoreSettingsIO.MagicalGirlsDie[2] = true;
+
+        }
+        //除了粉焰全挂了
+        else if (i == 8)
+        {
+            gameScoreSettingsIO.MagicalGirlsDie[1] = true;
+            gameScoreSettingsIO.MagicalGirlsDie[3] = true;
+            gameScoreSettingsIO.MagicalGirlsDie[4] = true;
+        }
+         //全挂了
+        else if(i == 9)
+        {
+            gameScoreSettingsIO.MagicalGirlsDie[0] = true;
+            gameScoreSettingsIO.MagicalGirlsDie[1] = true;
+            gameScoreSettingsIO.MagicalGirlsDie[2] = true;
+            gameScoreSettingsIO.MagicalGirlsDie[3] = true;
+            gameScoreSettingsIO.MagicalGirlsDie[4] = true;
+        }
+        //轮回吧，吼姆拉
+        else
+        {
+            gameScoreSettingsIO.MagicalGirlsDie[0] = true;
+        }
+
+        LoadingCtrl.LoadScene(3, false);
+    }
+
     #endregion
 
     #region 音量滑块
@@ -313,9 +387,7 @@ public class TitleCtrl : MonoBehaviour
         else
         {
             //回到主标题part则直接初始化临时数据
-#if !UNITY_EDITOR
             gameScoreSettingsIO.TitleInitial();
-#endif
 
 #region 从存档中读取主标题part中的保存数据，lap ,音量
             gameScoreSettingsIO.Load();

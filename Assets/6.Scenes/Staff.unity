@@ -185,7 +185,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &440944847
 GameObject:
@@ -214,15 +214,15 @@ RectTransform:
   m_GameObject: {fileID: 440944847}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 90}
-  m_LocalScale: {x: 0.022232473, y: 0.022232473, z: 0.022232473}
+  m_LocalScale: {x: 1.0001944, y: 0.8898548, z: 0.022232473}
   m_Children: []
   m_Father: {fileID: 1690183330}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -482.0625, y: -271}
-  m_SizeDelta: {x: 794.3777, y: 450}
+  m_AnchoredPosition: {x: 0.013043, y: -0.025314}
+  m_SizeDelta: {x: 799.8185, y: 505.52277}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &440944849
 MonoBehaviour:
@@ -334,7 +334,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "<size=19>\u5236\u4F5C\u4EBA\u5458\u540D\u5355</size>\n(\u79BB\u7EBF\u7248)\n\n\u539F\u4F5C\uFF1A\n\u30B0\u30EA\u30FC\u30D5\u30B7\u30F3\u30C9\u30ED\u30FC\u30E0\n\n\u539F\u5236\u4F5C\u793E\u56E2\uFF1A\n\u9EC4\u660F\u30D5\u30ED\u30F3\u30C6\u30A3\u30A2\n\n\u9879\u76EE\u53D1\u8D77\u4EBA\uFF1A\nPureAmaya\n\n\u6E38\u620F\u7CFB\u7EDF\u79FB\u690D\uFF1A\nPureAmaya\n\n\u4EBA\u7269\u89D2\u8272\u79FB\u690D\uFF1A\n\n\n\u6E38\u620F\u6570\u503C\u4F18\u5316\uFF1A\n\n\n\u6D4B\u8BD5\uFF1A\nPureAmaya\n\n\n\u7279\u522B\u611F\u8C22\uFF1A\n\u8F6E\u56DE\u7684\u6551\u8D4E\nwalkonbothsides\r\n\n\n\nAnd
+  m_Text: "<size=19>\u5236\u4F5C\u4EBA\u5458\u540D\u5355</size>\n(\u79BB\u7EBF\u7248
+    For ver.0.0.5)\n\n\u539F\u4F5C\uFF1A\n\u30B0\u30EA\u30FC\u30D5\u30B7\u30F3\u30C9\u30ED\u30FC\u30E0\n\n\u539F\u5236\u4F5C\u793E\u56E2\uFF1A\n\u9EC4\u660F\u30D5\u30ED\u30F3\u30C6\u30A3\u30A2\n\n\u9879\u76EE\u53D1\u8D77\u4EBA\uFF1A\nPureAmaya\n\n\u6E38\u620F\u7CFB\u7EDF\u79FB\u690D\uFF1A\nPureAmaya\n\n\u4EBA\u7269\u89D2\u8272\u79FB\u690D\uFF1A\n\n\n\u6E38\u620F\u6570\u503C\u4F18\u5316\uFF1A\n\n\n\u6D4B\u8BD5\uFF1A\nPureAmaya\nWalkonbothsides\r\n\n\u7279\u522B\u611F\u8C22\uFF1A\n\u8F6E\u56DE\u7684\u6551\u8D4E\nWalkonbothsides\r\n\n\n\nAnd
     you...\n\n\n\u611F\u8C22\u6E38\u73A9\uFF01\n\u8F7B\u89E6\u4EE5\u8FD4\u56DE\u6807\u9898\u754C\u9762"
 --- !u!222 &497306181
 CanvasRenderer:
@@ -436,73 +437,13 @@ RectTransform:
   m_Children:
   - {fileID: 1484608049}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!1 &870740520
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 870740521}
-  - component: {fileID: 870740522}
-  m_Layer: 0
-  m_Name: StaffCtrl
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
-  m_IsActive: 1
---- !u!4 &870740521
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 870740520}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.005571544, y: -0.75286084, z: 909.85864}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &870740522
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 870740520}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 15e45e37900315a43b681471491fa725, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  staff:
-  - {fileID: 497306180}
-  - {fileID: 1922303698}
-  s: {fileID: 440944847}
-  image: {fileID: 1970098887}
-  images:
-  - {fileID: 21300000, guid: 99e506164575d3346a07d1732797175a, type: 3}
-  - {fileID: 21300000, guid: cfedabb3314d16a4a82b8016f153dc80, type: 3}
-  - {fileID: 21300000, guid: 0bbd335ef2410364da732e9c1be76fef, type: 3}
-  - {fileID: 21300000, guid: 399d2047a619b564588e3907d1b59e94, type: 3}
-  - {fileID: 21300000, guid: a14af58be5fb5724a9b600edefff88f6, type: 3}
-  - {fileID: 21300000, guid: d008a254e82d47d42a82d4ed98b328e0, type: 3}
-  - {fileID: 21300000, guid: 098f4fbea9095f24db4e15d52d30f797, type: 3}
-  - {fileID: 21300000, guid: 6c6c2cd49bf4503469d4c22d1580cec4, type: 3}
-  - {fileID: 21300000, guid: d8fb5a4cc435e3e42adc020876032f5d, type: 3}
-  - {fileID: 21300000, guid: 16f87424ae86d9549930ab272a9178fe, type: 3}
-  - {fileID: 21300000, guid: 64916e48e5f943a4fb812eba4fad5e04, type: 3}
 --- !u!1 &1150729711
 GameObject:
   m_ObjectHideFlags: 0
@@ -595,6 +536,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1484608049}
+  - component: {fileID: 1484608050}
   m_Layer: 5
   m_Name: Staff
   m_TagString: Untagged
@@ -623,6 +565,36 @@ RectTransform:
   m_AnchoredPosition: {x: -200, y: 0}
   m_SizeDelta: {x: 400, y: 450}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1484608050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1484608048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15e45e37900315a43b681471491fa725, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  staff:
+  - {fileID: 497306180}
+  - {fileID: 1922303698}
+  s: {fileID: 440944847}
+  IsOnline: 1
+  image: {fileID: 1970098887}
+  images:
+  - {fileID: 21300000, guid: 99e506164575d3346a07d1732797175a, type: 3}
+  - {fileID: 21300000, guid: cfedabb3314d16a4a82b8016f153dc80, type: 3}
+  - {fileID: 21300000, guid: 0bbd335ef2410364da732e9c1be76fef, type: 3}
+  - {fileID: 21300000, guid: 399d2047a619b564588e3907d1b59e94, type: 3}
+  - {fileID: 21300000, guid: a14af58be5fb5724a9b600edefff88f6, type: 3}
+  - {fileID: 21300000, guid: d008a254e82d47d42a82d4ed98b328e0, type: 3}
+  - {fileID: 21300000, guid: 098f4fbea9095f24db4e15d52d30f797, type: 3}
+  - {fileID: 21300000, guid: 6c6c2cd49bf4503469d4c22d1580cec4, type: 3}
+  - {fileID: 21300000, guid: d8fb5a4cc435e3e42adc020876032f5d, type: 3}
+  - {fileID: 21300000, guid: 16f87424ae86d9549930ab272a9178fe, type: 3}
+  - {fileID: 21300000, guid: 64916e48e5f943a4fb812eba4fad5e04, type: 3}
 --- !u!1 &1690183326
 GameObject:
   m_ObjectHideFlags: 0
@@ -716,7 +688,7 @@ RectTransform:
   - {fileID: 440944848}
   - {fileID: 1970098886}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -794,7 +766,7 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: "<size=19>Staff</size>\n(Offline Ver.)\n\nOriginal\uFF1A\ngriefsyndrome\n\nOriginal
     Maker\uFF1A\nTwilight Frontier\n\nAuthor\uFF1A\nPureAmaya\n\nGame System Transplantation\uFF1A\nPureAmaya\n\nCharacter
-    Transplantation\uFF1A\n\n\nGame Figure Improvation\uFF1A\n\n\nTest\uFF1A\nPureAmaya\n\n\nSpecial
+    Transplantation\uFF1A\n\n\nGame Figure Improvation\uFF1A\n\n\nTest\uFF1A\nPureAmaya\nWalkonbothsides\r\n\nSpecial
     Thanks\uFF1A\nLHDJS\nWalkonbothsides\r\n\n\n\nAnd you...\n\n\nThanks for playing!!\nTouch
     the screen to return to title"
 --- !u!222 &1922303699
@@ -924,7 +896,7 @@ PrefabInstance:
     - target: {fileID: 625264908068214476, guid: 68570412d81938947bc3d24775cae2ef,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 625264908068214476, guid: 68570412d81938947bc3d24775cae2ef,
         type: 3}

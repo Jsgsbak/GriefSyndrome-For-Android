@@ -15,6 +15,8 @@ public class StaffCtrl : MonoBehaviour
     /// </summary>
     public GameObject s;
 
+   [SerializeField] bool IsOnline = true;
+
     /// <summary>
     /// 结局图
     /// </summary>
@@ -58,6 +60,8 @@ public class StaffCtrl : MonoBehaviour
         if (request.isNetworkError)
         {
             //网络错误，使用离线版staff
+            //修改在线状态，不在下载另外一个
+            IsOnline = false;
         }
         else
         {
@@ -70,7 +74,9 @@ public class StaffCtrl : MonoBehaviour
 
 
         //获取staff
-        request = UnityWebRequest.Get("https://gitee.com/pureamaya/GriefSyndrome-For-Android/raw/develop/StaffForGame/HUMAN.txt");
+        if (IsOnline)
+        {
+            request = UnityWebRequest.Get("https://gitee.com/pureamaya/GriefSyndrome-For-Android/raw/develop/StaffForGame/HUMAN.txt");
         // 
         // UnityWebRequest request = new UnityWebRequest("http://example.com");
         // 
@@ -78,12 +84,14 @@ public class StaffCtrl : MonoBehaviour
 
         // 
         yield return request.Send();
+        }
 
         //这里才准备显示staff
         staff[0].gameObject.SetActive(true);
         staff[1].gameObject.SetActive(true);
         staff[0].rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, staff[0].preferredHeight);
         staff[1].rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, staff[1].preferredHeight);
+        s.SetActive(false);
 
         // 
         if (request.isNetworkError)
@@ -98,7 +106,6 @@ public class StaffCtrl : MonoBehaviour
                 staff[0].text = request.downloadHandler.text;
 
                 //取消下载提示的显示，另外还用来通知staff滚动
-                s.SetActive(false);
 
             }
         }
@@ -126,7 +133,7 @@ public class StaffCtrl : MonoBehaviour
         }
 
         //轻触屏幕，返回标题界面
-        if (Input.touchCount >= 1)
+        if (Input.touchCount >= 1 || Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1) || Input.GetMouseButtonDown(2))
         {
             UnityEngine.SceneManagement.SceneManager.LoadScene(0, UnityEngine.SceneManagement.LoadSceneMode.Single);
         }
@@ -155,7 +162,11 @@ public class StaffCtrl : MonoBehaviour
         {
             //BE BGM
             EasyBGMCtrl.easyBGMCtrl.PlayBGM(3);
+            //BE图片
             image.sprite = images[10];
+            //深红色文字
+            staff[0].color = new Color(0.6132076f, 0.130162f, 0.130162f);
+            staff[1].color = new Color(0.6132076f, 0.130162f, 0.130162f);
             return;
           
         }

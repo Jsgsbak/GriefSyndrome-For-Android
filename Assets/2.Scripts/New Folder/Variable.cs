@@ -32,12 +32,12 @@ public class Variable
     {
         Homura =0,
         Kyoko,
-        Madoka,
+        Madoka =2,
         Mami,
-        Sayaka,
+        Sayaka =4,
         Homura_m,
-        Null,   
         QB,
+        Null,   
     }
 
     public enum Majo

@@ -17,6 +17,12 @@ public class StageCtrl : MonoBehaviour
 
    public int BGMid = 1;//通常都为1，是魔女狩猎
 
+    [Header("玩家生成设置")]
+    public GameObject[] Players;
+    public Transform Point;
+
+
+
     #region 事件组
     public class intEvent : UnityEvent<int> { }
     public static intEvent Player1Hurt = new intEvent();
@@ -46,6 +52,15 @@ public class StageCtrl : MonoBehaviour
 
         //播放BGM
         EasyBGMCtrl.easyBGMCtrl.PlayBGM(BGMid);
+
+        //生成玩家（现在仅用来测试）
+        for (int i = 0; i < 3; i++)
+        {
+            if(gameScoreSettings.SelectedGirlInGame[i] != Variable.PlayerFaceType.Null)
+            {
+                Instantiate(Players[(int)gameScoreSettings.SelectedGirlInGame[i]], Point);
+            }
+        }
     }
 
     public void FastUpdate()

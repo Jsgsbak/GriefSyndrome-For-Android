@@ -63,7 +63,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// <summary>
     /// 所选的魔法少女
     /// </summary>
-    [Header("所选的魔法少女")]
+    [Header("所选的魔法少女(手动设置)")]
     public Variable.PlayerFaceType SelectedMahoshaojo;
     [Header("玩家信息")]
    public  int playerId = 0;
@@ -120,6 +120,11 @@ public abstract class APlayerCtrl : MonoBehaviour
 
     #endregion
 
+    #region 调试
+    [Space(10)]
+    [Header("除了玩家信息的更新，其他的脚本都不执行")]
+    public bool OnlyUpdatePlayerInf = false;
+    #endregion
 
     #region 状态
     //下面这些变量大部分是为了debug方便，等后面全都换成gss里相应的变量
@@ -263,6 +268,9 @@ public abstract class APlayerCtrl : MonoBehaviour
 
     private void Awake()
     {
+        if (!OnlyUpdatePlayerInf)
+        {
+
         #region 初始化组件
         rigidbody2D = GetComponent<Rigidbody2D>();
         rigidbody2D.gravityScale = 0;
@@ -280,7 +288,9 @@ public abstract class APlayerCtrl : MonoBehaviour
         UpdateManager.FakeLateUpdate.AddListener(SimulatedGravityAndMove);
       //  UpdateManager.SlowUpdate.AddListener(VitRefresh);
         atlasAnimation.AnimStop.AddListener(CheckAnimStop);
-        #endregion
+            #endregion
+
+        }
 
         #region 获取playerId，并将所选魔法少女的id信息录入gss中
         for (int i = 0; i < 3; i++)

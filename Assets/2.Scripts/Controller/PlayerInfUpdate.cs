@@ -112,40 +112,6 @@ public void UpdateScore()
             Rebirth.fillAmount = Rebirth.fillAmount + 1f / 40f;//不是很明白为啥会执行40次
 
         }
-        /*旧版
-        //魔法hp条减少
-        if (StageCtrl.gameScoreSettings.MagiaVitInGame[PlayerId - 1] > 0 && MagiaForward.fillAmount - Health.fillAmount < -0.01f)
-        {
-            MagiaForward.fillAmount = Health.fillAmount + (float)StageCtrl.gameScoreSettings.MagiaVitInGame[PlayerId - 1] / (float)StageCtrl.gameScoreSettings.MaxVitInGame[PlayerId - 1];
-            MagiaBack.fillAmount = Health.fillAmount + (float)StageCtrl.gameScoreSettings.MagiaVitInGame[PlayerId - 1] / (float)StageCtrl.gameScoreSettings.MaxVitInGame[PlayerId - 1];
-
-        }
-        //魔法 hp变长（二者几乎相等时一起变长）
-        else if (Mathf.Abs(MagiaForward.fillAmount - Health.fillAmount) <= 0.01f)
-        {
-            MagiaForward.fillAmount = Health.fillAmount + (float)StageCtrl.gameScoreSettings.MagiaVitInGame[PlayerId - 1] / (float)StageCtrl.gameScoreSettings.MaxVitInGame[PlayerId - 1];
-            MagiaBack.fillAmount = Health.fillAmount + (float)StageCtrl.gameScoreSettings.MagiaVitInGame[PlayerId - 1] / (float)StageCtrl.gameScoreSettings.MaxVitInGame[PlayerId - 1];
-
-        }
-
-
-        //受伤hp条减少
-        if (StageCtrl.gameScoreSettings.HurtVitInGame[PlayerId - 1] > 0 && Damaged.fillAmount - Health.fillAmount < -0.01f)
-        {
-            Damaged.fillAmount = Health.fillAmount + (float)StageCtrl.gameScoreSettings.HurtVitInGame[PlayerId - 1] / (float)StageCtrl.gameScoreSettings.MaxVitInGame[PlayerId - 1];
-        }
-        //魔法hp变长（二者几乎相等时一起变长）
-        else if (Mathf.Abs(MagiaForward.fillAmount - Health.fillAmount) <= 0.01f)
-        {
-            MagiaForward.fillAmount = Health.fillAmount;
-        }
-
-
-        //根据长度，显示先后修正
-        MagiaForward.enabled = MagiaForward.fillAmount < Damaged.fillAmount;
-        MagiaBack.enabled = MagiaForward.fillAmount > Damaged.fillAmount;
-        */
-
     }
 
     [ContextMenu("设置名称，灵魂宝石图片 顺便剔除qb")]
