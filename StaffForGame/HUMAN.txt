@@ -1,5 +1,5 @@
 <size=19>制作人员名单</size>
-(在线版，最后更新2020年9月7日)
+(在线版 更新于2020/9/8 For ver.0.0.5)
 
 原作：
 グリーフシンドローム
@@ -21,16 +21,16 @@ PureAmaya
 
 测试：
 PureAmaya
-
+Walkonbothsides
 
 特别感谢：
 轮回的救赎
-walkonbothsides
+Walkonbothsides
 
 
 
 And you...
 
 
-感谢游玩！！
+感谢游玩！
 轻触以返回标题界面

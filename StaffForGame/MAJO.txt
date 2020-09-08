@@ -1,5 +1,5 @@
 <size=19>Staff</size>
-(Online Ver. latest:2020/9/7)
+(Online Ver. latest:2020/9/8)
 
 Original：
 griefsyndrome
@@ -21,7 +21,7 @@ Game Figure Improvation：
 
 Test：
 PureAmaya
-
+Walkonbothsides
 
 Special Thanks：
 LHDJS
