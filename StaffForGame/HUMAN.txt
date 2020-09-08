@@ -1,5 +1,5 @@
 <size=19>制作人员名单</size>
-(在线版，最后更新2020年9月8日)
+(在线版，更新于2020/9/8)
 
 原作：
 グリーフシンドローム
@@ -21,51 +21,16 @@ PureAmaya
 
 测试：
 PureAmaya
-<size=19>Staff</size>
-(Offline Ver.)
-
-Original：
-griefsyndrome
-
-Original Maker：
-Twilight Frontier
-
-Author：
-PureAmaya
-
-Game System Transplantation：
-PureAmaya
-
-Character Transplantation：
-
-
-Game Figure Improvation：
-
-
-Test：
-PureAmaya
 Walkonbothsides
-
-Special Thanks：
-LHDJS
-Walkonbothsides
-
-
-
-And you...
-
-
-Thanks for playing!!
-Touch the screen to return to title
 
 特别感谢：
 轮回的救赎
-walkonbothsides
+Walkonbothsides
 
 
 
 And you...
 
 
-感谢游玩！！
+感谢游玩！
 轻触以返回标题界面
