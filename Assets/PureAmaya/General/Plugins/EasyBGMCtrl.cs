@@ -26,25 +26,12 @@ public class EasyBGMCtrl : MonoBehaviour
         #endregion
     }
 
-    /// <summary>
-    /// 音量调整
-    /// </summary>
-    /// <param name="BGM">是否为BGM，否为SE</param>
-    /// <param name="volume">音量</param>
-    public void Volume(bool BGM,float volume)
-    {
-        //限制大小
-        volume = Mathf.Clamp01(volume);
-        if (BGM)
-        {
-            BGMPlayer.volume = volume;
-        }
-        else
-        {
-            SEPlayer.volume = volume;
-        }
-    }
 
+    /// <summary>
+    /// 改变音量。一般UI控制这个函数
+    /// </summary>
+    /// <param name="vol"></param>
+    /// <param name="IsBGM"></param>
     public void ChangeVol(float vol,bool IsBGM)
     {
         if (IsBGM)
@@ -57,9 +44,9 @@ public class EasyBGMCtrl : MonoBehaviour
         }
     }
 
+    
   public void PlayBGM(int index)
     {
-
         if (index < 0)
         {
             BGMPlayer.Stop();
@@ -73,5 +60,5 @@ public class EasyBGMCtrl : MonoBehaviour
         }
     }
 
-    
+
 }

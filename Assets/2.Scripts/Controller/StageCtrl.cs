@@ -15,7 +15,7 @@ public class StageCtrl : MonoBehaviour
 {
     public static GameScoreSettingsIO gameScoreSettings;
 
-   public int BGMid = 1;//通常都为1，是魔女狩猎
+   public int BGMid = 5;//通常都为5，是道中曲
 
     [Header("玩家生成设置")]
     public GameObject[] Players;

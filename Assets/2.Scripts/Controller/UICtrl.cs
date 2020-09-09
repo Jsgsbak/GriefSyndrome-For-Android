@@ -36,6 +36,12 @@ public class UICtrl : MonoBehaviour
     /// </summary>
     int PlayerCount = 0;
 
+#if UNITY_EDITOR
+    [Header("调试用")]
+    public Text ShowRandomBGM;
+#endif
+
+
     #region 事件组
     public static Variable.OrdinaryEvent UpdateInf = new Variable.OrdinaryEvent();
     #endregion
@@ -155,4 +161,17 @@ public class UICtrl : MonoBehaviour
         Time.timeScale = 1;//回复时间
         UnityEngine.SceneManagement.SceneManager.LoadScene(0,UnityEngine.SceneManagement.LoadSceneMode.Single);
     }
+
+
+#if UNITY_EDITOR
+    /// <summary>
+    /// 随机播放bgm
+    /// </summary>
+    public void RandomPlayBGM()
+    {
+        EasyBGMCtrl.easyBGMCtrl.PlayBGM(Random.Range(0, EasyBGMCtrl.easyBGMCtrl.BGM.Length));
+        ShowRandomBGM.text = string.Format("正在播放：{0}", EasyBGMCtrl.easyBGMCtrl.BGMPlayer.clip.name);
+    }
+#endif
+
 }
