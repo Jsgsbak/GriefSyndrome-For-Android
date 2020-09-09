@@ -219,6 +219,28 @@ public class TitleCtrl : MonoBehaviour
     /// </summary>
     public void SelectedMahoshoujo(int id)
     {
+        //麻花焰单独处理
+        if(id == 5)
+        {
+            if (gameScoreSettingsIO.MagicalGirlsDie[0])
+            {
+                //挂了，选择为QB
+                gameScoreSettingsIO.SelectedGirlInGame[0] = Variable.PlayerFaceType.QB;//玩家1，联机的话要在处理 0：玩家1
+            }
+            else
+            {
+                //没挂，正常选择
+                gameScoreSettingsIO.SelectedGirlInGame[0] = (Variable.PlayerFaceType)id;//玩家1，联机的话要在处理0：玩家1
+            }
+
+            //应该所有玩家都选择完在进行处理
+            //切换场景
+            LoadingCtrl.LoadScene(1);
+
+            return;
+        }
+
+
         if (gameScoreSettingsIO.MagicalGirlsDie[id])
         {
             //挂了，选择为QB

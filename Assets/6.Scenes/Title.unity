@@ -222,7 +222,7 @@ Sprite:
   - GamePause
   - StageAtlas
   - StageSelect
-  m_SpriteAtlas: {fileID: 4343727234628468602, guid: 42073edd439c8d442a1496096e11a7b3,
+  m_SpriteAtlas: {fileID: 4343727234628468602, guid: 20783d1a9406c244187c56961c1abc72,
     type: 2}
   m_RD:
     serializedVersion: 3
@@ -818,7 +818,8 @@ Sprite:
     8505807f5e7a368418b6ea21c2b035cf: 21300000
   m_AtlasTags:
   - StageSelect
-  m_SpriteAtlas: {fileID: 0}
+  m_SpriteAtlas: {fileID: 4343727234628468602, guid: 42073edd439c8d442a1496096e11a7b3,
+    type: 2}
   m_RD:
     serializedVersion: 3
     texture: {fileID: 2800000, guid: 8505807f5e7a368418b6ea21c2b035cf, type: 3}
@@ -912,7 +913,7 @@ Sprite:
     downscaleMultiplier: 1
   m_AtlasRD:
     serializedVersion: 3
-    texture: {fileID: 0}
+    texture: {fileID: 2, guid: 00000000000000000000000000000000, type: 0}
     alphaTexture: {fileID: 0}
     secondaryTextures: []
     m_SubMeshes:
@@ -992,14 +993,14 @@ Sprite:
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
-      x: 10.036285
-      y: 6.0761204
+      x: 554.03625
+      y: 1684.0762
       width: 494.8876
       height: 35.897125
     textureRectOffset: {x: 10.036285, y: 6.0761204}
-    atlasRectOffset: {x: -1, y: -1}
-    settingsRaw: 64
-    uvTransform: {x: 42.666668, y: 256, z: 42.666668, w: 27.5}
+    atlasRectOffset: {x: 544, y: 1678}
+    settingsRaw: 65
+    uvTransform: {x: 42.666668, y: 800, z: 42.666668, w: 1705.5}
     downscaleMultiplier: 1
   m_PhysicsShape:
   - - {x: -2.296875, y: 0.19921875}
@@ -1521,7 +1522,7 @@ Sprite:
   - GamePause
   - StageAtlas
   - StageSelect
-  m_SpriteAtlas: {fileID: 4343727234628468602, guid: 42073edd439c8d442a1496096e11a7b3,
+  m_SpriteAtlas: {fileID: 4343727234628468602, guid: 20783d1a9406c244187c56961c1abc72,
     type: 2}
   m_RD:
     serializedVersion: 3
@@ -1747,8 +1748,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -3.1000366, y: 2.2999878}
-  m_SizeDelta: {x: 34.464905, y: 379.72913}
+  m_AnchoredPosition: {x: -2.6000366, y: -0.5}
+  m_SizeDelta: {x: 35.544373, y: 380.7273}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &387661878
 MonoBehaviour:
@@ -2022,6 +2023,7 @@ MonoBehaviour:
   - {fileID: 703469323}
   - {fileID: 928229507}
   - {fileID: 516724814}
+  - {fileID: 1702690986}
   ExitMagicalGirls: {fileID: 1559036825}
   eventSystem: {fileID: 1789124978}
 --- !u!1 &509990450
@@ -2678,7 +2680,7 @@ Sprite:
   - GamePause
   - StageAtlas
   - StageSelect
-  m_SpriteAtlas: {fileID: 4343727234628468602, guid: 42073edd439c8d442a1496096e11a7b3,
+  m_SpriteAtlas: {fileID: 4343727234628468602, guid: 20783d1a9406c244187c56961c1abc72,
     type: 2}
   m_RD:
     serializedVersion: 3
@@ -3128,7 +3130,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 59.245747, y: -154.1596}
+  m_AnchoredPosition: {x: 59.245758, y: -154.1596}
   m_SizeDelta: {x: 102.06845, y: 308.3192}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &732772144
@@ -4954,7 +4956,7 @@ Sprite:
   - GamePause
   - StageAtlas
   - StageSelect
-  m_SpriteAtlas: {fileID: 4343727234628468602, guid: 42073edd439c8d442a1496096e11a7b3,
+  m_SpriteAtlas: {fileID: 4343727234628468602, guid: 20783d1a9406c244187c56961c1abc72,
     type: 2}
   m_RD:
     serializedVersion: 3
@@ -5314,7 +5316,7 @@ Sprite:
   - GamePause
   - StageAtlas
   - StageSelect
-  m_SpriteAtlas: {fileID: 4343727234628468602, guid: 42073edd439c8d442a1496096e11a7b3,
+  m_SpriteAtlas: {fileID: 4343727234628468602, guid: 20783d1a9406c244187c56961c1abc72,
     type: 2}
   m_RD:
     serializedVersion: 3
@@ -6472,7 +6474,7 @@ Sprite:
   - GamePause
   - StageAtlas
   - StageSelect
-  m_SpriteAtlas: {fileID: 4343727234628468602, guid: 42073edd439c8d442a1496096e11a7b3,
+  m_SpriteAtlas: {fileID: 4343727234628468602, guid: 20783d1a9406c244187c56961c1abc72,
     type: 2}
   m_RD:
     serializedVersion: 3
@@ -7086,7 +7088,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 5
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -7396,7 +7398,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!114 &1789124979
 MonoBehaviour:
@@ -7471,7 +7473,8 @@ Sprite:
     3dc45afcb65e55e458144c82a8d2656b: -8918268372864261744
   m_AtlasTags:
   - StageSelect
-  m_SpriteAtlas: {fileID: 0}
+  m_SpriteAtlas: {fileID: 4343727234628468602, guid: 42073edd439c8d442a1496096e11a7b3,
+    type: 2}
   m_RD:
     serializedVersion: 3
     texture: {fileID: 2800000, guid: 3dc45afcb65e55e458144c82a8d2656b, type: 3}
@@ -7565,7 +7568,7 @@ Sprite:
     downscaleMultiplier: 1
   m_AtlasRD:
     serializedVersion: 3
-    texture: {fileID: 0}
+    texture: {fileID: 2, guid: 00000000000000000000000000000000, type: 0}
     alphaTexture: {fileID: 0}
     secondaryTextures: []
     m_SubMeshes:
@@ -7645,14 +7648,14 @@ Sprite:
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
-      x: 0
-      y: 360
+      x: 1376
+      y: 1244
       width: 196
       height: 342
     textureRectOffset: {x: 0, y: 0}
-    atlasRectOffset: {x: -1, y: -1}
-    settingsRaw: 64
-    uvTransform: {x: 100, y: 98, z: 100, w: 531}
+    atlasRectOffset: {x: 1376, y: 884}
+    settingsRaw: 65
+    uvTransform: {x: 100, y: 1474, z: 100, w: 1415}
     downscaleMultiplier: 1
   m_PhysicsShape:
   - - {x: -0.97999996, y: 1.7099999}
