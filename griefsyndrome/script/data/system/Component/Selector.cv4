@@ -1,0 +1,84 @@
+function CreateSelector( _itemCount )
+{
+	local selector = {};
+	selector.cursor <- 0;
+	selector.cursorPrev <- -1;
+	selector.intervalWait <- 6;
+	selector.sensitivX <- 24;
+	selector.sensitivY <- 8;
+	selector.itemCount <- _itemCount;
+	selector.breakLine <- 65535;
+	selector.maxMoveDist <- 1;
+	selector.isHorz <- false;
+	selector.input <- this.inputAll.weakref();
+	selector.mouseY <- 0;
+	selector.mouseX <- 0;
+	selector.intervalCount <- 0;
+
+	if (!("selectorCount" in this.getroottable()))
+	{
+		this.getroottable().selectorCount <- 0;
+		this.getroottable().selectorRefArray <- [];
+	}
+
+	selector.depthLevel <- ::selectorCount++;
+	::selectorRefArray.append(selector.weakref());
+	selector.Update <- this.UpdateSelector.bindenv(selector);
+	return selector;
+}
+
+function UpdateSelector()
+{
+	this.cursorPrev = this.cursor;
+
+	if (this.intervalCount > 0)
+	{
+		this.intervalCount--;
+		return;
+	}
+
+	local dx = this.isHorz ? this.input.x : this.input.y;
+	local dxa = this.abs(dx);
+
+	if (dxa == 1)
+	{
+		this.cursor += dx;
+	}
+
+	if (dxa >= 25 && dxa % 7 == 0)
+	{
+		this.cursor += dx > 0 ? 1 : -1;
+	}
+
+	if (this.breakLine != 65535)
+	{
+		local dy = this.isHorz ? this.input.y : this.input.x;
+		local dya = this.abs(dy);
+
+		if (dya != 1 && (dya < 25 || dya % 7 != 0))
+		{
+			dy = 0;
+		}
+
+		if (dy > 0 && this.cursor < this.itemCount - this.breakLine)
+		{
+			this.cursor += this.breakLine;
+		}
+
+		if (dy < 0 && this.cursor >= this.breakLine)
+		{
+			this.cursor -= this.breakLine;
+		}
+	}
+
+	if (dx != 0 && this.cursor < 0)
+	{
+		this.cursor = 0;
+	}
+
+	if (this.cursor >= this.itemCount)
+	{
+		this.cursor = this.itemCount - 1;
+	}
+}
+

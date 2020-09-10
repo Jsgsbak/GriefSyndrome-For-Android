@@ -1,0 +1,404 @@
+fileFormatVersion: 2
+guid: d8734ea58d1c25847bd246da50f0662a
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 7744217938887842220
+    second: Face_Homura
+  - first:
+      213: 7637708923612650358
+    second: Face_Kyoko
+  - first:
+      213: -6340234826010411889
+    second: Face_Madoka
+  - first:
+      213: -5843273147912078911
+    second: Face_Mami
+  - first:
+      213: 2189409247864640695
+    second: Face_Sayaka
+  - first:
+      213: 97815350574283036
+    second: Face_Homura_m
+  - first:
+      213: -3822541818750841399
+    second: face_l.cv2_6
+  - first:
+      213: -2854906113742148991
+    second: face_l.cv2_7
+  - first:
+      213: 4021425967300180455
+    second: face_l.cv2_8
+  - first:
+      213: -5701038098190006721
+    second: face_l.cv2_9
+  - first:
+      213: -3918903995941354841
+    second: face_l.cv2_10
+  - first:
+      213: -1156641177842740628
+    second: face_l.cv2_11
+  - first:
+      213: 302703531288441182
+    second: face_l.cv2_12
+  - first:
+      213: -8439416841282333666
+    second: face_l.cv2_13
+  - first:
+      213: -8542577100412752747
+    second: face_l.cv2_14
+  - first:
+      213: -483744745957308456
+    second: face_l.cv2_15
+  - first:
+      213: -889347220011095640
+    second: face_l.cv2_16
+  - first:
+      213: -4693448564130908305
+    second: face_l.cv2_17
+  - first:
+      213: 1155405198728478748
+    second: face_l.cv2_18
+  - first:
+      213: 7831664304600405711
+    second: face_l.cv2_19
+  - first:
+      213: -969729534603255158
+    second: face_l.cv2_20
+  - first:
+      213: 3367097957178140686
+    second: face_l.cv2_21
+  - first:
+      213: 5479901484817968027
+    second: face_l.cv2_22
+  - first:
+      213: 2209889920238340241
+    second: face_l.cv2_23
+  - first:
+      213: 5864971797686345839
+    second: face_l.cv2_24
+  - first:
+      213: 1092545577237499882
+    second: face_l.cv2_25
+  - first:
+      213: 5980528035728638780
+    second: face_l.cv2_26
+  - first:
+      213: 6236734683825185335
+    second: face_l.cv2_27
+  - first:
+      213: 492475145337535934
+    second: face_l.cv2_28
+  - first:
+      213: 228719262093936019
+    second: face_l.cv2_29
+  - first:
+      213: -8505913466613211628
+    second: face_l.cv2_30
+  - first:
+      213: 5446163180775833476
+    second: face_l.cv2_31
+  - first:
+      213: -8047614129351872368
+    second: face_l.cv2_32
+  - first:
+      213: -9020536634163177892
+    second: face_l.cv2_33
+  - first:
+      213: 5093717716933365826
+    second: face_l.cv2_34
+  - first:
+      213: -1147961431513590156
+    second: face_l.cv2_35
+  - first:
+      213: -1549310136786854941
+    second: face_l.cv2_36
+  - first:
+      213: 6251237101110246842
+    second: face_l.cv2_37
+  - first:
+      213: 9166600751110290089
+    second: face_l.cv2_38
+  - first:
+      213: -7292303559800767258
+    second: face_l.cv2_39
+  - first:
+      213: 3623918773437790574
+    second: face_l.cv2_40
+  - first:
+      213: -9212748546842858299
+    second: face_l.cv2_41
+  - first:
+      213: -5680884712819393945
+    second: face_l.cv2_42
+  - first:
+      213: -3909510263663248917
+    second: face_l.cv2_43
+  - first:
+      213: -2420043936472010853
+    second: face_l.cv2_44
+  - first:
+      213: -6318649546748775268
+    second: face_l.cv2_45
+  - first:
+      213: 4929328850804568700
+    second: face_l.cv2_46
+  - first:
+      213: 1079232856854385976
+    second: face_l.cv2_47
+  - first:
+      213: 4650372078222376392
+    second: face_l.cv2_48
+  - first:
+      213: 7646459142535412527
+    second: face_l.cv2_49
+  - first:
+      213: -3905745912808708636
+    second: face_l.cv2_50
+  - first:
+      213: 8775108950274258439
+    second: face_l.cv2_51
+  - first:
+      213: 8009972939688969626
+    second: face_l.cv2_52
+  - first:
+      213: 3662709375406804375
+    second: face_l.cv2_53
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 128
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 128
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 128
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Face_Homura
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 40
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ca91e9e4f2df87b60800000000000000
+      internalID: 7744217938887842220
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Face_Kyoko
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 40
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 67b53c9bcc79ef960800000000000000
+      internalID: 7637708923612650358
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Face_Madoka
+      rect:
+        serializedVersion: 2
+        x: 208
+        y: 40
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f8cb61b8406f208a0800000000000000
+      internalID: -6340234826010411889
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Face_Mami
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 40
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1c93f1de70688eea0800000000000000
+      internalID: -5843273147912078911
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Face_Sayaka
+      rect:
+        serializedVersion: 2
+        x: 304
+        y: 40
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7b45de66c18526e10800000000000000
+      internalID: 2189409247864640695
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Face_Homura_m
+      rect:
+        serializedVersion: 2
+        x: 352
+        y: 40
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c197f880b828b5100800000000000000
+      internalID: 97815350574283036
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,18 @@
+this.autoSaveIndex <- 0;
+this.ACT_DEFAULT_SUSPEND <- true;
+::enableEscMenu <- false;
+this.CreateAct("data/system/Component/Utility.act");
+this.CreateAct("data/system/Component/Capture.act");
+this.srand(this.UtilityAct.pl.timeGetTime());
+this.CreateAct("data/system/CircleLogo/CircleLogo.act");
+this.CreateAct("data/system/Title/Title.act");
+this.CreateAct("data/system/StageMain/StageMain.act");
+this.CreateAct("data/system/StageResult/StageResult.act");
+this.CreateAct("data/system/StagePause/StagePause.act");
+this.CreateAct("data/system/StageSelect/StageSelect.act");
+this.CreateAct("data/system/GameOver/GameOver.act");
+this.CreateAct("data/system/staffroll/staffroll.act");
+this.CreateAct("data/system/Component/Fader.act");
+this.CreateAct("data/system/NowLoading/NowLoading.act");
+this.FaderAct.FadeIn(1, 0, null);
+this.CircleLogoAct.pl.BeginStage(0);

@@ -1,0 +1,107 @@
+function CPU_aListAction()
+{
+	if (this.aList[0].script)
+	{
+		if (!this.aList[0].script.call(this, this.aList[0].val))
+		{
+			if (this.aList.len() > 0)
+			{
+				this.aList.remove(0);
+			}
+		}
+		else if (this.aList.len() > 0)
+		{
+			if (this.aList[0].time > 0)
+			{
+				this.aList[0].time--;
+
+				if (this.aList[0].time <= 0)
+				{
+					this.aList.remove(0);
+				}
+			}
+		}
+	}
+}
+
+function CPU_TargetChase( dist )
+{
+	if (this.target in this.actor)
+	{
+		local d = this.GetTargetDist();
+		local Dice_ = this.rand() % 100;
+
+		if (d)
+		{
+			if (d <= dist * dist)
+			{
+				return false;
+			}
+			else
+			{
+				return true;
+			}
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else
+	{
+		return false;
+	}
+}
+
+function CameraIN_Common()
+{
+	this.SetMotion(this.u.CA, 0);
+
+	if (this.x > this.camera2d.left + this.camera2d.cx)
+	{
+		this.direction = -1.0;
+	}
+	else
+	{
+		this.direction = 1.0;
+	}
+}
+
+function FreeCheck( val )
+{
+	if (this.motion == this.u.CA)
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+
+function SearchTarget( val )
+{
+	if (this.flagState & 32)
+	{
+		this.SetNearTarget();
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+
+function RandomTarget( val )
+{
+	if (this.flagState & 32)
+	{
+		this.SetRandomTarget();
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+

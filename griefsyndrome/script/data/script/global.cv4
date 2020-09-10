@@ -1,0 +1,4 @@
+::debugFlg <- "_DEBUG" in this.getroottable();
+this.playerID <- 0;
+this.enemyID <- 0;
+this.objectID <- 0;

@@ -1,0 +1,66 @@
+function OnCreate()
+{
+}
+
+function Init()
+{
+	this.logo.alpha = 0.0;
+	this.count <- 0;
+	this.funcUpdate <- this.Update0.bindenv(this);
+	this.PlaySE(50);
+	::EnableInput(true);
+}
+
+function Update()
+{
+	if (this.funcUpdate)
+	{
+		this.funcUpdate();
+	}
+}
+
+function Update0()
+{
+	this.logo.alpha += 0.02;
+
+	if (++this.count >= 60 || this.inputAll.b0 || this.inputAll.b1)
+	{
+		this.logo.alpha = 1.0;
+		this.count <- 0;
+		this.funcUpdate <- this.Update1.bindenv(this);
+
+		if (this.inputAll.b0 || this.inputAll.b1)
+		{
+			this.funcUpdate <- this.Update2.bindenv(this);
+		}
+	}
+}
+
+function Update1()
+{
+	if (++this.count >= 30)
+	{
+		this.count <- 0;
+		this.funcUpdate <- this.Update2.bindenv(this);
+	}
+}
+
+function Update2()
+{
+	this.logo.alpha -= 0.02;
+
+	if (++this.count >= 60 || this.inputAll.b0 || this.inputAll.b1)
+	{
+		this.logo.alpha = 0.0;
+		this.count <- 0;
+		this.pl.EndStage();
+		this.FaderAct.FadeOut(30, 0, function ()
+		{
+			if ("TitleAct" in this.getroottable())
+			{
+				this.TitleAct.pl.BeginStage(0);
+			}
+		});
+	}
+}
+

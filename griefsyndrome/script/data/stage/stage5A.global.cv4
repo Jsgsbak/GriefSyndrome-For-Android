@@ -1,0 +1,32 @@
+this.flag1 <- true;
+this.speed <- 0.0;
+this.add_x <- 0.0;
+function Update()
+{
+	if (::stage.flag1)
+	{
+		this.speed += 0.2;
+
+		if (this.speed >= 60.0)
+		{
+			this.speed = 60.0;
+		}
+
+		this.add_x += this.speed;
+
+		if (this.add_x >= 3072)
+		{
+			this.add_x -= 3072;
+		}
+
+		this.thisAct.layer_F0.dst_x = this.add_x;
+		this.thisAct.layer_F1.dst_x = this.add_x;
+		this.thisAct.layer_0.dst_x = this.add_x;
+		this.thisAct.layer_1.dst_x = this.add_x;
+		this.thisAct.layer_2.dst_x = this.add_x;
+		this.thisAct.layer_3.dst_x = this.add_x;
+		this.thisAct.layer_4.dst_x = this.add_x;
+		this.thisAct.layer_5.dst_x = this.add_x;
+	}
+}
+

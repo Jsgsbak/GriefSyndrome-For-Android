@@ -1,0 +1,15 @@
+function OnCreate()
+{
+}
+
+function Init()
+{
+	this.frame <- 0;
+	this.pl.SetBltOrder(-1);
+}
+
+function Update()
+{
+	this.frame++;
+}
+

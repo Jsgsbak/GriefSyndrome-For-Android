@@ -1,0 +1,120 @@
+function OnCreate()
+{
+	this.thisAct.StageFailed <- function ( _funcOnFinighScene )
+	{
+		this.pl.BeginStage(0);
+		this.gameover.visible = false;
+		this.gameover2.visible = true;
+		this.gameover2.alpha = 0.0;
+		this.black_dot.alpha = 0.0;
+		this.funcUpdate = this.Update_StageFailed;
+		this.funcOnFinighScene = _funcOnFinighScene;
+		this.EnableInput(false);
+	}.bindenv(this);
+	this.thisAct.GameOver <- function ( _funcOnFinighScene )
+	{
+		this.pl.BeginStage(0);
+		this.gameover.visible = true;
+		this.gameover.alpha = 0.0;
+		this.gameover2.visible = false;
+		this.black_dot.alpha = 0.0;
+		this.funcUpdate = this.Update_GameOver;
+		this.funcOnFinighScene = _funcOnFinighScene;
+		this.EnableInput(false);
+	}.bindenv(this);
+}
+
+function Init()
+{
+	this.funcUpdate <- null;
+	this.funcOnFinighScene <- null;
+	this.frame <- 0;
+	::EnableInput(false);
+}
+
+function Update()
+{
+	this.frame++;
+
+	if (this.funcUpdate)
+	{
+		this.funcUpdate();
+	}
+}
+
+function Update_StageFailed()
+{
+	if (this.black_dot.alpha < 0.5)
+	{
+		this.black_dot.alpha += 0.0099999998;
+	}
+
+	if (this.frame >= 50)
+	{
+		this.gameover2.alpha += 0.0099999998;
+	}
+
+	if (this.frame == 1)
+	{
+		this.StopBgm(3000);
+	}
+
+	if (this.frame == 300)
+	{
+		::FaderAct.FadeOut(60, 0, function ()
+		{
+			if (this.funcOnFinighScene)
+			{
+				this.funcOnFinighScene();
+			}
+
+			this.pl.EndStage();
+			this.StageSelectAct.pl.BeginStage(0);
+			::FaderAct.FadeIn(60, 0, null);
+		}.bindenv(this));
+	}
+}
+
+function Update_GameOver()
+{
+	if (this.frame >= 120)
+	{
+		this.gameover.alpha += 0.0099999998;
+	}
+
+	if (this.black_dot.alpha < 0.30000001)
+	{
+		this.black_dot.alpha += 0.0049999999;
+	}
+
+	if (this.frame == 1)
+	{
+		this.StopBgm(3000);
+	}
+
+	if (this.frame == 1)
+	{
+		this.render.screenController.blend = 0.0;
+		this.render.screenController.pixelShader = 1;
+	}
+
+	if (this.render.screenController.blend < 1.0)
+	{
+		this.render.screenController.blend += 0.0099999998;
+	}
+
+	if (this.frame == 400)
+	{
+		::FaderAct.FadeOut(60, 0, function ()
+		{
+			if (this.funcOnFinighScene)
+			{
+				this.funcOnFinighScene();
+			}
+
+			this.pl.EndStage();
+			this.TitleAct.pl.BeginStage(0);
+		}.bindenv(this));
+	}
+}
+

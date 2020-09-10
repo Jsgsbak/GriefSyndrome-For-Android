@@ -1,0 +1,238 @@
+function Init()
+{
+	this.animChipListA <- [];
+	this.animChipListB <- [];
+	this.animChipListC <- [];
+	this.animChipListD <- [];
+	this.tvSrcLeft <- [];
+	this.tvSrcTop <- [];
+	this.tvSrcWidth <- [];
+	this.tvSrcHeight <- [];
+	local chipID = 0;
+	local chipInfo;
+	local count = 0;
+
+	for( chipInfo = this.layermain.layout.GetChipLayout(chipID); count < this.layermain.layout.chipCount && chipInfo != null; chipID++ )
+	{
+		count++;
+
+		if (chipInfo instanceof this.ChipLayout)
+		{
+			if (chipInfo.chipID == 102)
+			{
+				this.animChipListA.append(chipInfo);
+				this.tvSrcLeft.append(0);
+				this.tvSrcTop.append(0);
+				this.tvSrcWidth.append(800);
+				this.tvSrcHeight.append(600);
+			}
+
+			if (chipInfo.chipID == 103)
+			{
+				this.animChipListB.append(chipInfo);
+				this.tvSrcLeft.append(0);
+				this.tvSrcTop.append(0);
+				this.tvSrcWidth.append(800);
+				this.tvSrcHeight.append(600);
+			}
+
+			if (chipInfo.chipID == 104)
+			{
+				this.animChipListC.append(chipInfo);
+				this.tvSrcLeft.append(0);
+				this.tvSrcTop.append(0);
+				this.tvSrcWidth.append(800);
+				this.tvSrcHeight.append(600);
+			}
+
+			if (chipInfo.chipID == 105)
+			{
+				this.animChipListD.append(chipInfo);
+				this.tvSrcLeft.append(0);
+				this.tvSrcTop.append(0);
+				this.tvSrcWidth.append(800);
+				this.tvSrcHeight.append(600);
+			}
+		}
+		else
+		{
+			break;
+		}
+	}
+
+	for( local i = 0; i < this.tvSrcLeft.len(); i++ )
+	{
+		local scale = this.rand() % 100 / 100.0 * 0.60000002 + 0.2;
+
+		if (scale > 1.0)
+		{
+			scale = 1.0;
+		}
+
+		if (scale <= 0.0)
+		{
+			scale = 0.5;
+		}
+
+		this.tvSrcWidth[i] *= scale;
+		this.tvSrcHeight[i] *= scale;
+		this.tvSrcLeft[i] = this.rand() % 100 / 100.0 * (800 - this.tvSrcWidth[i]);
+		this.tvSrcTop[i] = this.rand() % 100 / 100.0 * (600 - this.tvSrcHeight[i]);
+	}
+
+	this.colorBarTVchip <- [];
+	this.colorBarTVFrame <- [];
+	chipID = 0;
+	count = 0;
+
+	for( chipInfo = this.layer_1.layout.GetChipLayout(chipID); count < this.layer_1.layout.chipCount && chipInfo != null; chipID++ )
+	{
+		count++;
+
+		if (chipInfo instanceof this.ChipLayout)
+		{
+			if (chipInfo.chipID == 100)
+			{
+				this.colorBarTVchip.append(chipInfo);
+				this.colorBarTVFrame.append(this.rand() % 1000);
+			}
+		}
+		else
+		{
+			break;
+		}
+	}
+}
+
+function Update()
+{
+	::CaptureAct.bbSnap.SetCapture();
+	this.layermain.SetBlend(this.BLEND_ALPHA, 1.0);
+	local tvIndex = 0;
+
+	for( local i = 0; i < this.animChipListA.len(); i++ )
+	{
+		local chip = this.animChipListA[i];
+
+		if (this.fabs(chip.left + this.layermain.dst_x - this.camera2d.x) > 900)
+		{
+		}
+		else if (this.fabs(chip.top + this.layermain.dst_y - this.camera2d.y) > 700)
+		{
+		}
+		else
+		{
+			this.layermain.StretchBlt(chip.left + 15, chip.top + 18, 98, 82, ::CaptureAct.bbSnap, 0, 0, 800, 600);
+			this.layermain.BitBlt(chip.left + 15, chip.top + 18, 98, 82, ::UtilityAct.resource.TvLightMap, 0, 0, this.BLEND_SUB, this.rand() % 100 / 200.0 + 0.25);
+			tvIndex++;
+		}
+	}
+
+	for( local i = 0; i < this.animChipListB.len(); i++ )
+	{
+		local chip = this.animChipListB[i];
+
+		if (this.fabs(chip.left + this.layermain.dst_x - this.camera2d.x) > 900)
+		{
+		}
+		else if (this.fabs(chip.top + this.layermain.dst_y - this.camera2d.y) > 700)
+		{
+		}
+		else
+		{
+			this.layermain.StretchBlt(chip.left + 15, chip.top + 18, 98, 82, ::CaptureAct.bbSnap, this.tvSrcLeft[tvIndex], this.tvSrcTop[tvIndex], this.tvSrcWidth[tvIndex], this.tvSrcHeight[tvIndex]);
+			this.layermain.BitBlt(chip.left + 15, chip.top + 18, 98, 82, ::UtilityAct.resource.TvLightMap, 0, 0, this.BLEND_SUB, this.rand() % 100 / 200.0 + 0.40000001);
+			tvIndex++;
+		}
+	}
+
+	for( local i = 0; i < this.animChipListC.len(); i++ )
+	{
+		local chip = this.animChipListC[i];
+
+		if (this.fabs(chip.left + this.layermain.dst_x - this.camera2d.x) > 900)
+		{
+		}
+		else if (this.fabs(chip.top + this.layermain.dst_y - this.camera2d.y) > 700)
+		{
+		}
+		else
+		{
+			this.layermain.StretchBlt(chip.left + 15, chip.top + 18, 98, 82, ::CaptureAct.bbSnap, this.tvSrcLeft[tvIndex], this.tvSrcTop[tvIndex], this.tvSrcWidth[tvIndex], this.tvSrcHeight[tvIndex]);
+			this.layermain.BitBlt(chip.left + 15, chip.top + 18, 98, 82, ::UtilityAct.resource.TvLightMap, 0, 0, this.BLEND_SUB, this.rand() % 100 / 200.0 + 0.40000001);
+			tvIndex++;
+		}
+	}
+
+	for( local i = 0; i < this.animChipListD.len(); i++ )
+	{
+		local chip = this.animChipListD[i];
+
+		if (this.fabs(chip.left + this.layermain.dst_x - this.camera2d.x) > 900)
+		{
+		}
+		else if (this.fabs(chip.top + this.layermain.dst_y - this.camera2d.y) > 700)
+		{
+		}
+		else
+		{
+			this.layermain.StretchBlt(chip.left + 15, chip.top + 18, 98, 82, ::CaptureAct.bbSnap, this.tvSrcLeft[tvIndex], this.tvSrcTop[tvIndex], this.tvSrcWidth[tvIndex], this.tvSrcHeight[tvIndex]);
+			this.layermain.BitBlt(chip.left + 15, chip.top + 18, 98, 82, ::UtilityAct.resource.TvLightMap, 0, 0, this.BLEND_SUB, this.rand() % 100 / 200.0 + 0.40000001);
+			tvIndex++;
+		}
+	}
+
+	if (::stage.renderState.pixelShader == 1 && !this.GameOverAct.pl.IsActive())
+	{
+		return;
+	}
+
+	for( local i = 0; i < this.colorBarTVchip.len(); i++ )
+	{
+		local chip = this.colorBarTVchip[i];
+
+		if (this.fabs(chip.left + this.layer_1.dst_x - this.camera2d.x) > 900)
+		{
+		}
+		else if (this.fabs(chip.top + this.layer_1.dst_y - this.camera2d.y) > 700)
+		{
+		}
+		else
+		{
+			local frame = this.colorBarTVFrame[i]++;
+			local lframe = (frame % 12 / 2).tointeger();
+			this.layer_1.SetBlend(this.BLEND_SUB, 0.30000001);
+
+			switch(lframe)
+			{
+			case 0:
+				this.layer_1.StretchBlt(chip.left - 32, chip.top - 32, 128 * 1.5, 128 * 1.5, ::UtilityAct.resource.tv3, 128 * 0, 0, 128, 128);
+				break;
+
+			case 1:
+				this.layer_1.StretchBlt(chip.left - 32, chip.top - 32, 128 * 1.5, 128 * 1.5, ::UtilityAct.resource.tv3, 128 * 1, 0, 128, 128);
+				break;
+
+			case 2:
+				this.layer_1.StretchBlt(chip.left - 32, chip.top - 32, 128 * 1.5, 128 * 1.5, ::UtilityAct.resource.tv3, 128 * 2, 0, 128, 128);
+				break;
+
+			case 3:
+				this.layer_1.StretchBlt(chip.left - 32, chip.top - 32, 128 * 1.5, 128 * 1.5, ::UtilityAct.resource.tv3, 128 * 3, 0, 128, 128);
+				break;
+
+			case 4:
+				this.layer_1.StretchBlt(chip.left - 32, chip.top - 32, 128 * 1.5, 128 * 1.5, ::UtilityAct.resource.tv3, 128 * 2, 0, 128, 128);
+				break;
+
+			case 5:
+				this.layer_1.StretchBlt(chip.left - 32, chip.top - 32, 128 * 1.5, 128 * 1.5, ::UtilityAct.resource.tv3, 128 * 1, 0, 128, 128);
+				break;
+			}
+
+			this.layer_1.SetBlend(this.BLEND_SUB, this.rand() % 100 / 100.0 * 0.075000003 + 0.0099999998);
+			this.layer_1.StretchBlt(chip.left - 11, chip.top - 8, 152, 128, ::UtilityAct.resource.TvLightMap2, 0, frame / 2 % 128, 16, 128);
+		}
+	}
+}
+

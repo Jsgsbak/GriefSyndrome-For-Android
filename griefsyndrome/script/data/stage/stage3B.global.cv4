@@ -1,0 +1,25 @@
+function Init()
+{
+	this.frame <- 0;
+	this.frame2 <- 0;
+}
+
+function Update()
+{
+	if (::stage.renderState.pixelShader == 1 && !this.GameOverAct.pl.IsActive())
+	{
+		return;
+	}
+
+	this.frame++;
+	this.frame2 += this.fabs(this.sin(this.frame * 0.0099999998) * 1.5);
+	this.thisAct.layer_F0.dst_x = this.camera2d.x * -0.30000001;
+	this.thisAct.layer_F1.dst_x = this.camera2d.x * -0.30000001;
+	this.thisAct.layer_2.dst_x = this.camera2d.x * 0.30000001;
+	this.thisAct.layer_3.dst_x = (this.camera2d.x - this.frame * 0.5 * 2) % (256 * 4);
+	this.thisAct.layer_4.dst_x = (this.camera2d.x - this.frame * 1.0 * 2) % (256 * 3);
+	this.thisAct.layer_5.dst_x = (this.camera2d.x - this.frame * 1.5 * 2) % (256 * 3);
+	this.thisAct.layer_02.dst_y = this.cos((this.frame + this.frame2) * 0.02) * 64.0;
+	this.thisAct.layer_01.dst_y = -this.thisAct.layer_02.dst_y;
+}
+

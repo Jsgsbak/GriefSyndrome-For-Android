@@ -1,0 +1,1116 @@
+function Init_A1_ThornA( t )
+{
+	this.ShotInit(t);
+	this.SetUpdateFunction(this.A1_ThornA);
+	this.hitEffect = null;
+	this.SetMotion(2052, 0);
+
+	if (this.owner in this.actor)
+	{
+		this.sx = this.sy = this.actor[this.owner].sx;
+		this.SetCollisionScaling(this.sx, this.sy, 1.0);
+		this.SetCollisionRotation(0.0, 0.0, this.rz);
+	}
+
+	this.vx = 0.0;
+	this.vy = 0.0;
+	this.count = 0;
+	this.priority = 95;
+	this.SetEndMotionCallbackFunction(this.EndtoRelease);
+}
+
+function A1_ThornA()
+{
+	if (this.owner in this.actor)
+	{
+		if (this.actor[this.owner].motion == 2020 && this.actor[this.owner].keyTake <= 1)
+		{
+			this.x = this.actor[this.owner].point0_x;
+			this.y = this.actor[this.owner].point0_y;
+			this.direction = this.actor[this.owner].direction;
+		}
+		else
+		{
+			this.Release();
+		}
+	}
+	else
+	{
+		this.Release();
+	}
+
+	if (this.UpdateStopCheck())
+	{
+		return false;
+	}
+
+	if (this.keyTake == 1)
+	{
+		this.count++;
+
+		if (this.count % 15 == 0)
+		{
+			this.HitReset();
+		}
+
+		if (this.count >= 45)
+		{
+			this.SetMotion(this.motion, 2);
+			return true;
+		}
+	}
+
+	return true;
+}
+
+function Init_A1_ThornB( t )
+{
+	this.ShotInit(t);
+	this.SetUpdateFunction(this.A1_ThornB);
+	this.hitEffect = null;
+	this.SetMotion(2051, 0);
+	this.priority = 95;
+	local tvec = this.Vector3();
+
+	if (this.owner in this.actor)
+	{
+		if (this.actor[this.owner].target in this.actor)
+		{
+			tvec.x = this.actor[this.actor[this.owner].target].x - this.x;
+			tvec.y = this.actor[this.actor[this.owner].target].y - 40 - this.y;
+			this.rz = this.atan2(tvec.y, tvec.x * this.direction);
+		}
+
+		this.sx = this.sy = this.actor[this.owner].sx;
+		this.SetCollisionScaling(this.sx, this.sy, 1.0);
+		this.SetCollisionRotation(0.0, 0.0, this.rz);
+	}
+
+	this.SetEndMotionCallbackFunction(this.EndtoRelease);
+}
+
+function A1_ThornB()
+{
+	if (this.owner in this.actor)
+	{
+		if (this.actor[this.owner].motion == 2021 && this.actor[this.owner].keyTake <= 1)
+		{
+			this.x = this.actor[this.owner].point0_x;
+			this.y = this.actor[this.owner].point0_y;
+			this.direction = this.actor[this.owner].direction;
+		}
+		else
+		{
+			this.Release();
+		}
+	}
+	else
+	{
+		this.Release();
+	}
+
+	if (this.UpdateStopCheck())
+	{
+		return false;
+	}
+
+	if (this.keyTake == 1)
+	{
+		this.count++;
+
+		if (this.count % 15 == 1)
+		{
+			this.PlaySE(3000);
+		}
+
+		if (this.count % 15 == 0)
+		{
+			this.HitReset();
+		}
+
+		if (this.count >= 45)
+		{
+			this.SetMotion(2051, 2);
+			return true;
+		}
+	}
+
+	return true;
+}
+
+function Init_A1_ThornD( t )
+{
+	this.ShotInit(t);
+	this.SetUpdateFunction(this.A1_ThornD);
+	this.hitEffect = null;
+	this.SetMotion(2053, 0);
+	this.vx = 0.0;
+	this.vy = 0.0;
+	this.count = 0;
+	this.priority = 95;
+	local tvec = this.Vector3();
+
+	if (this.owner in this.actor)
+	{
+		this.sx = this.sy = this.actor[this.owner].sx;
+		this.SetCollisionScaling(this.sx, this.sy, 1.0);
+	}
+
+	this.SetEndMotionCallbackFunction(this.EndtoRelease);
+}
+
+function A1_ThornD()
+{
+	if (this.owner in this.actor)
+	{
+		if (this.actor[this.owner].motion == 2023 && (this.actor[this.owner].keyTake == 1 || this.actor[this.owner].keyTake == 3))
+		{
+			this.x = this.actor[this.owner].point0_x;
+			this.y = this.actor[this.owner].point0_y;
+			this.direction = this.actor[this.owner].direction;
+		}
+		else
+		{
+			this.Release();
+		}
+	}
+	else
+	{
+		this.Release();
+	}
+
+	if (this.UpdateStopCheck())
+	{
+		return false;
+	}
+
+	if (this.keyTake == 1)
+	{
+		this.count++;
+
+		if (this.count == 5)
+		{
+			this.PlaySE(3000);
+		}
+	}
+
+	return true;
+}
+
+function A1_Cutter( t )
+{
+	this.ShotInit(t);
+	this.hitEffect = null;
+	this.SetMotion(2054, 0);
+	this.rz = t.rz;
+	this.flag1 = 2.0 + this.rand() % 11 * 0.1;
+	this.vx = this.flag1 * this.cos(this.rz) * this.direction;
+	this.vy = this.flag1 * this.sin(this.rz);
+	this.flag2 = 3.141592 * 0.050000001;
+	this.count = 0;
+	this.priority = 95;
+	this.hitEvent = function ()
+	{
+		this.hitEvent = null;
+		this.vx = -this.vx;
+		this.vy = -3.0 + this.rand() % 10 * 0.1;
+		this.SetMotion(2054, 1);
+		this.flag2 = -3.141592 * 0.050000001;
+	};
+	this.hitAction = function ( type_, table_ )
+	{
+		this.vx = -this.vx;
+		this.vy = -3.0 + this.rand() % 10 * 0.1;
+		this.SetMotion(2054, 1);
+		this.flag2 = -3.141592 * 0.050000001;
+	};
+	this.SetUpdateFunction(function ()
+	{
+		this.ScrollOut_Object(128.0);
+
+		if (this.UpdateStopCheck())
+		{
+			return false;
+		}
+
+		this.rz += this.flag2;
+
+		if (this.keyTake == 0)
+		{
+			this.count++;
+
+			if (this.count >= 180)
+			{
+				this.SetMotion(2054, 1);
+				return true;
+			}
+		}
+		else
+		{
+			this.vy += 0.1;
+
+			if (this.alpha > 0.02)
+			{
+				this.alpha -= 0.02;
+			}
+			else
+			{
+				this.Release();
+			}
+		}
+
+		return true;
+	});
+}
+
+function A2_Thorn( t )
+{
+	this.ShotInit(t);
+	this.SetMotion(2150, this.rand() % 3);
+	this.rz = this.rand() % 360 * 0.017453292;
+	this.SetCollisionScaling(t.scale, t.scale, 1.0);
+	this.SetEndMotionCallbackFunction(this.EndtoRelease);
+	local t2 = this.DefaultShotTable();
+	t2.scale = 0.40000001;
+	this.BlackSmoke_Small(t2);
+	this.flag1 = t.scale;
+	this.sx = this.sy = 0.0;
+	this.hitAction = function ( type_, table_ )
+	{
+		this.count += 60;
+	};
+	this.SetUpdateFunction(function ()
+	{
+		if (this.UpdateStopCheck())
+		{
+			return false;
+		}
+
+		this.count++;
+		this.sx += 0.15000001;
+
+		if (this.sx > this.flag1)
+		{
+			this.sx = this.flag1;
+		}
+
+		this.sy = this.sx;
+
+		if (this.count >= 300)
+		{
+			local t = this.DefaultShotTable();
+			t.scale = 0.30000001;
+			this.BlackSmoke_Small(t);
+			this.Release();
+		}
+
+		return true;
+	});
+}
+
+function Init_A3_Onpa( t )
+{
+	this.ShotInit(t);
+	this.SetUpdateFunction(this.A3_Onpa);
+	this.hitEffect = null;
+	this.SetMotion(2250, 1);
+	this.vx = 0.0;
+	this.vy = 0.0;
+	this.flag2 = t.scale;
+	this.sx = this.flag2;
+	this.sy = this.sx;
+	this.flag1 = 0.15000001 * this.flag2;
+	this.SetCollisionScaling(this.flag2, this.flag2, 1.0);
+	this.count = 0;
+	this.SetEndMotionCallbackFunction(this.EndtoRelease);
+	local table_ = this.DefaultShotTable();
+	table_.scale = t.scale;
+	this.world2d.CreateActor(this.x, this.y, this.direction, this.Init_A3_OnpaEffect, table_);
+}
+
+function A3_Onpa()
+{
+	if (this.UpdateStopCheck())
+	{
+		return false;
+	}
+
+	this.sx += this.flag1;
+	this.sy = this.sx;
+	this.flag1 *= 0.92000002;
+
+	if (this.flag1 < 0.0099999998)
+	{
+		this.flag1 = 0.0099999998;
+	}
+
+	this.count++;
+
+	if (this.count >= 5)
+	{
+		this.alpha -= 0.050000001;
+
+		if (this.alpha <= 0)
+		{
+			this.Release();
+		}
+	}
+
+	return true;
+}
+
+function Init_A3_OnpaEffect( t )
+{
+	this.ShotInit(t);
+	this.SetUpdateFunction(this.A3_OnpaEffect);
+	this.hitEffect = null;
+	this.SetMotion(2250, 0);
+	this.vx = 0.0;
+	this.vy = 0.0;
+	this.count = 0;
+	this.flag2 = t.scale;
+	this.sx = this.flag2;
+	this.sy = this.sx;
+	this.flag1 = 0.15000001 * this.flag2;
+	this.SetCollisionScaling(this.flag2, this.flag2, 1.0);
+	this.SetEndMotionCallbackFunction(this.EndtoRelease);
+}
+
+function A3_OnpaEffect()
+{
+	if (this.UpdateStopCheck())
+	{
+		return false;
+	}
+
+	this.sx += 0.1 * this.flag2;
+	this.sy = this.sx;
+	this.count++;
+
+	if (this.count >= 3)
+	{
+		this.alpha -= 0.050000001;
+
+		if (this.alpha <= 0)
+		{
+			this.Release();
+		}
+	}
+
+	return true;
+}
+
+function Init_3B_CRT( t )
+{
+	this.ShotInit(t);
+	this.callbackMask = 1;
+	this.SetUpdateFunction(this.Update_3B_CRT);
+	this.hitEffect = null;
+	this.hitEvent = this.Hit_3B_CRT;
+	this.SetMotion(4150, 0);
+	this.sx = t.scale;
+	this.sy = t.scale;
+	this.SetCollisionScaling(t.scale, t.scale, 1.0);
+	this.flag2 = t.flag2;
+	this.vx = this.flag2 * this.cos(t.flag1) * this.direction;
+	this.vy = this.flag2 * this.sin(t.flag1);
+	this.count = 0;
+}
+
+function Init_3B_CRT_Drop( t )
+{
+	this.ShotInit(t);
+	this.callbackMask = 1;
+	this.SetUpdateFunction(this.Update_3B_CRT);
+	this.hitEffect = null;
+	this.hitEvent = this.Hit_3B_CRT;
+	this.SetMotion(4150, 1);
+	this.sx = t.scale;
+	this.sy = t.scale;
+	this.SetCollisionScaling(t.scale, t.scale, 1.0);
+	this.flag2 = t.flag2;
+	this.vx = this.flag2 * this.cos(t.flag1) * this.direction;
+	this.vy = this.flag2 * this.sin(t.flag1);
+	this.count = 0;
+}
+
+function Update_3B_CRT()
+{
+	if (this.UpdateStopCheck())
+	{
+		return false;
+	}
+
+	this.vy += 0.5;
+
+	if (this.keyTake == 0)
+	{
+		this.count++;
+		this.rz = 5.0 * this.sin(this.flag3) * 0.017453292;
+		this.flag3 += 11.5 * 0.017453292;
+
+		if (this.vy > 0.0)
+		{
+			this.callbackMask = 1 | 8 | 4;
+		}
+
+		if (this.count >= 180)
+		{
+			this.Release();
+			return;
+		}
+	}
+	else
+	{
+		this.rz = 10.0 * this.sin(this.flag3) * 0.017453292;
+		this.flag3 += 24.5 * 0.017453292;
+
+		if (this.alpha > 0.050000001)
+		{
+			this.alpha -= 0.050000001;
+		}
+		else
+		{
+			this.Release();
+		}
+	}
+
+	return true;
+}
+
+function Hit_3B_CRT()
+{
+	this.hitEvent = null;
+	this.vy = -5.0;
+	this.SetMotion(4150, 1);
+	this.PlaySE(3503);
+	this.callbackMask = 0;
+}
+
+function Init_3B_Shot( t )
+{
+	this.ShotInit(t);
+	this.callbackMask = 1 | 8 | 4;
+	this.SetUpdateFunction(this.Update_3B_Shot);
+	this.hitEffect = null;
+	this.hitEvent = this.Hit_3B_Shot;
+	this.SetMotion(4151, 0);
+	this.sx = t.scale;
+	this.sy = t.scale;
+	this.SetCollisionScaling(t.scale, t.scale, 1.0);
+	this.flag2 = t.flag2;
+	this.vx = this.flag2 * this.cos(t.flag1) * this.direction;
+	this.vy = this.flag2 * this.sin(t.flag1);
+	this.count = 0;
+}
+
+function Update_3B_Shot()
+{
+	this.ScrollOut_Object(128.0);
+
+	if (this.UpdateStopCheck())
+	{
+		return false;
+	}
+
+	if (this.keyTake == 0)
+	{
+		this.count++;
+
+		if (this.count % 4 == 0)
+		{
+			this.rz = this.rand() % 360 * 0.017453292;
+		}
+
+		if (this.count >= 180)
+		{
+			this.Hit_3B_Shot();
+			return true;
+		}
+	}
+	else
+	{
+		this.sx *= 0.92000002;
+		this.sy = this.sx;
+
+		if (this.alpha > 0.050000001)
+		{
+			this.alpha -= 0.050000001;
+		}
+		else
+		{
+			this.Release();
+		}
+	}
+
+	return true;
+}
+
+function Hit_3B_Shot()
+{
+	this.hitEvent = null;
+	this.vx = 0.0;
+	this.vy = 0.0;
+	this.SetMotion(4151, 1);
+}
+
+function Init_3B_Display( t )
+{
+	this.ShotInit(t);
+	this.SetUpdateFunction(this.Update_3B_Display);
+	this.SetMotion(4151, 2);
+	this.sx = t.scale;
+	this.sy = this.sx;
+}
+
+function Update_3B_Display()
+{
+	if (this.flag1 == 0)
+	{
+		if (this.owner in this.actor)
+		{
+			if (this.actor[this.owner].motion != 4121)
+			{
+				this.Release();
+				return true;
+			}
+			else if (this.actor[this.owner].keyTake > 1)
+			{
+				if (this.alpha > 0.050000001)
+				{
+					this.alpha -= 0.050000001;
+				}
+				else
+				{
+					this.Release();
+					return true;
+				}
+			}
+
+			this.direction = this.actor[this.owner].direction;
+			this.x = this.actor[this.owner].point0_x;
+			this.y = this.actor[this.owner].point0_y;
+		}
+	}
+
+	return true;
+}
+
+function Init_4B_Poison( t )
+{
+	this.ShotInit(t);
+	this.callbackMask = 1 | 8 | 4;
+	this.SetUpdateFunction(this.Update_4B_Poison);
+	this.hitEffect = null;
+	this.hitEvent = this.Hit_4B_Poison;
+	this.hitAction = function ( type_, table_ )
+	{
+		this.hitAction = null;
+		this.Hit_4B_Poison();
+	};
+	this.SetMotion(6150, 0);
+	this.sx = t.scale;
+	this.sy = t.scale;
+	this.SetCollisionScaling(t.scale, t.scale, 1.0);
+	this.flag2 = 2.5 + this.rand() % 11 * 0.1;
+	this.vx = this.flag2 * this.cos(t.flag1) * this.direction;
+	this.vy = this.flag2 * this.sin(t.flag1);
+	this.vx += 0.80000001 - this.rand() % 17 * 0.1;
+	this.flag1 = 0.0;
+	this.count = 0;
+	this.SetEndMotionCallbackFunction(this.EndtoRelease);
+}
+
+function Update_4B_Poison()
+{
+	this.ScrollOut_Object(128.0);
+
+	if (this.UpdateStopCheck())
+	{
+		return false;
+	}
+
+	this.vy += 0.0;
+	this.rz += 0.1;
+	this.flag1 += 0.1;
+	this.count++;
+	local t = this.DefaultShotTable();
+	t.scale = this.sx;
+
+	if (this.count % 2 == 0)
+	{
+		this.world2d.CreateActor(this.x, this.y, this.direction, this.Init_4B_PoisonTrail, t);
+	}
+
+	if (this.hitTarget.len() > 0)
+	{
+		this.Hit_4B_Poison();
+	}
+
+	return true;
+}
+
+function Hit_4B_Poison()
+{
+	for( local i = 0; i < 4; i++ )
+	{
+		local t = this.DefaultShotTable();
+		t.scale = this.sx;
+		t.flag1 = 2.0 + this.rand() % 30 * 0.1;
+		t.flag2 = this.rand() % 360 * 0.017453292;
+		t.scale = this.sx;
+		this.world2d.CreateActor(this.x, this.y, this.direction, this.Init_4B_PoisonTrail, t);
+	}
+
+	this.hitEvent = null;
+	this.Release();
+}
+
+function Init_4B_PoisonTrail( t )
+{
+	this.ShotInit(t);
+	this.SetUpdateFunction(this.Update_4B_PoisonTrail);
+	this.SetMotion(6150, 1);
+	this.rz = 0.017453292 * this.rand() % 360;
+	this.sx = (0.5 + this.rand() % 6 * 0.1) * t.scale;
+	this.sy = this.sx;
+	this.vx = t.flag1 * this.cos(t.flag2) * this.direction;
+	this.vy = t.flag1 * this.sin(t.flag2);
+	this.count = 0;
+	this.flag1 = 0.050000001 + this.rand() % 3 * 0.050000001;
+	this.SetEndMotionCallbackFunction(this.EndtoRelease);
+}
+
+function Update_4B_PoisonTrail()
+{
+	this.ScrollOut_Object(128.0);
+
+	if (this.UpdateStopCheck())
+	{
+		return false;
+	}
+
+	this.vy += 0.1;
+	this.vx *= 0.98000002;
+	this.sx += 0.0099999998;
+	this.sy = this.sx;
+
+	if (this.alpha > this.flag1)
+	{
+		this.alpha -= this.flag1;
+	}
+	else
+	{
+		this.Release();
+	}
+
+	return true;
+}
+
+function Init_4C_Fire( t )
+{
+	this.ShotInit(t);
+	this.SetUpdateFunction(this.Update_4C_Fire);
+	this.hitEffect = null;
+	this.SetMotion(6250, 0);
+	this.sx = t.scale;
+	this.sy = t.scale;
+	this.SetCollisionScaling(t.scale, t.scale, 1.0);
+	this.flag2 = 3.5 + this.rand() % 6 * 0.1;
+	this.flag1 = t.flag1;
+	this.flag1 += (5 - this.rand() % 11) * 0.017453292;
+	this.vx = this.flag2 * this.cos(this.flag1) * this.direction;
+	this.vy = this.flag2 * this.sin(this.flag1);
+	this.count = 0;
+	this.SetEndMotionCallbackFunction(this.EndtoRelease);
+}
+
+function Update_4C_Fire()
+{
+	this.ScrollOut_Object(128.0);
+
+	if (this.UpdateStopCheck())
+	{
+		return false;
+	}
+
+	this.vy -= 0.02;
+	this.sx += 0.001;
+	this.sy = this.sx;
+	this.rz += 0.1;
+	this.count++;
+	local t = this.DefaultShotTable();
+	t.scale = this.sx;
+
+	if (this.count % 2 == 0)
+	{
+		this.world2d.CreateActor(this.x, this.y, this.direction, this.Init_4C_FireTrail, t);
+	}
+
+	if (this.count > 120)
+	{
+		this.hitTarget = null;
+
+		if (this.alpha > 0.050000001)
+		{
+			this.alpha -= 0.050000001;
+		}
+		else
+		{
+			this.Release();
+		}
+	}
+
+	return true;
+}
+
+function Init_4C_FireTrail( t )
+{
+	this.ShotInit(t);
+	this.SetUpdateFunction(this.Update_4C_FireTrail);
+	this.SetMotion(6250, 1);
+	this.rz = 0.017453292 * this.rand() % 360;
+	this.sx = (0.5 + this.rand() % 6 * 0.1) * t.scale;
+	this.sy = this.sx;
+	this.vx = t.flag1 * this.cos(t.flag2) * this.direction;
+	this.vy = t.flag1 * this.sin(t.flag2);
+	this.count = 0;
+	this.flag1 = 0.050000001 + this.rand() % 3 * 0.050000001;
+	this.SetEndMotionCallbackFunction(this.EndtoRelease);
+}
+
+function Update_4C_FireTrail()
+{
+	this.ScrollOut_Object(128.0);
+
+	if (this.UpdateStopCheck())
+	{
+		return false;
+	}
+
+	this.vy -= 0.1;
+	this.vx *= 0.98000002;
+	this.sx += 0.02;
+	this.sy = this.sx;
+
+	if (this.alpha > this.flag1)
+	{
+		this.alpha -= this.flag1;
+	}
+	else
+	{
+		this.Release();
+	}
+
+	return true;
+}
+
+function WarpOut_6A( t )
+{
+	this.ShotInit(t);
+	this.SetMotion(7099, 0);
+	this.rz = 0.017453292 * this.rand() % 360;
+	this.SetEndMotionCallbackFunction(this.EndtoRelease);
+	this.SetUpdateFunction(function ()
+	{
+		if (this.UpdateStopCheck())
+		{
+			return false;
+		}
+
+		return true;
+	});
+}
+
+function Shot_6A( t )
+{
+	this.ShotInit(t);
+	this.PlaySE(3801);
+	this.SetNearTarget();
+	this.SetMotion(7050, 0);
+	this.u.TotalCount <- 0;
+	this.rz = 0.017453292 * this.rand() % 360;
+	this.SetEndMotionCallbackFunction(this.EndtoRelease);
+	this.hitAction = function ( type_, table_ )
+	{
+		this.PlaySE(3802);
+		this.vx = 0.0;
+		this.vy = 0.0;
+		this.SetMotion(7050, 2);
+	};
+	this.SetUpdateFunction(function ()
+	{
+		if (this.UpdateStopCheck())
+		{
+			return false;
+		}
+
+		this.count++;
+		this.u.TotalCount++;
+
+		if (this.u.TotalCount >= 600 || this.hitTarget.len() > 0 || !this.target in this.actor)
+		{
+			this.vx = 0.0;
+			this.vy = 0.0;
+
+			if (this.keyTake <= 1)
+			{
+				this.PlaySE(3802);
+				this.SetMotion(7050, 2);
+			}
+		}
+		else
+		{
+			switch(this.flag3)
+			{
+			case 0:
+				if (this.count >= 120)
+				{
+					this.count = 0;
+
+					if ((this.target in this.actor) && this.target != null)
+					{
+						this.flag2 = this.atan2(this.actor[this.target].y - 40.0 - this.y, this.actor[this.target].x - this.x);
+						this.flag3 = 1;
+						this.PlaySE(3806);
+					}
+				}
+
+				break;
+
+			case 1:
+				this.flag1 += 0.050000001;
+
+				if (this.flag1 >= 3.0)
+				{
+					this.flag1 = 3.0;
+				}
+
+				if (this.count >= 60)
+				{
+					this.count = 0;
+					this.flag3 = 2;
+				}
+
+				break;
+
+			case 2:
+				this.flag1 -= 0.1;
+
+				if (this.flag1 < 0.0)
+				{
+					this.flag1 = 0.0;
+				}
+
+				if (this.count >= 60)
+				{
+					this.count = 0;
+					this.flag3 = 0;
+				}
+
+				break;
+			}
+
+			this.rz += 0.050000001;
+			this.vx = this.flag1 * this.cos(this.flag2);
+			this.vy = this.flag1 * this.sin(this.flag2);
+		}
+
+		return true;
+	});
+}
+
+function Beam_6A_Core( t )
+{
+	this.ShotInit(t);
+	this.PlaySE(3803);
+	this.SetMotion(7051, 0);
+	this.u.TotalCount <- 0;
+	this.rz = t.rz;
+	this.SetEndTakeCallbackFunction(this.KeyActionCheck);
+	this.keyAction = [
+		null,
+		null,
+		this.EndtoRelease
+	];
+	this.SetEndMotionCallbackFunction(this.EndtoRelease);
+	this.SetUpdateFunction(function ()
+	{
+		if (this.UpdateStopCheck())
+		{
+			return false;
+		}
+
+		this.count++;
+		this.u.TotalCount++;
+
+		if (this.keyTake <= 1)
+		{
+			if (this.owner in this.actor)
+			{
+				local a = this.actor[this.owner];
+
+				if (a.motion == 7023)
+				{
+					if (this.count == 10)
+					{
+						local t = this.DefaultShotTable();
+						t.rz = this.rz;
+						this.option = this.world2d.CreateActor(this.x, this.y, this.direction, this.Beam_6A, t);
+					}
+
+					if (this.count >= 100)
+					{
+						if (this.option)
+						{
+							this.option.func();
+						}
+
+						this.SetMotion(7051, 2);
+					}
+
+					if (a.keyTake <= 2)
+					{
+						this.x = a.point0_x;
+						this.y = a.point0_y;
+
+						if (this.option)
+						{
+							this.option.x = this.x;
+							this.option.y = this.y;
+						}
+					}
+					else
+					{
+						if (this.option)
+						{
+							this.option.func();
+						}
+
+						this.SetMotion(7051, 2);
+					}
+				}
+				else
+				{
+					if (this.option)
+					{
+						this.option.func();
+					}
+
+					this.SetMotion(7051, 2);
+				}
+			}
+		}
+
+		return true;
+	});
+}
+
+function Beam_6A( t )
+{
+	this.ShotInit(t);
+	this.SetMotion(7051, 3);
+	this.priority = 250;
+	this.u.TotalCount <- 0;
+	this.rz = t.rz;
+	this.SetEndMotionCallbackFunction(this.EndtoRelease);
+	this.func = function ()
+	{
+		this.SetMotion(7051, 5);
+		this.func = null;
+	};
+	this.SetUpdateFunction(function ()
+	{
+		if (this.UpdateStopCheck())
+		{
+			return false;
+		}
+
+		this.count++;
+
+		if (this.keyTake == 3)
+		{
+			if (this.count >= 60)
+			{
+				this.PlaySE(3804);
+				this.SetMotion(7051, 4);
+			}
+		}
+
+		return true;
+	});
+}
+
+function Shot_6B( t )
+{
+	this.ShotInit(t);
+	this.PlaySE(3801);
+	this.SetMotion(7150, 0);
+	this.u.TotalCount <- 0;
+	this.rz = 0.017453292 * this.rand() % 360;
+	this.vx = 3.0 * this.direction;
+	this.vy = 0.0;
+	this.hitAction = function ( type_, table_ )
+	{
+		this.PlaySE(3802);
+		this.vx = 0.0;
+		this.vy = 0.0;
+		this.SetMotion(7150, 2);
+	};
+	this.SetEndMotionCallbackFunction(this.EndtoRelease);
+	this.func = function ()
+	{
+		this.PlaySE(3802);
+		this.vx = 0.0;
+		this.vy = 0.0;
+		this.SetMotion(7150, 2);
+	};
+	this.SetUpdateFunction(function ()
+	{
+		if (this.UpdateStopCheck())
+		{
+			return false;
+		}
+
+		this.count++;
+		this.u.TotalCount++;
+
+		if (this.u.TotalCount >= 600 || this.hitTarget.len() > 0 || !this.target in this.actor)
+		{
+			if (this.keyTake <= 1)
+			{
+				this.func();
+			}
+		}
+
+		return true;
+	});
+}
+
+function Trail_6B_Assult( t )
+{
+	this.ShotInit(t);
+	this.SetMotion(7151, 0);
+	this.rz = 0.017453292 * this.rand() % 360;
+	this.vx = -1.0 + this.rand() % 21 * 0.1;
+	this.vy = -1.0;
+	this.SetUpdateFunction(function ()
+	{
+		if (this.UpdateStopCheck())
+		{
+			return false;
+		}
+
+		this.vy += 0.34999999;
+		this.sx *= 0.98000002;
+		this.sy = this.sx;
+
+		if (this.sx <= 0.0099999998)
+		{
+			this.Release();
+		}
+
+		return true;
+	});
+}
+

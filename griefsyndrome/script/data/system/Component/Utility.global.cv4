@@ -1,0 +1,114 @@
+function OnCreate()
+{
+	this.thisAct.DrawNumber14 <- this.DrawNumber14.bindenv(this);
+	this.pl.BeginStage(0);
+}
+
+function Init()
+{
+}
+
+function Update()
+{
+}
+
+function DrawNumber14( _pl, _x, _y, _num, _digit, _alpha )
+{
+	local zeroNoDraw = _digit <= -1;
+	_digit = this.abs(_digit);
+
+	if (_digit >= 1)
+	{
+		_x += _digit * 11;
+	}
+
+	if (_num == 0 && _digit != 0)
+	{
+		_pl.BitBlt(_x, _y, 14, 19, this.resource.num14x19, 0, 0, this.BLEND_ALPHA, _alpha);
+	}
+
+	while (_num != 0 || !zeroNoDraw && _digit >= 1)
+	{
+		local code = _num % 10;
+		_pl.BitBlt(_x, _y, 14, 19, this.resource.num14x19, code * 14, 0, this.BLEND_ALPHA, _alpha);
+		_num /= 10;
+		_x -= 11;
+		_digit--;
+	}
+}
+
+function DrawNumber20( _pl, _x, _y, _num, _digit, _alpha )
+{
+	local zeroNoDraw = _digit <= -1;
+	_digit = this.abs(_digit);
+
+	if (_digit >= 1)
+	{
+		_x += _digit * 17;
+	}
+
+	if (_num == 0 && _digit != 0)
+	{
+		_pl.BitBlt(_x, _y, 36, 19, this.resource.num20x36, 0, 0, this.BLEND_ALPHA, _alpha);
+	}
+
+	while (_num != 0 || !zeroNoDraw && _digit >= 1)
+	{
+		local code = _num % 10;
+		_pl.BitBlt(_x, _y, 36, 19, this.resource.num20x36, code * 36, 0, this.BLEND_ALPHA, _alpha);
+		_num /= 10;
+		_x -= 17;
+		_digit--;
+	}
+}
+
+function DrawNumber20R( _pl, _x, _y, _num, _digit, _alpha )
+{
+	local zeroNoDraw = _digit <= -1;
+	_digit = this.abs(_digit);
+
+	if (_digit >= 1)
+	{
+		_x += _digit * 17;
+	}
+
+	if (_num == 0 && _digit != 0)
+	{
+		_pl.BitBlt(_x, _y, 36, 19, this.resource.num20x36R, 0, 0, this.BLEND_ALPHA, _alpha);
+	}
+
+	while (_num != 0 || !zeroNoDraw && _digit >= 1)
+	{
+		local code = _num % 10;
+		_pl.BitBlt(_x, _y, 36, 19, this.resource.num20x36R, code * 36, 0, this.BLEND_ALPHA, _alpha);
+		_num /= 10;
+		_x -= 17;
+		_digit--;
+	}
+}
+
+function DrawNumber32( _pl, _x, _y, _num, _digit, _alpha )
+{
+	local zeroNoDraw = _digit <= -1;
+	_digit = this.abs(_digit);
+
+	if (_digit >= 1)
+	{
+		_x += _digit * 28;
+	}
+
+	if (_num == 0 && _digit != 0)
+	{
+		_pl.BitBlt(_x, _y, 60, 19, this.resource.num20x36R, 0, 0, this.BLEND_ALPHA, _alpha);
+	}
+
+	while (_num != 0 || !zeroNoDraw && _digit >= 1)
+	{
+		local code = _num % 10;
+		_pl.BitBlt(_x, _y, 60, 19, this.resource.num20x36R, code * 60, 0, this.BLEND_ALPHA, _alpha);
+		_num /= 10;
+		_x -= 28;
+		_digit--;
+	}
+}
+

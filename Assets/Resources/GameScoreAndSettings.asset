@@ -1,0 +1,135 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 313b2d6938c7ddd4890779c79cd6dffe, type: 3}
+  m_Name: GameScoreAndSettings
+  m_EditorClassIdentifier: 
+  MaxFps: 60
+  Score: 000000000000000000000000
+  HiScore: 10000
+  HiScoreFace: 070000000700000007000000
+  Hits: 0
+  MaxHits: 0
+  MaxHitsFace: 070000000700000007000000
+  Time: 0
+  BestTime: 0
+  BestTimeFace: 070000000700000007000000
+  lap: 1
+  LastLap: 1
+  SelectedGirlInGame: 070000000700000007000000
+  Level: 010000000100000001000000
+  SoulLimitInGame: d04d00000000000000000000
+  VitInGame: 580000000000000000000000
+  PowInGame: 000000000000000000000000
+  MagiaKeyDown: 000000
+  MaxVitInGame: 580000000000000000000000
+  HurtVitInGame: 000000000000000000000000
+  GetHurtInGame: 000000
+  IsBodyDieInGame: 000000
+  IsSoulBallInGame: 000000
+  MagicalGirlsDie: 0000000000
+  MajoBeingBattled: 0
+  NewestMajo: 0
+  AllowOktavia: 0
+  MajoKeikaiToSelectPart: 0
+  mahouShoujos:
+  - name: Homura
+    BasicPow: 10
+    PowGrowth: 1
+    MaxPow: 108
+    BasicSoulLimit: 17460
+    SoulGrowth: 102
+    MaxSoul: 27456
+    BasicVit: 88
+    VitGrowth: 04000000030000000200000001000000
+    VitGrowthLevelLimit: 01000000060000000d00000013000000
+    MaxVit: 221
+    Recovery: 18
+    Rebirth: 30
+    MaigaVit: 50
+    LongMagia: 0
+  - name: Kyoko
+    BasicPow: 10
+    PowGrowth: 1
+    MaxPow: 108
+    BasicSoulLimit: 23742
+    SoulGrowth: 87
+    MaxSoul: 32268
+    BasicVit: 95
+    VitGrowth: 0500000004000000030000000200000001000000
+    VitGrowthLevelLimit: 01000000060000000d000000130000001a000000
+    MaxVit: 253
+    Recovery: 18
+    Rebirth: 30
+    MaigaVit: 35
+    LongMagia: 0
+  - name: Madoka
+    BasicPow: 10
+    PowGrowth: 1
+    MaxPow: 108
+    BasicSoulLimit: 28875
+    SoulGrowth: 128
+    MaxSoul: 41419
+    BasicVit: 92
+    VitGrowth: 04000000030000000200000001000000
+    VitGrowthLevelLimit: 01000000060000000d00000013000000
+    MaxVit: 225
+    Recovery: 18
+    Rebirth: 30
+    MaigaVit: 45
+    LongMagia: 1
+  - name: Mami
+    BasicPow: 10
+    PowGrowth: 1
+    MaxPow: 108
+    BasicSoulLimit: 22278
+    SoulGrowth: 84
+    MaxSoul: 30510
+    BasicVit: 110
+    VitGrowth: 0500000004000000030000000200000001000000
+    VitGrowthLevelLimit: 01000000060000000d000000130000001a000000
+    MaxVit: 268
+    Recovery: 18
+    Rebirth: 30
+    MaigaVit: 100
+    LongMagia: 1
+  - name: Sayaka
+    BasicPow: 10
+    PowGrowth: 1
+    MaxPow: 108
+    BasicSoulLimit: 19935
+    SoulGrowth: 81
+    MaxSoul: 27873
+    BasicVit: 88
+    VitGrowth: 060000000500000004000000030000000200000001000000
+    VitGrowthLevelLimit: 01000000060000000d000000130000001a00000021000000
+    MaxVit: 328
+    Recovery: 6
+    Rebirth: 9
+    MaigaVit: 20
+    LongMagia: 0
+  - name: Homura_m
+    BasicPow: 10
+    PowGrowth: 1
+    MaxPow: 108
+    BasicSoulLimit: 17460
+    SoulGrowth: 102
+    MaxSoul: 27456
+    BasicVit: 88
+    VitGrowth: 04000000030000000200000001000000
+    VitGrowthLevelLimit: 01000000060000000d00000013000000
+    MaxVit: 221
+    Recovery: 18
+    Rebirth: 30
+    MaigaVit: 50
+    LongMagia: 0
+  BGMVol: 0.6
+  SEVol: 0.7

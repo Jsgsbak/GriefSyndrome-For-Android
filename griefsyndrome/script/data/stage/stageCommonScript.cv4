@@ -1,0 +1,386 @@
+function MapOut_Normal( stage_ )
+{
+	if (!this.game.gameOver)
+	{
+		::stage.warpTarget <- stage_;
+		this.FaderAct.FadeOut(60, 0, function ()
+		{
+			this.ChangeMap(::stage.warpTarget);
+		});
+	}
+}
+
+function MapOut_Normal_White( stage_ )
+{
+	if (!this.game.gameOver)
+	{
+		::stage.warpTarget <- stage_;
+		this.FaderAct.FadeOut(60, 16777215, function ()
+		{
+			this.ChangeMap(::stage.warpTarget);
+		});
+	}
+}
+
+function MapOut_White( stage_ )
+{
+	if (!this.game.gameOver)
+	{
+		::stage.warpTarget <- stage_;
+		this.FaderAct.FadeOut(40, 16777215, function ()
+		{
+			this.ChangeMap(::stage.warpTarget);
+		});
+	}
+}
+
+function MapOut_Direct( stage_ )
+{
+	if (!this.game.gameOver)
+	{
+		::stage.warpTarget <- stage_;
+		this.FaderAct.FadeOut(1, 16777215, function ()
+		{
+			this.ChangeMap(::stage.warpTarget);
+		});
+	}
+}
+
+function MapOut_WalkRight( stage_ )
+{
+	if (!this.game.gameOver)
+	{
+		local C_ = true;
+		::stage.warpTarget <- stage_;
+
+		for( local i = 1; i < 4; i++ )
+		{
+			if ("player" + i in ::actor)
+			{
+				local p_ = ::actor["player" + i];
+
+				if (p_.isActive || this.game.gameOver)
+				{
+					C_ = false;
+				}
+
+				if (p_.u.walkPushCount >= 1 && p_.motion == p_.u.CA + 1)
+				{
+					if (this.Stage_PlayerStayCheck("player" + i, this.x, this.y, 64.0, 800.0))
+					{
+						if (p_.invin <= 0)
+						{
+							this.LabelClear();
+							p_.invin = 30;
+							p_.count = 0;
+							local upd_ = function ()
+							{
+								this.Update_Gauge();
+
+								if (this.motion != this.u.CA + 1)
+								{
+									this.SetMotion(this.u.CA + 1, 0);
+								}
+
+								this.invin = 30;
+								this.direction = 1.0;
+								this.vx = 3.0;
+								this.immuneGravity = true;
+								this.collisionMask = 8 | 4;
+								this.count++;
+
+								if (this.count >= 60)
+								{
+									this.isActive = false;
+								}
+
+								return true;
+							};
+							p_.SetUpdateFunction(upd_);
+						}
+					}
+				}
+			}
+		}
+
+		if (C_)
+		{
+			this.Game_CountStop();
+			this.FaderAct.FadeOut(60, 0, function ()
+			{
+				this.ChangeMap(::stage.warpTarget);
+			});
+			this.ReleaseStageActor();
+		}
+	}
+}
+
+function MapOut_WalkRight_White( stage_ )
+{
+	if (!this.game.gameOver)
+	{
+		local C_ = true;
+		::stage.warpTarget <- stage_;
+
+		for( local i = 1; i < 4; i++ )
+		{
+			if ("player" + i in ::actor)
+			{
+				local p_ = ::actor["player" + i];
+
+				if (p_.isActive || this.game.gameOver)
+				{
+					C_ = false;
+				}
+
+				if (p_.u.walkPushCount >= 1 && p_.motion == p_.u.CA + 1)
+				{
+					if (this.Stage_PlayerStayCheck("player" + i, this.x, this.y, 64.0, 800.0))
+					{
+						if (p_.invin <= 0)
+						{
+							this.LabelClear();
+							p_.invin = 30;
+							p_.count = 0;
+							local upd_ = function ()
+							{
+								this.Update_Gauge();
+
+								if (this.motion != this.u.CA + 1)
+								{
+									this.SetMotion(this.u.CA + 1, 0);
+								}
+
+								this.invin = 30;
+								this.direction = 1.0;
+								this.vx = 3.0;
+								this.immuneGravity = true;
+								this.collisionMask = 8 | 4;
+								this.count++;
+
+								if (this.count >= 60)
+								{
+									this.isActive = false;
+								}
+
+								return true;
+							};
+							p_.SetUpdateFunction(upd_);
+						}
+					}
+				}
+			}
+		}
+
+		if (C_)
+		{
+			this.Game_CountStop();
+			this.FaderAct.FadeOut(60, 16777215, function ()
+			{
+				this.ChangeMap(::stage.warpTarget);
+			});
+			this.ReleaseStageActor();
+		}
+	}
+}
+
+function MapOut_Fall( stage_ )
+{
+	if (!this.game.gameOver)
+	{
+		local C_ = true;
+		::stage.warpTarget <- stage_;
+
+		for( local i = 1; i < 4; i++ )
+		{
+			if ("player" + i in ::actor)
+			{
+				local p_ = ::actor["player" + i];
+
+				if (p_.isActive || this.game.gameOver)
+				{
+					C_ = false;
+				}
+
+				if (p_.y >= ::stage.scrollBottom + 192.0)
+				{
+					p_.isActive = false;
+				}
+			}
+		}
+
+		if (C_)
+		{
+			this.Game_CountStop();
+			this.FaderAct.FadeOut(60, 0, function ()
+			{
+				this.ChangeMap(::stage.warpTarget);
+			});
+			this.ReleaseStageActor();
+		}
+	}
+}
+
+function MapIn_Normal()
+{
+	for( local i = 1; i < 4; i++ )
+	{
+		if ("player" + i in ::actor)
+		{
+			local p_ = this.actor["player" + i];
+
+			if (p_.soul > 0)
+			{
+				p_.isActive = true;
+				p_.invin = 30;
+				p_.count = 0;
+				p_.isAir = false;
+			}
+			else
+			{
+				p_.isActive = false;
+			}
+		}
+	}
+}
+
+function MapIn_WalkRight()
+{
+	for( local i = 1; i < 4; i++ )
+	{
+		if ("player" + i in ::actor)
+		{
+			local p_ = this.actor["player" + i];
+
+			if (p_.soul > 0)
+			{
+				p_.isActive = true;
+				p_.invin = 30;
+				p_.count = 0;
+				p_.isAir = false;
+			}
+
+			local f = function ()
+			{
+				this.Update_Gauge();
+
+				if (this.motion != this.u.CA + 1)
+				{
+					this.SetMotion(this.u.CA + 1, 0);
+				}
+
+				this.invin = 30;
+				this.direction = 1.0;
+				this.vx = 3.0;
+				this.vy += 0.5;
+				this.setG = 0.5;
+				this.isAir = false;
+				this.immuneGravity = false;
+				this.collisionMask = 8 | 4;
+				this.count++;
+
+				if (this.count >= 90)
+				{
+					this.collisionMask = this.collisionMask = 8 | 4 | 16;
+					this.SetUpdateFunction(this.u.Update_Normal);
+					this.count = 0;
+				}
+
+				return true;
+			};
+			p_.SetUpdateFunction(f);
+		}
+	}
+}
+
+function MapIn_WalkLeft()
+{
+	for( local i = 1; i < 4; i++ )
+	{
+		if ("player" + i in ::actor)
+		{
+			local p_ = this.actor["player" + i];
+
+			if (p_.soul > 0)
+			{
+				p_.isActive = true;
+				p_.invin = 30;
+				p_.count = 0;
+				p_.isAir = false;
+			}
+
+			local f = function ()
+			{
+				this.Update_Gauge();
+
+				if (this.motion != this.u.CA + 1)
+				{
+					this.SetMotion(this.u.CA + 1, 0);
+				}
+
+				this.invin = 30;
+				this.direction = -1.0;
+				this.vx = -3.0;
+				this.vy += 0.5;
+				this.setG = 0.5;
+				this.isAir = false;
+				this.immuneGravity = false;
+				this.collisionMask = 8 | 4;
+				this.count++;
+
+				if (this.count >= 90)
+				{
+					this.collisionMask = this.collisionMask = 8 | 4 | 16;
+					this.SetUpdateFunction(this.u.Update_Normal);
+					this.count = 0;
+				}
+
+				return true;
+			};
+			p_.SetUpdateFunction(f);
+		}
+	}
+}
+
+function MapIn_Fall()
+{
+	for( local i = 1; i < 4; i++ )
+	{
+		if ("player" + i in ::actor)
+		{
+			local p_ = this.actor["player" + i];
+
+			if (p_.soul > 0)
+			{
+				p_.isActive = true;
+				p_.invin = 30;
+				p_.count = 0;
+				p_.isAir = true;
+				p_.immuneGravity = false;
+				p_.SetMotion(p_.u.CA + 8, 0);
+			}
+
+			local f = function ()
+			{
+				this.Update_Gauge();
+				this.invin = 30;
+				this.direction = 1.0;
+				this.collisionMask = 8 | 4;
+				this.vy += 0.5;
+
+				if (this.hitBottom)
+				{
+					this.collisionMask = this.collisionMask = 8 | 4 | 16;
+					this.SetUpdateFunction(this.u.Update_Normal);
+					this.isAir = false;
+					this.vy += 0.5;
+					this.count = 0;
+				}
+
+				return true;
+			};
+			p_.SetUpdateFunction(f);
+		}
+	}
+}
+

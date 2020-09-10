@@ -1,0 +1,662 @@
+fileFormatVersion: 2
+guid: 3dc45afcb65e55e458144c82a8d2656b
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 856905764964590021
+    second: p2_selected
+  - first:
+      213: 4393339232655258629
+    second: Gertrud_selected
+  - first:
+      213: 3985654948791652660
+    second: Elly_selected
+  - first:
+      213: 1501139532262753209
+    second: Homura_m
+  - first:
+      213: 5735238407672244771
+    second: Madoka
+  - first:
+      213: 1594096210759172400
+    second: Homura
+  - first:
+      213: 4515775718473629044
+    second: p2
+  - first:
+      213: 6168716860045255432
+    second: Gertrud
+  - first:
+      213: 4676927256621686358
+    second: Elly
+  - first:
+      213: 5594094411109539170
+    second: p3_selected
+  - first:
+      213: 1463844883038779402
+    second: p3
+  - first:
+      213: 8136710130675492332
+    second: Charlotte
+  - first:
+      213: 9084104736623251643
+    second: Elsa Maria_selected
+  - first:
+      213: -1459217407209300922
+    second: p1_selected
+  - first:
+      213: 4845946918894555040
+    second: Charlotte_select
+  - first:
+      213: -3868090303665839443
+    second: Elsa Maria
+  - first:
+      213: -4167047826702802995
+    second: p1
+  - first:
+      213: 5591921962209487030
+    second: Oktavia
+  - first:
+      213: -8540504917331962801
+    second: Sayaka
+  - first:
+      213: 1743543073810817000
+    second: Kyoko
+  - first:
+      213: -2230002818210899402
+    second: Mami
+  - first:
+      213: 8913870899364140771
+    second: Return To Title
+  - first:
+      213: 5134221921996524213
+    second: Oktavia_selected
+  - first:
+      213: -8918268372864261744
+    second: ReturnLogo
+  - first:
+      213: -6873341469822673457
+    second: Pointer
+  - first:
+      213: 997243601692206168
+    second: Walpurgisnacht
+  - first:
+      213: -1769510634890371425
+    second: Walpurgisnacht_selected
+  - first:
+      213: -114410015536576852
+    second: StageSelect_27
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: p2_selected
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1940
+        width: 228
+        height: 108
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5c1e2bec04754eb00800000000000000
+      internalID: 856905764964590021
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gertrud_selected
+      rect:
+        serializedVersion: 2
+        x: 272
+        y: 1828
+        width: 340
+        height: 217
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 504343451c648fc30800000000000000
+      internalID: 4393339232655258629
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Elly_selected
+      rect:
+        serializedVersion: 2
+        x: 656
+        y: 1828
+        width: 340
+        height: 217
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 431110c1f04ef4730800000000000000
+      internalID: 3985654948791652660
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Homura_m
+      rect:
+        serializedVersion: 2
+        x: 1025
+        y: 1027
+        width: 332
+        height: 1021
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9b341d2837e15d410800000000000000
+      internalID: 1501139532262753209
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Madoka
+      rect:
+        serializedVersion: 2
+        x: 1368
+        y: 1027
+        width: 338
+        height: 1021
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 32a2b77f1f8a79f40800000000000000
+      internalID: 5735238407672244771
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Homura
+      rect:
+        serializedVersion: 2
+        x: 1710
+        y: 1025
+        width: 338
+        height: 1021
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 031c81cce0e5f1610800000000000000
+      internalID: 1594096210759172400
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gertrud
+      rect:
+        serializedVersion: 2
+        x: 272
+        y: 1579
+        width: 340
+        height: 216
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 803e5fa0d4fab9550800000000000000
+      internalID: 6168716860045255432
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Elly
+      rect:
+        serializedVersion: 2
+        x: 656
+        y: 1579
+        width: 340
+        height: 216
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 65e174b7f88c7e040800000000000000
+      internalID: 4676927256621686358
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: p3_selected
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1580
+        width: 228
+        height: 111
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 26d9e266a3732ad40800000000000000
+      internalID: 5594094411109539170
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Charlotte
+      rect:
+        serializedVersion: 2
+        x: 272
+        y: 1311
+        width: 340
+        height: 216
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ce52c33f0c66be070800000000000000
+      internalID: 8136710130675492332
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Elsa Maria_selected
+      rect:
+        serializedVersion: 2
+        x: 656
+        y: 1320
+        width: 340
+        height: 216
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bb05fd8d029311e70800000000000000
+      internalID: 9084104736623251643
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: p1_selected
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 1208
+        width: 221
+        height: 113
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 64c1939df71dfbbe0800000000000000
+      internalID: -1459217407209300922
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Charlotte_select
+      rect:
+        serializedVersion: 2
+        x: 272
+        y: 1022
+        width: 340
+        height: 216
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0afcb1d3c03404340800000000000000
+      internalID: 4845946918894555040
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Elsa Maria
+      rect:
+        serializedVersion: 2
+        x: 656
+        y: 1034
+        width: 340
+        height: 216
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: da26dd2ec58c15ac0800000000000000
+      internalID: -3868090303665839443
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Oktavia
+      rect:
+        serializedVersion: 2
+        x: 656
+        y: 803
+        width: 340
+        height: 216
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6b8a339b56f7a9d40800000000000000
+      internalID: 5591921962209487030
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sayaka
+      rect:
+        serializedVersion: 2
+        x: 1027
+        y: 0
+        width: 338
+        height: 1019
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f4493f7f6080a7980800000000000000
+      internalID: -8540504917331962801
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kyoko
+      rect:
+        serializedVersion: 2
+        x: 1372
+        y: 0
+        width: 338
+        height: 1020
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8ef161d103f423810800000000000000
+      internalID: 1743543073810817000
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mami
+      rect:
+        serializedVersion: 2
+        x: 1716
+        y: 0
+        width: 332
+        height: 1020
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 63a5b6c70407d01e0800000000000000
+      internalID: -2230002818210899402
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Oktavia_selected
+      rect:
+        serializedVersion: 2
+        x: 656
+        y: 564
+        width: 340
+        height: 217
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5ba40a2c2ab604740800000000000000
+      internalID: 5134221921996524213
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ReturnLogo
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 360
+        width: 196
+        height: 342
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 09123d77a22fb3480800000000000000
+      internalID: -8918268372864261744
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Walpurgisnacht
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 340
+        height: 217
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8542569a5cbe6dd00800000000000000
+      internalID: 997243601692206168
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Walpurgisnacht_selected
+      rect:
+        serializedVersion: 2
+        x: 343
+        y: 0
+        width: 341
+        height: 215
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f9e551de37f6177e0800000000000000
+      internalID: -1769510634890371425
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,63 @@
+function Init()
+{
+	this.frame <- 0;
+}
+
+function Update()
+{
+	this.frame++;
+	this.thisAct.layer_0A.dst_x = this.camera2d.x * -0.40000001;
+	this.thisAct.layer_0B.dst_x = this.camera2d.x * -0.40000001;
+	this.thisAct.layer_0A.dst_y = (this.camera2d.y - this.frame * 0.5 * 2) % (256 * 3);
+	this.thisAct.layer_0B.dst_y = (this.camera2d.y - this.frame * 0.5 * 2.5) % (256 * 3);
+	this.thisAct.layer_F0.dst_x = this.camera2d.x * -0.5;
+	this.thisAct.layer_F1.dst_x = this.camera2d.x * -0.30000001;
+	this.thisAct.layer_1A.dst_x = this.camera2d.x * 0.2;
+	this.thisAct.layer_1B.dst_x = this.camera2d.x * 0.2;
+	this.thisAct.layer_1A.dst_y = (this.camera2d.y - this.frame * 0.5 * 1.75) % (256 * 3);
+	this.thisAct.layer_1B.dst_y = (this.camera2d.y - this.frame * 0.5 * 2) % (256 * 3);
+	this.thisAct.layer_1.dst_x = this.camera2d.x * 0.30000001;
+	this.thisAct.layer_2.dst_x = this.camera2d.x * 0.30000001;
+	this.thisAct.layer_3.dst_x = this.camera2d.x * 0.5;
+	this.thisAct.layer_4.dst_x = this.camera2d.x * 0.5;
+	this.thisAct.layer_5A.dst_x = this.camera2d.x * 0.55000001;
+	this.thisAct.layer_5B.dst_x = this.camera2d.x * 0.55000001;
+	this.thisAct.layer_5A.dst_y = (this.camera2d.y - this.frame * 0.5 * 1.5) % (256 * 3);
+	this.thisAct.layer_5B.dst_y = (this.camera2d.y - this.frame * 0.5 * 1.75) % (256 * 3);
+	this.thisAct.layer_5.dst_x = this.camera2d.x * 0.85000002;
+
+	if (::stage.renderState.pixelShader == 1 && !this.GameOverAct.pl.IsActive())
+	{
+		return;
+	}
+
+	local lframe = this.frame / 10 % 6;
+
+	switch(lframe)
+	{
+	case 0:
+		this.thisAct.layer_3.layout.SetChipRect(169, 0 * 64, 0, 64, 64);
+		break;
+
+	case 1:
+		this.thisAct.layer_3.layout.SetChipRect(169, 1 * 64, 0, 64, 64);
+		break;
+
+	case 2:
+		this.thisAct.layer_3.layout.SetChipRect(169, 2 * 64, 0, 64, 64);
+		break;
+
+	case 3:
+		this.thisAct.layer_3.layout.SetChipRect(169, 3 * 64, 0, 64, 64);
+		break;
+
+	case 4:
+		this.thisAct.layer_3.layout.SetChipRect(169, 2 * 64, 0, 64, 64);
+		break;
+
+	case 5:
+		this.thisAct.layer_3.layout.SetChipRect(169, 1 * 64, 0, 64, 64);
+		break;
+	}
+}
+

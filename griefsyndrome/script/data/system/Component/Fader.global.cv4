@@ -1,0 +1,117 @@
+function OnCreate()
+{
+	this.thisAct.FadeIn <- this.FadeIn.bindenv(this);
+	this.thisAct.FadeOut <- this.FadeOut.bindenv(this);
+	this.thisAct.IsFading <- this.IsFading.bindenv(this);
+	this.thisAct.Clear <- this.Clear.bindenv(this);
+	this.pl.BeginStage(0);
+}
+
+function Init()
+{
+	this.InitParam();
+}
+
+function InitParam()
+{
+	this.funcUpdate <- null;
+	this.task <- [];
+}
+
+function Update()
+{
+	if (this.task.len() > 0)
+	{
+		if (resume this.task[0])
+		{
+			this.task.remove(0);
+		}
+	}
+}
+
+function FadeIn( _frameLen, _col, _func )
+{
+	this.task.append(this.FadeInProc(this, _frameLen, _col, _func));
+
+	if (_frameLen == 0 && this.task.len() == 1)
+	{
+		this.Update();
+	}
+}
+
+function FadeInProc( _this, _frameLen, _col, _func )
+{
+	// Function is a generator.
+	this.curtain.layout.colorR = _col >> 16 & 255;
+	this.curtain.layout.colorG = _col >> 8 & 255;
+	this.curtain.layout.colorB = _col >> 0 & 255;
+	this.curtain.alpha = 1.0;
+	this.curtain.visible = true;
+	this = _this;
+
+	for( local count = 0; count < _frameLen; count++ )
+	{
+		this.curtain.alpha = 1.0 - count / _frameLen.tofloat();
+		yield false;
+	}
+
+	this.curtain.alpha = 0.0;
+	this.curtain.visible = false;
+
+	if (_func != null)
+	{
+		_func();
+	}
+
+	return true;
+}
+
+function FadeOut( _frameLen, _col, _func )
+{
+	this.task.append(this.FadeOutProc(this, _frameLen, _col, _func));
+
+	if (_frameLen == 0 && this.task.len() == 1)
+	{
+		this.Update();
+	}
+}
+
+function FadeOutProc( _this, _frameLen, _col, _func )
+{
+	// Function is a generator.
+	this.curtain.layout.colorR = _col >> 16 & 255;
+	this.curtain.layout.colorG = _col >> 8 & 255;
+	this.curtain.layout.colorB = _col >> 0 & 255;
+	this.curtain.alpha = 0.0;
+	this.curtain.visible = true;
+	this = _this;
+
+	for( local count = 0; count < _frameLen; count++ )
+	{
+		this.curtain.alpha = count / _frameLen.tofloat();
+		yield false;
+	}
+
+	this.curtain.alpha = 1.0;
+	yield false;
+	this.curtain.alpha = 1.0;
+
+	if (_func != null)
+	{
+		_func();
+	}
+
+	return true;
+}
+
+function IsFading()
+{
+	return this.task.len() != 0;
+}
+
+function Clear()
+{
+	this.curtain.visible = false;
+	this.task.clear();
+}
+

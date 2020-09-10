@@ -1,0 +1,50 @@
+this.inputP1_key <- this.InputSingle();
+this.inputP1_key.SetDeviceAssignDefault(-1);
+this.inputP1_pad <- this.InputSingle();
+this.inputP1_pad.SetDeviceAssignDefault(0);
+this.inputP2_key <- this.InputSingle();
+this.inputP2_key.SetDeviceAssignDefault(-1);
+this.inputP2_pad <- this.InputSingle();
+this.inputP2_pad.SetDeviceAssignDefault(1);
+this.inputP3_key <- this.InputSingle();
+this.inputP3_key.SetDeviceAssignDefault(-1);
+this.inputP3_pad <- this.InputSingle();
+this.inputP3_pad.SetDeviceAssignDefault(2);
+this.inputArray <- [
+	this.InputMulti(),
+	this.InputMulti(),
+	this.InputMulti()
+];
+this.inputArray[0].Append(this.inputP1_key);
+this.inputArray[0].Append(this.inputP1_pad);
+this.inputArray[1].Append(this.inputP2_key);
+this.inputArray[1].Append(this.inputP2_pad);
+this.inputArray[2].Append(this.inputP3_key);
+this.inputArray[2].Append(this.inputP3_pad);
+this.inputPauseKey <- this.InputSingle();
+local devmap = this.DeviceMapping();
+devmap.device = -1;
+devmap.b4 = 1;
+this.inputPauseKey.SetDeviceAssign(devmap);
+this.inputAll <- this.InputMulti();
+this.inputAll.Append(this.inputArray[0]);
+this.inputAll.Append(this.inputArray[1]);
+this.inputAll.Append(this.inputArray[2]);
+this.inputAll.Append(this.inputPauseKey);
+::enableInput <- true;
+::EnableInput <- function ( _flag )
+{
+	::enableInput <- _flag;
+
+	if (!_flag)
+	{
+		this.inputAll.Clear();
+	}
+};
+this.SetGlobalUpdateFunction(function ()
+{
+	if (::enableInput)
+	{
+		::inputAll.Update();
+	}
+});

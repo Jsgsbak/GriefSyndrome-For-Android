@@ -1,0 +1,168 @@
+function InitSaveDataTable( _table )
+{
+	_table.clear();
+	_table.loopNum <- 0;
+	_table.loseloopNum <- 0;
+	_table.defeatBoss <- 0;
+	_table.defeatEnemy <- 0;
+	_table.useMagic <- 0;
+	_table.scoreRank <- [];
+
+	for( local i = 0; i < 10; i++ )
+	{
+		_table.scoreRank.append([
+			0,
+			null,
+			null,
+			null
+		]);
+	}
+
+	_table.timeRank <- [];
+
+	for( local i = 0; i < 10; i++ )
+	{
+		_table.timeRank.append([
+			0,
+			null,
+			null,
+			null
+		]);
+	}
+
+	_table.comboRank <- [];
+
+	for( local i = 0; i < 10; i++ )
+	{
+		_table.comboRank.append([
+			0,
+			null,
+			null,
+			null
+		]);
+	}
+
+	_table.useChara <- [
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0
+	];
+	_table.playerDeadNum <- [
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0
+	];
+	_table.edList <- [
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0
+	];
+	_table.lastPlayLap <- 0;
+	_table.result <- this.array(100, 0);
+	return _table;
+}
+
+function InitMissionSaveData( _missionID )
+{
+}
+
+function SaveCurrentSaveData()
+{
+	this.CheckResult();
+
+	if (this.currentSaveSlot == null)
+	{
+		return false;
+	}
+
+	return this.SaveTable("save/" + this.currentSaveSlot.file, this.currentSaveSlot.data);
+}
+
+function LoadCurrentSaveData()
+{
+	if (this.currentSaveSlot == null)
+	{
+		return false;
+	}
+
+	this.currentSaveSlot.data = clone this.initSaveData;
+	this.currentSaveSlot.isEmpty = true;
+
+	if (!this.LoadTable("save/" + this.currentSaveSlot.file, this.currentSaveSlot.data))
+	{
+		return false;
+	}
+
+	if (!("lastPlayLap" in this.currentSaveSlot.data))
+	{
+		this.currentSaveSlot.data.lastPlayLap <- 0;
+	}
+
+	this.currentSaveSlot.isEmpty = false;
+	return true;
+}
+
+function LoadSaveData()
+{
+	local prevSlot = this.currentSaveSlot;
+	local ret = true;
+
+	foreach( key, val in this.saveSlot )
+	{
+		this.currentSaveSlot = val.weakref();
+
+		if (val == null || !this.LoadCurrentSaveData())
+		{
+			ret = false;
+		}
+	}
+
+	this.currentSaveSlot = prevSlot;
+	::currentSaveSlot <- this.saveSlot[0].weakref();
+	::SaveData <- this.saveSlot[0].data;
+	return ret;
+}
+
+function CheckResult()
+{
+}
+
+function UpdateTotalProgress( _saveSlot )
+{
+}
+
+this.saveSlot <- [];
+this.initSaveData <- this.InitSaveDataTable({});
+
+for( local i = 0; i < 1; i++ )
+{
+	this.saveSlot.append({
+		data = clone this.initSaveData,
+		file = "save" + (i < 10 ? "" : "0") + i + ".dat",
+		isEmpty = true
+	});
+}
+
+::currentSaveSlot <- this.saveSlot[0].weakref();
+::SaveData <- this.saveSlot[0].data;

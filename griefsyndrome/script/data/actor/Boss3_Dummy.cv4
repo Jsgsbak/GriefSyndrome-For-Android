@@ -1,0 +1,229 @@
+function Update_Normal()
+{
+	if (this.UpdateStopCheck())
+	{
+		return false;
+	}
+
+	this.EnemyCommonLoopB();
+	this.SetGravity();
+
+	if (this.stateLabel)
+	{
+		this.stateLabel.call(this);
+	}
+
+	return true;
+}
+
+function EndtoFreeMove()
+{
+	this.LabelClear();
+	this.count = 0;
+	this.SetMotion(this.u.CA, this.u.attackType);
+	this.stateLabel = this.u.Stand_Update;
+}
+
+function BeginStand( dir )
+{
+	if (this.flagState & 32)
+	{
+		if (this.motion != this.u.CA)
+		{
+			this.LabelClear();
+			this.SetMotion(this.u.CA, 0);
+			this.stateLabel = this.u.Stand_Update;
+		}
+	}
+
+	return true;
+}
+
+function Stand_Update()
+{
+	this.flag3--;
+	this.count++;
+
+	if (this.count == 60 + 15 * this.u.PosID && this.keyTake == 2)
+	{
+		this.world2d.CreateActor(this.x, this.y - 56.0, this.direction, this.Boss3_Thunder, this.DefaultShotTable());
+	}
+
+	if (this.count % 120 == 0 && this.keyTake == 3)
+	{
+		foreach( idx, a in ::stage.FreeTarget )
+		{
+			if (a in this.actor)
+			{
+				if (this.actor[a].life <= 0)
+				{
+					::stage.FreeTarget.remove(idx);
+				}
+			}
+			else
+			{
+				::stage.FreeTarget.remove(idx);
+			}
+		}
+
+		if (::stage.FreeTarget.len() <= 5)
+		{
+			this.PlaySE(4208);
+			local t = this.DefaultShotTable();
+			t.scale = 1.0;
+			this.BlackSmoke_Small_B(this.x, this.y - 60, t);
+			local c_ = this.world2d.CreateActor(this.x, this.y - 56, this.direction, ::Actor2D.Init_Enemy3A_BossSlabe, null);
+			::stage.FreeTarget.append(c_.name);
+		}
+	}
+}
+
+function BeginSuffle( val_ )
+{
+	this.HitReset();
+	this.LabelClear();
+	this.SetMotion(this.u.CA + 1, 0);
+	this.count = 60;
+	this.u.attackType = 1 + this.rand() % 3;
+	this.SetEndTakeCallbackFunction(this.KeyActionCheck);
+	this.keyAction = [
+		null,
+		null,
+		this.u.SuffleEnd,
+		this.u.EndtoFreeMove,
+		this.u.EndtoFreeMove,
+		this.u.EndtoFreeMove,
+		this.u.EndtoFreeMove
+	];
+	this.SetEndMotionCallbackFunction(this.u.EndtoFreeMove);
+	this.stateLabel = function ()
+	{
+		if (this.keyTake == 1)
+		{
+			this.count--;
+
+			if (this.count <= 0)
+			{
+				this.SetMotion(this.u.CA + 1, this.u.attackType + 2);
+
+				if (this.keyTake == 3)
+				{
+					this.hitAction = function ( type_, table_ )
+					{
+						this.PlaySE(4206);
+
+						if (this.flag3 <= 0)
+						{
+							this.flag3 = 60;
+							this.world2d.CreateActor(this.x, this.y - 56.0, this.direction, this.Boss3_counterFire, this.DefaultShotTable());
+							local t = 3;
+
+							for( local i = t; i > 0; i-- )
+							{
+								this.world2d.CreateActor(this.x, this.y - 56.0, this.direction, this.Boss3_counterShot, this.DefaultShotTable());
+							}
+						}
+					};
+				}
+				else
+				{
+					this.hitAction = null;
+				}
+			}
+		}
+		else
+		{
+		}
+	};
+	return false;
+}
+
+function SuffleEnd()
+{
+	this.LabelClear();
+	this.SetMotion(this.u.CA, 0);
+	this.stateLabel = this.u.Stand_Update;
+	this.u.rotateUpdate = this.u.rotate_Normal;
+}
+
+function BeginAttackA( val_ )
+{
+	if (this.flagState & 32)
+	{
+		this.LabelClear();
+		this.HitReset();
+		this.atkCount = 0;
+		this.SetMotion(this.u.CA + 20, this.u.attackType * 2 + 1);
+		this.u.attackType = 4;
+		this.vx = 0.0;
+		this.count = 60;
+		this.stateLabel = function ()
+		{
+			return true;
+		};
+		this.SetEndTakeCallbackFunction(this.KeyActionCheck);
+		this.keyAction = [
+			null,
+			null,
+			this.u.EndtoFreeMove,
+			null,
+			this.u.EndtoFreeMove,
+			null,
+			this.u.EndtoFreeMove
+		];
+		this.SetEndMotionCallbackFunction(this.u.EndtoFreeMove);
+		return false;
+	}
+
+	return true;
+}
+
+function Dead( t )
+{
+	this.LabelClear();
+	this.aList = [];
+	this.SetMotion(this.u.CA + 18, 0);
+	this.vx = 0.0;
+	this.vy = 0.0;
+	this.ox = 0.0;
+	this.oy = this.point0_y - this.y;
+	this.vx = this.rand() % 7 - 3;
+	this.vy = -3.0 - this.rand() % 20 * 0.1;
+	this.flag1 = 0.02 + this.rand() % 20 * 0.001;
+
+	if (this.rand() % 100 <= 50)
+	{
+		this.flag1 = -this.flag1;
+	}
+
+	this.count = 0;
+	this.immuneGravity = true;
+	this.stateLabel = function ()
+	{
+		this.rz += this.flag1;
+		this.vy += 0.25;
+
+		if (this.y >= this.camera2d.bottom + 300.0)
+		{
+			this.ReleaseActor();
+		}
+	};
+}
+
+function Dead_Smash( t )
+{
+	this.u.Dead.call(this, null);
+}
+
+function Damage_Light( t )
+{
+}
+
+function Damage_Heavy( t )
+{
+}
+
+function Damage_Smash( t )
+{
+}
+

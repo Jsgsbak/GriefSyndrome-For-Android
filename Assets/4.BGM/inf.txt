@@ -1,0 +1,19 @@
+BGM:
+Title: Decretum (宿命) 
+对抗魔女是使命，更是宿命。
+
+WitchStage: Venari strigas(魔女狩り) 
+（有AB循环）
+
+SayakaStage:Symposium magarum
+（有AB循环）
+
+BE:flame of despair
+
+GE: and I'm home (Instrumental ver)
+我希望全五色能够在瓦夜之后对着家人说：I'm home.
+
+Halfway:Numquam vincar
+（有AB循环）
+
+WalpurgisnachtStage:Surgam identidem（有AB循环）

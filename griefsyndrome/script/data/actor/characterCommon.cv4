@@ -1,0 +1,864 @@
+function Update_Gauge()
+{
+	if ("guage" in this.u)
+	{
+		if (this.life <= 0)
+		{
+			if (this.soul <= 0)
+			{
+				this.u.guage.state = 2;
+				this.u.guage.life = 0;
+			}
+			else
+			{
+				this.u.guage.state = 1;
+				this.u.guage.revive = this.revive;
+				this.u.guage.reviveMax = this.reviveMax;
+				this.u.guage.life = 0;
+			}
+		}
+		else if (this.soul <= 0)
+		{
+			this.u.guage.state = 3;
+			this.u.guage.life = 0;
+		}
+		else
+		{
+			this.u.guage.state = 0;
+			this.u.guage.revive = this.revive;
+			this.u.guage.reviveMax = this.reviveMax;
+			local l = this.u.guage.life - this.life;
+
+			if (l <= 1)
+			{
+				this.u.guage.life = this.life;
+			}
+			else
+			{
+				this.u.guage.life -= l * 0.75;
+			}
+
+			this.u.guage.lifeMax = this.lifeMax;
+			this.u.guage.regainLife = this.regainLife;
+		}
+
+		this.u.guage.soul = this.soul;
+		local b_ = this.u.regainCycle * this.u.regainRate * 3 * this.lifeMax;
+
+		if (this.soul <= b_)
+		{
+			this.u.guage.gemLevel = 0.0;
+		}
+		else
+		{
+			this.u.guage.gemLevel = (this.soul - b_) / 16000.0;
+		}
+
+		this.u.guage.score = ::gameData.score[this.u.playerID];
+		this.u.guage.level = this.level;
+	}
+}
+
+function ADD_Score( x_ )
+{
+	if (::game.enableAddScore)
+	{
+		local Rate_ = 1.0;
+		local hit_ = 0;
+		local score_ = x_;
+
+		if (::StageMainAct.global.hit.len() > 0)
+		{
+			hit_ = ::StageMainAct.global.hit[::StageMainAct.global.hit.len() - 1].hitCount;
+		}
+
+		if (hit_ > 1)
+		{
+			Rate_ += (hit_ * 1.0).tointeger() * 0.1;
+
+			if (Rate_ > 32.0)
+			{
+				Rate_ = 32.0;
+			}
+
+			score_ *= Rate_;
+			score_ = (score_ * 0.0099999998).tointeger();
+			score_ *= 100;
+		}
+
+		::gameData.score[this.u.playerID] += score_;
+	}
+}
+
+function ADD_Exp( x_, type_ )
+{
+	local target_;
+
+	switch(type_)
+	{
+	case 0:
+	case 5:
+		target_ = "homura";
+		break;
+
+	case 1:
+		target_ = "kyouko";
+		break;
+
+	case 2:
+		target_ = "madoka";
+		break;
+
+	case 3:
+		target_ = "mami";
+		break;
+
+	case 4:
+		target_ = "sayaka";
+		break;
+	}
+
+	if (target_ == null)
+	{
+		return;
+	}
+
+	this.playerData[target_].exp += x_;
+	this.exp = this.playerData[target_].exp;
+
+	if (this.playerData[target_].exp >= this.playerData[target_].expMax)
+	{
+		this.playerData[target_].exp = this.playerData[target_].expMax;
+		this.exp = this.playerData[target_].exp;
+		this.ADD_Level(target_);
+	}
+}
+
+function ADD_Level( target_ )
+{
+	if (this.playerData[target_].level >= 5)
+	{
+		return;
+	}
+
+	this.PlaySE(1011);
+	this.playerData[target_].level++;
+	this.level = this.playerData[target_].level;
+	local la = (this.playerData[target_].lifeUP - this.level * 0.15000001).tointeger();
+
+	if (la < 1)
+	{
+		la = 1;
+	}
+
+	this.playerData[target_].lifeMax += la;
+	this.playerData[target_].soulMax += this.playerData[target_].soulUp;
+	this.playerData[target_].baseAtk += this.playerData[target_].atkUP;
+	this.lifeMax = this.playerData[target_].lifeMax;
+
+	if (this.life > 0 && this.soul > 0)
+	{
+		this.life += la;
+		this.regainLife += la;
+
+		if (this.life > this.lifeMax)
+		{
+			this.life = this.lifeMax;
+		}
+
+		if (this.regainLife > this.lifeMax)
+		{
+			this.regainLife = this.lifeMax;
+		}
+	}
+
+	if (this.regainLife < this.life)
+	{
+		this.regainLife = this.life;
+	}
+
+	this.soulMax = this.playerData[target_].soulMax;
+
+	if (this.life > 0 && this.soul > 0)
+	{
+		this.soul += this.playerData[target_].soulUp;
+
+		if (this.soul > this.soulMax)
+		{
+			this.soul = this.soulMax;
+		}
+	}
+
+	this.baseAtk = this.playerData[target_].baseAtk;
+	this.playerData[target_].exp = this.exp = 0;
+	this.world2d.CreateActor(this.x, this.y, this.direction, this.LevelUP_Effect, this.DefaultShotTable());
+}
+
+function NormalHitAction( type_, table_ )
+{
+	if (this.life <= 0)
+	{
+		switch(type_)
+		{
+		case 2:
+			this.u.Dead_Smash.call(this, table_);
+			break;
+
+		case 3:
+			this.u.Dead_Smash.call(this, table_);
+			break;
+
+		default:
+			this.u.Dead.call(this, table_);
+			break;
+		}
+	}
+	else
+	{
+		switch(type_)
+		{
+		case 1:
+			this.u.Damage_Light.call(this, table_);
+			break;
+
+		case 2:
+			this.u.Damage_Heavy.call(this, table_);
+			break;
+
+		case 3:
+			this.u.Damage_Smash.call(this, table_);
+			break;
+		}
+	}
+}
+
+function CharacterCommon()
+{
+	this.stepHeight = 8;
+	this.hitTarget = [];
+	this.keyAction = [];
+	this.updateList = [];
+	this.u = {};
+	this.basePos = this.Vector3();
+}
+
+function CharacterRestart()
+{
+	this.LabelClear();
+	this.SetUpdateFunction(this.u.Update_Normal);
+	this.isAir = false;
+	this.immuneGravity = false;
+	this.collisionMask = this.collisionMask = 8 | 4 | 16;
+
+	if (this.soul <= 0)
+	{
+		this.Update_Gauge();
+		this.isActive = false;
+	}
+	else if (this.life <= 0)
+	{
+		if (this.soul <= (this.lifeMax - this.life) * 20)
+		{
+			this.soul = 0;
+			this.Update_Gauge();
+			this.isActive = false;
+		}
+		else
+		{
+			this.soul -= (this.lifeMax - this.life) * 20;
+			this.life = this.lifeMax;
+			this.Update_Gauge();
+			this.isActive = true;
+		}
+	}
+	else
+	{
+		this.Update_Gauge();
+
+		if (this.motion != this.u.CA)
+		{
+			this.SetMotion(this.u.CA, 0);
+		}
+
+		this.isActive = true;
+	}
+
+	this.isAir = false;
+	this.ResetSpeed();
+}
+
+function ResetSpeed()
+{
+	this.vx = 0.0;
+	this.vy = 0.0;
+	this.setG = 0.0;
+	this.hitG = 0.0;
+}
+
+function PlayerInit( t, ID_ )
+{
+	this.CharacterCommon();
+	this.CompileFile("data/actor/playerCommonScript.nut", this.u);
+	this.updateGroup = 1;
+	::playerID++;
+	this.name = "player" + ::playerID;
+	this.owner = this.name;
+	this.actor[this.name] <- this;
+	this.u.playerID <- ID_;
+	this.input = this.inputArray[this.u.playerID];
+	this.u.jumpCount <- 0;
+	this.u.inputA <- 0;
+	this.u.inputCountA <- 0;
+	this.u.pushCountA <- 0;
+	this.u.inputB <- 0;
+	this.u.inputCountB <- 0;
+	this.u.pushCountB <- 0;
+	this.u.inputC <- 0;
+	this.u.inputCountC <- 0;
+	this.u.pushCountC <- 0;
+	this.u.rushCount <- 0;
+	this.u.chargeCount <- 0;
+	this.u.chargeLV <- 0;
+	this.u.warikomi <- null;
+	this.u.walkPushCount <- 0;
+	this.u.powerLV <- 0;
+	this.u.speedLV <- 0;
+	this.u.dexLV <- 0;
+	this.u.magicUse <- 1;
+	this.u.freeCancel <- true;
+	this.u.flashCount <- 0;
+	this.u.regainCycle <- 10;
+	this.u.regainRate <- 10;
+	this.u.regainCount <- 0;
+	this.u.flag1 <- 0;
+	this.u.CA <- 0;
+	this.callbackGroup = 1;
+	this.callbackMask = 2;
+	this.isActive = true;
+	this.priority = 200;
+	this.scrollOut_margin = 192.0;
+	this.hitAction = this.NormalHitAction;
+	this.collisionMask = 8 | 4;
+	this.lifeMax = ::playerData[t].lifeMax;
+	this.life = this.lifeMax;
+	this.regainLife = this.lifeMax;
+	this.level = ::playerData[t].level;
+	this.exp = ::playerData[t].exp;
+	this.baseAtk = ::playerData[t].baseAtk;
+	this.soulMax = ::playerData[t].soulMax;
+	this.soul = ::playerData[t].soul;
+	this.u.guage <- ::StageMainAct.CreateGuage(this.u.playerID, this.type);
+	this.u.guage.life = this.life;
+	this.u.guage.lifeMax = this.lifeMax;
+	this.u.guage.soul = this.soul;
+	this.u.guage.regainLife = this.regainLife;
+	this.u.guage.score = ::gameData.score[this.playerID - 1];
+	this.u.guage.state = 0;
+	this.u.guage.revive = 180;
+	this.u.guage.reviveMax = 180;
+}
+
+function PlayerInit_QB( t, ID_ )
+{
+	this.CharacterCommon();
+	this.CompileFile("data/actor/playerCommonScript.nut", this.u);
+	this.updateGroup = 1;
+	::playerID++;
+	this.name = "player" + ::playerID;
+	this.owner = this.name;
+	this.actor[this.name] <- this;
+	this.u.playerID <- ID_;
+	this.input = this.inputArray[this.u.playerID];
+	this.u.jumpCount <- 0;
+	this.u.inputA <- 0;
+	this.u.inputCountA <- 0;
+	this.u.pushCountA <- 0;
+	this.u.inputB <- 0;
+	this.u.inputCountB <- 0;
+	this.u.pushCountB <- 0;
+	this.u.inputC <- 0;
+	this.u.inputCountC <- 0;
+	this.u.pushCountC <- 0;
+	this.u.rushCount <- 0;
+	this.u.chargeCount <- 0;
+	this.u.chargeLV <- 0;
+	this.u.warikomi <- null;
+	this.u.walkPushCount <- 0;
+	this.u.powerLV <- 0;
+	this.u.speedLV <- 0;
+	this.u.dexLV <- 0;
+	this.u.magicUse <- 1;
+	this.u.freeCancel <- true;
+	this.u.flashCount <- 0;
+	this.u.regainCycle <- 10;
+	this.u.regainRate <- 10;
+	this.u.regainCount <- 0;
+	this.u.flag1 <- 0;
+	this.u.CA <- 0;
+	this.callbackGroup = 1;
+	this.callbackMask = 2;
+	this.isActive = true;
+	this.priority = 200;
+	this.scrollOut_margin = 192.0;
+	this.hitAction = this.NormalHitAction;
+	this.collisionMask = 8 | 4;
+	this.lifeMax = ::playerData[t].lifeMax;
+	this.life = this.lifeMax;
+	this.regainLife = this.lifeMax;
+	this.level = ::playerData[t].level;
+	this.exp = ::playerData[t].exp;
+	this.baseAtk = ::playerData[t].baseAtk;
+	this.soulMax = ::playerData[t].soulMax;
+	this.soul = ::playerData[t].soul;
+}
+
+function EnemyInit( t )
+{
+	this.CharacterCommon();
+	this.CompileFile("data/actor/enemyCommonScript.nut", this.u);
+	this.updateGroup = 2;
+	::enemyID++;
+
+	if (this.name in t)
+	{
+		this.name = t.name + ::enemyID;
+	}
+	else
+	{
+		this.name = "NoNameEnemy" + ::enemyID;
+	}
+
+	this.owner = this.name;
+	::actor[this.name] <- this;
+	this.scrollOut_margin = 600.0;
+	this.u.enemyID <- ::enemyID;
+	this.aList = [];
+	this.u.CA <- 0;
+	this.u.sizeRate <- 1.0;
+	this.callbackGroup = 2;
+	this.callbackMask = 1;
+	this.filter = 2;
+	this.priority = 100;
+	this.hitAction = this.NormalHitAction;
+	this.Set_EnemyLevelState(::gameData.loopNum);
+
+	if (this.x > this.camera2d.left + this.camera2d.cx)
+	{
+		this.direction = -1.0;
+	}
+	else
+	{
+		this.direction = 1.0;
+	}
+
+	this.basePos.x = this.x;
+	this.basePos.y = this.y;
+}
+
+function BossInit( t )
+{
+	this.CharacterCommon();
+	this.CompileFile("data/actor/enemyCommonScript.nut", this.u);
+	this.updateGroup = 2;
+	::enemyID++;
+
+	if (this.name in t)
+	{
+		this.name = t.name + ::enemyID;
+	}
+	else
+	{
+		this.name = "NoNameEnemy" + ::enemyID;
+	}
+
+	this.owner = this.name;
+	::actor[this.name] <- this;
+	this.u.enemyID <- ::enemyID;
+	this.aList = [];
+	this.u.CA <- 0;
+	this.u.sizeRate <- 1.0;
+	this.callbackGroup = 2;
+	this.callbackMask = 1;
+	this.filter = 2;
+	this.priority = 90;
+	this.hitAction = this.NormalHitAction;
+	this.Set_EnemyLevelState(::gameData.loopNum);
+	this.basePos.x = this.x;
+	this.basePos.y = this.y;
+}
+
+function Set_EnemyLevelState( x_ )
+{
+	if (x_ >= 1)
+	{
+		this.level *= 2;
+		this.level += x_;
+	}
+
+	local ADD_ = (this.lifeMax * 0.1).tointeger();
+	this.lifeMax += ADD_ * this.level;
+	this.life = this.lifeMax;
+	this.baseAtk += this.level * 2;
+}
+
+function ScrollOut_Player()
+{
+}
+
+function CC_ScrollOut_Check( margin_ )
+{
+	if (margin_ != null)
+	{
+		if (this.x < ::camera2d.left - margin_ || this.x > ::camera2d.right + margin_ || this.y < ::camera2d.top - margin_ || this.y > ::camera2d.bottom + margin_)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+function CC_ScrollVec_Check( margin_ )
+{
+	if (margin_ != null)
+	{
+		if (this.x < ::camera2d.left - margin_ && this.vx < 0.0 || this.x > ::camera2d.right + margin_ && this.vx > 0.0 || this.y < ::camera2d.top - margin_ && this.vy < 0.0 || this.y > ::camera2d.bottom + margin_ && this.vy > 0.0)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+function CC_ScrollVec_Check_V( margin_ )
+{
+	if (margin_ != null)
+	{
+		if (this.y < ::camera2d.top - margin_ && this.vy < 0.0 || this.y > ::camera2d.bottom + margin_ && this.vy > 0.0)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+function CC_FallOut_Check( margin_ )
+{
+	if (margin_ != null)
+	{
+		if (this.y > ::stage.scrollBottom + margin_ || this.y > ::camera2d.bottom + 512.0)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+function ScrollOut_Enemy( margin_ )
+{
+	if (margin_ != null)
+	{
+		if (this.CC_ScrollOut_Check(margin_))
+		{
+			this.life = 0;
+			this.ReleaseActor();
+		}
+	}
+}
+
+function ScrollOut_Object( margin_ )
+{
+	if (margin_ != null)
+	{
+		if (this.CC_ScrollOut_Check(margin_))
+		{
+			this.Release();
+		}
+	}
+}
+
+function PlayerCommonLoop()
+{
+	if (this.invin > 0)
+	{
+		this.invin--;
+	}
+
+	if (this.u.flashCount > 0)
+	{
+		this.u.flashCount--;
+
+		if (this.u.flashCount <= 0)
+		{
+			this.alpha = 1.0;
+		}
+		else if (this.u.flashCount % 6 >= 3)
+		{
+			this.alpha = 0.0;
+		}
+		else
+		{
+			this.alpha = 1.0;
+		}
+	}
+
+	if (this.updateList)
+	{
+		if (this.updateList.len() > 0)
+		{
+			local i = 0;
+
+			foreach( a in this.updateList )
+			{
+				if (a.call(this))
+				{
+					this.updateList.remove(i);
+				}
+				else
+				{
+					i++;
+				}
+			}
+		}
+	}
+
+	if (this.vy < 0.0)
+	{
+		this.fallCount = 0;
+
+		if (this.collisionMask != 16)
+		{
+			this.collisionMask = 8 | 16;
+		}
+
+		if (this.hitTop && this.collisionMask & 8)
+		{
+			this.vy = 0.0;
+		}
+	}
+	else if (this.collisionMask != 16)
+	{
+		if (this.fallCount > 0)
+		{
+			this.fallCount--;
+
+			if (this.fallCount == 0)
+			{
+				this.collisionMask = 8 | 4 | 16;
+			}
+			else
+			{
+				this.collisionMask = 8 | 16;
+			}
+		}
+		else
+		{
+			this.collisionMask = 8 | 4 | 16;
+		}
+	}
+
+	if (this.motion == this.u.CA + 1)
+	{
+		this.u.walkPushCount++;
+
+		if (this.hitRight || this.hitLeft)
+		{
+			this.u.walkPushCount++;
+		}
+		else
+		{
+			this.u.walkPushCount = 0;
+		}
+	}
+	else
+	{
+		this.u.walkPushCount = 0;
+	}
+
+	if (this.u.regainRate > 0 && !this.game.gameOver && !this.game.stageClear && this.game.enableTimeCount && this.game.timeStop <= 0)
+	{
+		if (this.life > 0 && this.soul > 0)
+		{
+			this.soulCount--;
+
+			if (this.soulCount <= 0)
+			{
+				this.soul--;
+				this.soulCount = 60;
+			}
+
+			if (this.life < this.lifeMax)
+			{
+				this.u.regainCount--;
+
+				if (this.u.regainCount <= this.u.regainCycle * 2 && this.life >= this.regainLife)
+				{
+					this.soul -= this.u.regainRate;
+				}
+
+				if (this.u.regainCount <= 0)
+				{
+					if (this.life < this.regainLife)
+					{
+						this.u.regainCount = this.u.regainCycle * 1.5;
+					}
+					else
+					{
+						this.u.regainCount = this.u.regainCycle * 2;
+					}
+
+					if (this.soul < 0)
+					{
+						this.soul = 0;
+					}
+					else
+					{
+						this.life++;
+
+						if (this.regainLife < this.life)
+						{
+							this.regainLife = this.life;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	if (this.soul <= 0)
+	{
+		if (this.motion != this.u.CA + 19)
+		{
+			this.u.Lost.call(this);
+		}
+	}
+
+	this.FieldCheckPlayer();
+
+	if (this.CC_FallOut_Check(this.scrollOut_margin) && this.isActive && !::game.gameOver && !::game.stageClear)
+	{
+		if (this.soul <= this.u.regainCycle * this.u.regainRate * 3 * this.lifeMax)
+		{
+			this.u.FallLost.call(this);
+		}
+		else
+		{
+			this.u.Fall_Down.call(this);
+		}
+	}
+
+	this.Update_Gauge();
+}
+
+function EnemyCommonLoop()
+{
+	this.atkCount++;
+
+	if (this.invin)
+	{
+		this.invin--;
+	}
+
+	if (this.updateList)
+	{
+		if (this.updateList.len() > 0)
+		{
+			local i = 0;
+
+			foreach( a in this.updateList )
+			{
+				if (a.call(this))
+				{
+					this.updateList.remove(i);
+				}
+				else
+				{
+					i++;
+				}
+			}
+		}
+	}
+}
+
+function EnemyCommonLoopB()
+{
+	this.atkCount++;
+
+	if (this.invin)
+	{
+		this.invin--;
+	}
+}
+
+function LabelClear()
+{
+	this.stateLabel = null;
+	this.sitLabel = null;
+	this.wallLabel = null;
+	this.fallLabel = null;
+	this.topLabel = null;
+	this.hitEffect = null;
+	this.keyAction = null;
+	this.func = null;
+	this.SetEndTakeCallbackFunction(null);
+}
+
+function SetGravity()
+{
+	if (this.vy < 0.0)
+	{
+		if (this.hitTop && this.collisionMask == 8)
+		{
+			this.vy = 0.0;
+		}
+	}
+
+	if (this.isAir)
+	{
+		if (this.hitBottom && this.vy > 0.0)
+		{
+			if (this.sitLabel)
+			{
+				this.sitLabel();
+			}
+		}
+	}
+	else if (this.hitBottom && this.vy > 0.0)
+	{
+		this.vy = 0.0;
+	}
+	else if (this.fallLabel)
+	{
+		this.fallLabel();
+	}
+
+	if (!this.immuneGravity)
+	{
+		if (this.setG != null)
+		{
+			this.vy += this.setG;
+		}
+		else
+		{
+			if ((this.callbackGroup == 1 || this.callbackGroup == 1 + 2) && this.vy < 0.0)
+			{
+				this.vy += 1.0;
+			}
+			else
+			{
+				this.vy += 0.40000001;
+			}
+
+			if ((this.callbackGroup == 1 || this.callbackGroup == 1 + 2) && this.vy > 15.0)
+			{
+				this.vy = 15.0;
+			}
+		}
+	}
+
+	this.setG = null;
+}
+

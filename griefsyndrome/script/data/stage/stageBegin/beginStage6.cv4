@@ -1,0 +1,21 @@
+local p1 = ::stage.playerList[0];
+local p2 = ::stage.playerList[1];
+local p3 = ::stage.playerList[2];
+this.ChangeStage("data/stage/stage6.nut", "Stage6_MasterInit", "Stage6AInit");
+
+if (p1 != null)
+{
+	this.Stage_SetStartPlayer(0, p1, "palette005.bmp");
+}
+
+if (p2 != null)
+{
+	this.Stage_SetStartPlayer(1, p2, "palette005.bmp");
+}
+
+if (p3 != null)
+{
+	this.Stage_SetStartPlayer(2, p3, "palette005.bmp");
+}
+
+::stage.Stage6A_Begin();

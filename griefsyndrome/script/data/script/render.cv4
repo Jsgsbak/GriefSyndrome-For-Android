@@ -1,0 +1,54 @@
+this.render <- {};
+this.render.renderTarget <- [
+	this.RenderTarget(),
+	this.RenderTarget()
+];
+this.render.curTarget <- 0;
+this.render.renderTarget[0].Create(800, 600);
+this.render.renderTarget[1].Create(800, 600);
+this.render.screen <- this.ScreenController();
+this.render.screenPrev <- this.ScreenController();
+this.render.screenPrev.alpha = 0.0;
+this.render.targetController <- this.RenderStateController();
+this.render.targetController.clear = true;
+this.render.targetController.SetRenderTarget(this.render.renderTarget[0]);
+this.render.screenController <- this.RenderStateController();
+this.render.screenController.SetRenderTarget(this.RenderTarget());
+this.render.Reset <- function ()
+{
+	this.screenPrev.alpha = 0.0;
+	this.screen.sx = 1;
+	this.screen.sy = 1;
+	this.screenController.pixelShader = 255;
+	this.screenController.blend = 0;
+}.bindenv(this.render);
+this.render.SetBlur <- function ( x, y, scale, alpha )
+{
+	this.screenPrev.ox = x - this.camera2d.left;
+	this.screenPrev.oy = y - this.camera2d.top;
+	this.screenPrev.sx = scale;
+	this.screenPrev.sy = scale;
+	this.screenPrev.alpha = alpha;
+}.bindenv(this.render);
+this.render.SetFocus <- function ( x, y, scale )
+{
+	this.screen.ox = x - this.camera2d.left;
+	this.screen.oy = y - this.camera2d.top;
+	local s = scale;
+
+	if (s < 1)
+	{
+		s = 1;
+	}
+
+	this.screen.sx = s;
+	this.screen.sy = s;
+}.bindenv(this.render);
+this.render.Update <- function ()
+{
+	this.curTarget = (this.curTarget + 1) % 2;
+	this.targetController.SetRenderTarget(this.renderTarget[this.curTarget]);
+	this.screenPrev.SetRenderTarget(this.renderTarget[1 - this.curTarget]);
+	this.screen.SetRenderTarget(this.renderTarget[this.curTarget]);
+}.bindenv(this.render);
+this.render.Reset();

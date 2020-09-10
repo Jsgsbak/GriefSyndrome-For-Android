@@ -1,0 +1,82 @@
+function Init()
+{
+	this.colorBarTVchip <- [];
+	this.colorBarTVFrame <- [];
+	local chipID = 0;
+	local chipInfo;
+	local count = 0;
+
+	for( chipInfo = this.layermain.layout.GetChipLayout(chipID); count < this.layermain.layout.chipCount && chipInfo != null; chipID++ )
+	{
+		count++;
+
+		if (chipInfo instanceof this.ChipLayout)
+		{
+			if (chipInfo.chipID == 4)
+			{
+				this.colorBarTVchip.append(chipInfo);
+				this.colorBarTVFrame.append(this.rand() % 1000);
+			}
+		}
+		else
+		{
+			break;
+		}
+	}
+}
+
+function Update()
+{
+	if (::stage.renderState.pixelShader == 1 && !this.GameOverAct.pl.IsActive())
+	{
+		return;
+	}
+
+	for( local i = 0; i < this.colorBarTVchip.len(); i++ )
+	{
+		local chip = this.colorBarTVchip[i];
+
+		if (this.fabs(chip.left + this.layermain.dst_x - this.camera2d.x) > 900)
+		{
+		}
+		else if (this.fabs(chip.top + this.layermain.dst_y - this.camera2d.y) > 700)
+		{
+		}
+		else
+		{
+			local frame = this.colorBarTVFrame[i]++;
+			local lframe = (frame % 12 / 2).tointeger();
+
+			switch(lframe)
+			{
+			case 0:
+				this.layermain.BitBlt(chip.left, chip.top, 128, 128, ::UtilityAct.resource.tv2, 128 * 0, 0, this.BLEND_ALPHA, 0.5);
+				break;
+
+			case 1:
+				this.layermain.BitBlt(chip.left, chip.top, 128, 128, ::UtilityAct.resource.tv2, 128 * 1, 0, this.BLEND_ALPHA, 0.5);
+				break;
+
+			case 2:
+				this.layermain.BitBlt(chip.left, chip.top, 128, 128, ::UtilityAct.resource.tv2, 128 * 2, 0, this.BLEND_ALPHA, 0.5);
+				break;
+
+			case 3:
+				this.layermain.BitBlt(chip.left, chip.top, 128, 128, ::UtilityAct.resource.tv2, 128 * 3, 0, this.BLEND_ALPHA, 0.5);
+				break;
+
+			case 4:
+				this.layermain.BitBlt(chip.left, chip.top, 128, 128, ::UtilityAct.resource.tv2, 128 * 2, 0, this.BLEND_ALPHA, 0.5);
+				break;
+
+			case 5:
+				this.layermain.BitBlt(chip.left, chip.top, 128, 128, ::UtilityAct.resource.tv2, 128 * 1, 0, this.BLEND_ALPHA, 0.5);
+				break;
+			}
+
+			this.layermain.SetBlend(this.BLEND_SUB, this.rand() % 100 / 100.0 * 0.075000003 + 0.1);
+			this.layermain.StretchBlt(chip.left + 15, chip.top + 14, 101, 90, ::UtilityAct.resource.TvLightMap2, 0, frame / 2 % 128, 16, 128);
+		}
+	}
+}
+

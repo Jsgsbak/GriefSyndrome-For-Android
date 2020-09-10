@@ -1,0 +1,17 @@
+this.frame <- 0;
+function Update()
+{
+	if (!(::stage.renderState.pixelShader == 1 && !this.GameOverAct.pl.IsActive()))
+	{
+		this.frame++;
+	}
+
+	this.thisAct.layer_3.dst_x = this.camera2d.x * 0.5;
+	this.thisAct.layer_4.dst_x = this.camera2d.x * 0.64999998;
+	this.thisAct.layer_2.dst_x = this.camera2d.x * -0.050000001 + (this.thisAct.layer_2.ox - 1 * this.frame + 896).tointeger() % 896;
+	this.thisAct.layer_5.dst_x = this.camera2d.x * -0.039999999 + (this.thisAct.layer_5.ox - 4 * this.frame + 768).tointeger() % 768;
+	this.thisAct.layer_6.dst_x = this.camera2d.x * -0.029999999 + (this.thisAct.layer_6.ox - 3 * this.frame + 768).tointeger() % 768;
+	this.thisAct.layer_7.dst_x = this.camera2d.x * -0.02 + (this.thisAct.layer_7.ox - 2 * this.frame + 768).tointeger() % 768;
+	this.thisAct.layer_8.dst_x = this.camera2d.x * -0.0099999998 + (this.thisAct.layer_8.ox - 1 * this.frame + 768).tointeger() % 768;
+}
+

@@ -1,0 +1,233 @@
+this.Camera2D.vibrationCount <- 0;
+this.Camera2D.vibrationRadius <- 0;
+this.Camera2D.target_x <- 0;
+this.Camera2D.target_y <- 0;
+this.Camera2D.offset_cx <- 0;
+this.Camera2D.enableForceTarget <- false;
+this.Camera2D.enableLock <- false;
+this.Camera2D.target_x_force <- 0;
+this.Camera2D.target_y_force <- 0;
+this.Camera2D.Init <- function ()
+{
+	this.target_x = this.x;
+	this.target_y = this.y;
+	this.vibrationCount = 0;
+	this.vibrationRadius = 0;
+	this.cx = 400;
+	this.cy = 600 - 128;
+	this.SetUpdateFunction(this.UpdateCamera2d);
+};
+this.Camera2D.Reset <- function ()
+{
+	this.enableForceTarget = false;
+	this.offset_cx = 0;
+	this.UpdateCamera2d();
+	this.x = this.target_x;
+	this.y = this.target_y;
+	this.vibrationCount = 0;
+	this.vibrationRadius = 0;
+	this.offset_x = 0;
+	this.offset_y = 0;
+};
+this.Camera2D.SetTarget <- function ( _x, _y, _lock )
+{
+	this.enableForceTarget = true;
+	this.enableLock = _lock;
+	this.target_x_force = _x;
+	this.target_y_force = _y;
+};
+function UpdateCamera2d()
+{
+	local _num = 0;
+	local _minX = this.target_x;
+	local _maxX = this.target_x;
+	local _minY = this.target_y;
+	local _maxY = this.target_y;
+	local _dir = 0;
+
+	for( local i = 1; i < 4; i++ )
+	{
+		if ("player" + i in this.actor)
+		{
+			if (this.actor["player" + i].isActive)
+			{
+				_dir += this.actor["player" + i].direction;
+
+				if (_num == 0)
+				{
+					_minX = this.actor["player" + i].left;
+					_maxX = this.actor["player" + i].right;
+					_minY = this.actor["player" + i].top;
+					_maxY = this.actor["player" + i].bottom;
+				}
+				else
+				{
+					if (_minX > this.actor["player" + i].x)
+					{
+						_minX = this.actor["player" + i].left;
+					}
+
+					if (_maxX < this.actor["player" + i].x)
+					{
+						_maxX = this.actor["player" + i].right;
+					}
+
+					if (_minY > this.actor["player" + i].y)
+					{
+						_minY = this.actor["player" + i].top;
+					}
+
+					if (_maxY < this.actor["player" + i].y)
+					{
+						_maxY = this.actor["player" + i].bottom;
+					}
+				}
+
+				_num++;
+			}
+		}
+	}
+
+	local ajust = false;
+	local tx = 0;
+	local ty = 0;
+
+	if (this.enableForceTarget)
+	{
+		if (this.enableLock)
+		{
+			tx = this.target_x_force;
+			ty = this.target_y_force;
+			ajust = true;
+		}
+		else
+		{
+			this.target_x = this.target_x_force;
+			this.target_y = this.target_y_force;
+		}
+
+		this.enableForceTarget = false;
+	}
+	else if (_num > 0)
+	{
+		if (_dir > 0.5)
+		{
+			this.offset_cx += 10;
+
+			if (this.offset_cx > 150)
+			{
+				this.offset_cx = 150;
+			}
+		}
+		else if (_dir < -0.5)
+		{
+			this.offset_cx -= 10;
+
+			if (this.offset_cx < -150)
+			{
+				this.offset_cx = -150;
+			}
+		}
+
+		tx = (_minX + _maxX) / 2 + this.offset_cx;
+		ty = (_minY + _maxY) / 2;
+		ty = (ty + _maxY) / 2;
+
+		if (tx > _minX + 400)
+		{
+			tx = _minX + 400;
+		}
+		else if (tx < _maxX - 400)
+		{
+			tx = _maxX - 400;
+		}
+
+		ajust = true;
+	}
+
+	if (ajust)
+	{
+		if (tx > this.target_x && !::stage.scrollRightLock)
+		{
+			this.target_x = tx;
+		}
+		else if (tx < this.target_x && !::stage.scrollLeftLock)
+		{
+			this.target_x = tx;
+		}
+
+		if (ty > this.target_y && !::stage.scrollDownLock)
+		{
+			this.target_y = ty;
+		}
+		else if (ty < this.target_y && !::stage.scrollUpLock)
+		{
+			this.target_y = ty;
+		}
+
+		if (this.target_x - this.cx < this.stage.scrollLeft)
+		{
+			this.target_x = this.stage.scrollLeft + this.cx;
+		}
+
+		if (this.target_x - this.cx + this.width > this.stage.scrollRight)
+		{
+			this.target_x = this.stage.scrollRight + this.cx - this.width;
+		}
+
+		if (this.target_y - this.cy < this.stage.scrollTop)
+		{
+			this.target_y = this.stage.scrollTop + this.cy;
+		}
+
+		if (this.target_y - this.cy + this.height > this.stage.scrollBottom)
+		{
+			this.target_y = this.stage.scrollBottom + this.cy - this.height;
+		}
+	}
+
+	local sx = this.abs(this.target_x - this.x);
+
+	if (sx < 1)
+	{
+		this.x = this.target_x;
+	}
+	else if (sx < 10)
+	{
+		this.x += (this.target_x - this.x) / sx;
+	}
+	else
+	{
+		this.x += (this.target_x - this.x) * 0.1;
+	}
+
+	local sy = this.abs(this.target_y - this.y);
+
+	if (sy < 1)
+	{
+		this.y = this.target_y;
+	}
+	else if (sy < 10)
+	{
+		this.y += (this.target_y - this.y) / sy;
+	}
+	else
+	{
+		this.y += (this.target_y - this.y) * 0.1;
+	}
+
+	if (this.vibrationRadius > 1)
+	{
+		this.offset_x = this.cos(1.447 * this.vibrationCount) * this.vibrationRadius;
+		this.offset_y = this.sin(1.865 * this.vibrationCount) * this.vibrationRadius;
+	}
+	else
+	{
+		this.offset_x = 0;
+		this.offset_y = 0;
+	}
+
+	this.vibrationRadius *= 0.94999999;
+	this.vibrationCount++;
+}
+
