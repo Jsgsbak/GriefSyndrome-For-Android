@@ -134,9 +134,13 @@ public class UICtrl : MonoBehaviour
     [ContextMenu("游戏暂停切换")]
     public void GamePauseSwitch()
     {
+
+
         //游戏暂停
-        if(Time.timeScale != 0)
-        {
+        if (Time.timeScale != 0)
+        {       
+            //暂停音效
+            EasyBGMCtrl.easyBGMCtrl.PlaySE(2);
             Time.timeScale = 0;
             EasyBGMCtrl.easyBGMCtrl.BGMPlayer.Pause();
             Pause.SetActive(true);
@@ -146,6 +150,8 @@ public class UICtrl : MonoBehaviour
         else
         {
             Time.timeScale = 1;
+            //确认音效
+            EasyBGMCtrl.easyBGMCtrl.PlaySE(0);
             EasyBGMCtrl.easyBGMCtrl.BGMPlayer.UnPause();
             Pause.SetActive(false);
             MEC.Timing.TimeBetweenSlowUpdateCalls = 1f / 7f;
@@ -157,21 +163,21 @@ public class UICtrl : MonoBehaviour
     /// </summary>
     public void ReturnToTitle()
     {
-        //  LoadingCtrl.LoadScene(0);
+        //返回音效
+        EasyBGMCtrl.easyBGMCtrl.PlaySE(1);
         Time.timeScale = 1;//回复时间
-        UnityEngine.SceneManagement.SceneManager.LoadScene(0,UnityEngine.SceneManagement.LoadSceneMode.Single);
+        UnityEngine.SceneManagement.SceneManager.LoadScene(1,UnityEngine.SceneManagement.LoadSceneMode.Single);
     }
 
-
-#if UNITY_EDITOR
     /// <summary>
     /// 随机播放bgm
     /// </summary>
     public void RandomPlayBGM()
     {
+        //确认音效
+        EasyBGMCtrl.easyBGMCtrl.PlaySE(0);
         EasyBGMCtrl.easyBGMCtrl.PlayBGM(Random.Range(0, EasyBGMCtrl.easyBGMCtrl.BGM.Length));
         ShowRandomBGM.text = string.Format("正在播放：{0}", EasyBGMCtrl.easyBGMCtrl.BGMPlayer.clip.name);
     }
-#endif
 
 }

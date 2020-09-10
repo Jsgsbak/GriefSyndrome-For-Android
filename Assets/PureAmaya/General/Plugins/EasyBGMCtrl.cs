@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[DisallowMultipleComponent]
 [RequireComponent(typeof(AudioSource))]
 public class EasyBGMCtrl : MonoBehaviour
 {
@@ -11,12 +12,24 @@ public class EasyBGMCtrl : MonoBehaviour
 
     public static EasyBGMCtrl easyBGMCtrl;
 
+    [Header("在哪个场景里允许不被Destroy")]
+    /// <summary>
+    /// 在哪个场景里允许不被Destroy
+    /// </summary>
+    public string SceneNameDontDestroyOnLoad;
+
+    /// <summary>
+    /// 是否为克隆的。用于多余BGMCtrl的删除处理
+    /// </summary>
+    [HideInInspector] public bool IsClone = false;
+
    [HideInInspector] public  AudioSource BGMPlayer;
     [HideInInspector] public  AudioSource SEPlayer;
 
+
+
     private void Awake()
     {
-      //  DontDestroyOnLoad(gameObject);
 
         #region 组件初始化
         easyBGMCtrl = this;
@@ -24,8 +37,19 @@ public class EasyBGMCtrl : MonoBehaviour
         BGMPlayer = AS[0];
         SEPlayer = AS[1];
         #endregion
+
     }
 
+    private void Start()
+    {
+        //非克隆体才能DontDestroyOnLoad
+        if (!IsClone && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == SceneNameDontDestroyOnLoad)
+        {
+            DontDestroyOnLoad(gameObject);
+
+        }
+
+    }
 
     /// <summary>
     /// 改变音量。一般UI控制这个函数
@@ -60,5 +84,17 @@ public class EasyBGMCtrl : MonoBehaviour
         }
     }
 
+    public void PlaySE(int index)
+    {
+        if (index < 0)
+        {
+            SEPlayer.Stop();
+        }
+        else
+        {
+            SEPlayer.PlayOneShot(SE[index]);
+
+        }
+    }
 
 }

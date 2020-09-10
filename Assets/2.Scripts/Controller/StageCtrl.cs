@@ -21,6 +21,8 @@ public class StageCtrl : MonoBehaviour
     public GameObject[] Players;
     public Transform Point;
 
+    [Header("检查视图中的预设")]
+    public EasyBGMCtrl PerfebInAsset;
 
 
     #region 事件组
@@ -34,6 +36,15 @@ public class StageCtrl : MonoBehaviour
         gameScoreSettings = (GameScoreSettingsIO)Resources.Load("GameScoreAndSettings");
         Application.targetFrameRate = gameScoreSettings.MaxFps;
 
+#if UNITY_EDITOR
+
+        //检查是否存在BGMCtrl
+        if (GameObject.FindObjectOfType<EasyBGMCtrl>() == null)
+        {
+            EasyBGMCtrl easyBGMCtrl = Instantiate(PerfebInAsset).GetComponent<EasyBGMCtrl>();
+            easyBGMCtrl.IsClone = true;
+        }
+#endif
     }
 
     // Start is called before the first frame update

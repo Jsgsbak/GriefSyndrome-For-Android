@@ -49,14 +49,26 @@ public class LoadingCtrl : MonoBehaviour
 	/// 加载场景
 	/// </summary>
 	/// <param name="id">场景id</param>
-	/// <param name="UseLoadScene"></param>
+	/// <param name="UseLoadScene">使用有QB的加载场景吗</param>
 	public static void LoadScene(int id,bool UseLoadScene = true)
     {
 		//设置好目标场景
 		Target = id;
-		//停止bgm
-		EasyBGMCtrl.easyBGMCtrl.PlayBGM(-1);
-        if (UseLoadScene)
+
+#if UNITY_EDITOR
+
+		//检查是否存在BGMCtrl
+		if (GameObject.FindObjectOfType<EasyBGMCtrl>() != null)
+		{
+			//停止bgm
+			EasyBGMCtrl.easyBGMCtrl.PlayBGM(-1);
+		}
+#else
+			//停止bgm
+			EasyBGMCtrl.easyBGMCtrl.PlayBGM(-1);
+#endif
+
+		if (UseLoadScene)
         {
 			//然后进入Loading场景
 			SceneManager.LoadScene("Loading");

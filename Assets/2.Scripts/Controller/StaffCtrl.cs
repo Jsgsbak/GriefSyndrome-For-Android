@@ -17,11 +17,17 @@ public class StaffCtrl : MonoBehaviour
 
    [SerializeField] bool IsOnline = true;
 
+    [Header("结局图")]
     /// <summary>
     /// 结局图
     /// </summary>
     public Image image;
     public Sprite[] images;
+
+
+    [Header("检查视图中的预设")]
+    public EasyBGMCtrl PerfebInAsset;
+
 
     GameScoreSettingsIO gameScoreSettings;
 
@@ -29,6 +35,20 @@ public class StaffCtrl : MonoBehaviour
     /// 储存死亡的玩家
     /// </summary>
     List<Variable.PlayerFaceType> DeadMahoshoujos = new List<Variable.PlayerFaceType>();//麻花焰规划到了黑长直手里
+
+
+    private void Awake()
+    {
+#if UNITY_EDITOR
+
+        //检查是否存在BGMCtrl
+        if (GameObject.FindObjectOfType<EasyBGMCtrl>() == null)
+        {
+            EasyBGMCtrl easyBGMCtrl = Instantiate(PerfebInAsset).GetComponent<EasyBGMCtrl>();
+            easyBGMCtrl.IsClone = true;
+        }
+#endif
+    }
 
     void Start()
     {
@@ -135,7 +155,9 @@ public class StaffCtrl : MonoBehaviour
         //轻触屏幕，返回标题界面
         if (Input.touchCount >= 1 || Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1) || Input.GetMouseButtonDown(2))
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene(0, UnityEngine.SceneManagement.LoadSceneMode.Single);
+            //返回音效
+            EasyBGMCtrl.easyBGMCtrl.PlaySE(1);
+            UnityEngine.SceneManagement.SceneManager.LoadScene(1, UnityEngine.SceneManagement.LoadSceneMode.Single);
         }
     }
 

@@ -9,11 +9,13 @@ namespace PureAmaya.General
 
     public class EasyMove : MonoBehaviour
     {
+        [Header("移动")]
         public bool AllowMove = false;
         public Vector2 Direction = Vector2.zero;
         public Space MoveSpace = Space.Self;
         public float Speed = 40f;
-        [Space()]
+
+        [Header("旋转")]
         public bool AllowRotate = false;
         public Vector3 Axis = Vector3.up;
         public float RotSpeed = 30f;
@@ -43,6 +45,12 @@ namespace PureAmaya.General
         public Space PendulumSpace = Space.World;
        public AnimationCurve ac;
         private float Time0;
+
+        [Header("全局设置")]
+        public bool EnablePoint;
+        public Vector2 PointWhenDisabled = Vector2.zero;
+        public bool EnableRotation;
+        public Quaternion RotWhenDisabled = Quaternion.identity;
 
         Transform tr;
         GameObject go;
@@ -86,6 +94,16 @@ namespace PureAmaya.General
         {
             //移除Update
             UpdateManager.FastUpdate.RemoveListener(FastUpdate);
+
+            //如果激活了禁用后初始化，则初始化相应的东西
+            if (EnablePoint)
+            {
+                tr.position = PointWhenDisabled;
+            }
+            if (EnableRotation)
+            {
+                tr.rotation = RotWhenDisabled;
+            }
         }
 
         // Update is called once per frame
