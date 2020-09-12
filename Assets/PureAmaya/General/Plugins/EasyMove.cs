@@ -53,13 +53,11 @@ namespace PureAmaya.General
         public Quaternion RotWhenDisabled = Quaternion.identity;
 
         Transform tr;
-        GameObject go;
 
         // Start is called before the first frame update
         void Start()
         {
             tr = transform;
-            go = gameObject;
 
             //周期旋转
             if (AllowRotateTime)
@@ -109,9 +107,7 @@ namespace PureAmaya.General
         // Update is called once per frame
         void FastUpdate()
         {
-            //仅限被激活后转动
-            if (go.activeInHierarchy)
-            {
+
                 //移动
                 if (AllowMove)
                 {
@@ -143,7 +139,6 @@ namespace PureAmaya.General
                     tr.Rotate(AxisForPendulum * ac.Evaluate(Time.timeSinceLevelLoad - Time0) * Time.deltaTime, PendulumSpace);
                 }
 
-            }
         }
     }
 }

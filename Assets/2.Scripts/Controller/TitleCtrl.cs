@@ -79,24 +79,22 @@ public class TitleCtrl : MonoBehaviour
     /// 控制EventSystem用于阻止用户非正常输入
     /// </summary>
     [Space(50)]
-    public  GameObject eventSystem;
+    public GameObject eventSystem;
     private void Awake()
     {
         //组件获取
         titleCtrl = this;
         gameScoreSettingsIO = Resources.Load("GameScoreAndSettings") as GameScoreSettingsIO;
 
-        //存档与设置获取
-        gameScoreSettingsIO.Load();
-
         //版本 号
-        Version.text = string.Format("Ver.{0}",Application.version) ;
+        Version.text = string.Format("Ver.{0}", Application.version);
     }
 
 
     // Start is called before the first frame update
     void Start()
     {
+
 #if UNITY_EDITOR
         //检查是否存在BGMCtrl
         if (GameObject.FindObjectOfType<EasyBGMCtrl>() == null)
@@ -110,51 +108,50 @@ public class TitleCtrl : MonoBehaviour
         //BGM
         EasyBGMCtrl.easyBGMCtrl.PlayBGM(0);
 
-        //刚打开游戏，并不是从魔女结界中返回
-        if (!gameScoreSettingsIO.MajoKeikaiToSelectPart)
+        //刚打开游戏，并不是从任何场景中返回
+        if (!gameScoreSettingsIO.AnySceneToTitle)
         {
-            //淡入进入MainTitle part（用于刚刚打开游戏）
-            ChangePart[0].gameObject.SetActive(true);
-            ChangePart[0].alpha = 0;
-            Timing.RunCoroutine(ChangePartMethod(-1, 0));
 
-
-            //禁用其他Part
-            ChangePart[1].gameObject.SetActive(false);
-            ChangePart[2].gameObject.SetActive(false);
-
-            #region  注册组件
-            //主标题part
-            LapInput.onValueChanged.AddListener(delegate (string lap) { gameScoreSettingsIO.lap = int.Parse(lap); });//向GSS中写入周目数
-          //进入魔女选择part的音效放在了ChangePartMethod中
-            StartGameButton.onClick.AddListener(delegate () { EasyBGMCtrl.easyBGMCtrl.PlaySE(0); Timing.RunCoroutine(ChangePartMethod(0, 1)); });//进入魔女选择part
-            ExitButton.onClick.AddListener(delegate () { gameScoreSettingsIO.Save();/*这里保存一下*/   Application.Quit(0); });//关闭游戏
-            RandomStaff.onClick.AddListener(delegate () { EasyBGMCtrl.easyBGMCtrl.PlaySE(0); RandomKillGirl(); });
-
-            //音量
-            BGMVol.onValueChanged.AddListener(BGMVolChange);
-            SEVol.onValueChanged.AddListener(SEVolChange);
-
-            //魔女选择part
-            ExitMajo.onClick.AddListener(delegate () { EasyBGMCtrl.easyBGMCtrl.PlaySE(1); Timing.RunCoroutine(ChangePartMethod(1, 0)); });//返回到主标题part
-
-            //魔法少女选择part
-            ExitMagicalGirls.onClick.AddListener(delegate () { EasyBGMCtrl.easyBGMCtrl.PlaySE(1); Timing.RunCoroutine(ChangePartMethod(2, -1)); });//范围到魔女选择part
-          
-            
-            
-            #endregion
+            //存档与设置获取
+            gameScoreSettingsIO.Load();
         }
-        else//不是刚打开游戏，是从魔女结界中返回（玩家死亡或者胜利）
 
-        {
-            //禁用其他Part
-            ChangePart[0].gameObject.SetActive(false);
-            ChangePart[2].gameObject.SetActive(false);
 
-            //启用魔女选择part
-            Timing.RunCoroutine(ChangePartMethod(-1, 1));
-        }
+        #region  注册组件
+        //主标题part
+        LapInput.onValueChanged.AddListener(delegate (string lap) { gameScoreSettingsIO.lap = int.Parse(lap); });//向GSS中写入周目数
+
+        //音量
+        BGMVol.onValueChanged.AddListener(BGMVolChange);
+        SEVol.onValueChanged.AddListener(SEVolChange);
+
+        //进入魔女选择part的音效放在了ChangePartMethod中
+        StartGameButton.onClick.AddListener(delegate () { EasyBGMCtrl.easyBGMCtrl.PlaySE(0); Timing.RunCoroutine(ChangePartMethod(0, 1)); });//进入魔女选择part
+        ExitButton.onClick.AddListener(delegate () { gameScoreSettingsIO.Save();/*这里保存一下*/   Application.Quit(0); });//关闭游戏
+        RandomStaff.onClick.AddListener(delegate () { EasyBGMCtrl.easyBGMCtrl.PlaySE(0); RandomKillGirl(); });
+        //魔女选择part
+        ExitMajo.onClick.AddListener(delegate () { EasyBGMCtrl.easyBGMCtrl.PlaySE(1); Timing.RunCoroutine(ChangePartMethod(1, 0)); });//返回到主标题part
+
+        //魔法少女选择part
+        ExitMagicalGirls.onClick.AddListener(delegate () { EasyBGMCtrl.easyBGMCtrl.PlaySE(1); Timing.RunCoroutine(ChangePartMethod(2, -1)); });//范围到魔女选择part
+
+
+
+        #endregion
+
+        #region 界面修改（计分板与音量）
+        //淡入进入MainTitle part（用于刚刚打开游戏）
+        ChangePart[0].gameObject.SetActive(true);
+        ChangePart[0].alpha = 0;
+        Timing.RunCoroutine(ChangePartMethod(-1, 0));
+
+        //禁用其他Part
+        ChangePart[1].gameObject.SetActive(false);
+        ChangePart[2].gameObject.SetActive(false);
+        #endregion
+
+        //处理完之后，恢复为false便于下一次处理
+        gameScoreSettingsIO.AnySceneToTitle = false;
 
     }
 
@@ -194,13 +191,13 @@ public class TitleCtrl : MonoBehaviour
             {
                 if (i <= (int)gameScoreSettingsIO.NewestMajo)
                 {
-                     MajoPictures[i].sprite = MajoPictureEnable[i];
-                   // MajoPictures[i].sprite = EasyAtlasToSprite.easyAtlasToSprite.GetSprite(0, MajoPictureEnableName[i]);
+                    MajoPictures[i].sprite = MajoPictureEnable[i];
+                    // MajoPictures[i].sprite = EasyAtlasToSprite.easyAtlasToSprite.GetSprite(0, MajoPictureEnableName[i]);
                 }
                 else
                 {
-                      MajoPictures[i].sprite = MajoPictureDisable[i];
-                 //   MajoPictures[i].sprite = EasyAtlasToSprite.easyAtlasToSprite.GetSprite(0, MajoPictureDisableName[i]);
+                    MajoPictures[i].sprite = MajoPictureDisable[i];
+                    //   MajoPictures[i].sprite = EasyAtlasToSprite.easyAtlasToSprite.GetSprite(0, MajoPictureDisableName[i]);
                 }
             }
             else
@@ -212,7 +209,7 @@ public class TitleCtrl : MonoBehaviour
                 }
                 else
                 {
-                   MajoPictures[i].gameObject.SetActive(false);
+                    MajoPictures[i].gameObject.SetActive(false);
                 }
             }
 
@@ -225,7 +222,7 @@ public class TitleCtrl : MonoBehaviour
     public void SelectedMajo(int MajoId)
     {
         //储存要打的魔女&切换到选择魔法少女part
-        if (MajoId <= (int)gameScoreSettingsIO.NewestMajo && MajoId != 5) { EasyBGMCtrl.easyBGMCtrl.PlaySE(0); gameScoreSettingsIO.MajoBeingBattled = (Variable.Majo)MajoId; Timing.RunCoroutine(ChangePartMethod(-1, 2));}
+        if (MajoId <= (int)gameScoreSettingsIO.NewestMajo && MajoId != 5) { EasyBGMCtrl.easyBGMCtrl.PlaySE(0); gameScoreSettingsIO.MajoBeingBattled = (Variable.Majo)MajoId; Timing.RunCoroutine(ChangePartMethod(-1, 2)); }
         else if (MajoId == 5 && gameScoreSettingsIO.AllowOktavia) { EasyBGMCtrl.easyBGMCtrl.PlaySE(0); gameScoreSettingsIO.MajoBeingBattled = (Variable.Majo)MajoId; Timing.RunCoroutine(ChangePartMethod(-1, 2)); }
 
     }
@@ -279,7 +276,7 @@ public class TitleCtrl : MonoBehaviour
         //应该所有玩家都选择完在进行处理
         //切换场景
         LoadingCtrl.LoadScene(2);
-        
+
     }
 
     /// <summary>
@@ -289,12 +286,12 @@ public class TitleCtrl : MonoBehaviour
     {
         int i = Random.Range(0, 11);
         // i == 0 :全员幸存
-         if (i == 1) //只有鹿目圆死亡
+        if (i == 1) //只有鹿目圆死亡
         {
             gameScoreSettingsIO.MagicalGirlsDie[2] = true;
         }
         //只有可怜的蓝毛死亡
-        else if (i == 2 )
+        else if (i == 2)
         {
             gameScoreSettingsIO.MagicalGirlsDie[4] = true;
         }
@@ -324,7 +321,7 @@ public class TitleCtrl : MonoBehaviour
             gameScoreSettingsIO.MagicalGirlsDie[3] = true;
         }
         //只有鹿目圆和沙耶加死亡
-        else if ( i == 7)
+        else if (i == 7)
         {
             gameScoreSettingsIO.MagicalGirlsDie[4] = true;
             gameScoreSettingsIO.MagicalGirlsDie[2] = true;
@@ -337,8 +334,8 @@ public class TitleCtrl : MonoBehaviour
             gameScoreSettingsIO.MagicalGirlsDie[3] = true;
             gameScoreSettingsIO.MagicalGirlsDie[4] = true;
         }
-         //全挂了
-        else if(i == 9)
+        //全挂了
+        else if (i == 9)
         {
             gameScoreSettingsIO.MagicalGirlsDie[0] = true;
             gameScoreSettingsIO.MagicalGirlsDie[1] = true;
@@ -361,7 +358,7 @@ public class TitleCtrl : MonoBehaviour
     public void BGMVolChange(float vol)
     {
         gameScoreSettingsIO.BGMVol = vol;
-        EasyBGMCtrl.easyBGMCtrl.ChangeVol(vol,true);
+        EasyBGMCtrl.easyBGMCtrl.ChangeVol(vol, true);
     }
     public void SEVolChange(float vol)
     {
@@ -428,7 +425,7 @@ public class TitleCtrl : MonoBehaviour
             //音频
             EasyBGMCtrl.easyBGMCtrl.PlaySE(3);
         }
-        else if(InId == 2)
+        else if (InId == 2)
         {
             //如果来的是SelectMagicalGirls，则检查一下马猴烧酒
             CheckMahoshoujo();
@@ -438,14 +435,14 @@ public class TitleCtrl : MonoBehaviour
             //回到主标题part则直接初始化临时数据
             gameScoreSettingsIO.TitleInitial();
 
-#region 从存档中读取主标题part中的保存数据，lap ,音量
+            #region 从存档中读取主标题part中的保存数据，lap ,音量
             BGMVol.value = gameScoreSettingsIO.BGMVol;
             SEVol.value = gameScoreSettingsIO.SEVol;
             AdjustScore(Variable.ScoreType.BestTime, gameScoreSettingsIO.BestTime.ToString(), gameScoreSettingsIO.BestTimeFace);
             AdjustScore(Variable.ScoreType.HiScore, gameScoreSettingsIO.HiScore.ToString(), gameScoreSettingsIO.HiScoreFace);
             AdjustScore(Variable.ScoreType.MaxHits, gameScoreSettingsIO.MaxHits.ToString(), gameScoreSettingsIO.MaxHitsFace);
             LapInput.text = gameScoreSettingsIO.LastLap.ToString();
-#endregion
+            #endregion
         }
 
         //一个先变黑另外一个才出来
@@ -514,5 +511,5 @@ public class TitleCtrl : MonoBehaviour
 
 
     }
-#endregion
+    #endregion
 }
