@@ -21,7 +21,9 @@ namespace PureAmaya.General
         /// 假的LateUpdate（所有FastUpdate执行后，且LateUpdate执行前执行）
         /// </summary>
         public static UpdateEventClass FakeLateUpdate = new UpdateEventClass();
-
+        /// <summary>
+        /// 依赖于TIM的SlowUpdate
+        /// </summary>
         public static UpdateEventClass SlowUpdate = new UpdateEventClass();
 
 

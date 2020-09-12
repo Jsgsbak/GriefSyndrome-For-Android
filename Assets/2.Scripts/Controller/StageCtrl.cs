@@ -72,12 +72,40 @@ public class StageCtrl : MonoBehaviour
                 Instantiate(Players[(int)gameScoreSettings.SelectedGirlInGame[i]], Point);
             }
         }
+
+        //初始化计时器
+        InvokeRepeating("Timer", 1f, 1f);
     }
 
-    public void FastUpdate()
+
+    public void Timer()
     {
+        gameScoreSettings.Time++;
     }
 
+
+    /// <summary>
+    /// 打完魔女之后的结算逻辑
+    /// </summary>
+    public void GoodbyeMajo()
+    {
+        //停止计时器
+        CancelInvoke("Timer");
+
+
+
+        if (gameScoreSettings.MajoBeingBattled == Variable.Majo.Walpurgisnacht)
+        {
+            //瓦夜逻辑
+        }
+    }
+
+
+    /// <summary>
+    /// 统一控制玩家受伤的逻辑
+    /// </summary>
+    /// <param name="damage"></param>
+    /// <param name="PlayerId"></param>
     public static void HurtPlayer(int damage, int PlayerId)
     {
         if (PlayerId == 1)

@@ -1,4 +1,5 @@
 ﻿using BayatGames.SaveGameFree;
+using MEC;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -121,10 +122,10 @@ public class GameScoreSettingsIO : ScriptableObject
     public bool AllowOktavia = false;
 
     /// <summary>
-    /// 是从魔女结界中返回魔女选择part吗
+    /// 是从任意场景中返回标题界面吗（不包括Beginning场景）
     /// </summary>
-    [Header("是从魔女结界中返回魔女选择part吗")]
-    public bool MajoKeikaiToSelectPart = false;
+    [Header("是从任意场景中返回标题界面吗")]
+    public bool AnySceneToTitle = false;
 
     #endregion
 
@@ -157,7 +158,7 @@ public class GameScoreSettingsIO : ScriptableObject
         NewestMajo = Variable.Majo.Gertrud;
         AllowOktavia = false;
         MagicalGirlsDie = new bool[] { false, false, false, false, false };
-        MajoKeikaiToSelectPart = false;
+        AnySceneToTitle = false;
         Level = new int[] { 1, 1, 1 };
     }
 
@@ -166,6 +167,9 @@ public class GameScoreSettingsIO : ScriptableObject
     /// </summary>
     public void MajoInitial()
     {
+        //这里初始化为true，便于处理从游戏返回标题界面时的逻辑
+        AnySceneToTitle = true;
+
         Hits = 0;
         VitInGame = new int[] { 0, 0, 0 };
         SoulLimitInGame = new int[] { 0, 0, 0 }; 
@@ -179,10 +183,11 @@ public class GameScoreSettingsIO : ScriptableObject
     }
 
     /// <summary>
-    /// 保存（结算界面使用）
+    /// 向硬盘保存存档与设置（staff界面使用）
     /// </summary>
-    public void Save()
+    public IEnumerator<float> Save()
     {
+
         //存档
         SaveGame.Save<int>("HighestScore", HiScore);
         SaveGame.Save<int>("MaxHits", MaxHits);
@@ -192,10 +197,11 @@ public class GameScoreSettingsIO : ScriptableObject
         SaveGame.Save("BGMVol", BGMVol);
         SaveGame.Save("SEVol", SEVol);
 
+        yield return 0f;
     }
 
     /// <summary>
-    /// 读取存档与设置（标题界面使用）
+    /// 从硬盘读取存档与设置（标题界面使用）
     /// </summary>
     public  void Load()
     {

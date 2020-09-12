@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using MEC;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -52,15 +53,28 @@ public class StaffCtrl : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(GetText());
         gameScoreSettings = (GameScoreSettingsIO)Resources.Load("GameScoreAndSettings");
+
+        StartCoroutine(GetText());
+       Timing.RunCoroutine(AsyncSave());
         s.SetActive(true);
 
         SetConcImageAndBGM();
 
+        //这里初始化为true，便于处理从游戏返回标题界面时的逻辑
+       gameScoreSettings.AnySceneToTitle = true;
+
+
     }
 
-
+    /// <summary>
+    /// 通知gss向硬盘保存存档
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator<float> AsyncSave()
+    {
+       return gameScoreSettings.Save();
+    }
 
 
     IEnumerator GetText()
