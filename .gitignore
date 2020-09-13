@@ -48,5 +48,5 @@ sysinfo.txt
 crashlytics-build.properties
 
 #Staff For Game
-MAJO.txt
-HUMAN.txt
+*.stf
+
