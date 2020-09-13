@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxFps: 60
   Score: 000000000000000000000000
-  HiScore: 10000
+  HiScore: 2147483647
   HiScoreFace: 070000000700000007000000
   Hits: 0
   MaxHits: 0
@@ -26,11 +26,11 @@ MonoBehaviour:
   LastLap: 1
   SelectedGirlInGame: 070000000700000007000000
   Level: 010000000100000001000000
-  SoulLimitInGame: d04d00000000000000000000
-  VitInGame: 580000000000000000000000
-  PowInGame: 000000000000000000000000
+  SoulLimitInGame: c07000000000000000000000
+  VitInGame: 5c0000000000000000000000
+  PowInGame: 0a0000000000000000000000
   MagiaKeyDown: 000000
-  MaxVitInGame: 580000000000000000000000
+  MaxVitInGame: 5c0000000000000000000000
   HurtVitInGame: 000000000000000000000000
   GetHurtInGame: 000000
   IsBodyDieInGame: 000000
@@ -39,7 +39,7 @@ MonoBehaviour:
   MajoBeingBattled: 0
   NewestMajo: 0
   AllowOktavia: 0
-  MajoKeikaiToSelectPart: 0
+  AnySceneToTitle: 0
   mahouShoujos:
   - name: Homura
     BasicPow: 10
@@ -131,5 +131,5 @@ MonoBehaviour:
     Rebirth: 30
     MaigaVit: 50
     LongMagia: 0
-  BGMVol: 0.6
+  BGMVol: 0
   SEVol: 0.7
