@@ -10,7 +10,11 @@ using UnityEngine.UI;
 /// </summary>
 public class StaffCtrl : MonoBehaviour
 {
+    [Header("2个staff文本框")]
     public Text[] staff;
+
+    RectTransform[] StaffRectTr = new RectTransform[2];
+
     /// <summary>
     /// 提示正在下载staff的那个
     /// </summary>
@@ -41,7 +45,6 @@ public class StaffCtrl : MonoBehaviour
     private void Awake()
     {
 #if UNITY_EDITOR
-
         //检查是否存在BGMCtrl
         if (GameObject.FindObjectOfType<EasyBGMCtrl>() == null)
         {
@@ -49,16 +52,26 @@ public class StaffCtrl : MonoBehaviour
             easyBGMCtrl.IsClone = true;
         }
 #endif
+
+
+        //获取组件
+        StaffRectTr[0] = staff[0].rectTransform;
+        StaffRectTr[1] = staff[1].rectTransform;
     }
+
+
 
     void Start()
     {
         gameScoreSettings = (GameScoreSettingsIO)Resources.Load("GameScoreAndSettings");
 
+        //下载与存档
         StartCoroutine(GetText());
-       Timing.RunCoroutine(AsyncSave());
+        Timing.RunCoroutine(AsyncSave());
+        //告知用户在下载
         s.SetActive(true);
 
+        //背景图与BGM
         SetConcImageAndBGM();
 
         //这里初始化为true，便于处理从游戏返回标题界面时的逻辑
@@ -76,11 +89,14 @@ public class StaffCtrl : MonoBehaviour
        return gameScoreSettings.Save();
     }
 
-
+    /// <summary>
+    /// 从网络获取staff文本
+    /// </summary>
+    /// <returns></returns>
     IEnumerator GetText()
     {
         //获取魔女文staff
-        UnityWebRequest request = UnityWebRequest.Get("https://gitee.com/pureamaya/GriefSyndrome-For-Android/raw/develop/StaffForGame/MAJO.txt");
+        UnityWebRequest request = UnityWebRequest.Get("https://gitee.com/pureamaya/GriefSyndrome-For-Android/raw/master/StaffForGame/MAJO.stf");
         request.timeout = 3;
         // 
         // UnityWebRequest request = new UnityWebRequest("http://example.com");
@@ -94,7 +110,7 @@ public class StaffCtrl : MonoBehaviour
         if (request.isNetworkError)
         {
             //网络错误，使用离线版staff
-            //修改在线状态，不在下载另外一个
+            //修改在线状态，不再下载另外一个
             IsOnline = false;
         }
         else
@@ -110,7 +126,7 @@ public class StaffCtrl : MonoBehaviour
         //获取staff
         if (IsOnline)
         {
-            request = UnityWebRequest.Get("https://gitee.com/pureamaya/GriefSyndrome-For-Android/raw/develop/StaffForGame/HUMAN.txt");
+            request = UnityWebRequest.Get("https://gitee.com/pureamaya/GriefSyndrome-For-Android/raw/master/StaffForGame/HUMAN.stf");
         // 
         // UnityWebRequest request = new UnityWebRequest("http://example.com");
         // 
@@ -120,14 +136,8 @@ public class StaffCtrl : MonoBehaviour
         yield return request.Send();
         }
 
-        //这里才准备显示staff
-        staff[0].gameObject.SetActive(true);
-        staff[1].gameObject.SetActive(true);
-        staff[0].rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, staff[0].preferredHeight);
-        staff[1].rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, staff[1].preferredHeight);
-        s.SetActive(false);
+    
 
-        // 
         if (request.isNetworkError)
         {
            //网络错误，使用离线版staff
@@ -136,13 +146,23 @@ public class StaffCtrl : MonoBehaviour
         {
             if (request.responseCode == 200)
             {
-                // 
                 staff[0].text = request.downloadHandler.text;
 
-                //取消下载提示的显示，另外还用来通知staff滚动
 
             }
         }
+
+        //网络部分处理完之后，使2个staff的上边对齐
+        StaffRectTr[1].position = new Vector3(StaffRectTr[1].position.x, StaffRectTr[0].position.y);
+        //这里才准备显示staff
+        staff[0].gameObject.SetActive(true);
+        staff[1].gameObject.SetActive(true);
+        //修正文本框高度
+        StaffRectTr[0].SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, staff[0].preferredHeight);
+        StaffRectTr[1].SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, staff[1].preferredHeight);
+
+        //取消下载提示的显示，另外还用来通知staff滚动
+        s.SetActive(false);
 
         //最后，逐渐显现结局图
         image.gameObject.SetActive(true);
@@ -153,17 +173,23 @@ public class StaffCtrl : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
 
+
     }
 
 
     private void Update()
     {
-        //staff被激活，开始滚动
-        if (!s.gameObject.active && Mathf.Abs(staff[0].rectTransform.position.y) > 0.1f)
-        {
-            staff[0].transform.Translate(Vector2.up * 0.2f * Time.deltaTime);
-            staff[1].transform.Translate(Vector2.up * 0.2f * Time.deltaTime);
 
+        //staff被激活，开始滚动 
+        if (!s.gameObject.active && Mathf.Abs(StaffRectTr[0].localPosition.y - StaffRectTr[0].sizeDelta.y) > 0.1f)
+        {
+            StaffRectTr[0].Translate(Vector2.up * 0.22f * Time.deltaTime);
+        }
+
+        //staff被激活，开始滚动
+        if (!s.gameObject.active && Mathf.Abs(StaffRectTr[1].localPosition.y - StaffRectTr[1].sizeDelta.y) > 0.1f)
+        {
+            StaffRectTr[1].transform.Translate(Vector2.up * 0.22f * Time.deltaTime);
         }
 
         //轻触屏幕，返回标题界面
