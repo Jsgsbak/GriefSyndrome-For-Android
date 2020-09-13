@@ -1,4 +1,4 @@
-# 针对开发者的帮助文档（最后更新：9月7日）
+# 针对开发者的帮助文档（最后更新：9月13日）
 
 ## 脚本简介
 
@@ -27,7 +27,7 @@
 
 ### TitleCtrl
 
-控制Title场景，并负责主标题part，魔女选择part，魔法少女选择part的控制
+控制Title场景；并负责主标题part、魔女选择part、魔法少女选择part的控制
 
 ### StaffCtrl
 
@@ -36,15 +36,15 @@ staff场景的控制
 
 ### LoadingCtrl
 
-控制Loading文本，QB与进度条，并负责在场景之间转换
+控制Loading文本、QB与进度条；并负责在场景之间转换
 
 ### UICtrl
 
-控制Majo场景中的UI与游戏暂停处理，负责调用PlayerInfUpdate和PausePlayerInf，详细内容请阅览相应脚本简介
+控制Majo场景中的UI与游戏暂停处理；负责调用PlayerInfUpdate和PausePlayerInf；详细内容请阅览相应脚本简介
 
 ### PlayerInfUpdate
 
-游戏中上板面显示的血量，灵魂值，分数等信息的更新器
+游戏中上板面显示的血量、灵魂值、分数等信息的更新器
 
 ### PausePlayerInf
 
@@ -52,7 +52,7 @@ staff场景的控制
 
 ### StageCtrl
 
-托管调用玩家受伤事件，音量修改（仅限听觉，视觉上对UI的修改在UICtrl中），玩家死亡后的逻辑控制，相机控制（未实装），敌人的激活与消除（未实装）
+托管调用玩家受伤事件；音量修改（仅限听觉，视觉上对UI的修改在UICtrl中）；通知UICtrl显示结算界面，结算的数据处理在自己这里；玩家死亡后的逻辑控制（未实装）；相机控制（未实装）；敌人的激活与消除（未实装）
 
 ### APlayerCtrl
 
