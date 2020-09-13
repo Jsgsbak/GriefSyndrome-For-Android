@@ -5,6 +5,7 @@ using TMPro;
 using PureAmaya.General;
 using UnityEngine.UI;
 using UnityEngine.U2D;
+using MEC;
 
 //击杀完魔女之后的 XXX is defeated需要用到魔女的脚本，但是还没写）
 
@@ -28,6 +29,16 @@ public class UICtrl : MonoBehaviour
     public Slider SEVol;
 
     /// <summary>
+    /// 结算界面
+    /// </summary>
+    [Header("结算界面")]
+    public CanvasGroup ConcInMajo;
+    public TMP_Text MajoDieText;
+    public TMP_Text ThisMajoTimeText;
+    public TMP_Text TotalTimeText;
+
+
+    /// <summary>
     /// 真正起到更新作用的在这里
     /// </summary>
     PlayerInfUpdate[] PlayerInfInGame;
@@ -36,6 +47,13 @@ public class UICtrl : MonoBehaviour
     /// 非QB玩家计数
     /// </summary>
     int PlayerCount = 0;
+
+    /// <summary>
+    ///  魔女死了吗
+    /// </summary>
+    bool DoesMajoDie = false;
+
+
 
 #if UNITY_EDITOR
     [Header("调试用")]
@@ -68,7 +86,8 @@ public class UICtrl : MonoBehaviour
         BGMVol.value =StageCtrl. gameScoreSettings.BGMVol;
         SEVol.value = StageCtrl.gameScoreSettings.SEVol;
 
-        //魔女
+        //魔女被击败
+        StageCtrl.stageCtrl.MajoDefeated.AddListener(MajoDie);
         #endregion
 
         #region 初始化UI界面
@@ -153,7 +172,7 @@ public class UICtrl : MonoBehaviour
 
 
         //游戏暂停
-        if (Time.timeScale != 0)
+        if (Time.timeScale != 0 && !DoesMajoDie)
         {       
             //暂停音效
             EasyBGMCtrl.easyBGMCtrl.PlaySE(2);
@@ -163,7 +182,7 @@ public class UICtrl : MonoBehaviour
             MEC.Timing.TimeBetweenSlowUpdateCalls = 999999999999999f;
         }
         //暂停恢复
-        else
+        else if(Time.timeScale == 0)
         {
             Time.timeScale = 1;
             //确认音效
@@ -199,4 +218,25 @@ public class UICtrl : MonoBehaviour
         ShowRandomBGM.text = string.Format("正在播放：{0}", EasyBGMCtrl.easyBGMCtrl.BGMPlayer.clip.name);
     }
 
+    /// <summary>
+    /// 击败魔女后ui的逻辑
+    /// </summary>
+    public void MajoDie()
+    {
+        //修改状态，防止游戏暂停
+        DoesMajoDie = true;
+
+        //结算界面
+        Timing.RunCoroutine(Conclusion());
+    }
+
+    /*
+    /// <summary>
+    /// 击败魔女后的结果（显示挑战时间与总时间）
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator<float> Conclusion()
+    {
+        MajoDieText.text = string.Format("Clear Time:{0}",)
+    }*/
 }

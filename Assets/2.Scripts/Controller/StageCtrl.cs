@@ -17,7 +17,6 @@ public class StageCtrl : MonoBehaviour
     public static GameScoreSettingsIO gameScoreSettings;
     public static StageCtrl stageCtrl;
 
-   public int BGMid = 5;//通常都为5，是道中曲
 
     [Header("玩家生成设置")]
     public GameObject[] Players;
@@ -26,6 +25,12 @@ public class StageCtrl : MonoBehaviour
     [Header("检查视图中的预设")]
     public EasyBGMCtrl PerfebInAsset;
 
+
+    /// <summary>
+    /// 打这个魔女的时间
+    /// </summary>
+    int ThisMajoTime = 0;
+    public int BGMid = 5;//通常都为5，是道中曲
 
     #region 事件组
     public class intEvent : UnityEvent<int> { }
@@ -41,6 +46,8 @@ public class StageCtrl : MonoBehaviour
     #endregion
     private void Awake()
     {
+        MajoDefeated.RemoveAllListeners();
+
         stageCtrl = this;
 
         gameScoreSettings = (GameScoreSettingsIO)Resources.Load("GameScoreAndSettings");
@@ -90,7 +97,7 @@ public class StageCtrl : MonoBehaviour
 
     public void Timer()
     {
-        gameScoreSettings.Time++;
+        ThisMajoTime++;
     }
 
 
@@ -102,7 +109,8 @@ public class StageCtrl : MonoBehaviour
     {
         //停止计时器
         CancelInvoke("Timer");
-
+        //时间增加
+        gameScoreSettings.Time += ThisMajoTime;
         //调用击败魔女的事件
         MajoDefeated.Invoke();
 
