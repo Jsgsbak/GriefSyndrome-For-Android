@@ -6,6 +6,7 @@ using UnityEngine.Events;
 
 namespace PureAmaya.General
 {
+    //awake中会删除切换场景后残留的action。因此注册action的时候海清在start中。另外不推荐将该物体设置为DontDestroyOnLoad
 
     /// <summary>
     /// 提高Update效率
@@ -31,6 +32,7 @@ namespace PureAmaya.General
         private void Awake()
         {
             updateManager = this;
+          
             FastUpdate.RemoveAllListeners();
             FakeLateUpdate.RemoveAllListeners();
             SlowUpdate.RemoveAllListeners();
