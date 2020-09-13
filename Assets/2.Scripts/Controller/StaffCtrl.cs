@@ -67,7 +67,6 @@ public class StaffCtrl : MonoBehaviour
 
         //下载与存档
         StartCoroutine(GetText());
-        Timing.RunCoroutine(AsyncSave());
         //告知用户在下载
         s.SetActive(true);
 
@@ -78,15 +77,6 @@ public class StaffCtrl : MonoBehaviour
        gameScoreSettings.AnySceneToTitle = true;
 
 
-    }
-
-    /// <summary>
-    /// 通知gss向硬盘保存存档
-    /// </summary>
-    /// <returns></returns>
-    IEnumerator<float> AsyncSave()
-    {
-       return gameScoreSettings.Save();
     }
 
     /// <summary>
@@ -213,7 +203,7 @@ public class StaffCtrl : MonoBehaviour
         //结局图+bgm
         for (int i = 0; i < 5; i++)
         {
-            //储存死亡的玩家
+            //储存死亡的玩家便于判断何种结局
             if (gameScoreSettings.MagicalGirlsDie[i])
             {
                 DeadMahoshoujos.Add((Variable.PlayerFaceType)i);

@@ -113,7 +113,7 @@ public class TitleCtrl : MonoBehaviour
         {
 
             //存档与设置获取
-            gameScoreSettingsIO.Load();
+            gameScoreSettingsIO.Load();//这里确实要堵一下主线程
         }
 
 

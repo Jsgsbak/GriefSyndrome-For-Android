@@ -158,7 +158,7 @@ public class GameScoreSettingsIO : ScriptableObject
         NewestMajo = Variable.Majo.Gertrud;
         AllowOktavia = false;
         MagicalGirlsDie = new bool[] { false, false, false, false, false };
-        AnySceneToTitle = false;
+       // AnySceneToTitle = false; 在这里控制会出现问题
         Level = new int[] { 1, 1, 1 };
     }
 
@@ -183,7 +183,7 @@ public class GameScoreSettingsIO : ScriptableObject
     }
 
     /// <summary>
-    /// 向硬盘保存存档与设置（staff界面使用）
+    /// 向硬盘保存存档与设置（瓦夜结算使用）
     /// </summary>
     public IEnumerator<float> Save()
     {
@@ -197,6 +197,7 @@ public class GameScoreSettingsIO : ScriptableObject
         SaveGame.Save("BGMVol", BGMVol);
         SaveGame.Save("SEVol", SEVol);
 
+        Debug.Log("存档结束");
         yield return 0f;
     }
 
@@ -219,4 +220,36 @@ public class GameScoreSettingsIO : ScriptableObject
         SEVol = SaveGame.Load("SEVol", 0.7f);
     }
 
+    /// <summary>
+    /// 刷新最高分数，最短时间，最高连击，当前玩的lap（瓦夜结算使用）
+    /// </summary>
+    public void RefreshBestScoreAndSoOn()
+    {
+        //最高分数刷新
+        foreach (var item in Score)
+        {
+            if(item > HiScore)
+            {
+                HiScore = item;
+                HiScoreFace = SelectedGirlInGame;
+            }
+        }
+
+        //最短时间刷新
+        if(Time < BestTime || BestTime == 0)
+        {
+            BestTime = Time;
+            BestTimeFace = SelectedGirlInGame;
+        }
+
+        //最高连击刷新
+        if(Hits > MaxHits)
+        {
+            MaxHits = Hits;
+            MaxHitsFace = SelectedGirlInGame;
+        }
+
+        //上一次打的lap刷新
+        LastLap = lap;
+    }
 }

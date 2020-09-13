@@ -1191,9 +1191,6 @@ public abstract class APlayerCtrl : MonoBehaviour
         StageCtrl.gameScoreSettings.VitInGame[playerId - 1] = Vit;
         StageCtrl.gameScoreSettings.SoulLimitInGame[playerId - 1] = SoulLimit;
         StageCtrl.gameScoreSettings.PowInGame[playerId - 1] = Pow;
-
-        Debug.Log(Pow);
-        Debug.Log("gs" + StageCtrl.gameScoreSettings.PowInGame[playerId - 1]);
     }
 
 

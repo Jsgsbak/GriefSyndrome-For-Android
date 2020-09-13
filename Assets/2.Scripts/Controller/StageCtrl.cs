@@ -1,4 +1,5 @@
-﻿using PureAmaya.General;
+﻿using MEC;
+using PureAmaya.General;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -87,16 +88,21 @@ public class StageCtrl : MonoBehaviour
     /// <summary>
     /// 打完魔女之后的结算逻辑
     /// </summary>
+    [ContextMenu("结算")]
     public void GoodbyeMajo()
     {
         //停止计时器
         CancelInvoke("Timer");
+        
 
-
-
-        if (gameScoreSettings.MajoBeingBattled == Variable.Majo.Walpurgisnacht)
+        //瓦夜逻辑
+       if (gameScoreSettings.MajoBeingBattled == Variable.Majo.Walpurgisnacht)
         {
-            //瓦夜逻辑
+            //通知gss刷新最高分数，最短时间，最高连击，当前玩的lap
+            gameScoreSettings.RefreshBestScoreAndSoOn();
+            //存档
+            Timing.RunCoroutine(gameScoreSettings.Save());
+
         }
     }
 
