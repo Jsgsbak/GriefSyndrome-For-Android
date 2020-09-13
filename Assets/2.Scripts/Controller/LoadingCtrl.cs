@@ -31,11 +31,6 @@ public class LoadingCtrl : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
-		//清理UpdateManager
-		UpdateManager.FastUpdate.RemoveAllListeners();
-		UpdateManager.SlowUpdate.RemoveAllListeners();
-		UpdateManager.FakeLateUpdate.RemoveAllListeners();
-
 		loadingSlider.value = 0.0f;
 
 		if (SceneManager.GetActiveScene().name == "Loading")

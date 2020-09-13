@@ -11,6 +11,7 @@ using UnityEngine.U2D;
 [DisallowMultipleComponent]
 public class UICtrl : MonoBehaviour
 {
+    public static UICtrl uiCtrl;
 
     //控制方法：调用相应的PlayerInf方法，更新UI信息
     [Header("玩家信息预设")]
@@ -27,7 +28,7 @@ public class UICtrl : MonoBehaviour
     public Slider SEVol;
 
     /// <summary>
-    /// 真正起到管理作用的在这里
+    /// 真正起到更新作用的在这里
     /// </summary>
     PlayerInfUpdate[] PlayerInfInGame;
     PausePlayerInf[] pausePlayerInfInGame;
@@ -43,21 +44,32 @@ public class UICtrl : MonoBehaviour
 
 
     #region 事件组
-    public static Variable.OrdinaryEvent UpdateInf = new Variable.OrdinaryEvent();
+    /// <summary>
+    /// 更新玩家信息
+    /// </summary>
+    public Variable.OrdinaryEvent UpdateInf = new Variable.OrdinaryEvent();
     #endregion
 
-    //awake不能用
+    private void Awake()
+    {
+        uiCtrl = this;
+        UpdateInf.RemoveAllListeners();
+    }
+
     private void Start()
     {
-        UpdateManager.SlowUpdate.AddListener(SlowUpdate);
-        UpdateManager.FastUpdate.AddListener(FastUpdate);
-      
+
+        UpdateManager.updateManager.SlowUpdate.AddListener(SlowUpdate);
+        UpdateManager.updateManager.FastUpdate.AddListener(FastUpdate);
+        #region 注册事件
         //音量事件注册与设置
         BGMVol.onValueChanged.AddListener(BGMVolChange);
         SEVol.onValueChanged.AddListener(SEVolChange);
         BGMVol.value =StageCtrl. gameScoreSettings.BGMVol;
         SEVol.value = StageCtrl.gameScoreSettings.SEVol;
 
+        //魔女
+        #endregion
 
         #region 初始化UI界面
         //先记录下玩家人数（当然现在是单机，不过还是为多人留点东西）
@@ -102,10 +114,14 @@ public class UICtrl : MonoBehaviour
     void SlowUpdate()
     {
         UpdateInf.Invoke();
+
     }
 
+    /// <summary>
+    /// 提供键盘支持
+    /// </summary>
     void FastUpdate()
-    {
+    { 
         if (RebindableInput.GetKeyDown("Pause"))
         {
             Debug.Log("PAUISE");
@@ -144,7 +160,7 @@ public class UICtrl : MonoBehaviour
             Time.timeScale = 0;
             EasyBGMCtrl.easyBGMCtrl.BGMPlayer.Pause();
             Pause.SetActive(true);
-            MEC.Timing.TimeBetweenSlowUpdateCalls = 0f;
+            MEC.Timing.TimeBetweenSlowUpdateCalls = 999999999999999f;
         }
         //暂停恢复
         else
@@ -163,6 +179,9 @@ public class UICtrl : MonoBehaviour
     /// </summary>
     public void ReturnToTitle()
     {
+        //恢复被暂停的时间
+        GamePauseSwitch();
+
         //返回音效
         EasyBGMCtrl.easyBGMCtrl.PlaySE(1);
         Time.timeScale = 1;//回复时间

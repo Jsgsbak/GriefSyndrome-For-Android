@@ -10,7 +10,6 @@ using UnityEngine.UI;
 public class PlayerInfUpdate : MonoBehaviour
 {
 
-
   [HideInInspector]  public int PlayerId = 1;
 
 
@@ -30,6 +29,7 @@ public class PlayerInfUpdate : MonoBehaviour
 
     private void Awake()
     {
+
         UICtrl[] go = FindObjectsOfType<UICtrl>();
         if(go.Length != 1)
         {
@@ -40,15 +40,17 @@ public class PlayerInfUpdate : MonoBehaviour
 
     public void RegEvent()
     {
-        UICtrl.UpdateInf.AddListener(UpdateInf);
+        UICtrl.uiCtrl.UpdateInf.AddListener(UpdateInf);
 
     }
     public void UpdateInf()
     {
+        Debug.Log(UICtrl.uiCtrl.UpdateInf.GetPersistentEventCount());
+
         UpdateScore();
         UpdateLevel();
         UpdateHPBar();
-        UpdateSoulLimit();        
+        UpdateSoulLimit();
     }
 
 

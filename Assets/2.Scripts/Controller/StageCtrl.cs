@@ -15,6 +15,7 @@ using UnityEngine.Events;
 public class StageCtrl : MonoBehaviour
 {
     public static GameScoreSettingsIO gameScoreSettings;
+    public static StageCtrl stageCtrl;
 
    public int BGMid = 5;//通常都为5，是道中曲
 
@@ -28,12 +29,20 @@ public class StageCtrl : MonoBehaviour
 
     #region 事件组
     public class intEvent : UnityEvent<int> { }
-    public static intEvent Player1Hurt = new intEvent();
-    public static intEvent Player2Hurt = new intEvent();
-    public static intEvent Player3Hurt = new intEvent();
+    public  intEvent Player1Hurt = new intEvent();
+    public  intEvent Player2Hurt = new intEvent();
+    public  intEvent Player3Hurt = new intEvent();
+
+    /// <summary>
+    /// 击败魔女
+    /// </summary>
+    public Variable.OrdinaryEvent MajoDefeated = new Variable.OrdinaryEvent();
+
     #endregion
     private void Awake()
     {
+        stageCtrl = this;
+
         gameScoreSettings = (GameScoreSettingsIO)Resources.Load("GameScoreAndSettings");
         Application.targetFrameRate = gameScoreSettings.MaxFps;
 
@@ -93,7 +102,9 @@ public class StageCtrl : MonoBehaviour
     {
         //停止计时器
         CancelInvoke("Timer");
-        
+
+        //调用击败魔女的事件
+        MajoDefeated.Invoke();
 
         //瓦夜逻辑
        if (gameScoreSettings.MajoBeingBattled == Variable.Majo.Walpurgisnacht)
@@ -112,7 +123,7 @@ public class StageCtrl : MonoBehaviour
     /// </summary>
     /// <param name="damage"></param>
     /// <param name="PlayerId"></param>
-    public static void HurtPlayer(int damage, int PlayerId)
+    public  void HurtPlayer(int damage, int PlayerId)
     {
         if (PlayerId == 1)
         {

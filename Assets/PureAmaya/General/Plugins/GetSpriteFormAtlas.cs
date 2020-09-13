@@ -19,7 +19,7 @@ public class GetSpriteFormAtlas : MonoBehaviour
 
     // Start is called before the first frame update
     [ContextMenu("GetSprite")]
-    private void Start()
+    private void Awake()
     {
         if (AutoGetComponentAtTheObject)
         {

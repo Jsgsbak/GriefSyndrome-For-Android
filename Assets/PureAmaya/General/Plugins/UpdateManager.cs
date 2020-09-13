@@ -13,20 +13,28 @@ namespace PureAmaya.General
     [DisallowMultipleComponent]
     public class UpdateManager : MonoBehaviour
     {
-       
+
+        public static UpdateManager updateManager;
+
         //*新的事件版
         public class UpdateEventClass : UnityEvent { }
-        public static UpdateEventClass FastUpdate = new UpdateEventClass();
+        public  UpdateEventClass FastUpdate = new UpdateEventClass();
         /// <summary>
         /// 假的LateUpdate（所有FastUpdate执行后，且LateUpdate执行前执行）
         /// </summary>
-        public static UpdateEventClass FakeLateUpdate = new UpdateEventClass();
+        public  UpdateEventClass FakeLateUpdate = new UpdateEventClass();
         /// <summary>
         /// 依赖于TIM的SlowUpdate
         /// </summary>
-        public static UpdateEventClass SlowUpdate = new UpdateEventClass();
+        public  UpdateEventClass SlowUpdate = new UpdateEventClass();
 
-
+        private void Awake()
+        {
+            updateManager = this;
+            FastUpdate.RemoveAllListeners();
+            FakeLateUpdate.RemoveAllListeners();
+            SlowUpdate.RemoveAllListeners();
+        }
         private void Start()
         {
            // DontDestroyOnLoad(gameObject);
@@ -44,7 +52,7 @@ namespace PureAmaya.General
         {
             while(true)
             {
-                SlowUpdate.Invoke();
+                    SlowUpdate.Invoke();
                 yield return 0f;
             }
         }

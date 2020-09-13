@@ -84,14 +84,14 @@ namespace PureAmaya.General
         private void OnEnable()
         {
             //注册Update
-            UpdateManager.FastUpdate.AddListener(FastUpdate);
+            UpdateManager.updateManager.FastUpdate.AddListener(FastUpdate);
             Time0 = Time.timeSinceLevelLoad;
         }
 
         private void OnDisable()
         {
             //移除Update
-            UpdateManager.FastUpdate.RemoveListener(FastUpdate);
+            UpdateManager.updateManager.FastUpdate.RemoveListener(FastUpdate);
 
             //如果激活了禁用后初始化，则初始化相应的东西
             if (EnablePoint)

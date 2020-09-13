@@ -282,7 +282,7 @@ PrefabInstance:
     - target: {fileID: 625264908068214477, guid: 68570412d81938947bc3d24775cae2ef,
         type: 3}
       propertyPath: m_Name
-      value: BGMCtrl
+      value: BGMCtrlAndUpdateManager
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 68570412d81938947bc3d24775cae2ef, type: 3}

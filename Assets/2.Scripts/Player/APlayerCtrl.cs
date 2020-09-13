@@ -278,16 +278,16 @@ public abstract class APlayerCtrl : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         Effect = EffectAnimation.gameObject;//显示攻击效果的物体
         collider2D = GetComponent<BoxCollider2D>();//碰撞箱
-        #endregion
+            #endregion
 
-        #region 注册事件
-        UpdateManager.FastUpdate.AddListener(FastUpdate);
-        UpdateManager.FastUpdate.AddListener(PlayerGreatAttack);
-        UpdateManager.FastUpdate.AddListener(Jump);
-        UpdateManager.FakeLateUpdate.AddListener(RayGround);
-        UpdateManager.FakeLateUpdate.AddListener(SimulatedGravityAndMove);
-      //  UpdateManager.SlowUpdate.AddListener(VitRefresh);
-        atlasAnimation.AnimStop.AddListener(CheckAnimStop);
+            #region 注册事件
+            UpdateManager.updateManager.FastUpdate.AddListener(FastUpdate);
+            UpdateManager.updateManager.FastUpdate.AddListener(PlayerGreatAttack);
+            UpdateManager.updateManager.FastUpdate.AddListener(Jump);
+            UpdateManager.updateManager.FakeLateUpdate.AddListener(RayGround);
+            UpdateManager.updateManager.FakeLateUpdate.AddListener(SimulatedGravityAndMove);
+            //  UpdateManager.SlowUpdate.AddListener(VitRefresh);
+            atlasAnimation.AnimStop.AddListener(CheckAnimStop);
             #endregion
 
         }
@@ -310,15 +310,15 @@ public abstract class APlayerCtrl : MonoBehaviour
         tag = string.Format("{0}{1}", "Player", playerId.ToString());
         if(playerId == 1)
         {
-            StageCtrl.Player1Hurt.AddListener(GetHurt);
+            StageCtrl.stageCtrl.Player1Hurt.AddListener(GetHurt);
         }
         else if(playerId == 2)
         {
-            StageCtrl.Player2Hurt.AddListener(GetHurt);
+            StageCtrl.stageCtrl.Player2Hurt.AddListener(GetHurt);
         }
         else
         {
-            StageCtrl.Player3Hurt.AddListener(GetHurt);
+            StageCtrl.stageCtrl.Player3Hurt.AddListener(GetHurt);
 
         }
         #endregion
@@ -565,7 +565,7 @@ public abstract class APlayerCtrl : MonoBehaviour
                 //射线自我了解
                 AllowRay = false;
 
-                UpdateManager.FakeLateUpdate.RemoveAllListeners();
+                UpdateManager.updateManager.FakeLateUpdate.RemoveAllListeners();
 
             }
 
@@ -778,9 +778,9 @@ public abstract class APlayerCtrl : MonoBehaviour
         IsBodyDie = true;
         StageCtrl.gameScoreSettings.MagicalGirlsDie[(int)SelectedMahoshaojo] = true;//ui里设置为false
 
-        UpdateManager.FastUpdate.RemoveListener(Jump);
-        UpdateManager.FakeLateUpdate.RemoveListener(SimulatedGravityAndMove);
-        UpdateManager.FastUpdate.RemoveListener(PlayerGreatAttack);
+        UpdateManager.updateManager.FastUpdate.RemoveListener(Jump);
+        UpdateManager.updateManager.FakeLateUpdate.RemoveListener(SimulatedGravityAndMove);
+        UpdateManager.updateManager.FastUpdate.RemoveListener(PlayerGreatAttack);
 
         /*
         rigidbody2D.velocity = Vector2.zero;

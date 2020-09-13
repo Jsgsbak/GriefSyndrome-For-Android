@@ -142,6 +142,19 @@ public class GameScoreSettingsIO : ScriptableObject
     #endregion
 
 
+#if UNITY_EDITOR
+    /// <summary>
+    /// 全部初始化
+    /// </summary>
+    [ContextMenu("全部初始化")]
+    public void AllInitial()
+    {
+        TitleInitial();
+        MajoInitial();
+        SaveGame.DeleteAll();
+        Load();
+    }
+#endif
 
     /// <summary>
     /// GSS初始化（主标题part使用）
@@ -185,13 +198,17 @@ public class GameScoreSettingsIO : ScriptableObject
     /// <summary>
     /// 向硬盘保存存档与设置（瓦夜结算使用）
     /// </summary>
+    [ContextMenu("保存存档与设置")]
     public IEnumerator<float> Save()
     {
 
         //存档
-        SaveGame.Save<int>("HighestScore", HiScore);
-        SaveGame.Save<int>("MaxHits", MaxHits);
+        SaveGame.Save("HighestScore", HiScore);
+        SaveGame.Save("HiScoreFace", HiScoreFace);
+        SaveGame.Save("MaxHits", MaxHits);
+        SaveGame.Save("MaxHitsFace", MaxHitsFace);
         SaveGame.Save("BestTime", BestTime);
+        SaveGame.Save("BestTimeFace", BestTimeFace);
         SaveGame.Save("LastLap", lap);
         //设置
         SaveGame.Save("BGMVol", BGMVol);
@@ -204,7 +221,8 @@ public class GameScoreSettingsIO : ScriptableObject
     /// <summary>
     /// 从硬盘读取存档与设置（标题界面使用）
     /// </summary>
-    public  void Load()
+    [ContextMenu("读取存档与设置")]
+    public void Load()
     {
         //存档
         HiScore = SaveGame.Load<int>("HighestScore", 10000);

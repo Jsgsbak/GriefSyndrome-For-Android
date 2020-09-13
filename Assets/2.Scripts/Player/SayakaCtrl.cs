@@ -15,9 +15,9 @@ public class SayakaCtrl : APlayerCtrl
     private void Start()
     {
         //注册私有事件
-        UpdateManager.FastUpdate.AddListener(PlayerUpX);
-        UpdateManager.FastUpdate.AddListener(PlayerDownX);
-        UpdateManager.FastUpdate.AddListener(FastUpdateForSayaka);//MD毛病真多
+        UpdateManager.updateManager.FastUpdate.AddListener(PlayerUpX);
+        UpdateManager.updateManager.FastUpdate.AddListener(PlayerDownX);
+        UpdateManager.updateManager.FastUpdate.AddListener(FastUpdateForSayaka);//MD毛病真多
 
     }
 
@@ -144,7 +144,7 @@ public class SayakaCtrl : APlayerCtrl
             //僵直(结束动画调用)，移动调用
             if (atlasAnimation.PlayingSpriteId == 4)
             {
-                UpdateManager.FastUpdate.AddListener(FastUpdateForSayaka);
+                UpdateManager.updateManager.FastUpdate.AddListener(FastUpdateForSayaka);
                 EnableZ3Rush = true;
             }
 
