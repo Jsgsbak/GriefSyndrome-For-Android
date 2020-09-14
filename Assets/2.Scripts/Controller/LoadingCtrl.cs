@@ -6,12 +6,11 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+/// <summary>
+/// 场景加载控制
+/// </summary>
 public class LoadingCtrl : MonoBehaviour
 {
-    public Scene Title;
-    public Scene Loading;
-    public Scene MajoKeikai;//UI 也在这里
-//	public Scene ConcAndStaff;//结果与制作人员名单  这个不使用该加载脚本
 	/// <summary>
 	/// 目标加载场景
 	/// </summary>

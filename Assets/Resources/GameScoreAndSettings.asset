@@ -39,7 +39,7 @@ MonoBehaviour:
   MajoBeingBattled: 0
   NewestMajo: 0
   AllowOktavia: 0
-  AnySceneToTitle: 0
+  MajoSceneToTitle: 1
   mahouShoujos:
   - name: Homura
     BasicPow: 10

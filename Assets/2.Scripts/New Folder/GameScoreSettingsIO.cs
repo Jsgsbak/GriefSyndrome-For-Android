@@ -122,10 +122,10 @@ public class GameScoreSettingsIO : ScriptableObject
     public bool AllowOktavia = false;
 
     /// <summary>
-    /// 是从任意场景中返回标题界面吗（不包括Beginning场景）
+    /// 是从魔女场景中返回标题界面吗
     /// </summary>
-    [Header("是从任意场景中返回标题界面吗")]
-    public bool AnySceneToTitle = false;
+    [Header("是从魔女场景中返回标题界面吗")]
+    public bool MajoSceneToTitle = false;
 
     #endregion
 
@@ -149,6 +149,7 @@ public class GameScoreSettingsIO : ScriptableObject
     [ContextMenu("全部初始化")]
     public void AllInitial()
     {
+        MajoSceneToTitle = false;
         TitleInitial();
         MajoInitial();
         SaveGame.DeleteAll();
@@ -171,7 +172,6 @@ public class GameScoreSettingsIO : ScriptableObject
         NewestMajo = Variable.Majo.Gertrud;
         AllowOktavia = false;
         MagicalGirlsDie = new bool[] { false, false, false, false, false };
-       // AnySceneToTitle = false; 在这里控制会出现问题
         Level = new int[] { 1, 1, 1 };
     }
 
@@ -180,9 +180,7 @@ public class GameScoreSettingsIO : ScriptableObject
     /// </summary>
     public void MajoInitial()
     {
-        //这里初始化为true，便于处理从游戏返回标题界面时的逻辑
-        AnySceneToTitle = true;
-
+        MajoSceneToTitle = true;
         Hits = 0;
         VitInGame = new int[] { 0, 0, 0 };
         SoulLimitInGame = new int[] { 0, 0, 0 }; 

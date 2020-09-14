@@ -68,7 +68,10 @@ public class EasyBGMCtrl : MonoBehaviour
         }
     }
 
-    
+    /// <summary>
+    /// 播放BGM
+    /// </summary>
+    /// <param name="index">小于0停止播放</param>
   public void PlayBGM(int index)
     {
         if (index < 0)
@@ -84,6 +87,10 @@ public class EasyBGMCtrl : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 播放音效
+    /// </summary>
+    /// <param name="index">小于0停止播放</param>
     public void PlaySE(int index)
     {
         if (index < 0)

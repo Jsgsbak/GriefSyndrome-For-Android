@@ -105,17 +105,47 @@ public class TitleCtrl : MonoBehaviour
 #endif
 
 
-        //BGM
-        EasyBGMCtrl.easyBGMCtrl.PlayBGM(0);
 
-        //刚打开游戏，并不是从任何场景中返回
-        if (!gameScoreSettingsIO.AnySceneToTitle)
+        //用于防止多次不必要执行一些操作
+        //刚打开游戏/staff返回到标题，并不是从魔女场景中返回
+        if (!gameScoreSettingsIO.MajoSceneToTitle)
         {
 
             //存档与设置获取
             gameScoreSettingsIO.Load();//这里确实要堵一下主线程
+            /*初始化游戏（用于游戏刚开始的初始化。）
+             * 游戏中途返回标题：Majo场景的Return to Title按钮执行初始化
+             * 游戏结束（显示staff）：由StaffCtrl执行在返回标题的一瞬间初始化
+             */
+            gameScoreSettingsIO.TitleInitial();
+
+            //计分板调整
+            AdjustScoreAndTime(Variable.ScoreType.BestTime, gameScoreSettingsIO.BestTime.ToString(), gameScoreSettingsIO.BestTimeFace);
+            AdjustScoreAndTime(Variable.ScoreType.HiScore, gameScoreSettingsIO.HiScore.ToString(), gameScoreSettingsIO.HiScoreFace);
+            AdjustScoreAndTime(Variable.ScoreType.MaxHits, gameScoreSettingsIO.MaxHits.ToString(), gameScoreSettingsIO.MaxHitsFace);
+
+
+            //淡入MainTitle part（用于刚刚打开游戏）
+            ChangePart[0].gameObject.SetActive(true);
+            ChangePart[0].alpha = 0;
+            Timing.RunCoroutine(ChangePartMethod(-1, 0));
+            //禁用其他Part
+            ChangePart[1].gameObject.SetActive(false);
+            ChangePart[2].gameObject.SetActive(false);
         }
 
+        //从魔女场景返回，直接打开魔女选择part
+        else
+        {
+            ChangePart[0].gameObject.SetActive(false);
+           Timing.RunCoroutine(ChangePartMethod(-1, 1));
+
+        }
+
+
+        //BGM
+        EasyBGMCtrl.easyBGMCtrl.PlayBGM(0);
+        EasyBGMCtrl.easyBGMCtrl.ChangeVol(gameScoreSettingsIO.BGMVol, true);
 
         #region  注册组件
         //主标题part
@@ -127,32 +157,14 @@ public class TitleCtrl : MonoBehaviour
 
         //进入魔女选择part的音效放在了ChangePartMethod中
         StartGameButton.onClick.AddListener(delegate () { EasyBGMCtrl.easyBGMCtrl.PlaySE(0); Timing.RunCoroutine(ChangePartMethod(0, 1)); });//进入魔女选择part
-        ExitButton.onClick.AddListener(delegate () { gameScoreSettingsIO.Save();/*这里保存一下*/   Application.Quit(0); });//关闭游戏
+        ExitButton.onClick.AddListener(delegate () { Timing.RunCoroutine( gameScoreSettingsIO.Save());/*这里保存一下*/   Application.Quit(0); });//关闭游戏
         RandomStaff.onClick.AddListener(delegate () { EasyBGMCtrl.easyBGMCtrl.PlaySE(0); RandomKillGirl(); });
         //魔女选择part
         ExitMajo.onClick.AddListener(delegate () { EasyBGMCtrl.easyBGMCtrl.PlaySE(1); Timing.RunCoroutine(ChangePartMethod(1, 0)); });//返回到主标题part
 
         //魔法少女选择part
         ExitMagicalGirls.onClick.AddListener(delegate () { EasyBGMCtrl.easyBGMCtrl.PlaySE(1); Timing.RunCoroutine(ChangePartMethod(2, -1)); });//范围到魔女选择part
-
-
-
         #endregion
-
-        #region 界面修改（计分板与音量）
-        //淡入进入MainTitle part（用于刚刚打开游戏）
-        ChangePart[0].gameObject.SetActive(true);
-        ChangePart[0].alpha = 0;
-        Timing.RunCoroutine(ChangePartMethod(-1, 0));
-
-        //禁用其他Part
-        ChangePart[1].gameObject.SetActive(false);
-        ChangePart[2].gameObject.SetActive(false);
-        #endregion
-
-        //处理完之后，恢复为false便于下一次处理
-        gameScoreSettingsIO.AnySceneToTitle = false;
-
     }
 
     #region 用于处理的按钮的方法
@@ -370,24 +382,17 @@ public class TitleCtrl : MonoBehaviour
     #endregion
 
     /// <summary>
-    /// 调整标题界面展示的分数
+    /// 调整标题界面展示的分数与最佳时间
     /// </summary>
     /// <param name="scoreType"></param>
     /// <param name="Parameter"></param>
     /// <param name="PlayerFaces"></param>
-    public void AdjustScore(Variable.ScoreType scoreType, string Parameter, Variable.PlayerFaceType[] PlayerFaces)
+    public void AdjustScoreAndTime(Variable.ScoreType scoreType, string Parameter, Variable.PlayerFaceType[] PlayerFaces)
     {
         if (scoreType == Variable.ScoreType.BestTime)
         {
+            BestTime.text = string.Format("{0} {1}  {2} {3} {4}", " Best Time", IntTimeFormat(int.Parse(Parameter)), PlayerFaceToRichText(PlayerFaces)[0], PlayerFaceToRichText(PlayerFaces)[1], PlayerFaceToRichText(PlayerFaces)[2]);
 
-            //总秒数转换为时分秒
-            int time = int.Parse(Parameter);
-            int h = Mathf.FloorToInt(time / 3600);
-            int m = Mathf.FloorToInt(time / 60 - h * 60);
-            int s = Mathf.FloorToInt(time - m * 60 - h * 3600);
-            Parameter = string.Format("{0}:{1}:{2}", h.ToString("00"), m.ToString("00"), s.ToString("00"));
-
-            BestTime.text = string.Format("{0} {1}  {2} {3} {4}", " Best Time", Parameter, PlayerFaceToRichText(PlayerFaces)[0], PlayerFaceToRichText(PlayerFaces)[1], PlayerFaceToRichText(PlayerFaces)[2]);
         }
         else if (scoreType == Variable.ScoreType.HiScore)
         {
@@ -399,7 +404,21 @@ public class TitleCtrl : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 将整数时间格式化
+    /// </summary>
+    /// <param name="time"></param>
+    /// <returns></returns>
+    public static string IntTimeFormat(int time)
+    {
 
+        //总秒数转换为时分秒
+        int h = Mathf.FloorToInt(time / 3600);
+        int m = Mathf.FloorToInt(time / 60 - h * 60);
+        int s = Mathf.FloorToInt(time - m * 60 - h * 3600);
+       return string.Format("{0}:{1}:{2}", h.ToString("00"), m.ToString("00"), s.ToString("00"));
+
+    }
 
     //<sprite="PlayerFace" index=1> 
     #region 内部方法
@@ -421,7 +440,7 @@ public class TitleCtrl : MonoBehaviour
         {
             //如果来的是SelectMajo，则检查一下马酒
             CheckMajo();
-
+            Debug.Log("检查");
             //音频
             EasyBGMCtrl.easyBGMCtrl.PlaySE(3);
         }
@@ -429,18 +448,14 @@ public class TitleCtrl : MonoBehaviour
         {
             //如果来的是SelectMagicalGirls，则检查一下马猴烧酒
             CheckMahoshoujo();
+
         }
+        //主标题part
         else
         {
-            //回到主标题part则直接初始化临时数据
-            gameScoreSettingsIO.TitleInitial();
-
             #region 从存档中读取主标题part中的保存数据，lap ,音量
             BGMVol.value = gameScoreSettingsIO.BGMVol;
             SEVol.value = gameScoreSettingsIO.SEVol;
-            AdjustScore(Variable.ScoreType.BestTime, gameScoreSettingsIO.BestTime.ToString(), gameScoreSettingsIO.BestTimeFace);
-            AdjustScore(Variable.ScoreType.HiScore, gameScoreSettingsIO.HiScore.ToString(), gameScoreSettingsIO.HiScoreFace);
-            AdjustScore(Variable.ScoreType.MaxHits, gameScoreSettingsIO.MaxHits.ToString(), gameScoreSettingsIO.MaxHitsFace);
             LapInput.text = gameScoreSettingsIO.LastLap.ToString();
             #endregion
         }

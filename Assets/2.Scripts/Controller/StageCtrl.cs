@@ -29,7 +29,7 @@ public class StageCtrl : MonoBehaviour
     /// <summary>
     /// 打这个魔女的时间
     /// </summary>
-    int ThisMajoTime = 0;
+    [HideInInspector] public  int ThisMajoTime = 0;
     public int BGMid = 5;//通常都为5，是道中曲
 
     #region 事件组
@@ -102,27 +102,39 @@ public class StageCtrl : MonoBehaviour
 
 
     /// <summary>
-    /// 打完魔女之后的结算逻辑
+    /// 顺利打完魔女之后的结算逻辑
     /// </summary>
-    [ContextMenu("结算")]
+    [ContextMenu("顺利结算")]
     public void GoodbyeMajo()
     {
         //停止计时器
         CancelInvoke("Timer");
+        //BGM停止播放
+        EasyBGMCtrl.easyBGMCtrl.PlayBGM(-1);
         //时间增加
         gameScoreSettings.Time += ThisMajoTime;
-        //调用击败魔女的事件
-        MajoDefeated.Invoke();
+
+        //击败的是影之魔女之前的魔女，则开放下一个魔女（不包括人鱼）
+        if ((int)gameScoreSettings.MajoBeingBattled <= 3)
+        {
+            gameScoreSettings.NewestMajo = (Variable.Majo)((int)gameScoreSettings.NewestMajo + 1);
+        }
+
 
         //瓦夜逻辑
-       if (gameScoreSettings.MajoBeingBattled == Variable.Majo.Walpurgisnacht)
+        if (gameScoreSettings.MajoBeingBattled == Variable.Majo.Walpurgisnacht)
         {
             //通知gss刷新最高分数，最短时间，最高连击，当前玩的lap
             gameScoreSettings.RefreshBestScoreAndSoOn();
-            //存档
+            //存档（放在这里存档是为了防止有的人staff还没出现就关游戏）
             Timing.RunCoroutine(gameScoreSettings.Save());
 
         }
+
+
+        //调用击败魔女的事件
+        MajoDefeated.Invoke();
+
     }
 
 

@@ -21,8 +21,9 @@ public class UICtrl : MonoBehaviour
     public PausePlayerInf pausePlayerInf;
     public SpriteAtlas PauseAtlas;
     public Transform PPIParent;
-
+    
     public GameObject Pause;
+    public GameObject GameInput;
 
     [Header("音量滑条")]
     public Slider BGMVol;
@@ -88,6 +89,16 @@ public class UICtrl : MonoBehaviour
 
         //魔女被击败
         StageCtrl.stageCtrl.MajoDefeated.AddListener(MajoDie);
+        #endregion
+
+        #region 场景UI初始化
+        //关闭结算界面
+        ConcInMajo.gameObject.SetActive(false);
+        ConcInMajo.alpha = 0f;
+        //禁用暂停界面
+        Pause.SetActive(false);
+        //启用输入界面
+        GameInput.SetActive(true);
         #endregion
 
         #region 初始化UI界面
@@ -227,16 +238,66 @@ public class UICtrl : MonoBehaviour
         DoesMajoDie = true;
 
         //结算界面
-        Timing.RunCoroutine(Conclusion());
+       Timing.RunCoroutine( Conclusion());
     }
 
-    /*
     /// <summary>
     /// 击败魔女后的结果（显示挑战时间与总时间）
     /// </summary>
     /// <returns></returns>
     IEnumerator<float> Conclusion()
     {
-        MajoDieText.text = string.Format("Clear Time:{0}",)
-    }*/
+        /*这里说明一下，所有魔女打完之后都会先展示结算界面，最后展示staff（仅瓦夜击败后有staff）
+ * 游戏中的魔法少女死亡后直接退出到魔女选择part
+ * 全员死亡后直接跳转到staff
+ */
+        //此处仅执行顺利打完魔女的结算
+        //禁用输入界面
+        GameInput.SetActive(true);
+
+        //击败提示
+        if (StageCtrl.gameScoreSettings.MajoBeingBattled != Variable.Majo.Walpurgisnacht)
+        {
+            MajoDieText.text = string.Format("{0} was defeated\n         and left griefseed.", StageCtrl.gameScoreSettings.MajoBeingBattled.ToString());
+        }
+        else
+        {
+            MajoDieText.text = string.Format("{0} was over.", StageCtrl.gameScoreSettings.MajoBeingBattled.ToString());
+        }
+
+        //这个魔女被击败的用时
+        ThisMajoTimeText.text = string.Format("Clear Time:{0}", TitleCtrl.IntTimeFormat(StageCtrl.stageCtrl.ThisMajoTime));
+        //总用时
+        TotalTimeText.text = string.Format("Total Time:{0}", TitleCtrl.IntTimeFormat(StageCtrl.gameScoreSettings.Time));
+
+        //展开结算界面
+        ConcInMajo.gameObject.SetActive(true);
+        //淡入
+        for (int i = 0; i < 50; i++)
+        {
+            ConcInMajo.alpha += 0.02f;
+            yield return Timing.WaitForSeconds(0.01f);
+        }
+
+        //返回方法
+        Invoke("ReturnToMajoOrStaff", 3f);
+    
+    }
+
+    /// <summary>
+    /// （顺利打完某魔女）从结算界面返回到魔女选择part或者staff
+    /// </summary>
+    void ReturnToMajoOrStaff()
+    {
+        //瓦夜打完，结算界面结束后进入staff
+        if(StageCtrl.gameScoreSettings.MajoBeingBattled == Variable.Majo.Walpurgisnacht)
+        {
+            LoadingCtrl.LoadScene(4, false);
+        }
+        //其他魔女打完，结算界面结束后进入魔女选择part
+        else
+        {
+            LoadingCtrl.LoadScene(1, false);
+        }
+    }
 }

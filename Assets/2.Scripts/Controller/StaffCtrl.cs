@@ -73,8 +73,7 @@ public class StaffCtrl : MonoBehaviour
         //背景图与BGM
         SetConcImageAndBGM();
 
-        //这里初始化为true，便于处理从游戏返回标题界面时的逻辑
-       gameScoreSettings.AnySceneToTitle = true;
+       gameScoreSettings.MajoSceneToTitle = false;
 
 
     }
