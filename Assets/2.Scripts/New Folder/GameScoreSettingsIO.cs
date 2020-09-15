@@ -201,6 +201,7 @@ public class GameScoreSettingsIO : ScriptableObject
         IsSoulBallInGame = new bool[] { false, false, false };
         PowInGame = new int[] { 0, 0, 0 };
         DoesMajoOrShoujoDie = false;
+        LastLap = lap;
     }
 
 #if UNITY_EDITOR

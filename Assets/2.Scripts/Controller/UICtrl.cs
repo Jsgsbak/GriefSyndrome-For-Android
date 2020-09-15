@@ -245,12 +245,12 @@ public class UICtrl : MonoBehaviour
         if (StageCtrl.gameScoreSettings.AllDie)
         {
             //借助结算界面的文本框通知玩家你成功打出了be
-            MajoDieText.text = "Saraba sekai...";
+            MajoDieText.text = "    Saraba sekai...";
         }
         else
         {
             //借助结算界面的文本框通知玩家你成功打出了be
-            MajoDieText.text = "Select another mahoshoujo to continue...";
+            MajoDieText.text = "  Select another mahoshoujo to continue...";
 
         }
 
@@ -296,7 +296,7 @@ public class UICtrl : MonoBehaviour
         }
         else
         {
-            MajoDieText.text = string.Format("{0} was over.", StageCtrl.gameScoreSettings.MajoBeingBattled.ToString());
+            MajoDieText.text = string.Format("   {0} was over.", StageCtrl.gameScoreSettings.MajoBeingBattled.ToString());
         }
 
         //这个魔女被击败的用时
