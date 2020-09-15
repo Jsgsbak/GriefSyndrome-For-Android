@@ -131,9 +131,9 @@ public class GameScoreSettingsIO : ScriptableObject
     public Variable.Majo NewestMajo = Variable.Majo.Gertrud;
 
     /// <summary>
-    /// 是从魔女场景中返回标题界面吗
+    /// 是从魔女场景中返回标题界面吗（不包括返回到主标题按钮）
     /// </summary>
-    [Header("是从魔女场景中返回标题界面吗")]
+    [Header("是从魔女场景中返回标题界面吗\n（不包括返回到主标题按钮）")]
     public bool MajoSceneToTitle = false;
 
     #endregion
@@ -203,10 +203,17 @@ public class GameScoreSettingsIO : ScriptableObject
         DoesMajoOrShoujoDie = false;
     }
 
+#if UNITY_EDITOR
+    [ContextMenu("保存存档与设置")]
+   public void SaveInEditor()
+    {
+        Timing.RunCoroutine(Save());
+    }
+#endif
+
     /// <summary>
     /// 向硬盘保存存档与设置（瓦夜结算使用）
     /// </summary>
-    [ContextMenu("保存存档与设置")]
     public IEnumerator<float> Save()
     {
 
@@ -249,6 +256,7 @@ public class GameScoreSettingsIO : ScriptableObject
     /// <summary>
     /// 刷新最高分数，最短时间，最高连击，当前玩的lap（瓦夜结算使用）
     /// </summary>
+    [ContextMenu("刷新最高分数，最短时间，最高连击，当前玩的lap（瓦夜结算使用）")]
     public void RefreshBestScoreAndSoOn()
     {
         //最高分数刷新

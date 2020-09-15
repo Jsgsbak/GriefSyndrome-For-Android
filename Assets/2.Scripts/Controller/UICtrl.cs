@@ -212,6 +212,10 @@ public class UICtrl : MonoBehaviour
         //恢复被暂停的时间
         GamePauseSwitch();
 
+        //设置为false，使回到主标题part
+        StageCtrl.gameScoreSettings.MajoSceneToTitle = false;
+
+
         //返回音效
         EasyBGMCtrl.easyBGMCtrl.PlaySE(1);
         Time.timeScale = 1;//回复时间
