@@ -2,29 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MadokaCtrl : APlayerCtrl
+//先暂时不继承
+public class MadokaCtrl : MonoBehaviour
 {
-    public override void CheckAnimStop(string AnimName)
-    {
-    }
 
-    public override void Magia(int index)
-    {
-    }
-
-    public override void PlayerAttack()
-    {
-    }
-
-    public override void PlayerDownX()
-    {
-    }
-
-    public override void PlayerGreatAttack()
-    {
-    }
-
-    public override void PlayerUpX()
-    {
-    }
 }

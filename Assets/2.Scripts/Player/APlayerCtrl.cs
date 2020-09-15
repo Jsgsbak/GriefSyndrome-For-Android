@@ -5,11 +5,50 @@ using PureAmaya.General;
 using MEC;
 using System;
 
+[DisallowMultipleComponent]
+public abstract class APlayerCtrl:MonoBehaviour
+{
+    private void Awake()
+    {
+        
+    }
 
+    private void Start()
+    {
+        #region 注册事件
+        UpdateManager.updateManager.FastUpdate.AddListener(FastUpdate);
+        #endregion
+    }
+
+    public virtual void FastUpdate()
+    {
+        #region 攻击方法
+        OrdinaryZ();HorizontalZ();VerticalZ();
+        OrdinaryX();VerticalX();HorizontalX();
+        Magia();
+        #endregion
+    }
+
+    #region 攻击方法
+    public abstract void OrdinaryZ();
+    public abstract void HorizontalZ();
+    public abstract void VerticalZ();
+
+    public abstract void OrdinaryX();
+    public abstract void HorizontalX();
+    public abstract void VerticalX();
+
+    public abstract void Magia();
+    #endregion
+}
+
+
+#region 旧的玩家控制器
+#if UNITY_EDITOR
 [Obsolete("Bad Script")]
 [DisallowMultipleComponent]
 [RequireComponent(typeof(Rigidbody2D))]
-public abstract class APlayerCtrl : MonoBehaviour
+public abstract class OldAPlayerCtrl : MonoBehaviour
 {
     public int Gravity = 25;
 
@@ -836,12 +875,6 @@ public abstract class APlayerCtrl : MonoBehaviour
         }
     }
 
-    [ContextMenu("使gss认为玩家选择了\n相应的角色（单机调试使用）")]
-    public void gssForSayaka()
-    {
-        gameScoreSettings = (GameScoreSettingsIO)Resources.Load("GameScoreAndSettings");
-        gameScoreSettings.SelectedGirlInGame[0] = SelectedMahoshaojo;
-    }
 
     [ContextMenu("升级")]
 #endif
@@ -1198,7 +1231,8 @@ public abstract class APlayerCtrl : MonoBehaviour
         StageCtrl.gameScoreSettings.PowInGame[playerId - 1] = Pow;
     }
 
-
 }
 #endregion
 
+#endif
+#endregion
