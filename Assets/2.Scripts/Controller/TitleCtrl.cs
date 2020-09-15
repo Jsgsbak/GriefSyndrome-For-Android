@@ -96,7 +96,7 @@ public class TitleCtrl : MonoBehaviour
     {
 
 #if UNITY_EDITOR
-        //检查是否存在BGMCtrl
+        //检查是否存在BGMCtrl（仅供调试）
         if (GameObject.FindObjectOfType<EasyBGMCtrl>() == null)
         {
             EasyBGMCtrl easyBGMCtrl = Instantiate(PerfebInAsset).GetComponent<EasyBGMCtrl>();
@@ -175,16 +175,34 @@ public class TitleCtrl : MonoBehaviour
     /// </summary>
     public void CheckMahoshoujo()
     {
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 6; i++)
         {
-            //如果魔法少女扑街，那么变灰
-            if (gameScoreSettingsIO.MagicalGirlsDie[i])
+
+            //麻花焰单独处理
+            if(i == 5)
             {
-                Mahoshaojo[i].color = new Color(0.2075f, 0.2075472f, 0.2075472f);
+                //如果魔法少女扑街，那么变灰
+                if (gameScoreSettingsIO.MagicalGirlsDie[0])
+                {
+                    Mahoshaojo[i].color = new Color(0.2075f, 0.2075472f, 0.2075472f);
+                }
+                else
+                {
+                    Mahoshaojo[i].color = Color.white;
+                }
             }
             else
             {
-                Mahoshaojo[i].color = Color.white;
+                //如果魔法少女扑街，那么变灰
+                if (gameScoreSettingsIO.MagicalGirlsDie[i])
+                {
+                    Mahoshaojo[i].color = new Color(0.2075f, 0.2075472f, 0.2075472f);
+                }
+                else
+                {
+                    Mahoshaojo[i].color = Color.white;
+                }
+
             }
         }
     }
@@ -204,18 +222,16 @@ public class TitleCtrl : MonoBehaviour
                 if (i <= (int)gameScoreSettingsIO.NewestMajo)
                 {
                     MajoPictures[i].sprite = MajoPictureEnable[i];
-                    // MajoPictures[i].sprite = EasyAtlasToSprite.easyAtlasToSprite.GetSprite(0, MajoPictureEnableName[i]);
                 }
                 else
                 {
                     MajoPictures[i].sprite = MajoPictureDisable[i];
-                    //   MajoPictures[i].sprite = EasyAtlasToSprite.easyAtlasToSprite.GetSprite(0, MajoPictureDisableName[i]);
                 }
             }
             else
             {
                 //人鱼魔女单独处理
-                if (gameScoreSettingsIO.AllowOktavia)
+                if (gameScoreSettingsIO.MagicalGirlsDie[4])
                 {
                     MajoPictures[i].gameObject.SetActive(true);
                 }
@@ -235,7 +251,7 @@ public class TitleCtrl : MonoBehaviour
     {
         //储存要打的魔女&切换到选择魔法少女part
         if (MajoId <= (int)gameScoreSettingsIO.NewestMajo && MajoId != 5) { EasyBGMCtrl.easyBGMCtrl.PlaySE(0); gameScoreSettingsIO.MajoBeingBattled = (Variable.Majo)MajoId; Timing.RunCoroutine(ChangePartMethod(-1, 2)); }
-        else if (MajoId == 5 && gameScoreSettingsIO.AllowOktavia) { EasyBGMCtrl.easyBGMCtrl.PlaySE(0); gameScoreSettingsIO.MajoBeingBattled = (Variable.Majo)MajoId; Timing.RunCoroutine(ChangePartMethod(-1, 2)); }
+        else if (MajoId == 5 && gameScoreSettingsIO.MagicalGirlsDie[4]) { EasyBGMCtrl.easyBGMCtrl.PlaySE(0); gameScoreSettingsIO.MajoBeingBattled = (Variable.Majo)MajoId; Timing.RunCoroutine(ChangePartMethod(-1, 2)); }
 
     }
 

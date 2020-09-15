@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+/// <summary>
+/// 变量声明（？）
+/// </summary>
 public class Variable
 {
     /// <summary>
@@ -116,6 +119,8 @@ public class Variable
         public bool LongMagia = true;
     }
 
-
+    /// <summary>
+    /// 没有参数的通常事件
+    /// </summary>
     public class OrdinaryEvent : UnityEvent { }
 }

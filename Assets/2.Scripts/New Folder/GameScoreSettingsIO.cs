@@ -56,6 +56,14 @@ public class GameScoreSettingsIO : ScriptableObject
     [Header("玩家选择的魔法少女")]//null用于占位子
     public Variable.PlayerFaceType[] SelectedGirlInGame = new Variable.PlayerFaceType[3] { Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null };
 
+
+    /// <summary>
+    ///  魔女或者所选的魔法少女都死了吗
+    /// </summary>
+    [Header("魔女或者所选的魔法少女都死了吗")]
+    public  bool DoesMajoOrShoujoDie = false;
+
+
     /// <summary>
     /// 玩家选择的魔法少女的等级
     /// </summary>
@@ -104,7 +112,13 @@ public class GameScoreSettingsIO : ScriptableObject
     /// </summary>
     [Header("魔法少女是否挂掉")]
     public bool[] MagicalGirlsDie = new bool[] { false,false,false,false,false };
-    
+
+    /// <summary>
+    /// 五色全挂了吗
+    /// </summary>
+    [Header("五色全挂了吗")]
+    public bool AllDie = false;
+
     /// <summary>
     /// 正在打的魔女
     /// </summary>
@@ -115,11 +129,6 @@ public class GameScoreSettingsIO : ScriptableObject
     /// </summary>
     [Header("本次周目最新可食用的魔女")]
     public Variable.Majo NewestMajo = Variable.Majo.Gertrud;
-    /// <summary>
-    /// 本次周目是否开启人鱼魔女
-    /// </summary>
-    [Header("本次周目是否开启人鱼魔女")]
-    public bool AllowOktavia = false;
 
     /// <summary>
     /// 是从魔女场景中返回标题界面吗
@@ -149,9 +158,9 @@ public class GameScoreSettingsIO : ScriptableObject
     [ContextMenu("全部初始化")]
     public void AllInitial()
     {
-        MajoSceneToTitle = false;
         TitleInitial();
         MajoInitial();
+        MajoSceneToTitle = false;//一定要放到魔女初始化后面
         SaveGame.DeleteAll();
         Load();
     }
@@ -170,9 +179,9 @@ public class GameScoreSettingsIO : ScriptableObject
         SelectedGirlInGame = new Variable.PlayerFaceType[3] { Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null };
         MajoBeingBattled = Variable.Majo.Gertrud;
         NewestMajo = Variable.Majo.Gertrud;
-        AllowOktavia = false;
         MagicalGirlsDie = new bool[] { false, false, false, false, false };
         Level = new int[] { 1, 1, 1 };
+        AllDie = false;
     }
 
     /// <summary>
@@ -191,6 +200,7 @@ public class GameScoreSettingsIO : ScriptableObject
         IsBodyDieInGame = new bool[] { false, false, false };
         IsSoulBallInGame = new bool[] { false, false, false };
         PowInGame = new int[] { 0, 0, 0 };
+        DoesMajoOrShoujoDie = false;
     }
 
     /// <summary>

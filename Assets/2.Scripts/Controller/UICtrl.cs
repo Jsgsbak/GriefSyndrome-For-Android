@@ -49,11 +49,6 @@ public class UICtrl : MonoBehaviour
     /// </summary>
     int PlayerCount = 0;
 
-    /// <summary>
-    ///  魔女死了吗
-    /// </summary>
-    bool DoesMajoDie = false;
-
 
 
 #if UNITY_EDITOR
@@ -72,6 +67,7 @@ public class UICtrl : MonoBehaviour
     private void Awake()
     {
         uiCtrl = this;
+
         UpdateInf.RemoveAllListeners();
     }
 
@@ -88,7 +84,9 @@ public class UICtrl : MonoBehaviour
         SEVol.value = StageCtrl.gameScoreSettings.SEVol;
 
         //魔女被击败
-        StageCtrl.stageCtrl.MajoDefeated.AddListener(MajoDie);
+        StageCtrl.stageCtrl.MajoDefeated.AddListener(delegate() {/*修改状态，防止游戏暂停*/StageCtrl.gameScoreSettings. DoesMajoOrShoujoDie = true; /*启用结算界面*/Timing.RunCoroutine(Conclusion());});
+        //魔法少女被击败（所选全死）
+        StageCtrl.stageCtrl.AllGirlsDieInGame.AddListener(delegate() {/*修改状态，防止游戏暂停*/StageCtrl.gameScoreSettings.DoesMajoOrShoujoDie = true; /*启用结算界面*/Timing.RunCoroutine(ShoujoDie()); });
         #endregion
 
         #region 场景UI初始化
@@ -176,14 +174,16 @@ public class UICtrl : MonoBehaviour
 
     #endregion
 
-
+    /// <summary>
+    /// 游戏暂停切换（按钮检查面板注入）
+    /// </summary>
     [ContextMenu("游戏暂停切换")]
     public void GamePauseSwitch()
     {
 
 
         //游戏暂停
-        if (Time.timeScale != 0 && !DoesMajoDie)
+        if (Time.timeScale != 0 && !StageCtrl.gameScoreSettings.DoesMajoOrShoujoDie)
         {       
             //暂停音效
             EasyBGMCtrl.easyBGMCtrl.PlaySE(2);
@@ -205,7 +205,7 @@ public class UICtrl : MonoBehaviour
     }
 
     /// <summary>
-    /// 非结算界面返回标题界面
+    /// 非结算界面返回标题界面（按钮检查面板注入）
     /// </summary>
     public void ReturnToTitle()
     {
@@ -219,7 +219,7 @@ public class UICtrl : MonoBehaviour
     }
 
     /// <summary>
-    /// 随机播放bgm
+    /// 随机播放bgm（按钮检查面板注入）
     /// </summary>
     public void RandomPlayBGM()
     {
@@ -230,15 +230,45 @@ public class UICtrl : MonoBehaviour
     }
 
     /// <summary>
-    /// 击败魔女后ui的逻辑
+    /// 所选魔法少女死亡
     /// </summary>
-    public void MajoDie()
+    public IEnumerator<float> ShoujoDie()
     {
-        //修改状态，防止游戏暂停
-        DoesMajoDie = true;
+        //禁用输入界面
+        GameInput.SetActive(false);
 
-        //结算界面
-       Timing.RunCoroutine( Conclusion());
+        //判断是否五色扑街
+        if (StageCtrl.gameScoreSettings.AllDie)
+        {
+            //借助结算界面的文本框通知玩家你成功打出了be
+            MajoDieText.text = "Saraba sekai...";
+        }
+        else
+        {
+            //借助结算界面的文本框通知玩家你成功打出了be
+            MajoDieText.text = "Select another mahoshoujo to continue...";
+
+        }
+
+        //存活时间
+        ThisMajoTimeText.text = string.Format("Surivial Time:{0}", TitleCtrl.IntTimeFormat(StageCtrl.stageCtrl.ThisMajoTime));
+        //总用时                                
+        TotalTimeText.text = string.Format("Total Time:{0}", TitleCtrl.IntTimeFormat(StageCtrl.gameScoreSettings.Time));
+
+
+        //展开结算界面
+        ConcInMajo.gameObject.SetActive(true);
+        //淡入
+        for (int i = 0; i < 50; i++)
+        {
+            ConcInMajo.alpha += 0.02f;
+            yield return Timing.WaitForSeconds(0.01f);
+        }
+
+
+        //返回方法
+        Invoke("ReturnToMajoOrStaff", 3f);
+
     }
 
     /// <summary>
@@ -248,12 +278,12 @@ public class UICtrl : MonoBehaviour
     IEnumerator<float> Conclusion()
     {
         /*这里说明一下，所有魔女打完之后都会先展示结算界面，最后展示staff（仅瓦夜击败后有staff）
- * 游戏中的魔法少女死亡后直接退出到魔女选择part
- * 全员死亡后直接跳转到staff
+ * 游戏中的魔法少女死亡后说明一下然后退出到魔女选择part
+ * 全员死亡后说一下凉透了就跳转到staff
  */
         //此处仅执行顺利打完魔女的结算
         //禁用输入界面
-        GameInput.SetActive(true);
+        GameInput.SetActive(false);
 
         //击败提示
         if (StageCtrl.gameScoreSettings.MajoBeingBattled != Variable.Majo.Walpurgisnacht)
@@ -289,13 +319,13 @@ public class UICtrl : MonoBehaviour
     /// </summary>
     void ReturnToMajoOrStaff()
     {
-        //瓦夜打完，结算界面结束后进入staff
-        if(StageCtrl.gameScoreSettings.MajoBeingBattled == Variable.Majo.Walpurgisnacht)
+        //瓦夜打完，结算界面结束后进入staff / 或者五色全挂，进入staff
+        if(StageCtrl.gameScoreSettings.MajoBeingBattled == Variable.Majo.Walpurgisnacht || StageCtrl.gameScoreSettings.AllDie)
         {
             LoadingCtrl.LoadScene(4, false);
         }
         //其他魔女打完，结算界面结束后进入魔女选择part
-        else
+        else if(StageCtrl.gameScoreSettings.MajoBeingBattled != Variable.Majo.Walpurgisnacht)
         {
             LoadingCtrl.LoadScene(1, false);
         }

@@ -25,6 +25,14 @@ public class StageCtrl : MonoBehaviour
     [Header("检查视图中的预设")]
     public EasyBGMCtrl PerfebInAsset;
 
+    /// <summary>
+    /// 玩家人数
+    /// </summary>
+    int playerNumber = 0;
+    /// <summary>
+    /// 所选的玩家死亡人数
+    /// </summary>
+    int deadPlayerNumber = 0;
 
     /// <summary>
     /// 打这个魔女的时间
@@ -42,13 +50,19 @@ public class StageCtrl : MonoBehaviour
     /// 击败魔女
     /// </summary>
     public Variable.OrdinaryEvent MajoDefeated = new Variable.OrdinaryEvent();
+    /// <summary>
+    /// 魔法少女被击败（所选全死）
+    /// </summary>
+    public Variable.OrdinaryEvent AllGirlsDieInGame = new Variable.OrdinaryEvent();
 
     #endregion
     private void Awake()
     {
-        MajoDefeated.RemoveAllListeners();
-
         stageCtrl = this;
+
+        MajoDefeated.RemoveAllListeners();
+        AllGirlsDieInGame.RemoveAllListeners();
+
 
         gameScoreSettings = (GameScoreSettingsIO)Resources.Load("GameScoreAndSettings");
         Application.targetFrameRate = gameScoreSettings.MaxFps;
@@ -86,7 +100,11 @@ public class StageCtrl : MonoBehaviour
         {
             if(gameScoreSettings.SelectedGirlInGame[i] != Variable.PlayerFaceType.Null)
             {
-                Instantiate(Players[(int)gameScoreSettings.SelectedGirlInGame[i]], Point);
+             GameObject player =   Instantiate(Players[(int)gameScoreSettings.SelectedGirlInGame[i]], Point);
+                if(gameScoreSettings.SelectedGirlInGame[i] != Variable.PlayerFaceType.QB)
+                {
+                    playerNumber++;//玩家数记录（排除QB）
+                }
             }
         }
 
@@ -111,7 +129,7 @@ public class StageCtrl : MonoBehaviour
         CancelInvoke("Timer");
         //BGM停止播放
         EasyBGMCtrl.easyBGMCtrl.PlayBGM(-1);
-        //时间增加
+        //累计时间增加
         gameScoreSettings.Time += ThisMajoTime;
 
         //击败的是影之魔女之前的魔女，则开放下一个魔女（不包括人鱼）
@@ -135,6 +153,43 @@ public class StageCtrl : MonoBehaviour
         //调用击败魔女的事件
         MajoDefeated.Invoke();
 
+    }
+
+    /// <summary>
+    /// 游戏中登场的魔法少女死了（每一位死亡之后都调用 QB除外）
+    /// </summary>
+    public void GirlDieInGame()
+    {
+        //真惨。。。加把劲吧
+
+        deadPlayerNumber++;
+        //死亡人数达到游戏人数才继续执行
+        if (deadPlayerNumber < playerNumber)
+        {
+            return;
+        }
+
+        //停止计时器
+        CancelInvoke("Timer");
+        //BGM停止播放
+        EasyBGMCtrl.easyBGMCtrl.PlayBGM(-1);
+        //累计时间增加
+        gameScoreSettings.Time += ThisMajoTime;
+
+        //判断是否五色扑街
+        gameScoreSettings.AllDie = true;
+        for (int i = 0; i < 5; i++)
+        {
+            if (!gameScoreSettings.MagicalGirlsDie[i])
+            {
+                //有活着的则修复为false
+                gameScoreSettings.AllDie = false;
+                break;
+            }
+        }
+
+        //游戏中的魔法少女全死了的事件调用
+        AllGirlsDieInGame.Invoke();
     }
 
 

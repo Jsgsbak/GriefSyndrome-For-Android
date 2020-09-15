@@ -5,9 +5,8 @@ using PureAmaya.General;
 using MEC;
 using System;
 
-//写的自己都恶心。。。。新手还请见谅orz
-//还需要限制一下地板防止出界
 
+[Obsolete("Bad Script")]
 [DisallowMultipleComponent]
 [RequireComponent(typeof(Rigidbody2D))]
 public abstract class APlayerCtrl : MonoBehaviour
@@ -118,12 +117,6 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// </summary>
      public int MagiaNeedVit = 45;
 
-    #endregion
-
-    #region 调试
-    [Space(10)]
-    [Header("除了玩家信息的更新，其他的脚本都不执行")]
-    public bool OnlyUpdatePlayerInf = false;
     #endregion
 
     #region 状态
@@ -268,29 +261,25 @@ public abstract class APlayerCtrl : MonoBehaviour
 
     private void Awake()
     {
-        if (!OnlyUpdatePlayerInf)
-        {
-
         #region 初始化组件
         rigidbody2D = GetComponent<Rigidbody2D>();
         rigidbody2D.gravityScale = 0;
         tr = transform;
         spriteRenderer = GetComponent<SpriteRenderer>();
-        Effect = EffectAnimation.gameObject;//显示攻击效果的物体
+      //  Effect = EffectAnimation.gameObject;//显示攻击效果的物体
         collider2D = GetComponent<BoxCollider2D>();//碰撞箱
             #endregion
 
             #region 注册事件
-            UpdateManager.updateManager.FastUpdate.AddListener(FastUpdate);
+          //  UpdateManager.updateManager.FastUpdate.AddListener(FastUpdate); 调试禁用
             UpdateManager.updateManager.FastUpdate.AddListener(PlayerGreatAttack);
             UpdateManager.updateManager.FastUpdate.AddListener(Jump);
             UpdateManager.updateManager.FakeLateUpdate.AddListener(RayGround);
             UpdateManager.updateManager.FakeLateUpdate.AddListener(SimulatedGravityAndMove);
-            //  UpdateManager.SlowUpdate.AddListener(VitRefresh);
-            atlasAnimation.AnimStop.AddListener(CheckAnimStop);
+            UpdateManager.updateManager.SlowUpdate.AddListener(VitRefresh);
+           // atlasAnimation.AnimStop.AddListener(CheckAnimStop);
             #endregion
 
-        }
 
         #region 获取playerId，并将所选魔法少女的id信息录入gss中
         for (int i = 0; i < 3; i++)
@@ -708,11 +697,12 @@ public abstract class APlayerCtrl : MonoBehaviour
 
     #region 内部方法
     /// <summary>
-    /// 每秒扣除soulLimit顺便告知UI更新
+    /// 每秒扣除soulLimit
     /// </summary>
     internal void SoulLimitDecrease()
     {
-        if (!IsBodyDie)
+        //身体没有死亡，且魔女没有死亡
+        if (!IsBodyDie && !StageCtrl.gameScoreSettings.DoesMajoOrShoujoDie)
         {
 
             if (SoulLimit >= 1)
@@ -736,7 +726,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     void VitRefresh()
     {
         //只有在一般情况下才能恢复
-        if (Vit > 0 && !IsMagia && !IsHurt && !IsBodyDie &&!IsWuDi)
+        if (Vit > 0 && !IsMagia && !IsHurt && !IsBodyDie &&!IsWuDi && !StageCtrl.gameScoreSettings.DoesMajoOrShoujoDie)
         {
             //逐渐恢复Vit，减少魔法和受伤损失的vit，便于制作血条
             if (SelectedMahoshaojo == Variable.PlayerFaceType.Sayaka && Vit % 5 == 0)
@@ -765,9 +755,11 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// <summary>
     /// 转生为魔女
     /// </summary>
+    [ContextMenu("直接魔女化soul=0")]
     public void BecomeWitch()
     {
         //死亡动画在射线里
+      
         //状态修改
         IsSoulBall = false;
         HurtVit = 0;
@@ -776,7 +768,16 @@ public abstract class APlayerCtrl : MonoBehaviour
         BanJump = true;
         BanAnyAttack = true;
         IsBodyDie = true;
-        StageCtrl.gameScoreSettings.MagicalGirlsDie[(int)SelectedMahoshaojo] = true;//ui里设置为false
+
+        //记录魔法少女死亡
+        if(SelectedMahoshaojo == Variable.PlayerFaceType.Homura_m)
+        {
+            StageCtrl.gameScoreSettings.MagicalGirlsDie[0] = true;
+        }
+        else
+        {
+            StageCtrl.gameScoreSettings.MagicalGirlsDie[(int)SelectedMahoshaojo] = true;
+        }
 
         UpdateManager.updateManager.FastUpdate.RemoveListener(Jump);
         UpdateManager.updateManager.FakeLateUpdate.RemoveListener(SimulatedGravityAndMove);
@@ -795,8 +796,12 @@ public abstract class APlayerCtrl : MonoBehaviour
         }*/
         Gravity = 0;
         rigidbody2D.gravityScale = 5;
-        
+
         //黑烟
+
+
+        //告诉StageCtrl我死了
+        StageCtrl.stageCtrl.GirlDieInGame();
 
     }
 

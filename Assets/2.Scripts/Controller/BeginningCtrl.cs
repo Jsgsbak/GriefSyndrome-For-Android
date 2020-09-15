@@ -11,6 +11,13 @@ public class BeginningCtrl : MonoBehaviour
 
     private void Start()
     {
+#if UNITY_EDITOR
+        //在这里启动游戏说明是要完整测试，所以全部初始化gss以防意外的调试参数造成不必要的麻烦
+        GameScoreSettingsIO gss = (GameScoreSettingsIO)Resources.Load("GameScoreAndSettings");
+        gss.AllInitial();
+#endif
+
+
         LoadingCtrl.LoadScene(1, false);
     }
 
