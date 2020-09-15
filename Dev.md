@@ -46,7 +46,7 @@ staff场景的控制
 
 ### UICtrl
 
-控制Majo场景中的UI与游戏暂停处理；负责调用PlayerInfUpdate和PausePlayerInf；控制结算界面与死亡界面，并且提供向staff转场的功能（便于方便，gss中的AllDie也受其控制）；详细内容请阅览相应脚本简介
+控制Majo场景中的UI与游戏暂停处理；负责调用PlayerInfUpdate和PausePlayerInf；控制结算界面与死亡界面，并且提供向staff转场的功能；详细内容请阅览相应脚本简介
 
 ### PlayerInfUpdate
 
