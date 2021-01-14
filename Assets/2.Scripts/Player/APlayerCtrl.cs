@@ -17,16 +17,12 @@ public abstract class APlayerCtrl:MonoBehaviour
     /// </summary>
     public bool BanGravityRay = false;
 
-    [Space]
-    Animator animator;
-    SpriteRenderer spriteRenderer;
-    Rigidbody2D rigidbody2D;
 
     /// <summary>
     /// 重力射线位置
     /// </summary>
     [Header("重力射线位置")]
-    public Vector2[] GavityRayPos = { Vector2.zero, Vector2.zero };
+    public Transform[] GavityRayPos = new Transform[2];
    /// <summary>
    /// 射线显示
    /// </summary>
@@ -35,7 +31,10 @@ public abstract class APlayerCtrl:MonoBehaviour
 
 
     #region 组件
-    [HideInInspector] Transform tr;
+    Transform tr;
+    Animator animator;
+    SpriteRenderer spriteRenderer;
+    Ray2D[] rays = new Ray2D[2];
     #endregion
     private void Awake()
     {
@@ -43,7 +42,6 @@ public abstract class APlayerCtrl:MonoBehaviour
         tr = GetComponent<Transform>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        rigidbody2D = GetComponent<Rigidbody2D>();
         #endregion
     }
 
@@ -57,8 +55,8 @@ public abstract class APlayerCtrl:MonoBehaviour
     public virtual void FastUpdate()
     {
         #region  基础控制器
-        if(!BanGravity) RayCtrl();
-        Gravity();
+         RayCtrl();
+        if(!BanGravity)Gravity();
         Move();
         AnimationCtrl();
         #endregion
@@ -89,11 +87,28 @@ public abstract class APlayerCtrl:MonoBehaviour
         //重力射线
         if (!BanGravityRay)
         {
-            GravityRaysShow[0] = new Ray(tr.InverseTransformPoint(GavityRayPos[0]), Vector2.down);
-            GravityRaysShow[1] = new Ray(tr.InverseTransformPoint(GavityRayPos[0]), Vector2.down);
-            Debug.DrawRay(tr.InverseTransformPoint(GavityRayPos[0]), Vector2.down, Color.red, 19f);
+            rays[0] = new Ray2D(GavityRayPos[0].position, Vector2.down *0.1f);
+            rays[1] = new Ray2D(GavityRayPos[1].position, Vector2.down * 0.1f);
+            RaycastHit2D infoLeft = Physics2D.Raycast(rays[1].origin, rays[1].direction);
+            RaycastHit2D infoRight = Physics2D.Raycast(rays[0].origin, rays[0].direction);
+           
+            Debug.DrawRay(rays[0].origin, rays[0].direction, Color.blue);
+            Debug.DrawRay(rays[1].origin, rays[1].direction, Color.blue);
 
-            BanGravity = (Physics.Raycast(GravityRaysShow[0], 0.1f, 13) && Physics.Raycast(GravityRaysShow[1], 0.1f, 13));
+            Debug.Log(infoLeft.collider.gameObject.layer);
+
+            //在地上/在板子上
+            if (infoLeft.collider.CompareTag("FloorOrWall") || infoRight.collider.CompareTag("FloorOrWall"))
+            {
+                Debug.Log("dd");
+                BanGravity = true;
+            }
+            //腾空
+            else
+            {
+                BanGravity = false ;
+            }
+
         }
     }
     
@@ -105,11 +120,7 @@ public abstract class APlayerCtrl:MonoBehaviour
         }
         tr.Translate(StageCtrl.gameScoreSettings.Horizontal * Vector2.right * StageCtrl.gameScoreSettings.mahouShoujos[id].MoveSpeed * Time.deltaTime);
 
-        /*
-        if (rigidbody2D.)
-        {
-
-        }*/
+        
 
         /*MD我真服了，这个Bug令人恶心
         if (StageCtrl.gameScoreSettings.UseScreenInput)

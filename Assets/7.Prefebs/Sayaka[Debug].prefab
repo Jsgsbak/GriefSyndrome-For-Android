@@ -1,5 +1,65 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &337635937
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 337635938}
+  m_Layer: 8
+  m_Name: GavityRayPosLeft
+  m_TagString: Untagged
+  m_Icon: {fileID: -5487077368411116049, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &337635938
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 337635937}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.38, y: -1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4035432619200351512}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &461960090
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 461960091}
+  m_Layer: 8
+  m_Name: GavityRayPosRight
+  m_TagString: Untagged
+  m_Icon: {fileID: -5487077368411116049, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &461960091
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 461960090}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1, y: -1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4035432619200351512}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4035432619200351527
 GameObject:
   m_ObjectHideFlags: 0
@@ -10,10 +70,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4035432619200351512}
   - component: {fileID: 4035432619200351513}
-  - component: {fileID: 4035432619200351526}
   - component: {fileID: 4035432619200351515}
-  - component: {fileID: 4035432619200351514}
   - component: {fileID: 4035432619200351517}
+  - component: {fileID: 1183132187}
   m_Layer: 8
   m_Name: Sayaka[Debug]
   m_TagString: Player
@@ -28,13 +87,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4035432619200351527}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 5.77, y: 6.45, z: 123.625496}
-  m_LocalScale: {x: 1.6, y: 1.6, z: 1}
-  m_Children: []
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 461960091}
+  - {fileID: 337635938}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4035432619200351513
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -85,260 +146,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &4035432619200351526
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4035432619200351527}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 159351ef07e2f5044ad0b17a92595d01, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spriteAtlas: {fileID: 4343727234628468602, guid: 93ae529101d7a0e429b5f07aeac428bd,
-    type: 2}
-  SpriteRenderer: {fileID: 4035432619200351513}
-  GroupName: Sayaka
-  Format: '{0}_{1} ({2})'
-  PlayDefaultAnimation: 0
-  DefaultAnimationNameInAtlas: 10
-  PlayingId: -1
-  AtlasAnimations:
-  - name: Stand
-    Description: 
-    Length: 6
-    StartFromId: 1
-    EndWithId: -1
-    RotateObjectBeforeAnim: 0
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
-    Cycle: 1
-    Interval: 0.1
-    BeginningRepair: 0
-    RepairedFirstAtlasId: 0
-  - name: walk
-    Description: 
-    Length: 9
-    StartFromId: 1
-    EndWithId: -1
-    RotateObjectBeforeAnim: 0
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
-    Cycle: 1
-    Interval: 0.1
-    BeginningRepair: 0
-    RepairedFirstAtlasId: 0
-  - name: Rush_fin
-    Description: 2
-    Length: 13
-    StartFromId: 1
-    EndWithId: -1
-    RotateObjectBeforeAnim: 0
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
-    Cycle: 0
-    Interval: 0.08
-    BeginningRepair: 0
-    RepairedFirstAtlasId: 0
-  - name: Rush_air
-    Description: 
-    Length: 13
-    StartFromId: 1
-    EndWithId: -1
-    RotateObjectBeforeAnim: 0
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
-    Cycle: 1
-    Interval: 0.1
-    BeginningRepair: 0
-    RepairedFirstAtlasId: 0
-  - name: Rush
-    Description: "4 \uFF08\u5E73A2\u77ED\uFF09"
-    Length: 14
-    StartFromId: 7
-    EndWithId: 12
-    RotateObjectBeforeAnim: 0
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
-    Cycle: 0
-    Interval: 0.05
-    BeginningRepair: 0
-    RepairedFirstAtlasId: 0
-  - name: NB_air
-    Description: 
-    Length: 11
-    StartFromId: 1
-    EndWithId: -1
-    RotateObjectBeforeAnim: 0
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
-    Cycle: 1
-    Interval: 0.1
-    BeginningRepair: 0
-    RepairedFirstAtlasId: 0
-  - name: NA
-    Description: " 6 X\u51B2"
-    Length: 7
-    StartFromId: 3
-    EndWithId: 9
-    RotateObjectBeforeAnim: 0
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
-    Cycle: 0
-    Interval: 0.1
-    BeginningRepair: 0
-    RepairedFirstAtlasId: 0
-  - name: NA
-    Description: "7 \uFF08X\u51C6\u5907\uFF09"
-    Length: 11
-    StartFromId: 1
-    EndWithId: 2
-    RotateObjectBeforeAnim: 0
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
-    Cycle: 0
-    Interval: 0.1
-    BeginningRepair: 0
-    RepairedFirstAtlasId: 0
-  - name: NA_air
-    Description: 8
-    Length: 7
-    StartFromId: 1
-    EndWithId: -1
-    RotateObjectBeforeAnim: 0
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
-    Cycle: 1
-    Interval: 0.1
-    BeginningRepair: 0
-    RepairedFirstAtlasId: 0
-  - name: Magic_air
-    Description: 9
-    Length: 4
-    StartFromId: 1
-    EndWithId: -1
-    RotateObjectBeforeAnim: 0
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
-    Cycle: 1
-    Interval: 0.1
-    BeginningRepair: 0
-    RepairedFirstAtlasId: 0
-  - name: Dead
-    Description: 10
-    Length: 11
-    StartFromId: 1
-    EndWithId: -1
-    RotateObjectBeforeAnim: 0
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
-    Cycle: 0
-    Interval: 0.1
-    BeginningRepair: 0
-    RepairedFirstAtlasId: 0
-  - name: DashFront
-    Description: 11
-    Length: 7
-    StartFromId: 1
-    EndWithId: -1
-    RotateObjectBeforeAnim: 0
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
-    Cycle: 0
-    Interval: 0.1
-    BeginningRepair: 0
-    RepairedFirstAtlasId: 0
-  - name: Dash
-    Description: 12
-    Length: 5
-    StartFromId: 1
-    EndWithId: -1
-    RotateObjectBeforeAnim: 0
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
-    Cycle: 0
-    Interval: 0.1
-    BeginningRepair: 0
-    RepairedFirstAtlasId: 0
-  - name: Damage
-    Description: 13
-    Length: 5
-    StartFromId: 1
-    EndWithId: -1
-    RotateObjectBeforeAnim: 0
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
-    Cycle: 0
-    Interval: 0.05
-    BeginningRepair: 0
-    RepairedFirstAtlasId: 0
-  - name: AttackD
-    Description: "14  \u5E73A\u4E09\u6BB5"
-    Length: 7
-    StartFromId: 1
-    EndWithId: -1
-    RotateObjectBeforeAnim: 0
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
-    Cycle: 0
-    Interval: 0.1
-    BeginningRepair: 0
-    RepairedFirstAtlasId: 0
-  - name: AttackA
-    Description: "15 \u5E73A\u4E00\u6BB5"
-    Length: 4
-    StartFromId: 1
-    EndWithId: -1
-    RotateObjectBeforeAnim: 0
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
-    Cycle: 0
-    Interval: 0.15
-    BeginningRepair: 0
-    RepairedFirstAtlasId: 0
-  - name: 8B
-    Description: 16
-    Length: 4
-    StartFromId: 1
-    EndWithId: -1
-    RotateObjectBeforeAnim: 0
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
-    Cycle: 0
-    Interval: 0.1
-    BeginningRepair: 0
-    RepairedFirstAtlasId: 0
-  - name: 8A
-    Description: " 17    \u5411\u4E0A\u51B2"
-    Length: 10
-    StartFromId: 1
-    EndWithId: 7
-    RotateObjectBeforeAnim: 0
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
-    Cycle: 0
-    Interval: 0.05
-    BeginningRepair: 1
-    RepairedFirstAtlasId: 4
-  - name: 2B
-    Description: "18 \u2193 X"
-    Length: 12
-    StartFromId: 1
-    EndWithId: -1
-    RotateObjectBeforeAnim: 0
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
-    Cycle: 0
-    Interval: 0.1
-    BeginningRepair: 0
-    RepairedFirstAtlasId: 0
-  - name: Jump
-    Description: 19
-    Length: 10
-    StartFromId: 1
-    EndWithId: -1
-    RotateObjectBeforeAnim: 0
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
-    Cycle: 1
-    Interval: 0.08
-    BeginningRepair: 1
-    RepairedFirstAtlasId: 8
-  - name: Jump
-    Description: "20\uFF08\u5176\u5B9E\u662FDrop\u52A8\u753B\uFF09"
-    Length: 10
-    StartFromId: 8
-    EndWithId: -1
-    RotateObjectBeforeAnim: 0
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
-    Cycle: 1
-    Interval: 0.08
-    BeginningRepair: 0
-    RepairedFirstAtlasId: 8
-  PlayingSpriteId: 0
-  NoCycleAnimPlayComplete: 0
 --- !u!114 &4035432619200351515
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -351,33 +158,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 994ff0d1a1d8e3d40930d1d28af9b59e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 0
+  id: 4
   BanGravity: 0
   BanGravityRay: 0
   GavityRayPos:
-  - {x: 0, y: 0}
-  - {x: 0, y: 0}
---- !u!50 &4035432619200351514
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4035432619200351527}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 1
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 4
+  - {fileID: 461960091}
+  - {fileID: 337635938}
 --- !u!61 &4035432619200351517
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -391,16 +177,35 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.04927562, y: -0.050000012}
+  m_Offset: {x: 0.31580895, y: -0.09057367}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.6, y: 1.28}
-    newSize: {x: 1.28, y: 1.28}
+    oldSize: {x: 2.56, y: 2.56}
+    newSize: {x: 2.56, y: 2.56}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.6507232, y: 1.1}
+  m_Size: {x: 1.3808924, y: 2.0250819}
   m_EdgeRadius: 0
+--- !u!95 &1183132187
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4035432619200351527}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 52690b65bcf63ac49baaa9b2efb47366, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
