@@ -10,8 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 400000}
   - component: {fileID: 11400000}
-  - component: {fileID: 11400002}
-  - component: {fileID: 870998534}
   m_Layer: 0
   m_Name: Rebindable Manager
   m_TagString: Untagged
@@ -69,27 +67,3 @@ MonoBehaviour:
     axisNegName: Left
     axisPos: 275
     axisNeg: 276
---- !u!114 &11400002
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 100000}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cffbbe23c050b1f4b9db1fa3f2ba9938, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &870998534
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 100000}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17c9bbfeb16c56a4a808d2ffe892883f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

@@ -7,9 +7,41 @@ using TMPro;
 using UnityEngine;
 
 //先暂时不继承
-public class SayakaCtrl : MonoBehaviour
+public class SayakaCtrl : APlayerCtrl
 {
+    public override void HorizontalX()
+    {
 
+    }
+
+    public override void HorizontalZ()
+    {
+
+    }
+
+    public override void Magia()
+    {
+
+    }
+
+    public override void OrdinaryX()
+    {
+
+    }
+
+    public override void OrdinaryZ()
+    {
+    }
+
+    public override void VerticalX()
+    {
+
+    }
+
+    public override void VerticalZ()
+    {
+
+    }
 }
 
 

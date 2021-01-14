@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 313b2d6938c7ddd4890779c79cd6dffe, type: 3}
   m_Name: GameScoreAndSettings
   m_EditorClassIdentifier: 
-  MaxFps: 60
+  MaxFps: 2147483647
   Score: 000000000000000000000000
   HiScore: 10000
   HiScoreFace: 070000000700000007000000
@@ -46,6 +46,7 @@ MonoBehaviour:
     BasicPow: 10
     PowGrowth: 1
     MaxPow: 108
+    MoveSpeed: 45
     BasicSoulLimit: 17460
     SoulGrowth: 102
     MaxSoul: 27456
@@ -61,6 +62,7 @@ MonoBehaviour:
     BasicPow: 10
     PowGrowth: 1
     MaxPow: 108
+    MoveSpeed: 45
     BasicSoulLimit: 23742
     SoulGrowth: 87
     MaxSoul: 32268
@@ -76,6 +78,7 @@ MonoBehaviour:
     BasicPow: 10
     PowGrowth: 1
     MaxPow: 108
+    MoveSpeed: 45
     BasicSoulLimit: 28875
     SoulGrowth: 128
     MaxSoul: 41419
@@ -91,6 +94,7 @@ MonoBehaviour:
     BasicPow: 10
     PowGrowth: 1
     MaxPow: 108
+    MoveSpeed: 45
     BasicSoulLimit: 22278
     SoulGrowth: 84
     MaxSoul: 30510
@@ -106,6 +110,7 @@ MonoBehaviour:
     BasicPow: 10
     PowGrowth: 1
     MaxPow: 108
+    MoveSpeed: 10
     BasicSoulLimit: 19935
     SoulGrowth: 81
     MaxSoul: 27873
@@ -121,6 +126,7 @@ MonoBehaviour:
     BasicPow: 10
     PowGrowth: 1
     MaxPow: 108
+    MoveSpeed: 45
     BasicSoulLimit: 17460
     SoulGrowth: 102
     MaxSoul: 27456
@@ -134,3 +140,9 @@ MonoBehaviour:
     LongMagia: 0
   BGMVol: 0.6
   SEVol: 0.7
+  Horizontal: 0
+  Jump: 0
+  Zattack: 0
+  Xattack: 0
+  Magia: 0
+  UseScreenInput: 0

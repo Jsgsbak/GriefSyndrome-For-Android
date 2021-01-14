@@ -83,7 +83,7 @@ public class GameScoreSettingsIO : ScriptableObject
     /// </summary>
     public int[] PowInGame = new int[] { 0, 0, 0 };
     /// <summary>
-    /// 是否按下Magia键
+    /// 是否按下Magia键（用于玩家信息更新）
     /// </summary>
     public bool[] MagiaKeyDown = new bool[] { false, false, false };
     /// <summary>
@@ -148,6 +148,22 @@ public class GameScoreSettingsIO : ScriptableObject
     [Header("音量")]
     public float BGMVol = 0.6f;
     public float SEVol = 0.7f;
+    #endregion
+
+    #region 屏幕输入变量
+    /// <summary>
+    /// 水平输入
+    /// </summary>
+    [HideInInspector] public int Horizontal = 0;
+    [HideInInspector] public bool Jump = false;
+    [HideInInspector] public bool Zattack = false;
+    [HideInInspector] public bool Xattack = false;
+    [HideInInspector] public bool Magia = false;
+
+    /// <summary>
+    /// 使用屏幕模拟键盘输入，true时禁用键盘输入
+    /// </summary>
+    public bool UseScreenInput = true;
     #endregion
 
 

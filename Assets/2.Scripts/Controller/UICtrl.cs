@@ -9,10 +9,15 @@ using MEC;
 
 //击杀完魔女之后的 XXX is defeated需要用到魔女的脚本，但是还没写）
 
+/// <summary>
+/// 包含安卓输入在内的UI控制
+/// </summary>
 [DisallowMultipleComponent]
 public class UICtrl : MonoBehaviour
 {
     public static UICtrl uiCtrl;
+
+    public ScreenInput screenInput;
 
     //控制方法：调用相应的PlayerInf方法，更新UI信息
     [Header("玩家信息预设")]
@@ -23,7 +28,6 @@ public class UICtrl : MonoBehaviour
     public Transform PPIParent;
     
     public GameObject Pause;
-    public GameObject GameInput;
 
     [Header("音量滑条")]
     public Slider BGMVol;
@@ -37,7 +41,6 @@ public class UICtrl : MonoBehaviour
     public TMP_Text MajoDieText;
     public TMP_Text ThisMajoTimeText;
     public TMP_Text TotalTimeText;
-
 
     /// <summary>
     /// 真正起到更新作用的在这里
@@ -95,11 +98,15 @@ public class UICtrl : MonoBehaviour
         ConcInMajo.alpha = 0f;
         //禁用暂停界面
         Pause.SetActive(false);
-        //启用输入界面
-        GameInput.SetActive(true);
         #endregion
 
         #region 初始化UI界面
+
+        //.屏幕输入 虚拟按键
+            screenInput.enabled = StageCtrl.gameScoreSettings.UseScreenInput;
+
+
+
         //先记录下玩家人数（当然现在是单机，不过还是为多人留点东西）
         for (int i = 0; i < 3; i++)
         {
@@ -137,7 +144,10 @@ public class UICtrl : MonoBehaviour
         Pause.SetActive(false);
 
         #endregion
+
+
     }
+
 
     void SlowUpdate()
     {
@@ -238,8 +248,6 @@ public class UICtrl : MonoBehaviour
     /// </summary>
     public IEnumerator<float> ShoujoDie()
     {
-        //禁用输入界面
-        GameInput.SetActive(false);
 
         //判断是否五色扑街
         if (StageCtrl.gameScoreSettings.AllDie)
@@ -286,8 +294,6 @@ public class UICtrl : MonoBehaviour
  * 全员死亡后说一下凉透了就跳转到staff
  */
         //此处仅执行顺利打完魔女的结算
-        //禁用输入界面
-        GameInput.SetActive(false);
 
         //击败提示
         if (StageCtrl.gameScoreSettings.MajoBeingBattled != Variable.Majo.Walpurgisnacht)

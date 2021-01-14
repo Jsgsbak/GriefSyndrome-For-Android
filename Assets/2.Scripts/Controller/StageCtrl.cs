@@ -14,7 +14,7 @@ using UnityEngine.Events;
 //但是五色全挂掉之后，进入CAS场景
 public class StageCtrl : MonoBehaviour
 {
-    public static GameScoreSettingsIO gameScoreSettings;
+    public static GameScoreSettingsIO gameScoreSettings;//尽在这里弄一个单利
     public static StageCtrl stageCtrl;
 
 
@@ -38,6 +38,7 @@ public class StageCtrl : MonoBehaviour
     /// 打这个魔女的时间
     /// </summary>
     [HideInInspector] public  int ThisMajoTime = 0;
+   
     public int BGMid = 5;//通常都为5，是道中曲
 
     #region 事件组
@@ -87,10 +88,6 @@ public class StageCtrl : MonoBehaviour
         //音量初始化
         EasyBGMCtrl.easyBGMCtrl.ChangeVol(gameScoreSettings.BGMVol, true);
         EasyBGMCtrl.easyBGMCtrl.ChangeVol(gameScoreSettings.SEVol, false);
-
-
-        //注册事件
-        //   UpdateManager.FastUpdate.AddListener(FastUpdate);
 
         //播放BGM
         EasyBGMCtrl.easyBGMCtrl.PlayBGM(BGMid);

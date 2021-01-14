@@ -45,8 +45,6 @@ public class PlayerInfUpdate : MonoBehaviour
     }
     public void UpdateInf()
     {
-        Debug.Log(UICtrl.uiCtrl.UpdateInf.GetPersistentEventCount());
-
         UpdateScore();
         UpdateLevel();
         UpdateHPBar();

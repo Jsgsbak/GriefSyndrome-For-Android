@@ -86,6 +86,9 @@ public class Variable
         [Header("攻击力最大值")]
         public int MaxPow = 108;
 
+        [Header("移动速度")]
+        public float MoveSpeed = 45f;
+
         [Space]
         [Header("初始灵魂值")]
         public int BasicSoulLimit;
@@ -111,7 +114,7 @@ public class Variable
         public int Rebirth = 30;
 
         [Space]
-        [Header("发动时Magia消耗Vit数")]//写错了，不改了
+        [Header("发动时Magia消耗Vit数")]
         public int MaigaVit = 45;
 
         [Space]

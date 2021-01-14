@@ -138,6 +138,10 @@ Preset:
     value: 6
     objectReference: {fileID: 0}
   - target: {fileID: 0}
+    propertyPath: DoesMajoOrShoujoDie
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
     propertyPath: Level.Array.size
     value: 3
     objectReference: {fileID: 0}
@@ -186,6 +190,38 @@ Preset:
     value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
+    propertyPath: PowInGame.Array.size
+    value: 3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: PowInGame.Array.data[0]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: PowInGame.Array.data[1]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: PowInGame.Array.data[2]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: MagiaKeyDown.Array.size
+    value: 3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: MagiaKeyDown.Array.data[0]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: MagiaKeyDown.Array.data[1]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: MagiaKeyDown.Array.data[2]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
     propertyPath: MaxVitInGame.Array.size
     value: 3
     objectReference: {fileID: 0}
@@ -218,19 +254,51 @@ Preset:
     value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
-    propertyPath: MagiaVitInGame.Array.size
+    propertyPath: GetHurtInGame.Array.size
     value: 3
     objectReference: {fileID: 0}
   - target: {fileID: 0}
-    propertyPath: MagiaVitInGame.Array.data[0]
+    propertyPath: GetHurtInGame.Array.data[0]
     value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
-    propertyPath: MagiaVitInGame.Array.data[1]
+    propertyPath: GetHurtInGame.Array.data[1]
     value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
-    propertyPath: MagiaVitInGame.Array.data[2]
+    propertyPath: GetHurtInGame.Array.data[2]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: IsBodyDieInGame.Array.size
+    value: 3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: IsBodyDieInGame.Array.data[0]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: IsBodyDieInGame.Array.data[1]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: IsBodyDieInGame.Array.data[2]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: IsSoulBallInGame.Array.size
+    value: 3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: IsSoulBallInGame.Array.data[0]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: IsSoulBallInGame.Array.data[1]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: IsSoulBallInGame.Array.data[2]
     value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
@@ -258,6 +326,10 @@ Preset:
     value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
+    propertyPath: AllDie
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
     propertyPath: MajoBeingBattled
     value: 0
     objectReference: {fileID: 0}
@@ -266,11 +338,7 @@ Preset:
     value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
-    propertyPath: AllowOktavia
-    value: 0
-    objectReference: {fileID: 0}
-  - target: {fileID: 0}
-    propertyPath: MajoKeikaiToSelectPart
+    propertyPath: MajoSceneToTitle
     value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
@@ -292,6 +360,10 @@ Preset:
   - target: {fileID: 0}
     propertyPath: mahouShoujos.Array.data[0].MaxPow
     value: 108
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[0].MoveSpeed
+    value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: mahouShoujos.Array.data[0].BasicSoulLimit
@@ -366,6 +438,10 @@ Preset:
     value: 50
     objectReference: {fileID: 0}
   - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[0].LongMagia
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
     propertyPath: mahouShoujos.Array.data[1].name
     value: Kyoko
     objectReference: {fileID: 0}
@@ -380,6 +456,10 @@ Preset:
   - target: {fileID: 0}
     propertyPath: mahouShoujos.Array.data[1].MaxPow
     value: 108
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[1].MoveSpeed
+    value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: mahouShoujos.Array.data[1].BasicSoulLimit
@@ -462,6 +542,10 @@ Preset:
     value: 35
     objectReference: {fileID: 0}
   - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[1].LongMagia
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
     propertyPath: mahouShoujos.Array.data[2].name
     value: Madoka
     objectReference: {fileID: 0}
@@ -476,6 +560,10 @@ Preset:
   - target: {fileID: 0}
     propertyPath: mahouShoujos.Array.data[2].MaxPow
     value: 108
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[2].MoveSpeed
+    value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: mahouShoujos.Array.data[2].BasicSoulLimit
@@ -550,6 +638,10 @@ Preset:
     value: 45
     objectReference: {fileID: 0}
   - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[2].LongMagia
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
     propertyPath: mahouShoujos.Array.data[3].name
     value: Mami
     objectReference: {fileID: 0}
@@ -564,6 +656,10 @@ Preset:
   - target: {fileID: 0}
     propertyPath: mahouShoujos.Array.data[3].MaxPow
     value: 108
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[3].MoveSpeed
+    value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: mahouShoujos.Array.data[3].BasicSoulLimit
@@ -646,6 +742,10 @@ Preset:
     value: 100
     objectReference: {fileID: 0}
   - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[3].LongMagia
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
     propertyPath: mahouShoujos.Array.data[4].name
     value: Sayaka
     objectReference: {fileID: 0}
@@ -660,6 +760,10 @@ Preset:
   - target: {fileID: 0}
     propertyPath: mahouShoujos.Array.data[4].MaxPow
     value: 108
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[4].MoveSpeed
+    value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: mahouShoujos.Array.data[4].BasicSoulLimit
@@ -750,6 +854,10 @@ Preset:
     value: 20
     objectReference: {fileID: 0}
   - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[4].LongMagia
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
     propertyPath: mahouShoujos.Array.data[5].name
     value: Homura_m
     objectReference: {fileID: 0}
@@ -764,6 +872,10 @@ Preset:
   - target: {fileID: 0}
     propertyPath: mahouShoujos.Array.data[5].MaxPow
     value: 108
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[5].MoveSpeed
+    value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: mahouShoujos.Array.data[5].BasicSoulLimit
@@ -836,4 +948,40 @@ Preset:
   - target: {fileID: 0}
     propertyPath: mahouShoujos.Array.data[5].MaigaVit
     value: 50
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[5].LongMagia
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BGMVol
+    value: 0.6
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SEVol
+    value: 0.7
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: Horizontal
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: Jump
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: Zattack
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: Xattack
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: Magia
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: UseScreenInput
+    value: 0
     objectReference: {fileID: 0}
