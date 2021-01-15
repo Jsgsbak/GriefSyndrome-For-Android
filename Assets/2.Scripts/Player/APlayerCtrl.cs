@@ -20,6 +20,7 @@ public abstract class APlayerCtrl:MonoBehaviour
     /// 禁用跳跃
     /// </summary>
     public bool BanJump = false;
+    public bool IsGround = true;
 
     /// <summary>
     /// 重力射线位置
@@ -53,7 +54,6 @@ public abstract class APlayerCtrl:MonoBehaviour
     /// 正在跳跃（专指上升阶段）
     /// </summary>
     bool IsJumping = false;
-    bool IsGround = true;
     #endregion
 
     private void Awake()
@@ -104,17 +104,22 @@ public abstract class APlayerCtrl:MonoBehaviour
         //跳跃动作（专指上升阶段）
         if (IsJumping)
         {
-            animator.SetTrigger("Jump");
-        }
-        //下落动作
-        if (!IsGround && !BanGravity)
-        {
-            animator.SetBool("Fall",true);
-        }
-        else if (IsGround)
-        {
+            animator.SetBool("Jump",true);
             animator.SetBool("Fall", false);
         }
+        //下落动作
+        if (!IsGround && !BanGravity && !IsJumping)
+        {
+            animator.SetBool("Jump", false);
+            animator.SetBool("Fall",true);
+        }
+        //地面待机
+        if(IsGround && BanGravity)
+        {
+            animator.SetBool("Fall", false);
+
+        }
+
     }
 
     public void Jump()
