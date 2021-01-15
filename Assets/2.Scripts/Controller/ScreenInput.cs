@@ -9,9 +9,14 @@ public class ScreenInput : MonoBehaviour
 {
     [Header("定位用安卓控制UI")]
     public Rect LeftButton;
+    /// <summary>
+    /// 获取左键按下的状态
+    /// </summary>
     bool Left;
     public Rect RightButton;
     bool Right;
+    public Rect JumpButton;
+
 
 
     string info;
@@ -26,7 +31,7 @@ public class ScreenInput : MonoBehaviour
         }
 
         //方向键
-        Left = GUI.RepeatButton(LeftButton, "←"); Right = GUI.RepeatButton(RightButton, "→");
+        Left = GUI.RepeatButton(LeftButton, "←"); Right = GUI.RepeatButton(RightButton, "→");//这样写是为了能一直显示
         if (Left)
         {
             StageCtrl.gameScoreSettings.Horizontal = -1;
@@ -40,6 +45,8 @@ public class ScreenInput : MonoBehaviour
             StageCtrl.gameScoreSettings.Horizontal = 0;
         }
 
+        //跳跃键
+        StageCtrl.gameScoreSettings.Jump = GUI.Button(JumpButton, "Jump");
 
     }
     #endregion

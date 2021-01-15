@@ -150,7 +150,7 @@ public class GameScoreSettingsIO : ScriptableObject
     public float SEVol = 0.7f;
     #endregion
 
-    #region 屏幕输入变量
+    #region 输入变量管理（所有的按键/屏幕输入的变量都在这里）
     /// <summary>
     /// 水平输入
     /// </summary>

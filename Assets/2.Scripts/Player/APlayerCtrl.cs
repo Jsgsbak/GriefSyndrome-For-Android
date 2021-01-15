@@ -16,7 +16,10 @@ public abstract class APlayerCtrl:MonoBehaviour
     /// 禁用重力射线。用于穿透地板
     /// </summary>
     public bool BanGravityRay = false;
-
+    /// <summary>
+    /// 禁用跳跃
+    /// </summary>
+    public bool BanJump = false;
 
     /// <summary>
     /// 重力射线位置
@@ -34,8 +37,21 @@ public abstract class APlayerCtrl:MonoBehaviour
     Transform tr;
     Animator animator;
     SpriteRenderer spriteRenderer;
-    Ray2D[] rays = new Ray2D[2];
     #endregion
+
+    #region 私有状态机（不保存到GSS中）
+    /// <summary>
+    /// 重力射线
+    /// </summary>
+    Ray2D[] rays = new Ray2D[2];
+    int JumpCount = 0;
+    /// <summary>
+    /// 跳跃间隔计时器
+    /// </summary>
+    float JumpInteralTimer = 0f;
+    bool IsJumping = false;
+    #endregion
+
     private void Awake()
     {
         #region 获取组件
@@ -59,6 +75,7 @@ public abstract class APlayerCtrl:MonoBehaviour
         if(!BanGravity)Gravity();
         Move();
         AnimationCtrl();
+        Jump();
         #endregion
 
 
@@ -79,6 +96,40 @@ public abstract class APlayerCtrl:MonoBehaviour
        if(StageCtrl.gameScoreSettings.Horizontal != 0) spriteRenderer.flipX = StageCtrl.gameScoreSettings.Horizontal == -1 ;
     }
 
+    public void Jump()
+    {
+        if (BanJump) return;
+
+        //按下跳跃键
+        if (!StageCtrl.gameScoreSettings.UseScreenInput)
+        {
+            StageCtrl.gameScoreSettings.Jump = RebindableInput.GetKeyDown("Jump");
+        }
+        //跳跃触发
+        if(!StageCtrl.gameScoreSettings.Jump && JumpInteralTimer != Time.timeSinceLevelLoad && JumpCount != 2)
+        {
+            JumpInteralTimer = Time.timeSinceLevelLoad;
+            IsJumping = true;
+            JumpCount++;
+            BanGravity = true;
+        }
+        //跳跃状态
+        if (IsJumping)
+        {
+            //上升
+            if(Time.timeSinceLevelLoad - JumpInteralTimer <= 0.5f)
+            {
+
+            }
+            //下降（其实就是取消跳跃状态）
+            else
+            {
+                BanGravity = false ;
+                IsJumping = false;
+            }
+        }
+    }
+
     /// <summary>
     /// 射线控制器
     /// </summary>
@@ -87,26 +138,42 @@ public abstract class APlayerCtrl:MonoBehaviour
         //重力射线
         if (!BanGravityRay)
         {
-            rays[0] = new Ray2D(GavityRayPos[0].position, Vector2.down *0.1f);
+            rays[0] = new Ray2D(GavityRayPos[0].position, Vector2.down * 0.1f);
             rays[1] = new Ray2D(GavityRayPos[1].position, Vector2.down * 0.1f);
-            RaycastHit2D infoLeft = Physics2D.Raycast(rays[1].origin, rays[1].direction);
-            RaycastHit2D infoRight = Physics2D.Raycast(rays[0].origin, rays[0].direction);
-           
+            RaycastHit2D infoLeft = Physics2D.Raycast(rays[1].origin, rays[1].direction, 0.1f);
+            RaycastHit2D infoRight = Physics2D.Raycast(rays[0].origin, rays[0].direction, 0.1f);
+
             Debug.DrawRay(rays[0].origin, rays[0].direction, Color.blue);
             Debug.DrawRay(rays[1].origin, rays[1].direction, Color.blue);
 
-            Debug.Log(infoLeft.collider.gameObject.layer);
-
             //在地上/在板子上
-            if (infoLeft.collider.CompareTag("FloorOrWall") || infoRight.collider.CompareTag("FloorOrWall"))
+            if (infoLeft.collider != null)// || infoRight.collider != null)
             {
-                Debug.Log("dd");
-                BanGravity = true;
+
+                if (infoLeft.collider.CompareTag("FloorOrWall"))// || infoRight.collider.CompareTag("FloorOrWall"))
+                {
+                    BanGravity = true;
+                }
+                //腾空
+                else
+                {
+                    BanGravity = false;
+                }
+
             }
-            //腾空
-            else
+             else if (infoRight.collider != null)// || infoRight.collider != null)
             {
-                BanGravity = false ;
+
+                if (infoRight.collider.CompareTag("FloorOrWall"))// || infoRight.collider.CompareTag("FloorOrWall"))
+                {
+                    BanGravity = true;
+                }
+                //腾空
+                else
+                {
+                    BanGravity = false;
+                }
+
             }
 
         }
