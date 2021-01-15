@@ -49,7 +49,11 @@ public abstract class APlayerCtrl:MonoBehaviour
     /// 跳跃间隔计时器
     /// </summary>
     float JumpInteralTimer = 0f;
+    /// <summary>
+    /// 正在跳跃（专指上升阶段）
+    /// </summary>
     bool IsJumping = false;
+    bool IsGround = true;
     #endregion
 
     private void Awake()
@@ -92,8 +96,25 @@ public abstract class APlayerCtrl:MonoBehaviour
     /// </summary>
     public void AnimationCtrl()
     {
+        //左右翻转
+        if (StageCtrl.gameScoreSettings.Horizontal != 0) spriteRenderer.flipX = StageCtrl.gameScoreSettings.Horizontal == -1;
+     
+        //最低优先级
         animator.SetBool("Walk", StageCtrl.gameScoreSettings.Horizontal != 0);
-       if(StageCtrl.gameScoreSettings.Horizontal != 0) spriteRenderer.flipX = StageCtrl.gameScoreSettings.Horizontal == -1 ;
+        //跳跃动作（专指上升阶段）
+        if (IsJumping)
+        {
+            animator.SetTrigger("Jump");
+        }
+        //下落动作
+        if (!IsGround && !BanGravity)
+        {
+            animator.SetBool("Fall",true);
+        }
+        else if (IsGround)
+        {
+            animator.SetBool("Fall", false);
+        }
     }
 
     public void Jump()
@@ -106,7 +127,7 @@ public abstract class APlayerCtrl:MonoBehaviour
             StageCtrl.gameScoreSettings.Jump = RebindableInput.GetKeyDown("Jump");
         }
         //跳跃触发
-        if(!StageCtrl.gameScoreSettings.Jump && JumpInteralTimer != Time.timeSinceLevelLoad && JumpCount != 2)
+        if(StageCtrl.gameScoreSettings.Jump && JumpInteralTimer != Time.timeSinceLevelLoad && JumpCount != 2)
         {
             JumpInteralTimer = Time.timeSinceLevelLoad;
             IsJumping = true;
@@ -117,9 +138,9 @@ public abstract class APlayerCtrl:MonoBehaviour
         if (IsJumping)
         {
             //上升
-            if(Time.timeSinceLevelLoad - JumpInteralTimer <= 0.5f)
+            if(Time.timeSinceLevelLoad - JumpInteralTimer <= 0.2f)
             {
-
+                tr.Translate(Vector3.up * 20f * Time.deltaTime  * JumpInteralTimer/Time.timeSinceLevelLoad);
             }
             //下降（其实就是取消跳跃状态）
             else
@@ -128,6 +149,9 @@ public abstract class APlayerCtrl:MonoBehaviour
                 IsJumping = false;
             }
         }
+
+        //跳跃计数器更新
+        if (IsGround) JumpCount = 0;
     }
 
     /// <summary>
@@ -153,11 +177,13 @@ public abstract class APlayerCtrl:MonoBehaviour
                 if (infoLeft.collider.CompareTag("FloorOrWall"))// || infoRight.collider.CompareTag("FloorOrWall"))
                 {
                     BanGravity = true;
+                    IsGround = true;
                 }
                 //腾空
                 else
                 {
                     BanGravity = false;
+                    IsGround = false;
                 }
 
             }
@@ -167,11 +193,13 @@ public abstract class APlayerCtrl:MonoBehaviour
                 if (infoRight.collider.CompareTag("FloorOrWall"))// || infoRight.collider.CompareTag("FloorOrWall"))
                 {
                     BanGravity = true;
+                    IsGround = true;
                 }
                 //腾空
                 else
                 {
                     BanGravity = false;
+                    IsGround = false;
                 }
 
             }
