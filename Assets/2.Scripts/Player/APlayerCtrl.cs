@@ -54,6 +54,18 @@ public abstract class APlayerCtrl:MonoBehaviour
     /// 正在跳跃（专指上升阶段）
     /// </summary>
     bool IsJumping = false;
+    /// <summary>
+    /// 站在平台上
+    /// </summary>
+  public   bool StandOnPlatform = false;
+    /// <summary>
+    /// 正在穿过平台
+    /// </summary>
+    bool GoThroughPlatform = false;
+    /// <summary>
+    /// 穿墙瞬间的游戏时间，用于防止穿墙途中停止落体
+    /// </summary>
+    float PlatformTime = 0f;
     #endregion
 
     private void Awake()
@@ -79,7 +91,7 @@ public abstract class APlayerCtrl:MonoBehaviour
         if(!BanGravity)Gravity();
         Move();
         AnimationCtrl();
-        Jump();
+        JumpAndFall();
         #endregion
 
 
@@ -97,14 +109,15 @@ public abstract class APlayerCtrl:MonoBehaviour
     public void AnimationCtrl()
     {
         //左右翻转
-        if (StageCtrl.gameScoreSettings.Horizontal != 0) spriteRenderer.flipX = StageCtrl.gameScoreSettings.Horizontal == -1;
-     
+        if (StageCtrl.gameScoreSettings.Horizontal == -1) tr.rotation = Quaternion.Euler(0f, 180f, 0f); //
+        else if (StageCtrl.gameScoreSettings.Horizontal == 1) { tr.rotation = Quaternion.Euler(0f, 0f, 0f); }//spriteRenderer.flipX = StageCtrl.gameScoreSettings.Horizontal == -1;//
+
         //最低优先级
         animator.SetBool("Walk", StageCtrl.gameScoreSettings.Horizontal != 0);
         //跳跃动作（专指上升阶段）
         if (IsJumping)
         {
-            animator.SetBool("Jump",true);
+            animator.SetBool("Jump", true);
             animator.SetBool("Fall", false);
         }
         //下落动作
@@ -114,15 +127,18 @@ public abstract class APlayerCtrl:MonoBehaviour
             animator.SetBool("Fall",true);
         }
         //地面待机
-        if(IsGround && BanGravity)
+        if(IsGround && BanGravity && !IsJumping)
         {
             animator.SetBool("Fall", false);
-
+            animator.SetBool("Jump", false);
         }
 
     }
 
-    public void Jump()
+    /// <summary>
+    /// 跳跃和下降（落体或者从地板掉下来，地板的Layer是Wall）
+    /// </summary>
+    public void JumpAndFall()
     {
         if (BanJump) return;
 
@@ -132,7 +148,7 @@ public abstract class APlayerCtrl:MonoBehaviour
             StageCtrl.gameScoreSettings.Jump = RebindableInput.GetKeyDown("Jump");
         }
         //跳跃触发
-        if(StageCtrl.gameScoreSettings.Jump && JumpInteralTimer != Time.timeSinceLevelLoad && JumpCount != 2)
+        if(StageCtrl.gameScoreSettings.Jump && Mathf.Abs( JumpInteralTimer - Time.timeSinceLevelLoad) > 0.2F && JumpCount != 1)
         {
             JumpInteralTimer = Time.timeSinceLevelLoad;
             IsJumping = true;
@@ -145,7 +161,7 @@ public abstract class APlayerCtrl:MonoBehaviour
             //上升
             if(Time.timeSinceLevelLoad - JumpInteralTimer <= 0.2f)
             {
-                tr.Translate(Vector3.up * 20f * Time.deltaTime  * JumpInteralTimer/Time.timeSinceLevelLoad);
+                tr.Translate(Vector3.up * 15f * Time.deltaTime  * JumpInteralTimer/Time.timeSinceLevelLoad);
             }
             //下降（其实就是取消跳跃状态）
             else
@@ -157,6 +173,30 @@ public abstract class APlayerCtrl:MonoBehaviour
 
         //跳跃计数器更新
         if (IsGround) JumpCount = 0;
+
+        //穿过平台
+        if (!StageCtrl.gameScoreSettings.UseScreenInput)
+        {
+            StageCtrl.gameScoreSettings.Down = RebindableInput.GetKeyDown("Down");
+        }
+        if(StageCtrl.gameScoreSettings.Down && StandOnPlatform)
+        {
+            BanGravity = false;
+            //禁用重力射线，防止中途停止落体
+            BanGravityRay = true;
+            IsJumping = false;
+            GoThroughPlatform = true;
+            StandOnPlatform = false;//取消，防止多次执行
+            PlatformTime = Time.timeSinceLevelLoad;
+        }
+        if (GoThroughPlatform && Time.timeSinceLevelLoad - PlatformTime >= 0.1f)
+        {
+            //一定时间之后启用重力射线判定，防止穿墙途中停止落体
+            GoThroughPlatform = false;
+            BanGravityRay = false;
+            BanGravity = false;
+        }
+
     }
 
     /// <summary>
@@ -167,46 +207,36 @@ public abstract class APlayerCtrl:MonoBehaviour
         //重力射线
         if (!BanGravityRay)
         {
-            rays[0] = new Ray2D(GavityRayPos[0].position, Vector2.down * 0.1f);
-            rays[1] = new Ray2D(GavityRayPos[1].position, Vector2.down * 0.1f);
-            RaycastHit2D infoLeft = Physics2D.Raycast(rays[1].origin, rays[1].direction, 0.1f);
-            RaycastHit2D infoRight = Physics2D.Raycast(rays[0].origin, rays[0].direction, 0.1f);
+            rays[0] = new Ray2D(GavityRayPos[0].position, Vector2.down * 0.05f);
+            rays[1] = new Ray2D(GavityRayPos[1].position, Vector2.down * 0.05f);
+            RaycastHit2D infoLeft = Physics2D.Raycast(rays[1].origin, rays[1].direction, 0.05f);
+            RaycastHit2D infoRight = Physics2D.Raycast(rays[0].origin, rays[0].direction, 0.05f);
 
             Debug.DrawRay(rays[0].origin, rays[0].direction, Color.blue);
             Debug.DrawRay(rays[1].origin, rays[1].direction, Color.blue);
 
-            //在地上/在板子上
+
+            //在地上
             if (infoLeft.collider != null)// || infoRight.collider != null)
             {
+                Debug.Log(infoLeft.collider.tag);
 
-                if (infoLeft.collider.CompareTag("FloorOrWall"))// || infoRight.collider.CompareTag("FloorOrWall"))
-                {
-                    BanGravity = true;
-                    IsGround = true;
-                }
-                //腾空
-                else
-                {
-                    BanGravity = false;
-                    IsGround = false;
-                }
-
+                StandOnPlatform = infoLeft.collider.CompareTag("Platform");
+                BanGravity = infoLeft.collider.CompareTag("Floor") || infoLeft.collider.CompareTag("Platform");
+                IsGround = infoLeft.collider.CompareTag("Floor") || infoLeft.collider.CompareTag("Platform");
             }
              else if (infoRight.collider != null)// || infoRight.collider != null)
             {
-
-                if (infoRight.collider.CompareTag("FloorOrWall"))// || infoRight.collider.CompareTag("FloorOrWall"))
-                {
-                    BanGravity = true;
-                    IsGround = true;
-                }
-                //腾空
-                else
-                {
-                    BanGravity = false;
-                    IsGround = false;
-                }
-
+                StandOnPlatform = infoRight.collider.CompareTag("Platform");
+                BanGravity = infoRight.collider.CompareTag("Floor") || infoRight.collider.CompareTag("Platform");
+                IsGround = infoRight.collider.CompareTag("Floor") || infoRight.collider.CompareTag("Platform");
+            }
+            //啥也没才上，腾空
+            else if(!IsJumping)//去除跳跃的情况
+            {
+                BanGravity = false;
+                IsGround = false;
+                StandOnPlatform = false;
             }
 
         }
@@ -218,7 +248,7 @@ public abstract class APlayerCtrl:MonoBehaviour
         {
             StageCtrl.gameScoreSettings.Horizontal = RebindableInput.GetAxis("Horizontal");
         }
-        tr.Translate(StageCtrl.gameScoreSettings.Horizontal * Vector2.right * StageCtrl.gameScoreSettings.mahouShoujos[id].MoveSpeed * Time.deltaTime);
+        tr.Translate(StageCtrl.gameScoreSettings.Horizontal * Vector2.right * StageCtrl.gameScoreSettings.mahouShoujos[id].MoveSpeed * Time.deltaTime,Space.World);
 
         
 

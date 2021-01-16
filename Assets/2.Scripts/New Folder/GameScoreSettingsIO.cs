@@ -155,6 +155,10 @@ public class GameScoreSettingsIO : ScriptableObject
     /// 水平输入
     /// </summary>
     [HideInInspector] public int Horizontal = 0;
+    /// <summary>
+    /// 穿墙（地板）的时候，按↓的时候用的
+    /// </summary>
+    [HideInInspector] public bool Down = false;
     [HideInInspector] public bool Jump = false;
     [HideInInspector] public bool Zattack = false;
     [HideInInspector] public bool Xattack = false;
