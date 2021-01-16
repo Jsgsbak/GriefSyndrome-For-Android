@@ -12,6 +12,7 @@ public abstract class APlayerCtrl:MonoBehaviour
     [Header("基础属性")]
     public int id = 0;
     public bool BanGravity = false;
+    public float GravityRatio = 1f;
     /// <summary>
     /// 禁用重力射线。用于穿透地板
     /// </summary>
@@ -20,6 +21,7 @@ public abstract class APlayerCtrl:MonoBehaviour
     /// 禁用跳跃
     /// </summary>
     public bool BanJump = false;
+    public bool BanWalk = false;
     public bool IsGround = true;
 
     /// <summary>
@@ -35,9 +37,9 @@ public abstract class APlayerCtrl:MonoBehaviour
 
 
     #region 组件
-    Transform tr;
-    Animator animator;
-    SpriteRenderer spriteRenderer;
+    [HideInInspector] public Transform tr;
+    [HideInInspector] public Animator animator;
+    [HideInInspector] public SpriteRenderer spriteRenderer;
     #endregion
 
     #region 私有状态机（不保存到GSS中）
@@ -66,6 +68,8 @@ public abstract class APlayerCtrl:MonoBehaviour
     /// 穿墙瞬间的游戏时间，用于防止穿墙途中停止落体
     /// </summary>
     float PlatformTime = 0f;
+
+    bool IsZattack = false;
     #endregion
 
     private void Awake()
@@ -86,8 +90,25 @@ public abstract class APlayerCtrl:MonoBehaviour
 
     public virtual void FastUpdate()
     {
+        #region 输入代理转换
+        //为了防止在不同的帧运行，所以放到了这里
+
+        if (!StageCtrl.gameScoreSettings.UseScreenInput)
+        {
+            StageCtrl.gameScoreSettings.Horizontal = RebindableInput.GetAxis("Horizontal");
+            StageCtrl.gameScoreSettings.Jump = RebindableInput.GetKeyDown("Jump");
+            StageCtrl.gameScoreSettings.Down = RebindableInput.GetKeyDown("Down");
+            //这个的话只要按下了攻击键/按住攻击键就算
+            StageCtrl.gameScoreSettings.Zattack = RebindableInput.GetKey("Zattack") || RebindableInput.GetKeyDown("Zattack");
+        }
+
+
+
+        #endregion
+
+
         #region  基础控制器
-         RayCtrl();
+        RayCtrl();
         if(!BanGravity)Gravity();
         Move();
         AnimationCtrl();
@@ -96,6 +117,7 @@ public abstract class APlayerCtrl:MonoBehaviour
 
 
         #region 攻击方法
+        //这里都是抽象的，在各自的脚本里重写
         OrdinaryZ();HorizontalZ();VerticalZ();
         OrdinaryX();VerticalX();HorizontalX();
         Magia();
@@ -142,11 +164,6 @@ public abstract class APlayerCtrl:MonoBehaviour
     {
         if (BanJump) return;
 
-        //按下跳跃键
-        if (!StageCtrl.gameScoreSettings.UseScreenInput)
-        {
-            StageCtrl.gameScoreSettings.Jump = RebindableInput.GetKeyDown("Jump");
-        }
         //跳跃触发
         if(StageCtrl.gameScoreSettings.Jump && Mathf.Abs( JumpInteralTimer - Time.timeSinceLevelLoad) > 0.2F && JumpCount != 1)
         {
@@ -175,10 +192,6 @@ public abstract class APlayerCtrl:MonoBehaviour
         if (IsGround) JumpCount = 0;
 
         //穿过平台
-        if (!StageCtrl.gameScoreSettings.UseScreenInput)
-        {
-            StageCtrl.gameScoreSettings.Down = RebindableInput.GetKeyDown("Down");
-        }
         if(StageCtrl.gameScoreSettings.Down && StandOnPlatform)
         {
             BanGravity = false;
@@ -244,10 +257,11 @@ public abstract class APlayerCtrl:MonoBehaviour
     
     public virtual void Move()
     {
-        if (!StageCtrl.gameScoreSettings.UseScreenInput)
+        if (BanWalk)
         {
-            StageCtrl.gameScoreSettings.Horizontal = RebindableInput.GetAxis("Horizontal");
+            return;
         }
+
         tr.Translate(StageCtrl.gameScoreSettings.Horizontal * Vector2.right * StageCtrl.gameScoreSettings.mahouShoujos[id].MoveSpeed * Time.deltaTime,Space.World);
 
         
@@ -269,7 +283,7 @@ public abstract class APlayerCtrl:MonoBehaviour
     {
         if (!BanGravity)
         {
-            tr.Translate( Vector2.down * 9.8f * Time.deltaTime,Space.World);
+            tr.Translate( Vector2.down * 9.8f * GravityRatio * Time.deltaTime,Space.World );
 
         }
     }
@@ -278,6 +292,9 @@ public abstract class APlayerCtrl:MonoBehaviour
 
 
     #region 攻击方法
+    /// <summary>
+    /// 普通Z攻击，又名Zattack
+    /// </summary>
     public abstract void OrdinaryZ();
     public abstract void HorizontalZ();
     public abstract void VerticalZ();

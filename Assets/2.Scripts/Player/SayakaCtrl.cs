@@ -31,6 +31,8 @@ public class SayakaCtrl : APlayerCtrl
 
     public override void OrdinaryZ()
     {
+            animator.SetBool("Zattack", StageCtrl.gameScoreSettings.Zattack);
+        BanWalk = StageCtrl.gameScoreSettings.Zattack;
     }
 
     public override void VerticalX()
