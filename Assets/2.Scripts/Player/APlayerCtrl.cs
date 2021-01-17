@@ -55,11 +55,11 @@ public abstract class APlayerCtrl:MonoBehaviour
     /// <summary>
     /// 正在跳跃（专指上升阶段）
     /// </summary>
-    bool IsJumping = false;
+    [HideInInspector] bool IsJumping = false;
     /// <summary>
     /// 站在平台上
     /// </summary>
-  public   bool StandOnPlatform = false;
+    [HideInInspector] public   bool StandOnPlatform = false;
     /// <summary>
     /// 正在穿过平台
     /// </summary>
@@ -68,8 +68,7 @@ public abstract class APlayerCtrl:MonoBehaviour
     /// 穿墙瞬间的游戏时间，用于防止穿墙途中停止落体
     /// </summary>
     float PlatformTime = 0f;
-
-    bool IsZattack = false;
+  [HideInInspector] public   bool IsMoving = false;
     #endregion
 
     private void Awake()
@@ -262,9 +261,10 @@ public abstract class APlayerCtrl:MonoBehaviour
             return;
         }
 
-        tr.Translate(StageCtrl.gameScoreSettings.Horizontal * Vector2.right * StageCtrl.gameScoreSettings.mahouShoujos[id].MoveSpeed * Time.deltaTime,Space.World);
+        IsMoving = StageCtrl.gameScoreSettings.Horizontal != 0;
+        tr.Translate(StageCtrl.gameScoreSettings.Horizontal * Vector2.right * StageCtrl.gameScoreSettings.mahouShoujos[id].MoveSpeed * Time.deltaTime, Space.World);
 
-        
+
 
         /*MD我真服了，这个Bug令人恶心
         if (StageCtrl.gameScoreSettings.UseScreenInput)
@@ -304,6 +304,8 @@ public abstract class APlayerCtrl:MonoBehaviour
     public abstract void VerticalX();
 
     public abstract void Magia();
+
+    public abstract void AttackAnimationEvent(string AnimationName);
     #endregion
 }
 

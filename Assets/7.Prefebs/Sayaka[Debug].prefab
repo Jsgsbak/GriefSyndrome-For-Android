@@ -190,12 +190,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 4
   BanGravity: 0
+  GravityRatio: 1
   BanGravityRay: 0
   BanJump: 0
+  BanWalk: 0
   IsGround: 1
   GavityRayPos:
   - {fileID: 461960091}
   - {fileID: 337635938}
+  tr: {fileID: 0}
+  animator: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  StandOnPlatform: 0
+  IsMoving: 0
 --- !u!95 &1183132187
 Animator:
   serializedVersion: 3

@@ -44,6 +44,37 @@ public class SayakaCtrl : APlayerCtrl
     {
 
     }
+
+    public override void  AttackAnimationEvent(string AnimationName)
+    {
+        //Z攻击打完，并且按着Z，进入Z攻击最后阶段
+        if(AnimationName.Equals("ZattackDone") && StageCtrl.gameScoreSettings.Zattack && !animator.GetBool("ZattackFin"))
+        {
+            animator.SetBool("ZattackFin",true);
+        }
+        //Z攻击最后阶段结束
+        else if (AnimationName.Equals("ZattackFinDone"))
+        {
+            animator.SetBool("ZattackFin", false);
+            animator.SetBool("Zattack", false);
+        }
+        //已经满足执行idle动画的条件了，初始化状态机和动画参数减少Bug
+        else if(AnimationName.Equals("Idle"))
+        {
+            animator.SetBool("ZattackFin", false);
+            animator.SetBool("Walk", false);
+            animator.SetBool("Zattack", false);
+            animator.SetBool("Jump", false);
+            animator.SetBool("Fall", false);
+
+            IsMoving = false;
+            BanGravity = true;
+            IsGround = true;
+            
+
+
+        }
+    }
 }
 
 
