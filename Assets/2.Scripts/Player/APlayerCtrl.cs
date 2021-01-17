@@ -63,12 +63,16 @@ public abstract class APlayerCtrl:MonoBehaviour
     /// <summary>
     /// 正在穿过平台
     /// </summary>
-    bool GoThroughPlatform = false;
+    [HideInInspector]public bool GoThroughPlatform = false;
     /// <summary>
     /// 穿墙瞬间的游戏时间，用于防止穿墙途中停止落体
     /// </summary>
     float PlatformTime = 0f;
   [HideInInspector] public   bool IsMoving = false;
+    /// <summary>
+    /// 能否可以/已经停止攻击（中断攻击）
+    /// </summary>
+    [HideInInspector] public bool StopAttacking = true;
     #endregion
 
     private void Awake()
@@ -125,14 +129,27 @@ public abstract class APlayerCtrl:MonoBehaviour
 
     #region  基础控制器
     /// <summary>
-    /// 动画控制器
+    /// 动画控制器（攻击用动画与攻击逻辑放在了一起）
     /// </summary>
     public void AnimationCtrl()
     {
+        /*老子无力了..
+        if (!StopAttacking)
+        {
+            return;
+        }*/
+
         //左右翻转
         if (StageCtrl.gameScoreSettings.Horizontal == -1) tr.rotation = Quaternion.Euler(0f, 180f, 0f); //
         else if (StageCtrl.gameScoreSettings.Horizontal == 1) { tr.rotation = Quaternion.Euler(0f, 0f, 0f); }//spriteRenderer.flipX = StageCtrl.gameScoreSettings.Horizontal == -1;//
 
+        //现在根据状态机启用对应动画
+        animator.SetBool("Walk", StageCtrl.gameScoreSettings.Horizontal != 0);
+        animator.SetBool("Jump", IsJumping);
+        animator.SetBool("Fall", !IsGround &&!BanGravity && !IsJumping);
+
+
+        /*旧版本保留备份。现在这个方法仅仅控制启用该动画的布尔值，其他的状态机修改、其他动画的禁用移交给动画Event
         //最低优先级
         animator.SetBool("Walk", StageCtrl.gameScoreSettings.Horizontal != 0);
         //跳跃动作（专指上升阶段）
@@ -152,7 +169,27 @@ public abstract class APlayerCtrl:MonoBehaviour
         {
             animator.SetBool("Fall", false);
             animator.SetBool("Jump", false);
-        }
+        }*/
+
+    }
+
+    /// <summary>
+    /// 动画机静止动画中，用于初始化的方法
+    /// </summary>
+    /// <param name="index">没用</param>
+    public void IdleAnimationEvent(int index)
+    {
+                //已经满足执行idle动画的条件了，初始化状态机和动画参数减少Bug
+            animator.SetBool("ZattackFin", false);
+            animator.SetBool("Walk", false);
+            animator.SetBool("Zattack", false);
+            animator.SetBool("Jump", false);
+            animator.SetBool("Fall", false);
+
+            StopAttacking = true;
+            IsMoving = false;
+            BanGravity = true;
+            IsGround = true;
 
     }
 
@@ -305,7 +342,7 @@ public abstract class APlayerCtrl:MonoBehaviour
 
     public abstract void Magia();
 
-    public abstract void AttackAnimationEvent(string AnimationName);
+    public abstract void ZattackAnimationEvent(string AnimationName);
     #endregion
 }
 
