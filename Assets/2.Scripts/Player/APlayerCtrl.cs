@@ -11,7 +11,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     #region  基础属性
     [Header("基础属性")]
     public int id = 0;
-    public bool BanGravity = false;    
+    public bool BanGravity = false;
     /// <summary>
     /// 禁用重力射线。用于穿透地板
     /// </summary>
@@ -26,6 +26,8 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// 禁用转身
     /// </summary>
     public bool BanTurnAround = false;
+
+    public bool AllowPressZtoAttack = true;
 
     /// <summary>
     /// 重力射线位置
@@ -50,7 +52,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// 重力射线
     /// </summary>
     Ray2D[] rays = new Ray2D[2];
-    [HideInInspector] public float GravityRatio = 1f;
+    public float GravityRatio = 1f;
     [HideInInspector] public float MoveSpeedRatio = 1f;
     /// <summary>
     /// 向右看吗
@@ -78,6 +80,14 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// </summary>
     float PlatformTime = 0f;
     [HideInInspector] public bool IsMoving = false;
+    /// <summary>
+    /// 连击攻击最小间隔
+    /// </summary>
+    [HideInInspector] public float PressAttackInteral = 1f;
+    /// <summary>
+    /// 攻击计时器 0Z 1X
+    /// </summary>
+    public float[] AttackTimer = new float[2];
     /// <summary>
     /// 能否可以/已经停止攻击（中断攻击）
     /// </summary>
@@ -111,15 +121,17 @@ public abstract class APlayerCtrl : MonoBehaviour
             StageCtrl.gameScoreSettings.Jump = RebindableInput.GetKeyDown("Jump");
             StageCtrl.gameScoreSettings.Down = RebindableInput.GetKeyDown("Down");
             //这个的话只要按下了攻击键/按住攻击键就算
-            StageCtrl.gameScoreSettings.Zattack = RebindableInput.GetKey("Zattack") || RebindableInput.GetKeyDown("Zattack");
+            StageCtrl.gameScoreSettings.Zattack = RebindableInput.GetKeyDown("Zattack") || RebindableInput.GetKey("Zattack") & AllowPressZtoAttack;
             StageCtrl.gameScoreSettings.Xattack = RebindableInput.GetKey("Xattack") || RebindableInput.GetKeyDown("Xattack");
 
         }
-
-
-
         #endregion
 
+        /*
+         if(Time.timeSinceLevelLoad - AttackTimer[0] > PressAttackInteral && StageCtrl.gameScoreSettings.Zattack)
+        {
+            AttackTimer[0] = Time.timeSinceLevelLoad;
+        }*/
 
         #region  基础控制器
         RayCtrl();
@@ -149,11 +161,10 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// </summary>
     public void AnimationCtrl()
     {
-        /*老子无力了..
         if (!StopAttacking)
         {
             return;
-        }*/
+        }
 
         //左右翻转
         if (!BanTurnAround)
@@ -272,6 +283,14 @@ public abstract class APlayerCtrl : MonoBehaviour
     }
 
     /// <summary>
+    /// 对于正在跳跃过程中发动魔法/攻击的情况，直接取消跳跃状态
+    /// </summary>
+    public void CancelJump()
+    {
+        animator.SetBool("Jump", false);
+        BanGravity = false;
+    }
+    /// <summary>
     /// 射线控制器
     /// </summary>
     public void RayCtrl()
@@ -339,7 +358,7 @@ public abstract class APlayerCtrl : MonoBehaviour
             tr.Translate(RebindableInput.GetAxis("Horizontal") * Vector2.right * StageCtrl.gameScoreSettings.mahouShoujos[id].MoveSpeed * Time.deltaTime);
         }*/
     }
-   
+
     /// <summary>
     /// 下落重力
     /// </summary>

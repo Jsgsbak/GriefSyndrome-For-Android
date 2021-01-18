@@ -10,6 +10,7 @@ using UnityEngine;
 public class SayakaCtrl : APlayerCtrl
 {
     int ZattackCount = 0;
+    bool XordinaryDash = false;
 
     public override void HorizontalX()
     {
@@ -28,18 +29,38 @@ public class SayakaCtrl : APlayerCtrl
 
     public override void OrdinaryX()
     {
-            animator.SetBool("OrdinaryXattackPrepare", StageCtrl.gameScoreSettings.Xattack && animator.GetBool("OrdinaryXattack"));
+        //从通常状态进入到X攻击准备状态
+        if(StageCtrl.gameScoreSettings.Xattack && !animator.GetBool("OrdinaryXattack") )
+        {
+            animator.SetBool("OrdinaryXattackPrepare", true);
+            XattackAnimationEvent("OrdinaryPrepare");
+        }
+        //松开X键，但仍然处于X攻击状态，所以能往前冲
+        else if (!StageCtrl.gameScoreSettings.Xattack && animator.GetBool("OrdinaryXattackPrepare"))
+        {
+            animator.SetBool("OrdinaryXattackPrepare",false);
+            XattackAnimationEvent("OrdinaryDash");
+            
+        }
+
+        //冲刺移动
+        if (XordinaryDash)
+        {
+            tr.Translate(Vector3.right * 10f * Time.deltaTime, Space.Self);
+
+        }
     }
 
     public override void OrdinaryZ()
     {
-        if (StageCtrl.gameScoreSettings.Zattack)
+        if (StageCtrl.gameScoreSettings.Zattack /*|| Time.timeSinceLevelLoad -  AttackTimer[0] <= PressAttackInteral && AttackTimer[0] != 0*/)
         {
             // StopAttacking = false; 先这样吧，无力了
             GravityRatio = 0.8f;
+            animator.SetBool("Zattack", true);
+            animator.SetBool("Fall", false);
+            CancelJump();//直接中断跳跃并且不恢复
         }
-
-        animator.SetBool("Zattack", StageCtrl.gameScoreSettings.Zattack && !StageCtrl.gameScoreSettings.Jump);
         BanWalk = StageCtrl.gameScoreSettings.Zattack;
     }
 
@@ -75,13 +96,16 @@ public class SayakaCtrl : APlayerCtrl
         {
             StopAttacking = false;
             BanTurnAround = true;//攻击状态不能转身
+            animator.SetBool("Zattack", StageCtrl.gameScoreSettings.Zattack);
+
         }
-        //Z攻击的动画处于两端攻击的连接处，可以中断
+        //Z攻击的动画处于两端攻击的连接处，可以中断，中断处允许切换到其他动画和状态
         else if (AnimationName.Equals("ZattackCouldStop"))
         {
             StopAttacking = true;
             BanTurnAround = false;//连接处可以转身
-
+             animator.SetBool("Zattack", StageCtrl.gameScoreSettings.Zattack);
+            animator.SetBool("Fall", !IsGround && !StageCtrl.gameScoreSettings.Zattack);
 
         }
         //Z攻击打完，并且按着Z，满足条件后进入Z攻击最后阶段
@@ -89,6 +113,10 @@ public class SayakaCtrl : APlayerCtrl
         {
             //攻击完了恢复移动速度与重力
             GravityRatio = 1F;
+            //取消Z攻击状态，方便转换到idle或者ZattackFin
+            animator.SetBool("Zattack", StageCtrl.gameScoreSettings.Zattack);
+            //允许下落状态
+             animator.SetBool("Fall", !IsGround && !StageCtrl.gameScoreSettings.Zattack);
 
             //仅在地面上能发动最后一击
             if (IsGround) ZattackCount++;
@@ -106,7 +134,7 @@ public class SayakaCtrl : APlayerCtrl
             BanTurnAround = true;//向前跳的时候不能转身
             BanWalk = true;
            
-           tr.Translate(Vector3.right * 0.6f, Space.Self);
+           tr.Translate(Vector3.right * 0.4f, Space.Self);
            
 
         }
@@ -128,7 +156,34 @@ public class SayakaCtrl : APlayerCtrl
 
     public override void XattackAnimationEvent(string AnimationName)
     {
-
+        #region 通常攻击段
+        //攻击准备阶段
+        if (AnimationName.Equals("OrdinaryPrepare"))
+        {
+            BanTurnAround = true;
+            BanWalk = true;
+            GravityRatio = 0.4F;
+            BanJump = true;
+            animator.SetBool("OrdinaryXattackPrepare", true);
+        }
+        //冲刺阶段
+        else if (AnimationName.Equals("OrdinaryDash"))
+        {
+            animator.SetBool("OrdinaryXattackPrepare", false);
+            animator.SetBool("OrdinaryXattack", true); 
+            XordinaryDash = true;
+        }
+        //冲刺阶段结束
+        else if (AnimationName.Equals("OrdinaryDashDone"))
+        {
+            BanWalk = false;
+            GravityRatio = 1F;
+            BanJump = false;
+            animator.SetBool("OrdinaryXattack", false);
+            BanTurnAround = false;
+            XordinaryDash = false;
+        }
+        #endregion
     }
 }
 
