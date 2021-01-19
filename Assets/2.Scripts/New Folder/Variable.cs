@@ -86,7 +86,7 @@ public class Variable
         [Header("攻击力最大值")]
         public int MaxPow = 108;
 
-        [Header("移动速度")]
+        [Header("移动速度")][SerializeField]
         public float MoveSpeed = 45f;
 
         [Space]

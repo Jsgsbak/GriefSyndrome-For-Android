@@ -181,6 +181,7 @@ public class GameScoreSettingsIO : ScriptableObject
         TitleInitial();
         MajoInitial();
         MajoSceneToTitle = false;//一定要放到魔女初始化后面
+        MaxFps = 60;
         SaveGame.DeleteAll();
         Load();
     }

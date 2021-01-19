@@ -18,7 +18,20 @@ public class SayakaCtrl : APlayerCtrl
 
     public override void HorizontalX()
     {
+        if (StageCtrl.gameScoreSettings.Horizontal != 0 && StageCtrl.gameScoreSettings.Xattack && !animator.GetBool("HorizontalXattack") && !BanWalk)
+        {
+            BanGravity = true;
+            BanWalk = true;
+            BanJump = true;
+            BanInput = true;
+            BanTurnAround = true;
+            animator.SetBool("HorizontalXattack", true);
+        }
 
+        if (animator.GetBool("HorizontalXattack"))
+        {
+            tr.Translate(Vector3.right * 8f * Time.deltaTime, Space.Self);
+        }
     }
 
     public override void HorizontalZ()
@@ -34,7 +47,7 @@ public class SayakaCtrl : APlayerCtrl
     public override void OrdinaryX()
     {
         //从通常状态进入到X攻击准备状态
-        if(StageCtrl.gameScoreSettings.Xattack && !animator.GetBool("OrdinaryXattack") && !animator.GetBool("OrdinaryXattackPrepare") &&!BanWalk && !XordinaryDash && Time.timeSinceLevelLoad -OrdinaryXTimer >= 0.3F)
+        if(StageCtrl.gameScoreSettings.Horizontal == 0 && StageCtrl.gameScoreSettings.Xattack && !animator.GetBool("OrdinaryXattack") && !animator.GetBool("OrdinaryXattackPrepare") &&!BanWalk && !XordinaryDash && Time.timeSinceLevelLoad -OrdinaryXTimer >= 0.3F)
         {
             animator.SetBool("OrdinaryXattackPrepare", true);
             XattackAnimationEvent("OrdinaryPrepare");
@@ -170,6 +183,8 @@ public class SayakaCtrl : APlayerCtrl
             BanWalk = false;
             IsAttack[0] = false;//连接处不属于攻击阶段，可以切换到其他动画和状态
 
+            //僵直
+            Stiff(0.1f);
 
             //因为这里不会产生动画未结束松开Z导致动画结束的情况，所以不修改IsZattacking
         }
@@ -212,8 +227,26 @@ public class SayakaCtrl : APlayerCtrl
             XordinaryDash = false;
             //普通X冲刺完之后间隔0.3s才能再充一次，先保存一下时间
             OrdinaryXTimer = Time.timeSinceLevelLoad;
+
+            //僵直
+            Stiff(0.1f);
+
         }
         #endregion
+    }
+
+    public override void HorizontalXattackAnimationEvent(string AnimationName)
+    {
+        //结束
+            BanGravity = !true;
+            BanWalk = !true;
+            BanJump = !true;
+            BanInput = !true;
+            BanTurnAround = !true;
+            animator.SetBool("HorizontalXattack", !true);
+
+            Stiff(0.1f);
+
     }
 }
 

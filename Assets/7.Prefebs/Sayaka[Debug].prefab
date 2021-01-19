@@ -233,13 +233,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 994ff0d1a1d8e3d40930d1d28af9b59e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 4
+  MahouShoujoId: 4
+  JumpSpeed: 15
   BanGravity: 0
   BanGravityRay: 0
   BanJump: 0
   BanWalk: 0
   IsGround: 1
   BanTurnAround: 0
+  BanInput: 0
   GavityRayPos:
   - {fileID: 461960091}
   - {fileID: 337635938}
@@ -247,6 +249,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   spriteRenderer: {fileID: 0}
   GravityRatio: 1
+  IsStiff: 0
   MoveSpeedRatio: 1
   DoLookRight: 1
   StandOnPlatform: 0
@@ -254,9 +257,6 @@ MonoBehaviour:
   IsMoving: 0
   PressAttackInteral: 0.5
   IsAttack: 000000
-  AttackTimer:
-  - 0
-  - 0
   StopAttacking: 1
 --- !u!95 &1183132187
 Animator:
@@ -321,7 +321,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 3.2, y: 2.56}
+  m_Size: {x: 2.56, y: 2.56}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0

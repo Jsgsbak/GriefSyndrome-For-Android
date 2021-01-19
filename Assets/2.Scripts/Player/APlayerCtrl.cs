@@ -10,7 +10,13 @@ public abstract class APlayerCtrl : MonoBehaviour
 {
     #region  基础属性
     [Header("基础属性")]
-    public int id = 0;
+
+    public int MahouShoujoId = 0;
+    //为了便于调试先放在这里，以后应当移动到GSS中
+    public float JumpSpeed = 15f;
+
+    [Space]
+    //为了方便调试，这些Ban和Is先暂时放在这里
     public bool BanGravity = false;
     /// <summary>
     /// 禁用重力射线。用于穿透地板
@@ -26,6 +32,8 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// 禁用转身
     /// </summary>
     public bool BanTurnAround = false;
+
+    public bool BanInput = false;
 
     /// <summary>
     /// 重力射线位置
@@ -51,6 +59,9 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// </summary>
     Ray2D[] rays = new Ray2D[2];
     public float GravityRatio = 1f;
+
+    public bool IsStiff = false;
+
     [HideInInspector] public float MoveSpeedRatio = 1f;
     /// <summary>
     /// 向右看吗
@@ -86,10 +97,6 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// 正在攻击，防止意外切换到其他攻击状态 0 z 1 x 2 Magia
     /// </summary>
     [HideInInspector] public bool[] IsAttack = new bool[3];
-    /// <summary>
-    /// 攻击计时器 0Z 1X
-    /// </summary>
-    public float[] AttackTimer = new float[2];
     /// <summary>
     /// 能否可以/已经停止攻击（中断攻击）
     /// </summary>
@@ -129,11 +136,23 @@ public abstract class APlayerCtrl : MonoBehaviour
             //这个的话只要按下了攻击键/按住攻击键就算
             StageCtrl.gameScoreSettings.Zattack = RebindableInput.GetKeyDown("Zattack") || RebindableInput.GetKey("Zattack");
             StageCtrl.gameScoreSettings.Xattack = RebindableInput.GetKey("Xattack") || RebindableInput.GetKeyDown("Xattack");
+        }
+
+        //如果禁用了输入
+        if (BanInput)
+        {
+            StageCtrl.gameScoreSettings.Horizontal = 0;
+            StageCtrl.gameScoreSettings.Jump = false ;
+            StageCtrl.gameScoreSettings.Down = false ;
+            //这个的话只要按下了攻击键/按住攻击键就算
+            StageCtrl.gameScoreSettings.Zattack = false ;
+            StageCtrl.gameScoreSettings.Xattack = false ;
 
         }
         #endregion
 
     }
+
 
     public void FastUpdate()
     {
@@ -256,7 +275,7 @@ public abstract class APlayerCtrl : MonoBehaviour
             //上升
             if (Time.timeSinceLevelLoad - JumpInteralTimer <= 0.2f)
             {
-                tr.Translate(Vector3.up * 15f * Time.deltaTime * JumpInteralTimer / Time.timeSinceLevelLoad);
+                tr.Translate(Vector3.up * JumpSpeed * Time.deltaTime * JumpInteralTimer / Time.timeSinceLevelLoad);
             }
             //下降（其实就是取消跳跃状态）
             else
@@ -306,20 +325,19 @@ public abstract class APlayerCtrl : MonoBehaviour
         //重力射线
         if (!BanGravityRay)
         {
-            rays[0] = new Ray2D(GavityRayPos[0].position, Vector2.down * 0.05f);
-            rays[1] = new Ray2D(GavityRayPos[1].position, Vector2.down * 0.05f);
-            RaycastHit2D infoLeft = Physics2D.Raycast(rays[1].origin, rays[1].direction, 0.05f);
-            RaycastHit2D infoRight = Physics2D.Raycast(rays[0].origin, rays[0].direction, 0.05f);
-
+            rays[0] = new Ray2D(GavityRayPos[0].position, Vector2.down * 0.03f);
+            rays[1] = new Ray2D(GavityRayPos[1].position, Vector2.down * 0.03f);
+            RaycastHit2D infoLeft = Physics2D.Raycast(rays[1].origin, rays[1].direction, 0.03f);
+            RaycastHit2D infoRight = Physics2D.Raycast(rays[0].origin, rays[0].direction, 0.03f);
+            
+            /*
             Debug.DrawRay(rays[0].origin, rays[0].direction, Color.blue);
             Debug.DrawRay(rays[1].origin, rays[1].direction, Color.blue);
-
+            */
 
             //在地上
             if (infoLeft.collider != null)// || infoRight.collider != null)
             {
-                Debug.Log(infoLeft.collider.tag);
-
                 StandOnPlatform = infoLeft.collider.CompareTag("Platform");
                 BanGravity = infoLeft.collider.CompareTag("Floor") || infoLeft.collider.CompareTag("Platform");
                 IsGround = infoLeft.collider.CompareTag("Floor") || infoLeft.collider.CompareTag("Platform");
@@ -352,9 +370,9 @@ public abstract class APlayerCtrl : MonoBehaviour
 
 
         IsMoving = StageCtrl.gameScoreSettings.Horizontal != 0;
-        tr.Translate(StageCtrl.gameScoreSettings.Horizontal * Vector2.right * StageCtrl.gameScoreSettings.mahouShoujos[id].MoveSpeed * MoveSpeedRatio * Time.deltaTime, Space.World);
+        tr.Translate(StageCtrl.gameScoreSettings.Horizontal * Vector2.right * StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].MoveSpeed * MoveSpeedRatio * Time.deltaTime, Space.World);
 
-
+        Debug.Log(StageCtrl.gameScoreSettings.MaxFps);
 
         /*MD我真服了，这个Bug令人恶心
         if (StageCtrl.gameScoreSettings.UseScreenInput)
@@ -380,6 +398,45 @@ public abstract class APlayerCtrl : MonoBehaviour
     }
     #endregion
 
+    #region 僵直
+    /// <summary>
+    /// 设置僵直
+    /// </summary>
+    /// <param name="Time">僵直事件</param>
+    public void Stiff(float Time)
+    {
+        //取消以前的僵直（仅仅是换成另一个僵直，并不是取消将至）
+        StopCoroutine("PlayerStiff");
+        /*
+        BanWalk = false;
+        BanGravity = false;
+        BanTurnAround = false;
+        BanJump = false;
+        animator.enabled = true; 
+        */
+        //启用新的僵直
+        StartCoroutine("PlayerStiff", Time);
+
+    }
+    IEnumerator PlayerStiff(float d)
+    {
+        BanWalk = !false;
+        BanGravity = false;
+        BanTurnAround = !false;
+        BanJump = !false;
+        animator.enabled = !true;
+        BanInput = !false;
+
+        yield return new WaitForSeconds(d);
+
+        BanWalk = false;
+        BanGravity = false;
+        BanTurnAround = false;
+        BanJump = false;
+        BanInput = false;
+        animator.enabled = true;
+    }
+    #endregion
 
 
     #region 攻击方法
@@ -402,10 +459,16 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// <param name="AnimationName"></param>
     public abstract void ZattackAnimationEvent(string AnimationName);
     /// <summary>
-    ///  X攻击动画事件
+    /// 通常X攻击动画逻辑
     /// </summary>
     /// <param name="AnimationName"></param>
     public abstract void XattackAnimationEvent(string AnimationName);
+
+    /// <summary>
+    /// 水平X攻击动画逻辑
+    /// </summary>
+    /// <param name="AnimationName"></param>
+    public abstract void HorizontalXattackAnimationEvent(string AnimationName);
     #endregion
 }
 
