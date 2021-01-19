@@ -181,7 +181,7 @@ AnimationClip:
     messageOptions: 0
   - time: 0.9166667
     functionName: ZattackAnimationEvent
-    data: ZattackDoing
+    data: ZattackCouldStop
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0

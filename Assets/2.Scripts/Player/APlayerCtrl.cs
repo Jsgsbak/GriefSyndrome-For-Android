@@ -27,8 +27,6 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// </summary>
     public bool BanTurnAround = false;
 
-    public bool AllowPressZtoAttack = true;
-
     /// <summary>
     /// 重力射线位置
     /// </summary>
@@ -85,6 +83,10 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// </summary>
     [HideInInspector] public float PressAttackInteral = 1f;
     /// <summary>
+    /// 正在攻击，防止意外切换到其他攻击状态 0 z 1 x 2 Magia
+    /// </summary>
+    [HideInInspector] public bool[] IsAttack = new bool[3];
+    /// <summary>
     /// 攻击计时器 0Z 1X
     /// </summary>
     public float[] AttackTimer = new float[2];
@@ -110,28 +112,33 @@ public abstract class APlayerCtrl : MonoBehaviour
         #endregion
     }
 
-    public virtual void FastUpdate()
+    /// <summary>
+    /// 输入代理
+    /// </summary>
+    public virtual void InputAgent()
     {
-        #region 输入代理转换
+        #region 输入代理
         //为了防止在不同的帧运行，所以放到了这里
         //屏幕输入的按钮放在了主相机脚本里
+        //这个是通常版本，有的角色（比如沙耶加）可能重写了
         if (!StageCtrl.gameScoreSettings.UseScreenInput)
         {
             StageCtrl.gameScoreSettings.Horizontal = RebindableInput.GetAxis("Horizontal");
             StageCtrl.gameScoreSettings.Jump = RebindableInput.GetKeyDown("Jump");
             StageCtrl.gameScoreSettings.Down = RebindableInput.GetKeyDown("Down");
             //这个的话只要按下了攻击键/按住攻击键就算
-            StageCtrl.gameScoreSettings.Zattack = RebindableInput.GetKeyDown("Zattack") || RebindableInput.GetKey("Zattack") & AllowPressZtoAttack;
+            StageCtrl.gameScoreSettings.Zattack = RebindableInput.GetKeyDown("Zattack") || RebindableInput.GetKey("Zattack");
             StageCtrl.gameScoreSettings.Xattack = RebindableInput.GetKey("Xattack") || RebindableInput.GetKeyDown("Xattack");
 
         }
         #endregion
 
-        /*
-         if(Time.timeSinceLevelLoad - AttackTimer[0] > PressAttackInteral && StageCtrl.gameScoreSettings.Zattack)
-        {
-            AttackTimer[0] = Time.timeSinceLevelLoad;
-        }*/
+    }
+
+    public void FastUpdate()
+    {
+        //还是以最高优先级执行输入代理
+        InputAgent();
 
         #region  基础控制器
         RayCtrl();
@@ -149,8 +156,9 @@ public abstract class APlayerCtrl : MonoBehaviour
             //修复攻击过程中跳跃仍然显示攻击动画的bug
             return;
         }
-        OrdinaryZ(); HorizontalZ(); VerticalZ();
-        OrdinaryX(); VerticalX(); HorizontalX();
+        
+        if(!IsAttack[1]&& !IsAttack[2]) { OrdinaryZ(); HorizontalZ(); VerticalZ(); }
+        if (!IsAttack[0] && !IsAttack[2]) { OrdinaryX(); HorizontalX(); VerticalX(); }
         Magia();
         #endregion
     }

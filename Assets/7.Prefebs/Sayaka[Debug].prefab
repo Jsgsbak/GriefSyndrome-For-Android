@@ -240,7 +240,6 @@ MonoBehaviour:
   BanWalk: 0
   IsGround: 1
   BanTurnAround: 0
-  AllowPressZtoAttack: 1
   GavityRayPos:
   - {fileID: 461960091}
   - {fileID: 337635938}
@@ -254,6 +253,7 @@ MonoBehaviour:
   GoThroughPlatform: 0
   IsMoving: 0
   PressAttackInteral: 0.5
+  IsAttack: 000000
   AttackTimer:
   - 0
   - 0
@@ -321,7 +321,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2.56, y: 3.2}
+  m_Size: {x: 3.2, y: 2.56}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
