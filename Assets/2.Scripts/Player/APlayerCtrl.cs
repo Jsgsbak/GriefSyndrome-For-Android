@@ -96,7 +96,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// <summary>
     /// 正在攻击，防止意外切换到其他攻击状态 0 z 1 x 2 Magia
     /// </summary>
-    [HideInInspector] public bool[] IsAttack = new bool[3];
+      public bool[] IsAttack = new bool[3];
     /// <summary>
     /// 能否可以/已经停止攻击（中断攻击）
     /// </summary>
@@ -142,20 +142,25 @@ public abstract class APlayerCtrl : MonoBehaviour
         if (BanInput)
         {
             StageCtrl.gameScoreSettings.Horizontal = 0;
-            StageCtrl.gameScoreSettings.Jump = false ;
-            StageCtrl.gameScoreSettings.Down = false ;
+            StageCtrl.gameScoreSettings.Jump = false;
+            StageCtrl.gameScoreSettings.Down = false;
             //这个的话只要按下了攻击键/按住攻击键就算
-            StageCtrl.gameScoreSettings.Zattack = false ;
-            StageCtrl.gameScoreSettings.Xattack = false ;
+            StageCtrl.gameScoreSettings.Zattack = false;
+            StageCtrl.gameScoreSettings.Xattack = false;
 
         }
         #endregion
 
+        
     }
 
 
     public void FastUpdate()
     {
+        if (IsStiff)
+        {
+            return;
+        }
         //还是以最高优先级执行输入代理
         InputAgent();
 
@@ -175,11 +180,16 @@ public abstract class APlayerCtrl : MonoBehaviour
             //修复攻击过程中跳跃仍然显示攻击动画的bug
             return;
         }
-        
-        if(!IsAttack[1]&& !IsAttack[2]) { OrdinaryZ(); HorizontalZ(); VerticalZ(); }
+
+        if (!IsAttack[1] && !IsAttack[2]) { OrdinaryZ(); HorizontalZ(); VerticalZ(); }
         if (!IsAttack[0] && !IsAttack[2]) { OrdinaryX(); HorizontalX(); VerticalX(); }
         Magia();
         #endregion
+
+        if(!IsAttack[0] && !IsAttack[1]&& !IsAttack[2] &&!IsJumping && IsGround && !IsMoving)
+        {
+            IdleAnimationEvent(2);
+        }
     }
 
     #region  基础控制器
@@ -242,13 +252,17 @@ public abstract class APlayerCtrl : MonoBehaviour
         animator.SetBool("Zattack", false);
         animator.SetBool("Jump", false);
         animator.SetBool("Fall", false);
+        animator.SetBool("OrdinaryXattack", false);
+        animator.SetBool("HorizontalXattack", false);
 
         StopAttacking = true;
         IsMoving = false;
         BanGravity = true;
         IsGround = true;
+        BanInput = false;
         BanTurnAround = false;
         MoveSpeedRatio = 1f;
+        GravityRatio = 1F;
 
     }
 
@@ -329,7 +343,7 @@ public abstract class APlayerCtrl : MonoBehaviour
             rays[1] = new Ray2D(GavityRayPos[1].position, Vector2.down * 0.03f);
             RaycastHit2D infoLeft = Physics2D.Raycast(rays[1].origin, rays[1].direction, 0.03f);
             RaycastHit2D infoRight = Physics2D.Raycast(rays[0].origin, rays[0].direction, 0.03f);
-            
+
             /*
             Debug.DrawRay(rays[0].origin, rays[0].direction, Color.blue);
             Debug.DrawRay(rays[1].origin, rays[1].direction, Color.blue);
@@ -372,7 +386,6 @@ public abstract class APlayerCtrl : MonoBehaviour
         IsMoving = StageCtrl.gameScoreSettings.Horizontal != 0;
         tr.Translate(StageCtrl.gameScoreSettings.Horizontal * Vector2.right * StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].MoveSpeed * MoveSpeedRatio * Time.deltaTime, Space.World);
 
-        Debug.Log(StageCtrl.gameScoreSettings.MaxFps);
 
         /*MD我真服了，这个Bug令人恶心
         if (StageCtrl.gameScoreSettings.UseScreenInput)
@@ -426,6 +439,7 @@ public abstract class APlayerCtrl : MonoBehaviour
         BanJump = !false;
         animator.enabled = !true;
         BanInput = !false;
+        IsStiff = !false;
 
         yield return new WaitForSeconds(d);
 
@@ -435,6 +449,8 @@ public abstract class APlayerCtrl : MonoBehaviour
         BanJump = false;
         BanInput = false;
         animator.enabled = true;
+        IsStiff = false;
+
     }
     #endregion
 

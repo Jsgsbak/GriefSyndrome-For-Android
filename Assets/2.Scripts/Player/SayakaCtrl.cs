@@ -18,6 +18,9 @@ public class SayakaCtrl : APlayerCtrl
 
     public override void HorizontalX()
     {
+        //特意为这个攻击方法重新写一下输入情况emmm
+        StageCtrl.gameScoreSettings.Xattack = RebindableInput.GetKeyDown("Xattack") && !BanInput;
+
         if (StageCtrl.gameScoreSettings.Horizontal != 0 && StageCtrl.gameScoreSettings.Xattack && !animator.GetBool("HorizontalXattack") && !BanWalk)
         {
             BanGravity = true;
@@ -104,89 +107,94 @@ public class SayakaCtrl : APlayerCtrl
     /// <param name="AnimationName"></param>
     public override void  ZattackAnimationEvent(string AnimationName)
     {
-        //Z攻击的动画正处于攻击状态，不能中断
-        if (AnimationName.Equals("ZattackDoing"))
+        switch (AnimationName)
         {
-            IsAttack[0] = true;
-            StopAttacking = false;
-            BanWalk = true;
-            BanTurnAround = true;//攻击状态不能转身
-            animator.SetBool("Zattack", true);//不能中断动画
+            //Z攻击的动画正处于攻击状态，不能中断
+            case "ZattackDoing":
+                IsAttack[0] = true;
+                StopAttacking = false;
+                BanWalk = true;
+                BanTurnAround = true;//攻击状态不能转身
+                BanJump = true;
+                animator.SetBool("Zattack", true);//不能中断动画
+                break;
 
-        }
-        //Z攻击的动画处于两端攻击的连接处，可以中断，中断处允许切换到其他动画和状态
-        else if (AnimationName.Equals("ZattackCouldStop"))
-        {
-            //如果还在攻击那就不能解除移动禁止
-            BanWalk = StageCtrl.gameScoreSettings.Zattack;
-            StopAttacking = true;//可以中断攻击
-            BanTurnAround = false;//连接处可以转身
-            IsAttack[0] = false;//连接处不属于攻击阶段，可以切换到其他动画和状态
-            animator.SetBool("Zattack", StageCtrl.gameScoreSettings.Zattack);//现在可以中断动画
-            animator.SetBool("Fall", !IsGround && !StageCtrl.gameScoreSettings.Zattack);
+            //Z攻击的动画处于两端攻击的连接处，可以中断，中断处允许切换到其他动画和状态
+            case "ZattackCouldStop":
+                //如果还在攻击那就不能解除移动和跳跃禁止
+                BanWalk = StageCtrl.gameScoreSettings.Zattack;
+                BanJump = StageCtrl.gameScoreSettings.Zattack;
+                StopAttacking = true;//可以中断攻击
+                BanTurnAround = false;//连接处可以转身
+                IsAttack[0] = false;//连接处不属于攻击阶段，可以切换到其他动画和状态
+                animator.SetBool("Zattack", StageCtrl.gameScoreSettings.Zattack);//现在可以中断动画
+                animator.SetBool("Fall", !IsGround && !StageCtrl.gameScoreSettings.Zattack);
 
-            //攻击连接处可以移动
-            if (StageCtrl.gameScoreSettings.Horizontal == 1 && DoLookRight)
-            {
-                tr.Translate(Vector2.right * 0.02f);
-            }
-            else if (StageCtrl.gameScoreSettings.Horizontal == -1 && !DoLookRight)
-            {
-                tr.Translate(Vector2.right * 0.02f);
-            }
+                //攻击连接处可以按住方向键移动
+                if (StageCtrl.gameScoreSettings.Horizontal == 1 && DoLookRight)
+                {
+                    tr.Translate(Vector2.right * 0.02f);
+                }
+                else if (StageCtrl.gameScoreSettings.Horizontal == -1 && !DoLookRight)
+                {
+                    tr.Translate(Vector2.right * 0.02f);
+                }
+                break;
 
+            //Z攻击打完，
+            case "ZattackDone":
+                    StopAttacking = true;//可以中断攻击
+                    IsAttack[0] = false;//连接处不属于攻击阶段，可以切换到其他动画和状态
+                BanTurnAround = false;//可以转身
 
+                //攻击完了恢复移动速度与重力
+                GravityRatio = 1F;
+                    //取消Z攻击状态，方便转换到idle或者ZattackFin
+                    animator.SetBool("Zattack", StageCtrl.gameScoreSettings.Zattack);
+                    //允许下落状态
+                    animator.SetBool("Fall", !IsGround && !StageCtrl.gameScoreSettings.Zattack);
+               
+                if (StageCtrl.gameScoreSettings.Zattack)
+                {
+                    //并且按着Z，满足条件后进入Z攻击最后阶段
+                    //仅在地面上能发动最后一击
+                    if (IsGround) ZattackCount++;
 
-        }
-        //Z攻击打完，并且按着Z，满足条件后进入Z攻击最后阶段
-        else if (AnimationName.Equals("ZattackDone") && StageCtrl.gameScoreSettings.Zattack && !animator.GetBool("ZattackFin"))
-        {
-            StopAttacking = true;//可以中断攻击
-            IsAttack[0] = false;//连接处不属于攻击阶段，可以切换到其他动画和状态
+                    if (ZattackCount == 2 && IsGround)//仅在地面上并且达到要求了才能发动
+                    {
+                        animator.SetBool("ZattackFin", true);
+                    }
+                    StopAttacking = true;
+                }
+                break;
 
-            //攻击完了恢复移动速度与重力
-            GravityRatio = 1F;
-            //取消Z攻击状态，方便转换到idle或者ZattackFin
-            animator.SetBool("Zattack", StageCtrl.gameScoreSettings.Zattack);
-            //允许下落状态
-             animator.SetBool("Fall", !IsGround && !StageCtrl.gameScoreSettings.Zattack);
+            //Z攻击最后一阶段向前跳
+            case "ZattackFinJump":
+                BanTurnAround = true;//向前跳的时候不能转身
+                BanWalk = true;
+                BanJump = true;
+                StopAttacking = false;//不可以中断攻击
 
-            //仅在地面上能发动最后一击
-            if (IsGround) ZattackCount++;
-            BanTurnAround = false;//向前跳之前可以转身
+                //向前移动
+                tr.Translate(Vector3.right * 0.4f, Space.Self);
+                break;
 
-            if (ZattackCount == 2)
-            {
-                animator.SetBool("ZattackFin", true);
-            }
-            StopAttacking = true;
-        }
-        //Z攻击最后一阶段向前跳
-        else if (AnimationName.Equals("ZattackFinJump"))
-        {
-            BanTurnAround = true;//向前跳的时候不能转身
-            BanWalk = true;
-           
-           tr.Translate(Vector3.right * 0.4f, Space.Self);
-           
+            //Z攻击最后阶段结束
+            case "ZattackFinDone":
+                animator.SetBool("ZattackFin", false);
+                animator.SetBool("Zattack", false);
+                StopAttacking = true;
+                //修改计数器重新循环动画
+                ZattackCount = 0;
+                BanTurnAround = false;//打完了可以转身
+                BanWalk = false;
+                IsAttack[0] = false;//连接处不属于攻击阶段，可以切换到其他动画和状态
 
-        }
-        //Z攻击最后阶段结束
-        else if (AnimationName.Equals("ZattackFinDone"))
-        {
-            animator.SetBool("ZattackFin", false);
-            animator.SetBool("Zattack", false);
-            StopAttacking = true;
-            //修改计数器重新循环动画
-            ZattackCount = 0;
-            BanTurnAround = false;//打完了可以转身
-            BanWalk = false;
-            IsAttack[0] = false;//连接处不属于攻击阶段，可以切换到其他动画和状态
+                //僵直
+                Stiff(0.1f);
 
-            //僵直
-            Stiff(0.1f);
-
-            //因为这里不会产生动画未结束松开Z导致动画结束的情况，所以不修改IsZattacking
+                //因为这里不会产生动画未结束松开Z导致动画结束的情况，所以不修改IsZattacking
+                break;
         }
     }
 
@@ -245,7 +253,7 @@ public class SayakaCtrl : APlayerCtrl
             BanTurnAround = !true;
             animator.SetBool("HorizontalXattack", !true);
 
-            Stiff(0.1f);
+            Stiff(0.2f);
 
     }
 }
