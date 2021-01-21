@@ -67,7 +67,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// 向右看吗
     /// </summary>
     [HideInInspector] public bool DoLookRight = true;
-    int JumpCount = 0;
+   public  int JumpCount = 0;
     /// <summary>
     /// 跳跃间隔计时器
     /// </summary>
@@ -75,7 +75,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// <summary>
     /// 正在跳跃（专指上升阶段）
     /// </summary>
-     bool IsJumping = false;
+   [HideInInspector]public   bool IsJumping = false;
     /// <summary>
     /// 站在平台上
     /// </summary>
@@ -279,7 +279,7 @@ public abstract class APlayerCtrl : MonoBehaviour
         if (BanJump || StageCtrl.gameScoreSettings.Zattack || StageCtrl.gameScoreSettings.Xattack) return;
 
         //跳跃触发
-        if (!StageCtrl.gameScoreSettings.Down && StageCtrl.gameScoreSettings.Jump && Mathf.Abs(JumpInteralTimer - Time.timeSinceLevelLoad) > 0.2F && JumpCount != 1)
+        if (!StageCtrl.gameScoreSettings.Down && StageCtrl.gameScoreSettings.Jump && Mathf.Abs(JumpInteralTimer - Time.timeSinceLevelLoad) > 0.2F && JumpCount != 2)
         {
             MoveSpeedRatio = 1f;
             JumpInteralTimer = Time.timeSinceLevelLoad;
@@ -293,6 +293,8 @@ public abstract class APlayerCtrl : MonoBehaviour
             //上升
             if (Time.timeSinceLevelLoad - JumpInteralTimer <= 0.2f)
             {
+                //解决一个很奇怪的BUG
+                IsGround = false;
                 tr.Translate(Vector3.up * JumpSpeed * Time.deltaTime * JumpInteralTimer / Time.timeSinceLevelLoad);
             }
             //下降（其实就是取消跳跃状态）
@@ -328,13 +330,42 @@ public abstract class APlayerCtrl : MonoBehaviour
 
     }
 
+#if UNITY_EDITOR
+    bool PreviousFrameHasCancelledJump = false;
+    float Timerrrr = 0;
+#endif
+
     /// <summary>
-    /// 对于正在跳跃过程中发动魔法/攻击的情况，直接取消跳跃状态
+    /// （千万不要多次重复执行！！！）对于正在跳跃过程中发动魔法/攻击的情况，直接取消跳跃状态
     /// </summary>
     public void CancelJump()
     {
+#if UNITY_EDITOR
+        //如果上一帧执行过了
+        if (PreviousFrameHasCancelledJump && Time.timeSinceLevelLoad -Timerrrr <= 0.1f)
+        {
+            Debug.LogError("CancelJump多次重复执行，你也不怕出bug");
+        }
+       else if (PreviousFrameHasCancelledJump && Time.timeSinceLevelLoad - Timerrrr > 0.1f)
+        {
+            PreviousFrameHasCancelledJump = false;
+        }
+        else if(!PreviousFrameHasCancelledJump)
+        {
+            Timerrrr = Time.timeSinceLevelLoad;
+                PreviousFrameHasCancelledJump = true;
+        }
+#endif
+
+        if (!IsJumping)
+        {
+            return;
+        }
+            //既然要取消，那肯定是跳起来了
         animator.SetBool("Jump", false);
         BanGravity = false;
+        IsGround = false;
+        IsJumping = false;
     }
     /// <summary>
     /// 射线控制器
@@ -423,21 +454,9 @@ public abstract class APlayerCtrl : MonoBehaviour
     {
         //取消以前的僵直（仅仅是换成另一个僵直，并不是取消将至）
         StopCoroutine("PlayerStiff");
-        /*
-        BanWalk = false;
-        BanGravity = false;
-        BanTurnAround = false;
-        BanJump = false;
-        animator.enabled = true; 
-        */
-        //启用新的僵直
-        StartCoroutine("PlayerStiff", Time);
 
-    }
-    IEnumerator PlayerStiff(float d)
-    {
         BanWalk = !false;
-        BanGravity = false;
+        BanGravity = IsGround;
         GravityRatio = 1F;
         MoveSpeedRatio = 1F;
         BanGravityRay = false;
@@ -447,10 +466,22 @@ public abstract class APlayerCtrl : MonoBehaviour
         BanInput = !false;
         IsStiff = !false;
 
+        //启用新的僵直
+        StartCoroutine("PlayerStiff", Time);
+
+    }
+    /// <summary>
+    /// 这里经常初BUG
+    /// </summary>
+    /// <param name="d"></param>
+    /// <returns></returns>
+    IEnumerator PlayerStiff(float d)
+    {
+
         yield return new WaitForSeconds(d);
 
         BanWalk = false;
-        BanGravity = false;
+        BanGravity = IsGround;
         GravityRatio = 1F;
         MoveSpeedRatio = 1F;
         BanGravityRay = false;

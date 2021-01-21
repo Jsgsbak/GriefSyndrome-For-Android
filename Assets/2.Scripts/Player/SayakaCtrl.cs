@@ -23,6 +23,8 @@ public class SayakaCtrl : APlayerCtrl
 
         if (StageCtrl.gameScoreSettings.Horizontal != 0 && StageCtrl.gameScoreSettings.Xattack && !animator.GetBool("HorizontalXattack") && !BanWalk)
         {
+
+            CancelJump();//直接中断跳跃并且不恢复
             BanGravity = true;
             BanWalk = true;
             BanJump = true;
@@ -58,6 +60,7 @@ public class SayakaCtrl : APlayerCtrl
             animator.SetBool("OrdinaryXattackPrepare", true);
             XattackAnimationEvent("OrdinaryPrepare");
             BanWalk = true;
+
         }
         //松开X键，但仍然处于X攻击状态，所以能往前冲
         else if (!StageCtrl.gameScoreSettings.Xattack && animator.GetBool("OrdinaryXattackPrepare") && !XordinaryDash)
@@ -85,10 +88,11 @@ public class SayakaCtrl : APlayerCtrl
     {
         if (StageCtrl.gameScoreSettings.Zattack && !animator.GetBool("OrdinaryXattack") && !animator.GetBool("OrdinaryXattackPrepare") /*|| Time.timeSinceLevelLoad -  AttackTimer[0] <= PressAttackInteral && AttackTimer[0] != 0*/)
         {
+            if (!animator.GetBool("Zattack") && !animator.GetBool("ZattackFin")) CancelJump();//直接中断跳跃并且不恢复
             GravityRatio = 0.8f;
             animator.SetBool("Zattack", true);
             animator.SetBool("Fall", false);
-            CancelJump();//直接中断跳跃并且不恢复
+             BanGravity = IsGround;//修复奇怪的bug
         }
     }
 
@@ -206,6 +210,8 @@ public class SayakaCtrl : APlayerCtrl
         //攻击准备阶段
         if (AnimationName.Equals("OrdinaryPrepare"))
         {
+            CancelJump();//直接中断跳跃并且不恢复
+
             IsAttack[1] = true;
             BanTurnAround = true;
             BanWalk = true;
