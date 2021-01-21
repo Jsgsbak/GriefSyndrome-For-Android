@@ -2496,7 +2496,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: d294f228be83a314b9679578a11b4844, type: 3}
       propertyPath: defaultRebindableKeys.Array.size
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: d294f228be83a314b9679578a11b4844, type: 3}
       propertyPath: defaultRebindableKeys.Array.data[1].inputName
@@ -2517,6 +2517,14 @@ PrefabInstance:
     - target: {fileID: 11400000, guid: d294f228be83a314b9679578a11b4844, type: 3}
       propertyPath: defaultRebindableKeys.Array.data[7].input
       value: 274
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: d294f228be83a314b9679578a11b4844, type: 3}
+      propertyPath: defaultRebindableKeys.Array.data[8].inputName
+      value: Up
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: d294f228be83a314b9679578a11b4844, type: 3}
+      propertyPath: defaultRebindableKeys.Array.data[8].input
+      value: 273
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d294f228be83a314b9679578a11b4844, type: 3}
@@ -4619,6 +4627,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1623938719, guid: 691db146eb78dd74fbe51e6d5974d37e, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4035432619200351512, guid: 691db146eb78dd74fbe51e6d5974d37e,
         type: 3}
       propertyPath: m_LocalPosition.x

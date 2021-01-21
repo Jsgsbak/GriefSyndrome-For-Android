@@ -16,6 +16,11 @@ public class SayakaCtrl : APlayerCtrl
     /// </summary>
     float OrdinaryXTimer = 0f;
 
+    /// <summary>
+    /// UP X攻击正在往上走
+    /// </summary>
+    bool UpAttackMovingUpward = false;
+
     public override void HorizontalX()
     {
         //特意为这个攻击方法重新写一下输入情况emmm
@@ -56,10 +61,10 @@ public class SayakaCtrl : APlayerCtrl
         if(StageCtrl.gameScoreSettings.Horizontal == 0 && StageCtrl.gameScoreSettings.Xattack && !animator.GetBool("OrdinaryXattack") && !animator.GetBool("OrdinaryXattackPrepare") &&!BanWalk && !XordinaryDash && Time.timeSinceLevelLoad -OrdinaryXTimer >= 0.3F)
         {
             StopAttacking = false;
-            GravityRatio = 0.4f;
             animator.SetBool("OrdinaryXattackPrepare", true);
             XattackAnimationEvent("OrdinaryPrepare");
             BanWalk = true;
+            GravityRatio = 0.4f;
 
         }
         //松开X键，但仍然处于X攻击状态，所以能往前冲
@@ -83,6 +88,16 @@ public class SayakaCtrl : APlayerCtrl
             tr.Translate(Vector3.right *(8F  -OrdinaryXTimer) *Time.deltaTime, Space.Self);
         }
     }
+    public override void UpX()
+    {
+        //特意为这个攻击方法重新写一下输入情况emmm
+        StageCtrl.gameScoreSettings.Xattack = RebindableInput.GetKeyDown("Xattack") && !BanInput;
+
+        if (StageCtrl.gameScoreSettings.Xattack && StageCtrl.gameScoreSettings.Up)
+        {
+
+        }
+    }
 
     public override void OrdinaryZ()
     {
@@ -94,16 +109,6 @@ public class SayakaCtrl : APlayerCtrl
             animator.SetBool("Fall", false);
              BanGravity = IsGround;//修复奇怪的bug
         }
-    }
-
-    public override void VerticalX()
-    {
-
-    }
-
-    public override void VerticalZ()
-    {
-
     }
 
 
@@ -211,7 +216,6 @@ public class SayakaCtrl : APlayerCtrl
         if (AnimationName.Equals("OrdinaryPrepare"))
         {
             CancelJump();//直接中断跳跃并且不恢复
-
             IsAttack[1] = true;
             BanTurnAround = true;
             BanWalk = true;
@@ -220,6 +224,8 @@ public class SayakaCtrl : APlayerCtrl
 
             //保存一下时间，用于得到蓄力的效果
             OrdinaryXTimer = Time.timeSinceLevelLoad;
+
+            GravityRatio = 0.4f;//修复bug
         }
         //冲刺阶段
         else if (AnimationName.Equals("OrdinaryDash"))
@@ -229,6 +235,7 @@ public class SayakaCtrl : APlayerCtrl
             animator.SetBool("OrdinaryXattack", true); 
             XordinaryDash = true;
 
+            GravityRatio = 0.4f;//修复bug
         }
         //冲刺阶段结束
         else if (AnimationName.Equals("OrdinaryDashDone"))
@@ -267,6 +274,46 @@ public class SayakaCtrl : APlayerCtrl
             Stiff(0.2f);
 
     }
+
+    public override void UpXattackAnimationEvent(string AnimationName)
+    {
+        switch (AnimationName)
+        {
+            case "Start":
+                CancelJump();
+                BanGravity = true;
+                BanInput = true;
+                BanTurnAround = true;
+                BanWalk = true;
+                break;
+
+            case "Doing-Up":
+                break;
+
+            case "Doing-Down":
+                break;
+
+            case "Done":
+
+                break;
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+    public override void VerticalZ()
+    {
+
+    }
+
 }
 
 

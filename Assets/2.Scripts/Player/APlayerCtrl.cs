@@ -133,6 +133,7 @@ public abstract class APlayerCtrl : MonoBehaviour
             StageCtrl.gameScoreSettings.Horizontal = RebindableInput.GetAxis("Horizontal");
             StageCtrl.gameScoreSettings.Jump = RebindableInput.GetKeyDown("Jump");
             StageCtrl.gameScoreSettings.Down = RebindableInput.GetKeyDown("Down") || RebindableInput.GetKey("Down");
+            StageCtrl.gameScoreSettings.Up = RebindableInput.GetKeyDown("Up") || RebindableInput.GetKey("Up");
             //这个的话只要按下了攻击键/按住攻击键就算
             StageCtrl.gameScoreSettings.Zattack = RebindableInput.GetKeyDown("Zattack") || RebindableInput.GetKey("Zattack");
             StageCtrl.gameScoreSettings.Xattack = RebindableInput.GetKey("Xattack") || RebindableInput.GetKeyDown("Xattack");
@@ -183,7 +184,7 @@ public abstract class APlayerCtrl : MonoBehaviour
         }
 
         if (!IsAttack[1] && !IsAttack[2]) { OrdinaryZ(); HorizontalZ(); VerticalZ(); }
-        if (!IsAttack[0] && !IsAttack[2]) { OrdinaryX(); HorizontalX(); VerticalX(); }
+        if (!IsAttack[0] && !IsAttack[2]) { OrdinaryX(); HorizontalX(); UpX(); }
         Magia();
         #endregion
 
@@ -505,7 +506,7 @@ public abstract class APlayerCtrl : MonoBehaviour
 
     public abstract void OrdinaryX();
     public abstract void HorizontalX();
-    public abstract void VerticalX();
+    public abstract void UpX();
 
     public abstract void Magia();
 
@@ -525,6 +526,13 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// </summary>
     /// <param name="AnimationName"></param>
     public abstract void HorizontalXattackAnimationEvent(string AnimationName);
+
+    /// <summary>
+    /// 上X攻击动画逻辑
+    /// </summary>
+    /// <param name="AnimationName"></param>
+    public abstract void UpXattackAnimationEvent(string AnimationName);
+
     #endregion
 }
 
