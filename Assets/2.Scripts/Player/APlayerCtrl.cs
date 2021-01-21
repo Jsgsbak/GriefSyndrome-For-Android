@@ -75,11 +75,11 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// <summary>
     /// 正在跳跃（专指上升阶段）
     /// </summary>
-    [HideInInspector] bool IsJumping = false;
+     bool IsJumping = false;
     /// <summary>
     /// 站在平台上
     /// </summary>
-    [HideInInspector] public bool StandOnPlatform = false;
+     public bool StandOnPlatform = false;
     /// <summary>
     /// 正在穿过平台
     /// </summary>
@@ -132,7 +132,7 @@ public abstract class APlayerCtrl : MonoBehaviour
         {
             StageCtrl.gameScoreSettings.Horizontal = RebindableInput.GetAxis("Horizontal");
             StageCtrl.gameScoreSettings.Jump = RebindableInput.GetKeyDown("Jump");
-            StageCtrl.gameScoreSettings.Down = RebindableInput.GetKeyDown("Down");
+            StageCtrl.gameScoreSettings.Down = RebindableInput.GetKeyDown("Down") || RebindableInput.GetKey("Down");
             //这个的话只要按下了攻击键/按住攻击键就算
             StageCtrl.gameScoreSettings.Zattack = RebindableInput.GetKeyDown("Zattack") || RebindableInput.GetKey("Zattack");
             StageCtrl.gameScoreSettings.Xattack = RebindableInput.GetKey("Xattack") || RebindableInput.GetKeyDown("Xattack");
@@ -157,6 +157,9 @@ public abstract class APlayerCtrl : MonoBehaviour
 
     public void FastUpdate()
     {
+        if (!BanGravity) Gravity();
+        RayCtrl();
+
         if (IsStiff)
         {
             return;
@@ -165,8 +168,6 @@ public abstract class APlayerCtrl : MonoBehaviour
         InputAgent();
 
         #region  基础控制器
-        RayCtrl();
-        if (!BanGravity) Gravity();
         Walk();
         AnimationCtrl();
         JumpAndFall();
@@ -247,18 +248,21 @@ public abstract class APlayerCtrl : MonoBehaviour
     public void IdleAnimationEvent(int index)
     {
         //已经满足执行idle动画的条件了，初始化状态机和动画参数减少Bug
-        animator.SetBool("ZattackFin", false);
+       
+        /*animator.SetBool("ZattackFin", false);
         animator.SetBool("Walk", false);
         animator.SetBool("Zattack", false);
         animator.SetBool("Jump", false);
         animator.SetBool("Fall", false);
         animator.SetBool("OrdinaryXattack", false);
         animator.SetBool("HorizontalXattack", false);
-
+        */
         StopAttacking = true;
         IsMoving = false;
-        BanGravity = true;
-        IsGround = true;
+      if(!GoThroughPlatform)  BanGravity = true;
+        BanJump = false;
+        BanWalk = false;
+        if (!GoThroughPlatform) IsGround = true;
         BanInput = false;
         BanTurnAround = false;
         MoveSpeedRatio = 1f;
@@ -275,7 +279,7 @@ public abstract class APlayerCtrl : MonoBehaviour
         if (BanJump || StageCtrl.gameScoreSettings.Zattack || StageCtrl.gameScoreSettings.Xattack) return;
 
         //跳跃触发
-        if (StageCtrl.gameScoreSettings.Jump && Mathf.Abs(JumpInteralTimer - Time.timeSinceLevelLoad) > 0.2F && JumpCount != 1)
+        if (!StageCtrl.gameScoreSettings.Down && StageCtrl.gameScoreSettings.Jump && Mathf.Abs(JumpInteralTimer - Time.timeSinceLevelLoad) > 0.2F && JumpCount != 1)
         {
             MoveSpeedRatio = 1f;
             JumpInteralTimer = Time.timeSinceLevelLoad;
@@ -303,17 +307,18 @@ public abstract class APlayerCtrl : MonoBehaviour
         if (IsGround) JumpCount = 0;
 
         //穿过平台
-        if (StageCtrl.gameScoreSettings.Down && StandOnPlatform)
+        if (StageCtrl.gameScoreSettings.Down && StandOnPlatform && StageCtrl.gameScoreSettings.Jump)
         {
             BanGravity = false;
             //禁用重力射线，防止中途停止落体
             BanGravityRay = true;
             IsJumping = false;
+            IsGround = false;
             GoThroughPlatform = true;
             StandOnPlatform = false;//取消，防止多次执行
             PlatformTime = Time.timeSinceLevelLoad;
         }
-        if (GoThroughPlatform && Time.timeSinceLevelLoad - PlatformTime >= 0.1f)
+        if (GoThroughPlatform && Time.timeSinceLevelLoad - PlatformTime >= 0.1f)//0.2s大约射线能穿过平台
         {
             //一定时间之后启用重力射线判定，防止穿墙途中停止落体
             GoThroughPlatform = false;
@@ -339,15 +344,13 @@ public abstract class APlayerCtrl : MonoBehaviour
         //重力射线
         if (!BanGravityRay)
         {
-            rays[0] = new Ray2D(GavityRayPos[0].position, Vector2.down * 0.03f);
-            rays[1] = new Ray2D(GavityRayPos[1].position, Vector2.down * 0.03f);
-            RaycastHit2D infoLeft = Physics2D.Raycast(rays[1].origin, rays[1].direction, 0.03f);
-            RaycastHit2D infoRight = Physics2D.Raycast(rays[0].origin, rays[0].direction, 0.03f);
+            rays[0] = new Ray2D(GavityRayPos[0].position, Vector2.down * 0.02f);
+            rays[1] = new Ray2D(GavityRayPos[1].position, Vector2.down * 0.02f);
+            RaycastHit2D infoLeft = Physics2D.Raycast(rays[1].origin, rays[1].direction, 0.02f);
+            RaycastHit2D infoRight = Physics2D.Raycast(rays[0].origin, rays[0].direction, 0.02f);
 
-            /*
-            Debug.DrawRay(rays[0].origin, rays[0].direction, Color.blue);
-            Debug.DrawRay(rays[1].origin, rays[1].direction, Color.blue);
-            */
+            Debug.DrawRay(rays[0].origin, rays[0].direction * 0.02f, Color.blue);
+            Debug.DrawRay(rays[1].origin, rays[1].direction * 0.02f, Color.blue);
 
             //在地上
             if (infoLeft.collider != null)// || infoRight.collider != null)
@@ -435,6 +438,9 @@ public abstract class APlayerCtrl : MonoBehaviour
     {
         BanWalk = !false;
         BanGravity = false;
+        GravityRatio = 1F;
+        MoveSpeedRatio = 1F;
+        BanGravityRay = false;
         BanTurnAround = !false;
         BanJump = !false;
         animator.enabled = !true;
@@ -445,6 +451,9 @@ public abstract class APlayerCtrl : MonoBehaviour
 
         BanWalk = false;
         BanGravity = false;
+        GravityRatio = 1F;
+        MoveSpeedRatio = 1F;
+        BanGravityRay = false;
         BanTurnAround = false;
         BanJump = false;
         BanInput = false;

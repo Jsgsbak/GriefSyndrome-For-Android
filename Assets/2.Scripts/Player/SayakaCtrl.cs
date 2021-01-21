@@ -28,6 +28,7 @@ public class SayakaCtrl : APlayerCtrl
             BanJump = true;
             BanInput = true;
             BanTurnAround = true;
+            StopAttacking = false;
             animator.SetBool("HorizontalXattack", true);
         }
 
@@ -52,6 +53,8 @@ public class SayakaCtrl : APlayerCtrl
         //从通常状态进入到X攻击准备状态
         if(StageCtrl.gameScoreSettings.Horizontal == 0 && StageCtrl.gameScoreSettings.Xattack && !animator.GetBool("OrdinaryXattack") && !animator.GetBool("OrdinaryXattackPrepare") &&!BanWalk && !XordinaryDash && Time.timeSinceLevelLoad -OrdinaryXTimer >= 0.3F)
         {
+            StopAttacking = false;
+            GravityRatio = 0.4f;
             animator.SetBool("OrdinaryXattackPrepare", true);
             XattackAnimationEvent("OrdinaryPrepare");
             BanWalk = true;
@@ -82,7 +85,6 @@ public class SayakaCtrl : APlayerCtrl
     {
         if (StageCtrl.gameScoreSettings.Zattack && !animator.GetBool("OrdinaryXattack") && !animator.GetBool("OrdinaryXattackPrepare") /*|| Time.timeSinceLevelLoad -  AttackTimer[0] <= PressAttackInteral && AttackTimer[0] != 0*/)
         {
-            // StopAttacking = false; 先这样吧，无力了
             GravityRatio = 0.8f;
             animator.SetBool("Zattack", true);
             animator.SetBool("Fall", false);
@@ -207,7 +209,6 @@ public class SayakaCtrl : APlayerCtrl
             IsAttack[1] = true;
             BanTurnAround = true;
             BanWalk = true;
-            GravityRatio = 0.4F;
             BanJump = true;
             animator.SetBool("OrdinaryXattackPrepare", true);
 
@@ -233,6 +234,8 @@ public class SayakaCtrl : APlayerCtrl
             animator.SetBool("OrdinaryXattack", false);
             BanTurnAround = false;
             XordinaryDash = false;
+            StopAttacking = true;
+            IsAttack[1] = false;
             //普通X冲刺完之后间隔0.3s才能再充一次，先保存一下时间
             OrdinaryXTimer = Time.timeSinceLevelLoad;
 
@@ -251,7 +254,9 @@ public class SayakaCtrl : APlayerCtrl
             BanJump = !true;
             BanInput = !true;
             BanTurnAround = !true;
-            animator.SetBool("HorizontalXattack", !true);
+        StopAttacking = true;
+        IsAttack[1] = false;
+        animator.SetBool("HorizontalXattack", !true);
 
             Stiff(0.2f);
 
