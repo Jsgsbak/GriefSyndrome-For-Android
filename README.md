@@ -53,7 +53,7 @@ A:等第一个release
 
 ## 更新日志
 
-###  2021年1月18日（build 0.0.7）
+###  2021年1月21日（build 0.0.7）
 
 1.重新写了控制方法，虽然代码繁琐但是屏幕输入与键盘输入可以分离执行了
 
@@ -68,6 +68,8 @@ A:等第一个release
 6.沙耶加Z和X的攻击一般情况下不能混用了
 
 7.沙耶加Z攻击能正常中断了
+
+8.修复了攻击遁地的[bug](https://github.com/PureAmaya/GriefSyndrome-For-Android/commit/3aeafd00173b324b3a83bd09a97ac6b6cb472e58)
 
 
 <details>
