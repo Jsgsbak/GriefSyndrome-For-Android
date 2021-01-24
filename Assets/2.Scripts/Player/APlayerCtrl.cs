@@ -124,7 +124,8 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// </summary>
     public virtual void InputAgent()
     {
-        #region 输入代理
+        //为了配合安卓/IOS用的RepeatButton，取消单机按钮的判定，如有需要在相应的攻击方法中加限制
+
         //为了防止在不同的帧运行，所以放到了这里
         //屏幕输入的按钮放在了主相机脚本里
         //这个是通常版本，有的角色（比如沙耶加）可能重写了
@@ -132,11 +133,11 @@ public abstract class APlayerCtrl : MonoBehaviour
         {
             StageCtrl.gameScoreSettings.Horizontal = RebindableInput.GetAxis("Horizontal");
             StageCtrl.gameScoreSettings.Jump = RebindableInput.GetKeyDown("Jump");
-            StageCtrl.gameScoreSettings.Down = RebindableInput.GetKeyDown("Down") || RebindableInput.GetKey("Down");
-            StageCtrl.gameScoreSettings.Up = RebindableInput.GetKeyDown("Up") || RebindableInput.GetKey("Up");
+            StageCtrl.gameScoreSettings.Down = /* RebindableInput.GetKeyDown("Down") ||*/ RebindableInput.GetKey("Down");
+            StageCtrl.gameScoreSettings.Up = /*RebindableInput.GetKeyDown("Up")  || */ RebindableInput.GetKey("Up");
             //这个的话只要按下了攻击键/按住攻击键就算
-            StageCtrl.gameScoreSettings.Zattack = RebindableInput.GetKeyDown("Zattack") || RebindableInput.GetKey("Zattack");
-            StageCtrl.gameScoreSettings.Xattack = RebindableInput.GetKey("Xattack") || RebindableInput.GetKeyDown("Xattack");
+            StageCtrl.gameScoreSettings.Zattack =/* RebindableInput.GetKeyDown("Zattack") || */ RebindableInput.GetKey("Zattack");
+            StageCtrl.gameScoreSettings.Xattack = /* || RebindableInput.GetKeyDown("Xattack") */RebindableInput.GetKey("Xattack");
         }
 
         //如果禁用了输入
@@ -150,9 +151,6 @@ public abstract class APlayerCtrl : MonoBehaviour
             StageCtrl.gameScoreSettings.Xattack = false;
 
         }
-        #endregion
-
-        
     }
 
 
@@ -183,8 +181,12 @@ public abstract class APlayerCtrl : MonoBehaviour
             return;
         }
 
-        if (!IsAttack[1] && !IsAttack[2]) { OrdinaryZ(); HorizontalZ(); VerticalZ(); }
+        //前面的!IsAttack[1]是为了防止做这个攻击的时候意外发动其他的攻击
+        if (!IsAttack[1] && !IsAttack[2]) { OrdinaryZ(); HorizontalZ(); VerticalZ();  }
         if (!IsAttack[0] && !IsAttack[2]) { OrdinaryX(); HorizontalX(); UpX(); }
+        BanWalk = IsAttack[0] || IsAttack[1] || IsAttack[2] || StageCtrl.gameScoreSettings.Zattack || StageCtrl.gameScoreSettings.Magia || StageCtrl.gameScoreSettings.Xattack;//在这里统一弄一个，直接在这里禁用移动，不再在各种攻击方法和动画事件中禁用了
+        BanJump = IsAttack[0] || IsAttack[1] || IsAttack[2] || StageCtrl.gameScoreSettings.Zattack || StageCtrl.gameScoreSettings.Magia || StageCtrl.gameScoreSettings.Xattack;//在这里统一弄一个，直接在这里禁用移动，不再在各种攻击方法和动画事件中禁用了
+
         Magia();
         #endregion
 
@@ -416,8 +418,6 @@ public abstract class APlayerCtrl : MonoBehaviour
         {
             return;
         }
-
-
         IsMoving = StageCtrl.gameScoreSettings.Horizontal != 0;
         tr.Translate(StageCtrl.gameScoreSettings.Horizontal * Vector2.right * StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].MoveSpeed * MoveSpeedRatio * Time.deltaTime, Space.World);
 
@@ -456,15 +456,12 @@ public abstract class APlayerCtrl : MonoBehaviour
         //取消以前的僵直（仅仅是换成另一个僵直，并不是取消将至）
         StopCoroutine("PlayerStiff");
 
-        BanWalk = !false;
         BanGravity = IsGround;
         GravityRatio = 1F;
         MoveSpeedRatio = 1F;
         BanGravityRay = false;
-        BanTurnAround = !false;
-        BanJump = !false;
         animator.enabled = !true;
-        BanInput = !false;
+        BanInput = !false;//这一个就够了
         IsStiff = !false;
 
         //启用新的僵直
@@ -481,6 +478,7 @@ public abstract class APlayerCtrl : MonoBehaviour
 
         yield return new WaitForSeconds(d);
 
+        //状态恢复
         BanWalk = false;
         BanGravity = IsGround;
         GravityRatio = 1F;
