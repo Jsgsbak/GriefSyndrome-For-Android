@@ -32,7 +32,9 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// 禁用转身
     /// </summary>
     public bool BanTurnAround = false;
-
+    /// <summary>
+    /// 禁止输入，仅适用于按一下按键动画执行到底且确实不需要外部输入的攻击
+    /// </summary>
     public bool BanInput = false;
 
     /// <summary>
@@ -182,18 +184,16 @@ public abstract class APlayerCtrl : MonoBehaviour
         }
 
         //前面的!IsAttack[1]是为了防止做这个攻击的时候意外发动其他的攻击
+        //这里加限制条件/修改状态要三思，主要是在抽象的方法里更改和限制
         if (!IsAttack[1] && !IsAttack[2]) { OrdinaryZ(); HorizontalZ(); VerticalZ();  }
         if (!IsAttack[0] && !IsAttack[2]) { OrdinaryX(); HorizontalX(); UpX(); }
+
         BanWalk = IsAttack[0] || IsAttack[1] || IsAttack[2] || StageCtrl.gameScoreSettings.Zattack || StageCtrl.gameScoreSettings.Magia || StageCtrl.gameScoreSettings.Xattack;//在这里统一弄一个，直接在这里禁用移动，不再在各种攻击方法和动画事件中禁用了
         BanJump = IsAttack[0] || IsAttack[1] || IsAttack[2] || StageCtrl.gameScoreSettings.Zattack || StageCtrl.gameScoreSettings.Magia || StageCtrl.gameScoreSettings.Xattack;//在这里统一弄一个，直接在这里禁用移动，不再在各种攻击方法和动画事件中禁用了
 
         Magia();
         #endregion
 
-        if(!IsAttack[0] && !IsAttack[1]&& !IsAttack[2] &&!IsJumping && IsGround && !IsMoving)
-        {
-            IdleAnimationEvent(2);
-        }
     }
 
     #region  基础控制器
@@ -241,35 +241,6 @@ public abstract class APlayerCtrl : MonoBehaviour
             animator.SetBool("Fall", false);
             animator.SetBool("Jump", false);
         }*/
-
-    }
-
-    /// <summary>
-    /// 动画机静止动画中，用于初始化的方法
-    /// </summary>
-    /// <param name="index">没用</param>
-    public void IdleAnimationEvent(int index)
-    {
-        //已经满足执行idle动画的条件了，初始化状态机和动画参数减少Bug
-       
-        /*animator.SetBool("ZattackFin", false);
-        animator.SetBool("Walk", false);
-        animator.SetBool("Zattack", false);
-        animator.SetBool("Jump", false);
-        animator.SetBool("Fall", false);
-        animator.SetBool("OrdinaryXattack", false);
-        animator.SetBool("HorizontalXattack", false);
-        */
-        StopAttacking = true;
-        IsMoving = false;
-      if(!GoThroughPlatform)  BanGravity = true;
-        BanJump = false;
-        BanWalk = false;
-        if (!GoThroughPlatform) IsGround = true;
-        BanInput = false;
-        BanTurnAround = false;
-        MoveSpeedRatio = 1f;
-        GravityRatio = 1F;
 
     }
 
@@ -344,6 +315,9 @@ public abstract class APlayerCtrl : MonoBehaviour
     public void CancelJump()
     {
 #if UNITY_EDITOR
+
+        Debug.Log("取消跳跃");
+
         //如果上一帧执行过了
         if (PreviousFrameHasCancelledJump && Time.timeSinceLevelLoad -Timerrrr <= 0.1f)
         {
@@ -455,8 +429,9 @@ public abstract class APlayerCtrl : MonoBehaviour
     {
         //取消以前的僵直（仅仅是换成另一个僵直，并不是取消将至）
         StopCoroutine("PlayerStiff");
-
-        BanGravity = IsGround;
+        //僵直状态
+        StopAttacking = false;
+       BanGravity = IsGround;
         GravityRatio = 1F;
         MoveSpeedRatio = 1F;
         BanGravityRay = false;
@@ -480,6 +455,7 @@ public abstract class APlayerCtrl : MonoBehaviour
 
         //状态恢复
         BanWalk = false;
+        StopAttacking = !false;
         BanGravity = IsGround;
         GravityRatio = 1F;
         MoveSpeedRatio = 1F;

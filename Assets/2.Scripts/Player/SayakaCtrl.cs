@@ -18,64 +18,59 @@ public class SayakaCtrl : APlayerCtrl
     float OrdinaryXTimer = 0f;
 
     /// <summary>
-    /// UP X攻击正在往上走
+    /// UP X攻击状态 -1向下 1向上 0没发动攻击
     /// </summary>
-    bool UpAttackMovingUpward = false;
-
-    public override void HorizontalX()
-    {
-        //特意为这个攻击方法重新写一下输入情况emmm
-        StageCtrl.gameScoreSettings.Xattack = RebindableInput.GetKeyDown("Xattack") && !BanInput;
-
-        if (StageCtrl.gameScoreSettings.Horizontal != 0 && StageCtrl.gameScoreSettings.Xattack && !animator.GetBool("HorizontalXattack") && !BanWalk)
-        {
-
-            CancelJump();//直接中断跳跃并且不恢复
-            BanGravity = true;
-            BanInput = true;
-            BanTurnAround = true;
-            StopAttacking = false;
-            animator.SetBool("HorizontalXattack", true);
-        }
-
-        if (animator.GetBool("HorizontalXattack"))
-        {
-            tr.Translate(Vector3.right * 8f * Time.deltaTime, Space.Self);
-        }
-    }
-
-    public override void HorizontalZ()
-    {
-
-    }
+    int UpAttackMovingUpward = 0;
 
     public override void Magia()
     {
 
     }
 
+    public override void HorizontalX()
+    {
+        //特意为这个攻击方法重新写一下输入情况emmm
+        StageCtrl.gameScoreSettings.Xattack = RebindableInput.GetKeyDown("Xattack") && !BanInput;
+
+        if (StageCtrl.gameScoreSettings.Horizontal != 0 && !IsAttack[1]  && StageCtrl.gameScoreSettings.Xattack && !animator.GetBool("HorizontalXattack") && !BanWalk)
+        {
+
+            CancelJump();//直接中断跳跃并且不恢复
+            BanGravity = true;
+            BanInput = true;
+            IsAttack[1] = true;
+            StopAttacking = false;
+            animator.SetBool("HorizontalXattack", true);
+        }
+
+        if (animator.GetBool("HorizontalXattack"))
+        {
+             BanInput = true; //BUG修复
+
+            //移动
+            tr.Translate(Vector3.right * 8f * Time.deltaTime, Space.Self);
+        }
+    }
+
+
     public override void OrdinaryX()
     {
-        //修复X通常攻击完成后不受控制移动的bug
-        XordinaryDash = animator.GetBool("OrdinaryXattack");
-
         //从通常状态进入到X攻击准备状态
-        if (StageCtrl.gameScoreSettings.Horizontal == 0 && StageCtrl.gameScoreSettings.Xattack && !animator.GetBool("OrdinaryXattack") && !animator.GetBool("OrdinaryXattackPrepare") &&!BanWalk && !XordinaryDash && Time.timeSinceLevelLoad -OrdinaryXTimer >= 0.3F)
+        if ( StageCtrl.gameScoreSettings.Horizontal == 0 &&!IsAttack[1] && !StageCtrl.gameScoreSettings.Up && StageCtrl.gameScoreSettings.Xattack && !BanWalk && !XordinaryDash && Time.timeSinceLevelLoad -OrdinaryXTimer >= 0.3F)
         {
             //反正这个只执行一次
 
             animator.SetBool("OrdinaryXattackPrepare", true);
             CancelJump();//直接中断跳跃并且不恢复
             StopAttacking = false;
-            GravityRatio = 0.4f;
             IsAttack[1] = true;
             BanWalk = true;
             BanTurnAround = true;
 
             //保存一下时间，用于得到蓄力的效果
             OrdinaryXTimer = Time.timeSinceLevelLoad;
-          
 
+            GravityRatio = 0.3f;
         }
         //松开X键，但仍然处于X攻击状态，所以能往前冲
         else if (!StageCtrl.gameScoreSettings.Xattack && IsAttack[1] &&animator.GetBool("OrdinaryXattackPrepare") && !XordinaryDash)
@@ -83,7 +78,7 @@ public class SayakaCtrl : APlayerCtrl
             animator.SetBool("OrdinaryXattackPrepare",false);
             animator.SetBool("OrdinaryXattack", true);
             XordinaryDash = true;
-            GravityRatio = 0.4f;//修复bug
+            GravityRatio = 0.3f;//修复bug
 
 
         }
@@ -105,7 +100,22 @@ public class SayakaCtrl : APlayerCtrl
         //特意为这个攻击方法重新写一下输入情况emmm
         StageCtrl.gameScoreSettings.Xattack = RebindableInput.GetKeyDown("Xattack") && !BanInput;
 
-        if (StageCtrl.gameScoreSettings.Xattack && StageCtrl.gameScoreSettings.Up)
+        if (StageCtrl.gameScoreSettings.Horizontal == 0 && !IsAttack[1] && StageCtrl.gameScoreSettings.Xattack && StageCtrl.gameScoreSettings.Up && !IsAttack[1])
+        {
+            CancelJump();//直接中断跳跃并且不恢复
+            IsAttack[1] = true;
+            animator.SetBool("DownXattack-MovingUpward", true);
+            BanInput = true;
+            BanGravity = true;
+            BanGravityRay = true;
+            UpAttackMovingUpward = 1;
+        }
+
+        if (UpAttackMovingUpward == 1)
+        {
+           // tr.Translate(Vector3.up * 20f * Time.deltaTime, Space.World);
+        }
+        else if (UpAttackMovingUpward == -1)
         {
 
         }
@@ -116,7 +126,7 @@ public class SayakaCtrl : APlayerCtrl
         if (StageCtrl.gameScoreSettings.Zattack && !animator.GetBool("OrdinaryXattack") && !animator.GetBool("OrdinaryXattackPrepare") /*|| Time.timeSinceLevelLoad -  AttackTimer[0] <= PressAttackInteral && AttackTimer[0] != 0*/)
         {
             if (!animator.GetBool("Zattack") && !animator.GetBool("ZattackFin")) CancelJump();//直接中断跳跃并且不恢复
-            GravityRatio = 0.8f;
+            GravityRatio = 0.7f;
             animator.SetBool("Zattack", true);
             animator.SetBool("Fall", false);
              BanGravity = IsGround;//修复奇怪的bug
@@ -214,25 +224,36 @@ public class SayakaCtrl : APlayerCtrl
 
     public override void XattackAnimationEvent(string AnimationName)
     {
-        //结束
+        switch (AnimationName)
+        {
+            case "Prepare":
+                GravityRatio = 0.3f;//跳跃过程中通常X攻击不会修改GravityRatio的bug我已经反感了，所以这样子做
+                break;
 
-            GravityRatio = 1F;
-            animator.SetBool("OrdinaryXattack", false);
-            BanTurnAround = false;
-            StopAttacking = true;
-            IsAttack[1] = false;
-            //普通X冲刺完之后间隔0.3s才能再充一次，先保存一下时间
-            OrdinaryXTimer = Time.timeSinceLevelLoad;
-            //僵直
-            Stiff(0.1f);
+            default:
+                //结束
+
+                GravityRatio = 1F;
+                animator.SetBool("OrdinaryXattack", false);
+                BanTurnAround = false;
+                XordinaryDash = false;
+                StopAttacking = true;
+                IsAttack[1] = false;
+                //普通X冲刺完之后间隔0.3s才能再充一次，先保存一下时间
+                OrdinaryXTimer = Time.timeSinceLevelLoad;
+                //僵直
+                Stiff(0.1f);
+                break;
+        }
+
+
+
     }
 
     public override void HorizontalXattackAnimationEvent(string AnimationName)
     {
         //结束
-            BanGravity = !true;
-            BanInput = !true;
-            BanTurnAround = !true;
+        BanInput = true;
         StopAttacking = true;
         IsAttack[1] = false;
         animator.SetBool("HorizontalXattack", !true);
@@ -246,10 +267,6 @@ public class SayakaCtrl : APlayerCtrl
         switch (AnimationName)
         {
             case "Start":
-                CancelJump();
-                BanGravity = true;
-                BanInput = true;
-                BanTurnAround = true;
                 break;
 
             case "Doing-Up":
@@ -287,6 +304,11 @@ public class SayakaCtrl : APlayerCtrl
     {
 
     }
+    public override void HorizontalZ()
+    {
+
+    }
+
 
 }
 
