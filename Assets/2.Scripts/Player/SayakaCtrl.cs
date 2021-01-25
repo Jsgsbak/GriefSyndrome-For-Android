@@ -18,9 +18,10 @@ public class SayakaCtrl : APlayerCtrl
     float OrdinaryXTimer = 0f;
 
     /// <summary>
-    /// UP X攻击状态 -1向下 1向上 0没发动攻击
+    /// Down X攻击状态 -1向下 1向上 0没发动攻击 2反弹上升段
     /// </summary>
-    int UpAttackMovingUpward = 0;
+    int DownAttackMovingUpward = 0;
+
 
     public override void Magia()
     {
@@ -56,7 +57,7 @@ public class SayakaCtrl : APlayerCtrl
     public override void OrdinaryX()
     {
         //从通常状态进入到X攻击准备状态
-        if ( StageCtrl.gameScoreSettings.Horizontal == 0 &&!IsAttack[1] && !StageCtrl.gameScoreSettings.Up && StageCtrl.gameScoreSettings.Xattack && !BanWalk && !XordinaryDash && Time.timeSinceLevelLoad -OrdinaryXTimer >= 0.3F)
+        if ( StageCtrl.gameScoreSettings.Horizontal == 0 &&!IsAttack[1] && !StageCtrl.gameScoreSettings.Down && StageCtrl.gameScoreSettings.Xattack && !BanWalk && !XordinaryDash && Time.timeSinceLevelLoad -OrdinaryXTimer >= 0.3F)
         {
             //反正这个只执行一次
 
@@ -95,30 +96,48 @@ public class SayakaCtrl : APlayerCtrl
             tr.Translate(Vector3.right *(8F  -OrdinaryXTimer) *Time.deltaTime, Space.Self);
         }
     }
-    public override void UpX()
+    public override void DownX()
     {
         //特意为这个攻击方法重新写一下输入情况emmm
         StageCtrl.gameScoreSettings.Xattack = RebindableInput.GetKeyDown("Xattack") && !BanInput;
 
-        if (StageCtrl.gameScoreSettings.Horizontal == 0 && !IsAttack[1] && StageCtrl.gameScoreSettings.Xattack && StageCtrl.gameScoreSettings.Up && !IsAttack[1])
+        if (StageCtrl.gameScoreSettings.Horizontal == 0 && !IsAttack[1] && StageCtrl.gameScoreSettings.Xattack && StageCtrl.gameScoreSettings.Down && !IsAttack[1])
         {
             CancelJump();//直接中断跳跃并且不恢复
             IsAttack[1] = true;
             animator.SetBool("DownXattack-MovingUpward", true);
-            BanInput = true;
+            BanInput = true;//在这一套攻击里，就靠取消僵直来把这个设置为false了
             BanGravity = true;
             BanGravityRay = true;
-            UpAttackMovingUpward = 1;
+            DownAttackMovingUpward = 1;
         }
 
-        if (UpAttackMovingUpward == 1)
+        //上升
+        if (DownAttackMovingUpward == 1)
         {
-           // tr.Translate(Vector3.up * 20f * Time.deltaTime, Space.World);
+            Move(9f, true, Vector2.one, Vector2.up);
         }
-        else if (UpAttackMovingUpward == -1)
+        //下降
+        else if (DownAttackMovingUpward == -1)
         {
+            Move(9f, true, Vector2.one, Vector2.right);
+            
+            //碰到地了（仅执行一次）
+            if (IsGround && !animator.GetBool("DownXattack-Done") )
+            {
+                //反弹
+                StartCoroutine("XattackBound");
 
+                animator.SetBool("DownXattack-MovingDownward", false);
+                animator.SetBool("DownXattack-Done", true);
+                DownAttackMovingUpward = 2;
+            }
         }
+
+    }
+
+    public override void UpX()
+    {
     }
 
     public override void OrdinaryZ()
@@ -262,17 +281,20 @@ public class SayakaCtrl : APlayerCtrl
 
     }
 
-    public override void UpXattackAnimationEvent(string AnimationName)
+    public override void DownXattackAnimationEvent(string AnimationName)
     {
         switch (AnimationName)
         {
-            case "Start":
+            case "PeakArrival":
+                animator.SetBool("DownXattack-MovingDownward", true); 
+                animator.SetBool("DownXattack-MovingUpward", !true);
                 break;
 
-            case "Doing-Up":
-                break;
-
+                //这个在动画机里放在最后，为了
             case "Doing-Down":
+                BanGravity = false;
+                BanGravityRay = false;
+                DownAttackMovingUpward = -1;
                 break;
 
             case "Done":
@@ -281,6 +303,9 @@ public class SayakaCtrl : APlayerCtrl
         }
     }
 
+    public override void UpXattackAnimationEvent(string AnimationName)
+    {
+    }
 
     /// <summary>
     /// 这个用于所有Z动画之中（仅限沙耶加），为了那种一个动画前进一次的效果
@@ -295,8 +320,18 @@ public class SayakaCtrl : APlayerCtrl
     }
 
 
+    /// <summary>
+    /// DownX攻击触地之后的反弹
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator XattackBound()
+    {
+        BanGravity = true;
+        BanGravityRay = true;
+        Move(2f, true, Vector2.one, new Vector2(1,1));
 
 
+    }
 
 
 

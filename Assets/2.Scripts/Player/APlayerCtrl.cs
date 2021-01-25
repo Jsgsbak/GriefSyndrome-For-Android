@@ -6,7 +6,7 @@ using MEC;
 using System;
 
 [DisallowMultipleComponent]
-public abstract class APlayerCtrl : MonoBehaviour
+public abstract class APlayerCtrl : MonoBehaviour, IMove
 {
     #region  基础属性
     [Header("基础属性")]
@@ -14,6 +14,10 @@ public abstract class APlayerCtrl : MonoBehaviour
     public int MahouShoujoId = 0;
     //为了便于调试先放在这里，以后应当移动到GSS中
     public float JumpSpeed = 15f;
+    /// <summary>
+    /// 玩家所在斜坡的单位圆坐标（角度/三角函数那些）
+    /// </summary>
+    public Vector2 PlayerSlope = Vector2.right;
 
     [Space]
     //为了方便调试，这些Ban和Is先暂时放在这里
@@ -69,7 +73,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// 向右看吗
     /// </summary>
     [HideInInspector] public bool DoLookRight = true;
-   public  int JumpCount = 0;
+    public int JumpCount = 0;
     /// <summary>
     /// 跳跃间隔计时器
     /// </summary>
@@ -77,11 +81,11 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// <summary>
     /// 正在跳跃（专指上升阶段）
     /// </summary>
-   [HideInInspector]public   bool IsJumping = false;
+    [HideInInspector] public bool IsJumping = false;
     /// <summary>
     /// 站在平台上
     /// </summary>
-     public bool StandOnPlatform = false;
+    public bool StandOnPlatform = false;
     /// <summary>
     /// 正在穿过平台
     /// </summary>
@@ -98,7 +102,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// <summary>
     /// 正在攻击，防止意外切换到其他攻击状态 0 z 1 x 2 Magia
     /// </summary>
-      public bool[] IsAttack = new bool[3];
+    public bool[] IsAttack = new bool[3];
     /// <summary>
     /// 能否可以/已经停止攻击（中断攻击）
     /// </summary>
@@ -185,8 +189,8 @@ public abstract class APlayerCtrl : MonoBehaviour
 
         //前面的!IsAttack[1]是为了防止做这个攻击的时候意外发动其他的攻击
         //这里加限制条件/修改状态要三思，主要是在抽象的方法里更改和限制
-        if (!IsAttack[1] && !IsAttack[2]) { OrdinaryZ(); HorizontalZ(); VerticalZ();  }
-        if (!IsAttack[0] && !IsAttack[2]) { OrdinaryX(); HorizontalX(); UpX(); }
+        if (!IsAttack[1] && !IsAttack[2]) { OrdinaryZ(); HorizontalZ(); VerticalZ(); }
+        if (!IsAttack[0] && !IsAttack[2]) { OrdinaryX(); HorizontalX(); UpX(); DownX(); }
 
         BanWalk = IsAttack[0] || IsAttack[1] || IsAttack[2] || StageCtrl.gameScoreSettings.Zattack || StageCtrl.gameScoreSettings.Magia || StageCtrl.gameScoreSettings.Xattack;//在这里统一弄一个，直接在这里禁用移动，不再在各种攻击方法和动画事件中禁用了
         BanJump = IsAttack[0] || IsAttack[1] || IsAttack[2] || StageCtrl.gameScoreSettings.Zattack || StageCtrl.gameScoreSettings.Magia || StageCtrl.gameScoreSettings.Xattack;//在这里统一弄一个，直接在这里禁用移动，不再在各种攻击方法和动画事件中禁用了
@@ -319,18 +323,18 @@ public abstract class APlayerCtrl : MonoBehaviour
         Debug.Log("取消跳跃");
 
         //如果上一帧执行过了
-        if (PreviousFrameHasCancelledJump && Time.timeSinceLevelLoad -Timerrrr <= 0.1f)
+        if (PreviousFrameHasCancelledJump && Time.timeSinceLevelLoad - Timerrrr <= 0.1f)
         {
             Debug.LogError("CancelJump多次重复执行，你也不怕出bug");
         }
-       else if (PreviousFrameHasCancelledJump && Time.timeSinceLevelLoad - Timerrrr > 0.1f)
+        else if (PreviousFrameHasCancelledJump && Time.timeSinceLevelLoad - Timerrrr > 0.1f)
         {
             PreviousFrameHasCancelledJump = false;
         }
-        else if(!PreviousFrameHasCancelledJump)
+        else if (!PreviousFrameHasCancelledJump)
         {
             Timerrrr = Time.timeSinceLevelLoad;
-                PreviousFrameHasCancelledJump = true;
+            PreviousFrameHasCancelledJump = true;
         }
 #endif
 
@@ -338,12 +342,13 @@ public abstract class APlayerCtrl : MonoBehaviour
         {
             return;
         }
-            //既然要取消，那肯定是跳起来了
+        //既然要取消，那肯定是跳起来了
         animator.SetBool("Jump", false);
         BanGravity = false;
         IsGround = false;
         IsJumping = false;
     }
+
     /// <summary>
     /// 射线控制器
     /// </summary>
@@ -383,17 +388,20 @@ public abstract class APlayerCtrl : MonoBehaviour
 
         }
     }
+
     /// <summary>
     /// 普通的行走用
     /// </summary>
-    public virtual void Walk()
+    void Walk()
     {
         if (BanWalk)
         {
             return;
         }
+
         IsMoving = StageCtrl.gameScoreSettings.Horizontal != 0;
-        tr.Translate(StageCtrl.gameScoreSettings.Horizontal * Vector2.right * StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].MoveSpeed * MoveSpeedRatio * Time.deltaTime, Space.World);
+        Move(StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].MoveSpeed, true, PlayerSlope.normalized, Vector2.right * StageCtrl.gameScoreSettings.Horizontal, Space.World);
+        // tr.Translate(StageCtrl.gameScoreSettings.Horizontal * Vector2.right * StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].MoveSpeed * MoveSpeedRatio * Time.deltaTime, Space.World);
 
 
         /*MD我真服了，这个Bug令人恶心
@@ -405,6 +413,21 @@ public abstract class APlayerCtrl : MonoBehaviour
         {
             tr.Translate(RebindableInput.GetAxis("Horizontal") * Vector2.right * StageCtrl.gameScoreSettings.mahouShoujos[id].MoveSpeed * Time.deltaTime);
         }*/
+    }
+
+    public void Move(float Speed, bool UseTimeDelta, Vector2 Slope, Vector2 Direction, Space space = Space.Self)
+    {
+
+        //缺少：PlayerSlope计算（判断），左右版边限制移动
+
+        if (UseTimeDelta)
+        {
+            tr.Translate(Direction * Slope * Speed * MoveSpeedRatio * Time.deltaTime, space);
+        }
+        else
+        {
+            tr.Translate(Direction * Slope * Speed * MoveSpeedRatio, space);
+        }
     }
 
     /// <summary>
@@ -425,13 +448,13 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// 设置僵直
     /// </summary>
     /// <param name="Time">僵直事件</param>
-    public void Stiff(float Time)
+    public virtual void Stiff(float Time)
     {
         //取消以前的僵直（仅仅是换成另一个僵直，并不是取消将至）
         StopCoroutine("PlayerStiff");
         //僵直状态
         StopAttacking = false;
-       BanGravity = IsGround;
+        BanGravity = IsGround;
         GravityRatio = 1F;
         MoveSpeedRatio = 1F;
         BanGravityRay = false;
@@ -448,7 +471,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// </summary>
     /// <param name="d"></param>
     /// <returns></returns>
-    IEnumerator PlayerStiff(float d)
+   public virtual IEnumerator PlayerStiff(float d)
     {
 
         yield return new WaitForSeconds(d);
@@ -481,6 +504,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     public abstract void OrdinaryX();
     public abstract void HorizontalX();
     public abstract void UpX();
+    public abstract void DownX();
 
     public abstract void Magia();
 
@@ -506,6 +530,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// </summary>
     /// <param name="AnimationName"></param>
     public abstract void UpXattackAnimationEvent(string AnimationName);
+    public abstract void DownXattackAnimationEvent(string AnimationName);
 
     #endregion
 }
