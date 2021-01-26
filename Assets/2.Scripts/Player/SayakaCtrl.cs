@@ -20,8 +20,12 @@ public class SayakaCtrl : APlayerCtrl
     /// <summary>
     /// Down X攻击状态 -1向下 1向上 0没发动攻击 2反弹上升段
     /// </summary>
-    int DownAttackMovingUpward = 0;
-
+     int DownAttackMovingUpward = 0;
+    /// <summary>
+    /// Up X攻击移动
+    /// </summary>
+    bool UpAttackMove = false;
+  public  int UpAttackCount = 0;
 
     public override void Magia()
     {
@@ -57,7 +61,7 @@ public class SayakaCtrl : APlayerCtrl
     public override void OrdinaryX()
     {
         //从通常状态进入到X攻击准备状态
-        if ( StageCtrl.gameScoreSettings.Horizontal == 0 &&!IsAttack[1] && !StageCtrl.gameScoreSettings.Down && StageCtrl.gameScoreSettings.Xattack && !BanWalk && !XordinaryDash && Time.timeSinceLevelLoad -OrdinaryXTimer >= 0.3F)
+        if ( StageCtrl.gameScoreSettings.Horizontal == 0 &&!IsAttack[1] && !StageCtrl.gameScoreSettings.Up && !StageCtrl.gameScoreSettings.Down && StageCtrl.gameScoreSettings.Xattack && !BanWalk && !XordinaryDash && Time.timeSinceLevelLoad -OrdinaryXTimer >= 0.3F)
         {
             //反正这个只执行一次
 
@@ -98,10 +102,7 @@ public class SayakaCtrl : APlayerCtrl
     }
     public override void DownX()
     {
-        //特意为这个攻击方法重新写一下输入情况emmm
-        StageCtrl.gameScoreSettings.Xattack = RebindableInput.GetKeyDown("Xattack") && !BanInput;
-
-        if (StageCtrl.gameScoreSettings.Horizontal == 0 && !IsAttack[1] && StageCtrl.gameScoreSettings.Xattack && StageCtrl.gameScoreSettings.Down && !IsAttack[1])
+        if (StageCtrl.gameScoreSettings.Horizontal == 0 && !IsAttack[1] && StageCtrl.gameScoreSettings.Xattack && StageCtrl.gameScoreSettings.Down )
         {
             CancelJump();//直接中断跳跃并且不恢复
             IsAttack[1] = true;
@@ -120,7 +121,7 @@ public class SayakaCtrl : APlayerCtrl
         //下降
         else if (DownAttackMovingUpward == -1)
         {
-            Move(9f, true, Vector2.one, Vector2.right);
+            Move(13f, true, Vector2.one, Vector2.right);
             
             //碰到地了（仅执行一次）
             if (IsGround && !animator.GetBool("DownXattack-Done") )
@@ -133,11 +134,38 @@ public class SayakaCtrl : APlayerCtrl
                 DownAttackMovingUpward = 2;
             }
         }
+        else if(DownAttackMovingUpward == 2)
+        {
+            Move(5f, true, Vector2.one, new Vector2(-1,1));
+        }
 
     }
 
     public override void UpX()
     {
+        if (IsGround) { UpAttackCount = 0;}
+
+        //UpAttackCount < 1 受上一条IF干扰，第一次起跳不会增加UpAttackCount 
+        if (StageCtrl.gameScoreSettings.Horizontal == 0  && !animator.GetBool("UpXattack") && UpAttackCount < 1 && !IsAttack[1] && StageCtrl.gameScoreSettings.Xattack && StageCtrl.gameScoreSettings.Up)
+        {
+            Debug.Log("向上攻击");
+
+            UpAttackCount++;
+            UpAttackMove = true;
+            IsAttack[1] = true;
+            BanWalk = true;
+            BanTurnAround = true;
+            BanGravity = true;
+            BanGravityRay = true;
+            BanJump = true;
+
+            animator.SetBool("UpXattack", true);
+        }
+
+        if (UpAttackMove)
+        {
+            Move(5f, true, Vector2.one, new Vector2(1, 3));
+        }
     }
 
     public override void OrdinaryZ()
@@ -154,6 +182,9 @@ public class SayakaCtrl : APlayerCtrl
         //
     }
 
+
+
+    //Haruhi Suzumiya
 
     /// <summary>
     /// 攻击用动画逻辑
@@ -285,26 +316,45 @@ public class SayakaCtrl : APlayerCtrl
     {
         switch (AnimationName)
         {
+            //到达顶峰，停顿一下
             case "PeakArrival":
-                animator.SetBool("DownXattack-MovingDownward", true); 
-                animator.SetBool("DownXattack-MovingUpward", !true);
+                DownAttackMovingUpward = 0;
                 break;
 
-                //这个在动画机里放在最后，为了
+                //蹬了一脚，准备下移
+            case "StartMovingDownward":
+                animator.SetBool("DownXattack-MovingDownward", true);
+                animator.SetBool("DownXattack-MovingUpward", false);
+                break;
+
+                //下移
             case "Doing-Down":
+                GravityRatio = 1.5F;
                 BanGravity = false;
                 BanGravityRay = false;
                 DownAttackMovingUpward = -1;
                 break;
 
-            case "Done":
-
+                //着陆
+            case "Land":
+                StartCoroutine(XattackBound());
                 break;
         }
     }
 
+    /// <summary>
+    /// 上X攻击结束
+    /// </summary>
+    /// <param name="AnimationName"></param>
     public override void UpXattackAnimationEvent(string AnimationName)
     {
+        UpAttackMove = false;
+        IsAttack[1] = false;
+        BanGravity = true;
+        BanGravityRay = true;
+        Stiff(0.1f);
+        animator.SetBool("UpXattack", false);
+
     }
 
     /// <summary>
@@ -328,9 +378,17 @@ public class SayakaCtrl : APlayerCtrl
     {
         BanGravity = true;
         BanGravityRay = true;
-        Move(2f, true, Vector2.one, new Vector2(1,1));
-
-
+        DownAttackMovingUpward = 2;
+      //  IsStiff = true;这个也不能要，不然不会触发反弹效果
+        yield return new WaitForSeconds(0.1f);
+        DownAttackMovingUpward = 0;
+        animator.SetBool("DownXattack-Done", false);
+        //   Stiff(0.1f); 自带僵直效果了
+      //  IsStiff = false;
+        BanGravity = false;
+        BanGravityRay = false;
+        BanInput = false;
+       IsAttack[1] = false;
     }
 
 

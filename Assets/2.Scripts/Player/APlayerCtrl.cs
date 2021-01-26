@@ -169,6 +169,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         {
             return;
         }
+
         //还是以最高优先级执行输入代理
         InputAgent();
 
@@ -222,30 +223,6 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         animator.SetBool("Walk", StageCtrl.gameScoreSettings.Horizontal != 0);
         animator.SetBool("Jump", IsJumping);
         animator.SetBool("Fall", !IsGround && !BanGravity && !IsJumping);
-
-
-        /*旧版本保留备份。现在这个方法仅仅控制启用该动画的布尔值，其他的状态机修改、其他动画的禁用移交给动画Event
-        //最低优先级
-        animator.SetBool("Walk", StageCtrl.gameScoreSettings.Horizontal != 0);
-        //跳跃动作（专指上升阶段）
-        if (IsJumping)
-        {
-            animator.SetBool("Jump", true);
-            animator.SetBool("Fall", false);
-        }
-        //下落动作
-        if (!IsGround && !BanGravity && !IsJumping)
-        {
-            animator.SetBool("Jump", false);
-            animator.SetBool("Fall",true);
-        }
-        //地面待机
-        if(IsGround && BanGravity && !IsJumping)
-        {
-            animator.SetBool("Fall", false);
-            animator.SetBool("Jump", false);
-        }*/
-
     }
 
     /// <summary>
