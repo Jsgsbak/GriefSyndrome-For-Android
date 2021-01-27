@@ -352,7 +352,14 @@ public class SayakaCtrl : APlayerCtrl
         IsAttack[1] = false;
         BanGravity = true;
         BanGravityRay = true;
-        Stiff(0.1f);
+        if(UpAttackCount == 0)
+        {
+            Stiff(0.1f);
+        }
+        else
+        {
+            Stiff(0.5f);
+        }
         animator.SetBool("UpXattack", false);
 
     }
