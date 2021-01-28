@@ -25,11 +25,28 @@ public class SayakaCtrl : APlayerCtrl
     /// Up X攻击移动
     /// </summary>
     bool UpAttackMove = false;
-  public  int UpAttackCount = 0;
+    int UpAttackCount = 0;
+    bool MagiaDash = false;
 
     public override void Magia()
     {
+        if(!IsAttack[2] && StageCtrl.gameScoreSettings.Magia)
+        {
+            IsAttack[2] = true;
+            CancelJump();
+            BanWalk = true;
+            BanTurnAround = true;
+            BanGravity = true;
+            BanGravityRay = true;
 
+            animator.SetBool("Magia", true);
+        }
+
+        //冲刺
+        if (MagiaDash)
+        {
+
+        }
     }
 
     public override void HorizontalX()
@@ -179,7 +196,6 @@ public class SayakaCtrl : APlayerCtrl
              BanGravity = IsGround;//修复奇怪的bug
         }
     
-        //
     }
 
 
@@ -362,6 +378,14 @@ public class SayakaCtrl : APlayerCtrl
         }
         animator.SetBool("UpXattack", false);
 
+    }
+
+    public override void MagiaAnimationEvent(string AnimationName)
+    {
+        switch (AnimationName)
+        {
+
+        }
     }
 
     /// <summary>

@@ -509,6 +509,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     public abstract void UpXattackAnimationEvent(string AnimationName);
     public abstract void DownXattackAnimationEvent(string AnimationName);
 
+    public abstract void MagiaAnimationEvent(string AnimationName);
     #endregion
 }
 
