@@ -125,6 +125,11 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         #endregion
     }
 
+
+
+
+
+
     /// <summary>
     /// 输入代理
     /// </summary>
@@ -139,6 +144,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         {
             StageCtrl.gameScoreSettings.Horizontal = RebindableInput.GetAxis("Horizontal");
             StageCtrl.gameScoreSettings.Jump = RebindableInput.GetKeyDown("Jump");
+            StageCtrl.gameScoreSettings.Magia = RebindableInput.GetKey("Magia");
             StageCtrl.gameScoreSettings.Down = /* RebindableInput.GetKeyDown("Down") ||*/ RebindableInput.GetKey("Down");
             StageCtrl.gameScoreSettings.Up = /*RebindableInput.GetKeyDown("Up")  || */ RebindableInput.GetKey("Up");
             //这个的话只要按下了攻击键/按住攻击键就算
@@ -192,11 +198,11 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         //这里加限制条件/修改状态要三思，主要是在抽象的方法里更改和限制
         if (!IsAttack[1] && !IsAttack[2]) { OrdinaryZ(); HorizontalZ(); VerticalZ(); }
         if (!IsAttack[0] && !IsAttack[2]) { OrdinaryX(); HorizontalX(); UpX(); DownX(); }
-
+        if (!IsAttack[0] && !IsAttack[1]) { Magia(); }
+      
         BanWalk = IsAttack[0] || IsAttack[1] || IsAttack[2] || StageCtrl.gameScoreSettings.Zattack || StageCtrl.gameScoreSettings.Magia || StageCtrl.gameScoreSettings.Xattack;//在这里统一弄一个，直接在这里禁用移动，不再在各种攻击方法和动画事件中禁用了
         BanJump = IsAttack[0] || IsAttack[1] || IsAttack[2] || StageCtrl.gameScoreSettings.Zattack || StageCtrl.gameScoreSettings.Magia || StageCtrl.gameScoreSettings.Xattack;//在这里统一弄一个，直接在这里禁用移动，不再在各种攻击方法和动画事件中禁用了
 
-        Magia();
         #endregion
 
     }

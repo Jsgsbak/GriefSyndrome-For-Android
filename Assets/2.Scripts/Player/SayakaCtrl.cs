@@ -27,9 +27,24 @@ public class SayakaCtrl : APlayerCtrl
     bool UpAttackMove = false;
     int UpAttackCount = 0;
     bool MagiaDash = false;
+    /// <summary>
+    /// 魔法按了X键
+    /// </summary>
+    float MagiaDashSpeedRatio = 1f;
 
     public override void Magia()
-    {
+    {     
+        //特意为这个攻击方法重新写一下输入情况emmm
+        StageCtrl.gameScoreSettings.Magia = RebindableInput.GetKeyDown("Magia") && !BanInput;
+
+        if (MagiaDashSpeedRatio == 1 && StageCtrl.gameScoreSettings.Xattack &&IsAttack[2])
+        {
+            MagiaDashSpeedRatio = 1.2f;
+            //重新播放
+            animator.Play("MagiaWithAttack", 0, 0f);
+        }
+
+
         if(!IsAttack[2] && StageCtrl.gameScoreSettings.Magia)
         {
             IsAttack[2] = true;
@@ -45,7 +60,7 @@ public class SayakaCtrl : APlayerCtrl
         //冲刺
         if (MagiaDash)
         {
-
+            Move(8f * MagiaDashSpeedRatio, true, PlayerSlope, Vector3.right);
         }
     }
 
@@ -70,7 +85,7 @@ public class SayakaCtrl : APlayerCtrl
              BanInput = true; //BUG修复
 
             //移动
-            tr.Translate(Vector3.right * 8f * Time.deltaTime, Space.Self);
+            Move(8f, true, PlayerSlope, Vector3.right);
         }
     }
 
@@ -384,7 +399,21 @@ public class SayakaCtrl : APlayerCtrl
     {
         switch (AnimationName)
         {
+            case "Finish":
+                MagiaDash = false;
+                IsAttack[2] = false;
+                MagiaDashSpeedRatio = 1f;
+                Stiff(0.1f);
 
+                animator.Play("SayakaMagia", 0, 0F);
+
+                animator.SetBool("Magia", false);
+
+                break;
+
+            case "Dash":
+                MagiaDash = true;
+                break;
         }
     }
 
