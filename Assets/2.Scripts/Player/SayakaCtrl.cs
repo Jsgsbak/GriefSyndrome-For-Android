@@ -1,9 +1,4 @@
-﻿using MEC;
-using PureAmaya.General;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using TMPro;
+﻿using System.Collections;
 using UnityEngine;
 
 //先暂时不继承
@@ -32,14 +27,20 @@ public class SayakaCtrl : APlayerCtrl
     /// </summary>
     float MagiaDashSpeedRatio = 1f;
 
+    public override void VariableInitialization()
+    {
+        base.VariableInitialization();
+
+    }
+
     public override void Magia()
     {     
         //特意为这个攻击方法重新写一下输入情况emmm
         StageCtrl.gameScoreSettings.Magia = RebindableInput.GetKeyDown("Magia") && !BanInput;
 
-        if (MagiaDashSpeedRatio == 1 && StageCtrl.gameScoreSettings.Xattack &&IsAttack[2])
+        if (MagiaDashSpeedRatio == 1f && StageCtrl.gameScoreSettings.Xattack &&IsAttack[2])
         {
-            MagiaDashSpeedRatio = 1.2f;
+            MagiaDashSpeedRatio = 1.5f;
             //重新播放
             animator.Play("MagiaWithAttack", 0, 0f);
         }

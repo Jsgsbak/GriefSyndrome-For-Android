@@ -10,7 +10,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 {
     #region  基础属性
     [Header("基础属性")]
-
+    public int PlayerId = 0;
     public int MahouShoujoId = 0;
     //为了便于调试先放在这里，以后应当移动到GSS中
     public float JumpSpeed = 15f;
@@ -40,7 +40,10 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// 禁止输入，仅适用于按一下按键动画执行到底且确实不需要外部输入的攻击
     /// </summary>
     public bool BanInput = false;
-
+    /// <summary>
+    /// 无敌状态
+    /// </summary>
+    public bool IsInvincible = false;
     /// <summary>
     /// 重力射线位置
     /// </summary>
@@ -116,6 +119,8 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         #endregion
+        //先这样写,多人游戏的话
+        PlayerId = 0;
     }
 
     private void Start()
@@ -516,6 +521,82 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     public abstract void DownXattackAnimationEvent(string AnimationName);
 
     public abstract void MagiaAnimationEvent(string AnimationName);
+    #endregion
+
+
+    #region 受伤，死亡与无敌
+    /// <summary>
+    /// 受伤（调试版）
+    /// </summary>
+    [ContextMenu("Hurt")]
+    public void GetHurt()
+    {
+        //无敌不执行后续操作
+        if (IsInvincible)
+        {
+            return;
+        }
+
+        //此处仅用于调试
+        int damage = 1;
+
+        StageCtrl.gameScoreSettings.VitInGame[PlayerId] = StageCtrl.gameScoreSettings.VitInGame[PlayerId] - damage;
+        animator.StopPlayback();
+        animator.SetBool("GetHurt", true);
+        BanInput = true;
+        //无敌状态
+        StartCoroutine("Invincible", 1.5f);
+
+
+        if (StageCtrl.gameScoreSettings.VitInGame[PlayerId] > damage)
+        {
+            StageCtrl.gameScoreSettings.VitInGame[PlayerId] = StageCtrl.gameScoreSettings.VitInGame[PlayerId] - damage;
+            animator.SetBool("GetHurt", true);
+            BanInput = true;
+        }
+        else
+        {
+            //死亡
+        }
+    }
+    /// <summary>
+    /// 受伤动画结束后的事件
+    /// </summary>
+    public void HurtAnimationEndEvent()
+    {
+        BanInput = false;
+        animator.SetBool("GetHurt", false);
+    }
+
+    /// <summary>
+    /// 无敌状态调用
+    /// </summary>
+    /// <param name="time"></param>
+    /// <returns></returns>
+      IEnumerator Invincible(float time)
+    {
+        IsInvincible = true;
+
+        for (int i = 0; i < 15; i++)
+        {
+            yield return new WaitForSeconds(0.1f);
+            spriteRenderer.enabled = !spriteRenderer.enabled;
+        }
+
+        //防止bug，启用一次
+        spriteRenderer.enabled = true;
+        IsInvincible = false;
+
+    }
+
+    /// <summary>
+    /// 变量初始化
+    /// </summary>
+    public virtual void VariableInitialization()
+    {
+
+    }
+
     #endregion
 }
 

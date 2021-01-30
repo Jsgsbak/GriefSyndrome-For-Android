@@ -28,7 +28,7 @@ MonoBehaviour:
   DoesMajoOrShoujoDie: 0
   Level: 010000000100000001000000
   SoulLimitInGame: 000000000000000000000000
-  VitInGame: 000000000000000000000000
+  VitInGame: fdffffff0000000000000000
   PowInGame: 000000000000000000000000
   MagiaKeyDown: 000000
   MaxVitInGame: 000000000000000000000000
@@ -142,6 +142,7 @@ MonoBehaviour:
   SEVol: 0.7
   Horizontal: 0
   Down: 0
+  Up: 0
   Jump: 0
   Zattack: 0
   Xattack: 0

@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SayakaDownXattack-Done
+  m_Name: SayakaHurt
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -39,9 +39,13 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 21300000, guid: 161bdcb239829284ab22c503fc023485, type: 3}
+      value: {fileID: 21300000, guid: a890b2412c26d844a8b6fde072bfe490, type: 3}
     - time: 0.083333336
-      value: {fileID: 21300000, guid: 03a149525412138428bb14e367b936a4, type: 3}
+      value: {fileID: 21300000, guid: 040300482392e9f45a2131439964f9fa, type: 3}
+    - time: 0.16666667
+      value: {fileID: 21300000, guid: 99adc5962efc9b5499c5636d1ee33cbd, type: 3}
+    - time: 0.25
+      value: {fileID: 21300000, guid: 82d8dc8161e028c49b45cf7c60eb0a4c, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -68,14 +72,16 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: 21300000, guid: 161bdcb239829284ab22c503fc023485, type: 3}
-    - {fileID: 21300000, guid: 03a149525412138428bb14e367b936a4, type: 3}
+    - {fileID: 21300000, guid: a890b2412c26d844a8b6fde072bfe490, type: 3}
+    - {fileID: 21300000, guid: 040300482392e9f45a2131439964f9fa, type: 3}
+    - {fileID: 21300000, guid: 99adc5962efc9b5499c5636d1ee33cbd, type: 3}
+    - {fileID: 21300000, guid: 82d8dc8161e028c49b45cf7c60eb0a4c, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.16666667
+    m_StopTime: 0.33333334
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -114,9 +120,9 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0
-    functionName: DownXattackAnimationEvent
-    data: Land
+  - time: 0.25
+    functionName: HurtAnimationEndEvent
+    data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
