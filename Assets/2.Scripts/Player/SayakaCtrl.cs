@@ -4,7 +4,11 @@ using UnityEngine;
 //先暂时不继承
 public class SayakaCtrl : APlayerCtrl
 {
+    /// <summary>
+    /// 适用于X攻击蓄力的魔法阵
+    /// </summary>
     [Space]
+    public Animation MagicRing;
     int ZattackCount = 0;
    public  bool XordinaryDash = false;
     /// <summary>
@@ -30,7 +34,48 @@ public class SayakaCtrl : APlayerCtrl
     public override void VariableInitialization()
     {
         base.VariableInitialization();
+       
+        //接着上面，自己的变量初始化
+        ZattackCount = 0;
+        XordinaryDash = false;
+        OrdinaryXTimer = 0f;
+        DownAttackMovingUpward = 0;
+        UpAttackMove = false;
+        UpAttackCount = 0;
+         MagiaDash = false;
+        MagiaDashSpeedRatio = 1f; 
 
+
+        //攻击动画/状态消除
+        for (int i = 0; i < 3; i++)
+        {
+            //直接无脑遍历一遍好了emmmm，反正也不多
+            if (IsAttack[i])
+            {
+                switch (i)
+                {
+                    case 0:
+                        animator.SetBool("ZattackFin", false);
+                        animator.SetBool("Zattack", false);
+                        break;
+
+                    case 1:
+                        animator.SetBool("OrdinaryXattackPrepare", false);
+                        animator.SetBool("OrdinaryXattack", false);
+                        animator.SetBool("HorizontalXattack", false);
+                        animator.SetBool("DownXattack-MovingUpward", false);
+                        animator.SetBool("DownXattack-MovingDownward", false);
+                        animator.SetBool("DownXattack-Done", false);
+                        animator.SetBool("UpXattack", false);
+                        break;
+                     case 2:
+                        if(StageCtrl.gameScoreSettings.VitInGame[PlayerId] <= 0) animator.SetBool("Magia", false);
+
+                        break;
+                }
+            }
+            IsAttack[i] = false;
+        }
     }
 
     public override void Magia()
@@ -96,14 +141,13 @@ public class SayakaCtrl : APlayerCtrl
         //从通常状态进入到X攻击准备状态
         if ( StageCtrl.gameScoreSettings.Horizontal == 0 &&!IsAttack[1] && !StageCtrl.gameScoreSettings.Up && !StageCtrl.gameScoreSettings.Down && StageCtrl.gameScoreSettings.Xattack && !BanWalk && !XordinaryDash && Time.timeSinceLevelLoad -OrdinaryXTimer >= 0.3F)
         {
-            //反正这个只执行一次
-
             animator.SetBool("OrdinaryXattackPrepare", true);
             CancelJump();//直接中断跳跃并且不恢复
             StopAttacking = false;
             IsAttack[1] = true;
             BanWalk = true;
             BanTurnAround = true;
+            MagicRing.enabled = true ;
 
             //保存一下时间，用于得到蓄力的效果
             OrdinaryXTimer = Time.timeSinceLevelLoad;
@@ -111,24 +155,28 @@ public class SayakaCtrl : APlayerCtrl
             GravityRatio = 0.3f;
         }
         //松开X键，但仍然处于X攻击状态，所以能往前冲
-        else if (!StageCtrl.gameScoreSettings.Xattack && IsAttack[1] &&animator.GetBool("OrdinaryXattackPrepare") && !XordinaryDash)
+        else if (!StageCtrl.gameScoreSettings.Xattack && IsAttack[1] && animator.GetBool("OrdinaryXattackPrepare") && !XordinaryDash)
         {
             animator.SetBool("OrdinaryXattackPrepare",false);
             animator.SetBool("OrdinaryXattack", true);
             XordinaryDash = true;
             GravityRatio = 0.3f;//修复bug
-
-
         }
 
+        //蓄力操作SayakaMagicRing_p1
+        if (animator.GetBool("OrdinaryXattackPrepare") && StageCtrl.gameScoreSettings.Xattack)
+        {
+            MagicRing.Play();
+         //  MagicRing.SetInteger("ring", 1 + (int)Mathf.Clamp(((Time.timeSinceLevelLoad - OrdinaryXTimer) / 0.5f), 0f, 2f));
+         //  MagicRing.Play(string.Format("SayakaMagicRing_p{0}",1 + (int)Mathf.Clamp(((Time.timeSinceLevelLoad - OrdinaryXTimer) / 0.5f),0f,2f)));
+        }
         //冲刺移动（放在这里是为了移动流畅）
-        if (XordinaryDash)
+       else if (XordinaryDash)
         {
             //使用正负号的不同来防止多次计算
             if (OrdinaryXTimer >= 0F)
             {
-                OrdinaryXTimer = -Mathf.Clamp((Time.timeSinceLevelLoad - OrdinaryXTimer) / 1.5F, 0F, 1F);
-
+                OrdinaryXTimer = -Mathf.Clamp01((Time.timeSinceLevelLoad - OrdinaryXTimer) / 1.5F);
             }
             tr.Translate(Vector3.right *(8F  -OrdinaryXTimer) *Time.deltaTime, Space.Self);
         }
@@ -206,7 +254,6 @@ public class SayakaCtrl : APlayerCtrl
         if (StageCtrl.gameScoreSettings.Zattack && !animator.GetBool("OrdinaryXattack") && !animator.GetBool("OrdinaryXattackPrepare") /*|| Time.timeSinceLevelLoad -  AttackTimer[0] <= PressAttackInteral && AttackTimer[0] != 0*/)
         {
             if (!animator.GetBool("Zattack") && !animator.GetBool("ZattackFin")) CancelJump();//直接中断跳跃并且不恢复
-            GravityRatio = 0.7f;
             animator.SetBool("Zattack", true);
             animator.SetBool("Fall", false);
              BanGravity = IsGround;//修复奇怪的bug
@@ -231,6 +278,7 @@ public class SayakaCtrl : APlayerCtrl
         {
             //Z攻击的动画正处于攻击状态，不能中断
             case "ZattackDoing":
+                GravityRatio = 0.7f;
                 IsAttack[0] = true;
                 StopAttacking = false;
                 BanTurnAround = true;//攻击状态不能转身
@@ -244,16 +292,17 @@ public class SayakaCtrl : APlayerCtrl
                 //如果还在攻击那就不能解除移动和跳跃禁止
                 StopAttacking = true;//可以中断攻击
                 BanTurnAround = false;//连接处可以转身
-                IsAttack[0] = false;//连接处不属于攻击阶段，可以切换到其他动画和状态
+                IsAttack[0] = StageCtrl.gameScoreSettings.Zattack;//连接处不属于攻击阶段，可以切换到其他动画和状态
                 animator.SetBool("Zattack", StageCtrl.gameScoreSettings.Zattack);//现在可以中断动画
                 animator.SetBool("Fall", !IsGround && !StageCtrl.gameScoreSettings.Zattack);
+                GravityRatio = 1f;
 
                 break;
 
             //Z攻击打完，
             case "ZattackDone":
                     StopAttacking = true;//可以中断攻击
-                    IsAttack[0] = false;//连接处不属于攻击阶段，可以切换到其他动画和状态
+                    IsAttack[0] = StageCtrl.gameScoreSettings.Zattack;//连接处不属于攻击阶段，可以切换到其他动画和状态
                 BanTurnAround = false;//可以转身
 
                 //攻击完了恢复移动速度与重力
@@ -281,6 +330,7 @@ public class SayakaCtrl : APlayerCtrl
             case "ZattackFinJump":
                 BanTurnAround = true;//向前跳的时候不能转身
                 StopAttacking = false;//不可以中断攻击
+                GravityRatio = 0.7f;
 
                 //向前移动
                 tr.Translate(Vector3.right * 0.4f, Space.Self);
@@ -293,7 +343,6 @@ public class SayakaCtrl : APlayerCtrl
                 StopAttacking = true;
                 //修改计数器重新循环动画
                 ZattackCount = 0;
-                BanTurnAround = false;//打完了可以转身
                 IsAttack[0] = false;//连接处不属于攻击阶段，可以切换到其他动画和状态
 
                 //僵直
@@ -308,23 +357,24 @@ public class SayakaCtrl : APlayerCtrl
     {
         switch (AnimationName)
         {
+            //注意：准备阶段的动画
             case "Prepare":
-                GravityRatio = 0.3f;//跳跃过程中通常X攻击不会修改GravityRatio的bug我已经反感了，所以这样子做
+
+               
                 break;
 
             default:
                 //结束
-
                 GravityRatio = 1F;
                 animator.SetBool("OrdinaryXattack", false);
+                MagicRing.Stop();
+                MagicRing.enabled = false;
                 BanTurnAround = false;
                 XordinaryDash = false;
                 StopAttacking = true;
                 IsAttack[1] = false;
-                //普通X冲刺完之后间隔0.3s才能再充一次，先保存一下时间
-                OrdinaryXTimer = Time.timeSinceLevelLoad;
                 //僵直
-                Stiff(0.1f);
+               Stiff(0.1f);
                 break;
         }
 

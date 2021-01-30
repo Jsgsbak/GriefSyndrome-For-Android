@@ -192,7 +192,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2.56, y: 2.56}
+  m_Size: {x: 2.56, y: 1.92}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
@@ -208,6 +208,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1807739838}
   - component: {fileID: 1807739839}
+  - component: {fileID: 1554135926}
   m_Layer: 8
   m_Name: Effect
   m_TagString: Untagged
@@ -273,12 +274,31 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2.56, y: 2.56}
+  m_Size: {x: 3.84, y: 1.92}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &1554135926
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1807739837}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: cafc05466bb23a5499931bb193197b99, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &4035432619200351527
 GameObject:
   m_ObjectHideFlags: 0
@@ -329,6 +349,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 994ff0d1a1d8e3d40930d1d28af9b59e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlayerId: 0
   MahouShoujoId: 4
   JumpSpeed: 15
   PlayerSlope: {x: 1, y: 0}
@@ -339,6 +360,7 @@ MonoBehaviour:
   IsGround: 1
   BanTurnAround: 0
   BanInput: 0
+  IsInvincible: 0
   GavityRayPos:
   - {fileID: 461960091}
   - {fileID: 337635938}
@@ -357,6 +379,7 @@ MonoBehaviour:
   PressAttackInteral: 0.5
   IsAttack: 000000
   StopAttacking: 1
+  MagicRing: {fileID: 0}
   XordinaryDash: 0
 --- !u!95 &1183132187
 Animator:

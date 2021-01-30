@@ -201,8 +201,8 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
         //前面的!IsAttack[1]是为了防止做这个攻击的时候意外发动其他的攻击
         //这里加限制条件/修改状态要三思，主要是在抽象的方法里更改和限制
-        if (!IsAttack[1] && !IsAttack[2]) { OrdinaryZ(); HorizontalZ(); VerticalZ(); }
-        if (!IsAttack[0] && !IsAttack[2]) { OrdinaryX(); HorizontalX(); UpX(); DownX(); }
+        if (!IsAttack[1] && !IsAttack[2] && !StageCtrl.gameScoreSettings.Xattack) { OrdinaryZ(); HorizontalZ(); VerticalZ(); }
+        if (!IsAttack[0] && !IsAttack[2] &&!StageCtrl.gameScoreSettings.Zattack) { OrdinaryX(); HorizontalX(); UpX(); DownX(); }
         if (!IsAttack[0] && !IsAttack[1]) { Magia(); }
       
         BanWalk = IsAttack[0] || IsAttack[1] || IsAttack[2] || StageCtrl.gameScoreSettings.Zattack || StageCtrl.gameScoreSettings.Magia || StageCtrl.gameScoreSettings.Xattack;//在这里统一弄一个，直接在这里禁用移动，不再在各种攻击方法和动画事件中禁用了
@@ -218,7 +218,8 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// </summary>
     public void AnimationCtrl()
     {
-        if (!StopAttacking)
+        //未停止攻击/受伤动画正在播放的时候不能切换到其他任何形态
+        if (!StopAttacking && animator.GetBool("GetHurt"))
         {
             return;
         }
@@ -306,6 +307,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// </summary>
     public void CancelJump()
     {
+        /*
 #if UNITY_EDITOR
 
         Debug.Log("取消跳跃");
@@ -325,7 +327,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             PreviousFrameHasCancelledJump = true;
         }
 #endif
-
+        */
         if (!IsJumping)
         {
             return;
@@ -541,9 +543,17 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         int damage = 1;
 
         StageCtrl.gameScoreSettings.VitInGame[PlayerId] = StageCtrl.gameScoreSettings.VitInGame[PlayerId] - damage;
+        StageCtrl.gameScoreSettings.HurtVitInGame[PlayerId] = damage;
+        StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId] = true;
+        //这个要放在扣除vit之后，恢复vit/复活之前
+        VariableInitialization();
+
+     //动画强制停止再切换成受伤动画
         animator.StopPlayback();
         animator.SetBool("GetHurt", true);
+      
         BanInput = true;
+       
         //无敌状态
         StartCoroutine("Invincible", 1.5f);
 
@@ -557,6 +567,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         else
         {
             //死亡
+            Die();
         }
     }
     /// <summary>
@@ -565,6 +576,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     public void HurtAnimationEndEvent()
     {
         BanInput = false;
+        StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId] = false;
         animator.SetBool("GetHurt", false);
     }
 
@@ -587,6 +599,8 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         spriteRenderer.enabled = true;
         IsInvincible = false;
 
+        //闪完了，无敌时间结束了，才开始恢复VIT（复活除外）
+
     }
 
     /// <summary>
@@ -594,9 +608,33 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// </summary>
     public virtual void VariableInitialization()
     {
+        //攻击状态+动画参数消除需要重写
+      
+        BanInput = false;
+        BanWalk = false;
+        GravityRatio = 1F;
+        MoveSpeedRatio = 1F;
+        BanJump = false;
+        BanGravity = IsGround;
+        BanGravityRay = false;
+        BanTurnAround = false;
+    }
+
+    /// <summary>
+    /// 死亡
+    /// </summary>
+    public void Die()
+    {
 
     }
 
+    /// <summary>
+    /// 复活
+    /// </summary>
+    public void Rebirth()
+    {
+
+    }
     #endregion
 }
 
