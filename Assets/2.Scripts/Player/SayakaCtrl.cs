@@ -8,7 +8,7 @@ public class SayakaCtrl : APlayerCtrl
     /// 适用于X攻击蓄力的魔法阵
     /// </summary>
     [Space]
-    public Animation MagicRing;
+ //   public Animator MagicRing;
     int ZattackCount = 0;
    public  bool XordinaryDash = false;
     /// <summary>
@@ -147,7 +147,7 @@ public class SayakaCtrl : APlayerCtrl
             IsAttack[1] = true;
             BanWalk = true;
             BanTurnAround = true;
-            MagicRing.enabled = true ;
+       //     MagicRing.enabled = true ;
 
             //保存一下时间，用于得到蓄力的效果
             OrdinaryXTimer = Time.timeSinceLevelLoad;
@@ -163,15 +163,18 @@ public class SayakaCtrl : APlayerCtrl
             GravityRatio = 0.3f;//修复bug
         }
 
+        /*
         //蓄力操作SayakaMagicRing_p1
         if (animator.GetBool("OrdinaryXattackPrepare") && StageCtrl.gameScoreSettings.Xattack)
         {
-            MagicRing.Play();
-         //  MagicRing.SetInteger("ring", 1 + (int)Mathf.Clamp(((Time.timeSinceLevelLoad - OrdinaryXTimer) / 0.5f), 0f, 2f));
+           // MagicRing.Play();
+          MagicRing.SetInteger("ring", 1 + (int)Mathf.Clamp(((Time.timeSinceLevelLoad - OrdinaryXTimer) / 0.5f), 0f, 2f));
          //  MagicRing.Play(string.Format("SayakaMagicRing_p{0}",1 + (int)Mathf.Clamp(((Time.timeSinceLevelLoad - OrdinaryXTimer) / 0.5f),0f,2f)));
-        }
+  
+        }    */
+
         //冲刺移动（放在这里是为了移动流畅）
-       else if (XordinaryDash)
+        else if (XordinaryDash)
         {
             //使用正负号的不同来防止多次计算
             if (OrdinaryXTimer >= 0F)
@@ -367,8 +370,8 @@ public class SayakaCtrl : APlayerCtrl
                 //结束
                 GravityRatio = 1F;
                 animator.SetBool("OrdinaryXattack", false);
-                MagicRing.Stop();
-                MagicRing.enabled = false;
+                //MagicRing.Stop();
+                //MagicRing.enabled = false;
                 BanTurnAround = false;
                 XordinaryDash = false;
                 StopAttacking = true;

@@ -526,6 +526,12 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     #endregion
 
 
+  
+    public void SoundEffect(SoundEffect playerSoundEffect)
+    {
+
+    }
+
     #region 受伤，死亡与无敌
     /// <summary>
     /// 受伤（调试版）

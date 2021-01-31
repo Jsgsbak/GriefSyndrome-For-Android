@@ -104,4 +104,11 @@ public class EasyBGMCtrl : MonoBehaviour
         }
     }
 
+
+    public enum SoundEffect
+    {
+        text1 = 0,
+        text2
+    }
+
 }

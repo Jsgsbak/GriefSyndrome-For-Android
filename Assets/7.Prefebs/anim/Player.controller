@@ -224,7 +224,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: OrdinaryXattackPrepare
-  m_Speed: 1
+  m_Speed: 1.2
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 2387100023127601161}
@@ -2463,7 +2463,7 @@ AnimatorStateMachine:
     m_Position: {x: 280, y: 570, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -6266143457269845766}
-    m_Position: {x: 620, y: 260, z: 0}
+    m_Position: {x: 520, y: 250, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 513377746914911311}
     m_Position: {x: 800, y: 350, z: 0}
