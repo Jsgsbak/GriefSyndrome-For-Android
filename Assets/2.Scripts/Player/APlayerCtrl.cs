@@ -527,9 +527,9 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
 
   
-    public void SoundEffect(SoundEffect playerSoundEffect)
+    public void PlaySoundEffect(EasyBGMCtrl.SoundEffect playerSoundEffect)
     {
-
+        EasyBGMCtrl.easyBGMCtrl.PlaySE((int)playerSoundEffect);
     }
 
     #region 受伤，死亡与无敌
@@ -548,27 +548,24 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         //此处仅用于调试
         int damage = 1;
 
-        StageCtrl.gameScoreSettings.VitInGame[PlayerId] = StageCtrl.gameScoreSettings.VitInGame[PlayerId] - damage;
-        StageCtrl.gameScoreSettings.HurtVitInGame[PlayerId] = damage;
-        StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId] = true;
-        //这个要放在扣除vit之后，恢复vit/复活之前
-        VariableInitialization();
-
-     //动画强制停止再切换成受伤动画
-        animator.StopPlayback();
-        animator.SetBool("GetHurt", true);
-      
-        BanInput = true;
-       
-        //无敌状态
-        StartCoroutine("Invincible", 1.5f);
 
 
         if (StageCtrl.gameScoreSettings.VitInGame[PlayerId] > damage)
         {
             StageCtrl.gameScoreSettings.VitInGame[PlayerId] = StageCtrl.gameScoreSettings.VitInGame[PlayerId] - damage;
+            StageCtrl.gameScoreSettings.HurtVitInGame[PlayerId] = damage;
+            StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId] = true;
+            //这个要放在扣除vit之后，恢复vit/复活之前
+            VariableInitialization();
+
+            //动画强制停止再切换成受伤动画
+            animator.StopPlayback();
             animator.SetBool("GetHurt", true);
+
             BanInput = true;
+
+            //无敌状态
+            StartCoroutine("Invincible", 1.5f);
         }
         else
         {

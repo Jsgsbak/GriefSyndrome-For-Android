@@ -220,7 +220,7 @@ public class SayakaCtrl : APlayerCtrl
         }
         else if(DownAttackMovingUpward == 2)
         {
-            Move(5f, true, Vector2.one, new Vector2(-1,1));
+            Move(4f, true, Vector2.one, new Vector2(-1,1));
         }
 
     }
