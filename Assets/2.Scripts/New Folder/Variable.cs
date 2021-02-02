@@ -107,9 +107,15 @@ public class Variable
         [Header("HP最大值")]
         public int MaxVit;
 
+        /// <summary>
+        /// 回复消耗的Soul Limit关于损失Vit的倍数
+        /// </summary>
         [Space]
         [Header("回复消耗的Soul Limit关于损失Vit的倍数")]
         public int Recovery = 18;
+        /// <summary>
+        /// 复活消耗的Soul Limit关于损失Vit最大值的倍数
+        /// </summary>
         [Header("复活消耗的Soul Limit关于损失Vit最大值的倍数")]
         public int Rebirth = 30;
 

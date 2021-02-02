@@ -72,7 +72,6 @@ public class GameScoreSettingsIO : ScriptableObject
     /// <summary>
     /// 玩家选择的魔法少女的soullimit
     /// </summary>
-    [HideInInspector]
     public int[] SoulLimitInGame = new int[] { 0, 0, 0 };
     /// <summary>
     /// 玩家选择的魔法少女的VIT
@@ -93,7 +92,7 @@ public class GameScoreSettingsIO : ScriptableObject
     /// <summary>
     /// 玩家受伤损失的vit
     /// </summary>
-    public int[] HurtVitInGame = new int[] { 0, 0, 0 };
+   // public int[] HurtVitInGame = new int[] { 0, 0, 0 };
     /// <summary>
     /// 受伤了吗
     /// </summary>
@@ -216,7 +215,7 @@ public class GameScoreSettingsIO : ScriptableObject
         VitInGame = new int[] { 0, 0, 0 };
         SoulLimitInGame = new int[] { 0, 0, 0 }; 
         MaxVitInGame = new int[] { 0, 0, 0 };
-        HurtVitInGame = new int[] { 0, 0, 0 };
+        //HurtVitInGame = new int[] { 0, 0, 0 };
         GetHurtInGame = new bool[] { false, false, false };
         MagiaKeyDown = new bool[] { false, false, false };
         IsBodyDieInGame = new bool[] { false, false, false };

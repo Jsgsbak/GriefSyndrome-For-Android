@@ -49,10 +49,6 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// </summary>
     [Header("重力射线位置")]
     public Transform[] GavityRayPos = new Transform[2];
-    /// <summary>
-    /// 射线显示
-    /// </summary>
-    Ray[] GravityRaysShow = new Ray[2];
     #endregion
 
 
@@ -66,7 +62,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// <summary>
     /// 重力射线
     /// </summary>
-    Ray2D[] rays = new Ray2D[2];
+    readonly Ray2D[] rays = new Ray2D[2];
     public float GravityRatio = 1f;
 
     public bool IsStiff = false;
@@ -297,37 +293,11 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
     }
 
-#if UNITY_EDITOR
-    bool PreviousFrameHasCancelledJump = false;
-    float Timerrrr = 0;
-#endif
-
     /// <summary>
     /// （千万不要多次重复执行！！！）对于正在跳跃过程中发动魔法/攻击的情况，直接取消跳跃状态
     /// </summary>
     public void CancelJump()
     {
-        /*
-#if UNITY_EDITOR
-
-        Debug.Log("取消跳跃");
-
-        //如果上一帧执行过了
-        if (PreviousFrameHasCancelledJump && Time.timeSinceLevelLoad - Timerrrr <= 0.1f)
-        {
-            Debug.LogError("CancelJump多次重复执行，你也不怕出bug");
-        }
-        else if (PreviousFrameHasCancelledJump && Time.timeSinceLevelLoad - Timerrrr > 0.1f)
-        {
-            PreviousFrameHasCancelledJump = false;
-        }
-        else if (!PreviousFrameHasCancelledJump)
-        {
-            Timerrrr = Time.timeSinceLevelLoad;
-            PreviousFrameHasCancelledJump = true;
-        }
-#endif
-        */
         if (!IsJumping)
         {
             return;
@@ -532,12 +502,22 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         EasyBGMCtrl.easyBGMCtrl.PlaySE((int)playerSoundEffect);
     }
 
+
     #region 受伤，死亡与无敌
+
+#if UNITY_EDITOR
+    [ContextMenu("Hurt")]
+public void HurtMyself()
+    {
+        GetHurt(20);
+    }
+#endif
+
+
     /// <summary>
     /// 受伤（调试版）
     /// </summary>
-    [ContextMenu("Hurt")]
-    public void GetHurt()
+     void GetHurt(int damage)
     {
         //无敌不执行后续操作
         if (IsInvincible)
@@ -545,32 +525,33 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             return;
         }
 
-        //此处仅用于调试
-        int damage = 1;
 
+
+        BanInput = true;
 
 
         if (StageCtrl.gameScoreSettings.VitInGame[PlayerId] > damage)
         {
+            //动画强制停止再切换成受伤动画
+            animator.StopPlayback();
+            animator.SetBool("GetHurt", true);
+            //扣除hp（vit)
             StageCtrl.gameScoreSettings.VitInGame[PlayerId] = StageCtrl.gameScoreSettings.VitInGame[PlayerId] - damage;
-            StageCtrl.gameScoreSettings.HurtVitInGame[PlayerId] = damage;
+            //扣除soullimit
+            StageCtrl.gameScoreSettings.SoulLimitInGame[PlayerId] = StageCtrl.gameScoreSettings.SoulLimitInGame[PlayerId] - damage * StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].Recovery;
+            //   StageCtrl.gameScoreSettings.HurtVitInGame[PlayerId] = damage;
             StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId] = true;
             //这个要放在扣除vit之后，恢复vit/复活之前
             VariableInitialization();
 
-            //动画强制停止再切换成受伤动画
-            animator.StopPlayback();
-            animator.SetBool("GetHurt", true);
-
-            BanInput = true;
-
             //无敌状态
-            StartCoroutine("Invincible", 1.5f);
+            StartCoroutine("Invincible");
         }
         else
         {
+
             //死亡
-            Die();
+            Die(damage);
         }
     }
     /// <summary>
@@ -588,12 +569,14 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// </summary>
     /// <param name="time"></param>
     /// <returns></returns>
-      IEnumerator Invincible(float time)
+      IEnumerator Invincible()
     {
         IsInvincible = true;
 
         for (int i = 0; i < 15; i++)
         {
+            Debug.Log("这里坏了？");
+
             yield return new WaitForSeconds(0.1f);
             spriteRenderer.enabled = !spriteRenderer.enabled;
         }
@@ -607,7 +590,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     }
 
     /// <summary>
-    /// 变量初始化
+    /// 动画、状态变量初始化
     /// </summary>
     public virtual void VariableInitialization()
     {
@@ -626,18 +609,61 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// <summary>
     /// 死亡
     /// </summary>
-    public void Die()
+     void Die(int damage)
     {
+
+        //扣除soullimit
+        StageCtrl.gameScoreSettings.SoulLimitInGame[PlayerId] = StageCtrl.gameScoreSettings.SoulLimitInGame[PlayerId] - damage * StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].Rebirth;
+    
+        //死亡动画
+        animator.SetInteger("Die", 1);
+
+        StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] = true;
+
+        //无敌状态（就为了贪一个视觉效果）
+        StartCoroutine("Invincible");
 
     }
 
     /// <summary>
-    /// 复活
+    /// 复活或者宝石黑掉了(Die动画最后一帧调用）
     /// </summary>
-    public void Rebirth()
+   public   void RebirthOrGeamBroken()
     {
 
+        //宝石黑掉了
+        if (StageCtrl.gameScoreSettings.SoulLimitInGame[PlayerId] <= 0)
+        {
+
+        }
+        //复活
+        else
+        {
+            StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId] = true;
+
+            //光球效果
+            animator.SetInteger("Die", 3);
+
+            BanGravity = true;
+            BanGravityRay = true;
+
+            StageCtrl.gameScoreSettings.VitInGame[PlayerId] = StageCtrl.gameScoreSettings.MaxVitInGame[PlayerId];
+        }
     }
+
+    /// <summary>
+    /// 复活完成（光球动画最后一帧调用）
+    /// </summary>
+    public void RebirthDone()
+    {
+        BanGravity = false;
+        BanGravityRay = false;
+        animator.SetInteger("Die", 0);
+        StartCoroutine("Invincible");
+        StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] = false;
+
+    }
+
     #endregion
 }
 

@@ -235,6 +235,7 @@ public class UICtrl : MonoBehaviour
     /// <summary>
     /// 随机播放bgm（按钮检查面板注入）
     /// </summary>
+    [System.Obsolete("need UPDATE",false)]
     public void RandomPlayBGM()
     {
         //确认音效
