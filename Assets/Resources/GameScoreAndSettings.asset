@@ -27,17 +27,18 @@ MonoBehaviour:
   SelectedGirlInGame: 070000000700000007000000
   DoesMajoOrShoujoDie: 0
   Level: 010000000100000001000000
-  SoulLimitInGame: 4cffffff0000000000000000
+  SoulLimitInGame: 000000000000000000000000
   VitInGame: 000000000000000000000000
   PowInGame: 000000000000000000000000
   MagiaKeyDown: 000000
   MaxVitInGame: 000000000000000000000000
   GetHurtInGame: 000000
-  IsBodyDieInGame: 010000
+  IsBodyDieInGame: 000000
   IsSoulBallInGame: 000000
   MagicalGirlsDie: 0000000000
   AllDie: 0
-  MajoBeingBattled: 0
+  BattlingMajo: 3
+  ElsaMariaMaterial: {fileID: 2100000, guid: 4443e6cfd0e653846a765e642e94154f, type: 2}
   NewestMajo: 0
   MajoSceneToTitle: 1
   mahouShoujos:

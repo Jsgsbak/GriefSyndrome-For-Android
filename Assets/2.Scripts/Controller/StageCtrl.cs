@@ -130,14 +130,14 @@ public class StageCtrl : MonoBehaviour
         gameScoreSettings.Time += ThisMajoTime;
 
         //击败的是影之魔女之前的魔女，则开放下一个魔女（不包括人鱼）
-        if ((int)gameScoreSettings.MajoBeingBattled <= 3)
+        if ((int)gameScoreSettings.BattlingMajo <= 3)
         {
             gameScoreSettings.NewestMajo = (Variable.Majo)((int)gameScoreSettings.NewestMajo + 1);
         }
 
 
         //瓦夜逻辑
-        if (gameScoreSettings.MajoBeingBattled == Variable.Majo.Walpurgisnacht)
+        if (gameScoreSettings.BattlingMajo == Variable.Majo.Walpurgisnacht)
         {
             //通知gss刷新最高分数，最短时间，最高连击，当前玩的lap
             gameScoreSettings.RefreshBestScoreAndSoOn();

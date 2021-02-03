@@ -297,13 +297,13 @@ public class UICtrl : MonoBehaviour
         //此处仅执行顺利打完魔女的结算
 
         //击败提示
-        if (StageCtrl.gameScoreSettings.MajoBeingBattled != Variable.Majo.Walpurgisnacht)
+        if (StageCtrl.gameScoreSettings.BattlingMajo != Variable.Majo.Walpurgisnacht)
         {
-            MajoDieText.text = string.Format("{0} was defeated\n         and left griefseed.", StageCtrl.gameScoreSettings.MajoBeingBattled.ToString());
+            MajoDieText.text = string.Format("{0} was defeated\n         and left griefseed.", StageCtrl.gameScoreSettings.BattlingMajo.ToString());
         }
         else
         {
-            MajoDieText.text = string.Format("   {0} was over.", StageCtrl.gameScoreSettings.MajoBeingBattled.ToString());
+            MajoDieText.text = string.Format("   {0} was over.", StageCtrl.gameScoreSettings.BattlingMajo.ToString());
         }
 
         //这个魔女被击败的用时
@@ -331,12 +331,12 @@ public class UICtrl : MonoBehaviour
     void ReturnToMajoOrStaff()
     {
         //瓦夜打完，结算界面结束后进入staff / 或者五色全挂，进入staff
-        if(StageCtrl.gameScoreSettings.MajoBeingBattled == Variable.Majo.Walpurgisnacht || StageCtrl.gameScoreSettings.AllDie)
+        if(StageCtrl.gameScoreSettings.BattlingMajo == Variable.Majo.Walpurgisnacht || StageCtrl.gameScoreSettings.AllDie)
         {
             LoadingCtrl.LoadScene(4, false);
         }
         //其他魔女打完，结算界面结束后进入魔女选择part
-        else if(StageCtrl.gameScoreSettings.MajoBeingBattled != Variable.Majo.Walpurgisnacht)
+        else if(StageCtrl.gameScoreSettings.BattlingMajo != Variable.Majo.Walpurgisnacht)
         {
             LoadingCtrl.LoadScene(1, false);
         }

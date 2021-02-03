@@ -105,6 +105,7 @@ public class GameScoreSettingsIO : ScriptableObject
     /// 变成灵魂球了吗
     /// </summary>
     public bool[] IsSoulBallInGame = new bool[] { false, false, false };
+  
 
     /// <summary>
     /// 魔法少女是否变成魔女(2个吼姆拉放在一起了)
@@ -122,7 +123,14 @@ public class GameScoreSettingsIO : ScriptableObject
     /// 正在打的魔女
     /// </summary>
     [Header("正在打的魔女")]
-    public Variable.Majo MajoBeingBattled = Variable.Majo.Gertrud;
+    public Variable.Majo BattlingMajo = Variable.Majo.Gertrud;
+
+    /// <summary>
+    /// 影子魔女用材质
+    /// </summary>
+    [Header("影子魔女用材质")]
+    public Material ElsaMariaMaterial;
+
     /// <summary>
     /// 本次周目最新可食用的魔女
     /// </summary>
@@ -198,7 +206,7 @@ public class GameScoreSettingsIO : ScriptableObject
         Score = new int[3] { 0, 0, 0 };
         Time = 0;
         SelectedGirlInGame = new Variable.PlayerFaceType[3] { Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null };
-        MajoBeingBattled = Variable.Majo.Gertrud;
+        BattlingMajo = Variable.Majo.ElsaMaria;
         NewestMajo = Variable.Majo.Gertrud;
         MagicalGirlsDie = new bool[] { false, false, false, false, false };
         Level = new int[] { 1, 1, 1 };

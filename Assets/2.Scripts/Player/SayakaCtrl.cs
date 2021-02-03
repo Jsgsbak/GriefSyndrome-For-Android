@@ -200,7 +200,7 @@ public class SayakaCtrl : APlayerCtrl
         //上升
         if (DownAttackMovingUpward == 1)
         {
-            Move(9f, true, Vector2.one, Vector2.up);
+            Move(13f, true, Vector2.one, Vector2.up);
         }
         //下降
         else if (DownAttackMovingUpward == -1)

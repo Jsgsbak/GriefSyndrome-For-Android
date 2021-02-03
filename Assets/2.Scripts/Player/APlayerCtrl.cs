@@ -124,6 +124,18 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         #region 注册事件
         UpdateManager.updateManager.FastUpdate.AddListener(FastUpdate);
         #endregion
+
+
+        //影子魔女换成黑暗材质更换材质
+        if(StageCtrl.gameScoreSettings.BattlingMajo == Variable.Majo.ElsaMaria)
+        {
+            //这两个animator是为了修复spriterenderer被animator抢占不能修改的bug
+            animator.enabled = false;
+            spriteRenderer.color = Color.black;
+            spriteRenderer.material = StageCtrl.gameScoreSettings.ElsaMariaMaterial;
+            animator.enabled = true;
+
+        }
     }
 
 
@@ -691,6 +703,16 @@ public void HurtMyself()
         animator.SetInteger("Die", 0);
         StartCoroutine("Invincible");
         StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId] = false;
+    }
+
+    /// <summary>
+    /// 宝石全碎了之后调用
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator GeamBroken()
+    {
+        //黑烟，玩家变黑
+        yield return new WaitForSeconds(Time.deltaTime);
     }
 
     #endregion

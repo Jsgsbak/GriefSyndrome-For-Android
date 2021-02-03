@@ -250,8 +250,8 @@ public class TitleCtrl : MonoBehaviour
     public void SelectedMajo(int MajoId)
     {
         //储存要打的魔女&切换到选择魔法少女part
-        if (MajoId <= (int)gameScoreSettingsIO.NewestMajo && MajoId != 5) { EasyBGMCtrl.easyBGMCtrl.PlaySE(0); gameScoreSettingsIO.MajoBeingBattled = (Variable.Majo)MajoId; Timing.RunCoroutine(ChangePartMethod(-1, 2)); }
-        else if (MajoId == 5 && gameScoreSettingsIO.MagicalGirlsDie[4]) { EasyBGMCtrl.easyBGMCtrl.PlaySE(0); gameScoreSettingsIO.MajoBeingBattled = (Variable.Majo)MajoId; Timing.RunCoroutine(ChangePartMethod(-1, 2)); }
+        if (MajoId <= (int)gameScoreSettingsIO.NewestMajo && MajoId != 5) { EasyBGMCtrl.easyBGMCtrl.PlaySE(0); gameScoreSettingsIO.BattlingMajo = (Variable.Majo)MajoId; Timing.RunCoroutine(ChangePartMethod(-1, 2)); }
+        else if (MajoId == 5 && gameScoreSettingsIO.MagicalGirlsDie[4]) { EasyBGMCtrl.easyBGMCtrl.PlaySE(0); gameScoreSettingsIO.BattlingMajo = (Variable.Majo)MajoId; Timing.RunCoroutine(ChangePartMethod(-1, 2)); }
 
     }
 
