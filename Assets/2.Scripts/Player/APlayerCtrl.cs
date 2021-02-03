@@ -132,7 +132,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
 
     /// <summary>
-    /// 输入代理
+    /// 输入代理（只有跳跃Jump是Down)
     /// </summary>
     public virtual void InputAgent()
     {
@@ -169,6 +169,8 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
     public void FastUpdate()
     {
+
+
         if (!BanGravity) Gravity();
         RayCtrl();
 
@@ -181,9 +183,9 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         InputAgent();
 
         #region  基础控制器
-        Walk();
+        if (!BanWalk) Walk();
         AnimationCtrl();
-        JumpAndFall();
+         JumpAndFall();
         #endregion
 
 
@@ -197,15 +199,14 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
         //前面的!IsAttack[1]是为了防止做这个攻击的时候意外发动其他的攻击
         //这里加限制条件/修改状态要三思，主要是在抽象的方法里更改和限制
-        if (!IsAttack[1] && !IsAttack[2] && !StageCtrl.gameScoreSettings.Xattack) { OrdinaryZ(); HorizontalZ(); VerticalZ(); }
-        if (!IsAttack[0] && !IsAttack[2] &&!StageCtrl.gameScoreSettings.Zattack) { OrdinaryX(); HorizontalX(); UpX(); DownX(); }
-        if (!IsAttack[0] && !IsAttack[1]) { Magia(); }
-      
+            if (!IsAttack[1] && !IsAttack[2] && !StageCtrl.gameScoreSettings.Xattack) { OrdinaryZ(); HorizontalZ(); VerticalZ(); }
+            if (!IsAttack[0] && !IsAttack[2] && !StageCtrl.gameScoreSettings.Zattack) { OrdinaryX(); HorizontalX(); UpX(); DownX(); }
+            if (!IsAttack[0] && !IsAttack[1]) { Magia(); }
+
         BanWalk = IsAttack[0] || IsAttack[1] || IsAttack[2] || StageCtrl.gameScoreSettings.Zattack || StageCtrl.gameScoreSettings.Magia || StageCtrl.gameScoreSettings.Xattack;//在这里统一弄一个，直接在这里禁用移动，不再在各种攻击方法和动画事件中禁用了
         BanJump = IsAttack[0] || IsAttack[1] || IsAttack[2] || StageCtrl.gameScoreSettings.Zattack || StageCtrl.gameScoreSettings.Magia || StageCtrl.gameScoreSettings.Xattack;//在这里统一弄一个，直接在这里禁用移动，不再在各种攻击方法和动画事件中禁用了
 
         #endregion
-
     }
 
     #region  基础控制器
@@ -354,13 +355,33 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// </summary>
     void Walk()
     {
-        if (BanWalk)
-        {
-            return;
-        }
 
         IsMoving = StageCtrl.gameScoreSettings.Horizontal != 0;
-        Move(StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].MoveSpeed, true, PlayerSlope.normalized, Vector2.right * StageCtrl.gameScoreSettings.Horizontal, Space.World);
+
+        switch (StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId])
+        {
+            //是那个球，直接无视平台
+            case true:
+                Debug.Log("dnmdyidonga");
+                float Vertical = 0f;
+                if (StageCtrl.gameScoreSettings.Up)
+                {
+                    Vertical = 1f;
+                }
+                else if(StageCtrl.gameScoreSettings.Down)
+                {
+                    Vertical = -1f;
+                }
+                Move(StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].MoveSpeed, true, PlayerSlope.normalized, new Vector2(Vertical, StageCtrl.gameScoreSettings.Horizontal), Space.World);
+                break;
+
+                //正常情况（没死）
+            case false:
+                Move(StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].MoveSpeed, true, PlayerSlope.normalized, Vector2.right * StageCtrl.gameScoreSettings.Horizontal, Space.World);
+                break;
+
+        }
+
         // tr.Translate(StageCtrl.gameScoreSettings.Horizontal * Vector2.right * StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].MoveSpeed * MoveSpeedRatio * Time.deltaTime, Space.World);
 
 
@@ -532,8 +553,7 @@ public void HurtMyself()
 
         if (StageCtrl.gameScoreSettings.VitInGame[PlayerId] > damage)
         {
-            //动画强制停止再切换成受伤动画
-            animator.StopPlayback();
+          
             animator.SetBool("GetHurt", true);
             //扣除hp（vit)
             StageCtrl.gameScoreSettings.VitInGame[PlayerId] = StageCtrl.gameScoreSettings.VitInGame[PlayerId] - damage;
@@ -554,6 +574,7 @@ public void HurtMyself()
             Die(damage);
         }
     }
+
     /// <summary>
     /// 受伤动画结束后的事件
     /// </summary>
@@ -578,15 +599,14 @@ public void HurtMyself()
             Debug.Log("这里坏了？");
 
             yield return new WaitForSeconds(0.1f);
+            animator.enabled = !animator.enabled;//我屈服了，dnmdBUG
             spriteRenderer.enabled = !spriteRenderer.enabled;
         }
 
         //防止bug，启用一次
         spriteRenderer.enabled = true;
+        animator.enabled = true;
         IsInvincible = false;
-
-        //闪完了，无敌时间结束了，才开始恢复VIT（复活除外）
-
     }
 
     /// <summary>
@@ -614,19 +634,21 @@ public void HurtMyself()
 
         //扣除soullimit
         StageCtrl.gameScoreSettings.SoulLimitInGame[PlayerId] = StageCtrl.gameScoreSettings.SoulLimitInGame[PlayerId] - damage * StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].Rebirth;
-    
+
         //死亡动画
-        animator.SetInteger("Die", 1);
+        //动画强制停止再切换成受伤动画
+        animator.StopPlayback();
+        animator.Play("PlayerDie_1");
 
         StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] = true;
+        animator.SetBool("IsBodyDie", true);//为了修bug而才用的这个e....
 
-        //无敌状态（就为了贪一个视觉效果）
-        StartCoroutine("Invincible");
+        BanInput = true;
 
     }
 
     /// <summary>
-    /// 复活或者宝石黑掉了(Die动画最后一帧调用）
+    /// 判断：复活或者宝石黑掉了(Die动画最后一帧调用）
     /// </summary>
    public   void RebirthOrGeamBroken()
     {
@@ -634,16 +656,23 @@ public void HurtMyself()
         //宝石黑掉了
         if (StageCtrl.gameScoreSettings.SoulLimitInGame[PlayerId] <= 0)
         {
+            //注意调整动画过渡（ANimator的那个），把闪的那一部分去掉
+            animator.SetInteger("Die", 2);
 
         }
         //复活
         else
         {
+            StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] = false;
             StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId] = true;
+          
+            animator.SetBool("IsBodyDie", false);//为了修bug而才用的这个e....为了消除歧义，通常的IsBodyDie是指死亡之后变成球之前，这里单纯的是为了限制动画
 
             //光球效果
             animator.SetInteger("Die", 3);
+            MoveSpeedRatio = 1.2f;
 
+            BanInput = false;
             BanGravity = true;
             BanGravityRay = true;
 
@@ -656,12 +685,12 @@ public void HurtMyself()
     /// </summary>
     public void RebirthDone()
     {
+        MoveSpeedRatio = 1f;
         BanGravity = false;
         BanGravityRay = false;
         animator.SetInteger("Die", 0);
         StartCoroutine("Invincible");
-        StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] = false;
-
+        StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId] = false;
     }
 
     #endregion
