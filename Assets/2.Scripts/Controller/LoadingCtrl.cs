@@ -1,10 +1,9 @@
-﻿using PureAmaya.General;
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using MEC;
+using System.Collections.Generic;
 
 /// <summary>
 /// 场景加载控制
@@ -30,6 +29,9 @@ public class LoadingCtrl : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
+		//内存垃圾回收
+		System.GC.Collect();
+
 		loadingSlider.value = 0.0f;
 
 		if (SceneManager.GetActiveScene().name == "Loading")
@@ -50,7 +52,6 @@ public class LoadingCtrl : MonoBehaviour
 		Target = id;
 
 #if UNITY_EDITOR
-
 		//检查是否存在BGMCtrl
 		if (GameObject.FindObjectOfType<EasyBGMCtrl>() != null)
 		{

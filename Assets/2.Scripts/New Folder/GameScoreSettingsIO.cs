@@ -113,6 +113,12 @@ public class GameScoreSettingsIO : ScriptableObject
     [Header("魔法少女是否挂掉")]
     public bool[] MagicalGirlsDie = new bool[] { false,false,false,false,false };
 
+    public Sprite[] PlayerDieImage = new Sprite[6];
+
+    [Header("宝石坏了之后，玩家消失的动画")]
+    public RuntimeAnimatorController GemBrokenFadeAnimator;
+
+
     /// <summary>
     /// 五色全挂了吗
     /// </summary>
@@ -126,12 +132,6 @@ public class GameScoreSettingsIO : ScriptableObject
     public Variable.Majo BattlingMajo = Variable.Majo.Gertrud;
 
     /// <summary>
-    /// 影子魔女用材质
-    /// </summary>
-    [Header("影子魔女用材质")]
-    public Material ElsaMariaMaterial;
-
-    /// <summary>
     /// 本次周目最新可食用的魔女
     /// </summary>
     [Header("本次周目最新可食用的魔女")]
@@ -140,7 +140,7 @@ public class GameScoreSettingsIO : ScriptableObject
     /// <summary>
     /// 是从魔女场景中返回标题界面吗（不包括返回到主标题按钮）
     /// </summary>
-    [Header("是从魔女场景中返回标题界面吗\n（不包括返回到主标题按钮）")]
+    [HideInInspector]
     public bool MajoSceneToTitle = false;
 
     #endregion
@@ -206,7 +206,7 @@ public class GameScoreSettingsIO : ScriptableObject
         Score = new int[3] { 0, 0, 0 };
         Time = 0;
         SelectedGirlInGame = new Variable.PlayerFaceType[3] { Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null };
-        BattlingMajo = Variable.Majo.ElsaMaria;
+        BattlingMajo = Variable.Majo.Gertrud;
         NewestMajo = Variable.Majo.Gertrud;
         MagicalGirlsDie = new bool[] { false, false, false, false, false };
         Level = new int[] { 1, 1, 1 };
@@ -237,7 +237,7 @@ public class GameScoreSettingsIO : ScriptableObject
     [ContextMenu("保存存档与设置")]
    public void SaveInEditor()
     {
-        Timing.RunCoroutine(Save());
+         Timing.RunCoroutine(Save());
     }
 #endif
 

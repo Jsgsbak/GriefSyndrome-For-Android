@@ -35,10 +35,18 @@ MonoBehaviour:
   GetHurtInGame: 000000
   IsBodyDieInGame: 000000
   IsSoulBallInGame: 000000
-  MagicalGirlsDie: 0000000000
+  MagicalGirlsDie: 0000000001
+  PlayerDieImage:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 21300000, guid: d0f9f9a838d432440b26f32c83854794, type: 3}
+  - {fileID: 0}
+  GemBrokenFadeAnimator: {fileID: 9100000, guid: 5aabe6842bacccd40b05d2641ba23b77,
+    type: 2}
   AllDie: 0
-  BattlingMajo: 3
-  ElsaMariaMaterial: {fileID: 2100000, guid: 4443e6cfd0e653846a765e642e94154f, type: 2}
+  BattlingMajo: 0
   NewestMajo: 0
   MajoSceneToTitle: 1
   mahouShoujos:

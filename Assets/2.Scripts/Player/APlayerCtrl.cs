@@ -56,6 +56,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     [HideInInspector] public Transform tr;
     [HideInInspector] public Animator animator;
     [HideInInspector] public SpriteRenderer spriteRenderer;
+    public Material Material;
     #endregion
 
     #region 私有状态机（不保存到GSS中）
@@ -114,6 +115,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         tr = GetComponent<Transform>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        Material = spriteRenderer.material;
         #endregion
         //先这样写,多人游戏的话
         PlayerId = 0;
@@ -126,15 +128,16 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         #endregion
 
 
-        //影子魔女换成黑暗材质更换材质
+        //影子魔女的话开启黑色描边效果
         if(StageCtrl.gameScoreSettings.BattlingMajo == Variable.Majo.ElsaMaria)
         {
-            //这两个animator是为了修复spriterenderer被animator抢占不能修改的bug
-            animator.enabled = false;
-            spriteRenderer.color = Color.black;
-            spriteRenderer.material = StageCtrl.gameScoreSettings.ElsaMariaMaterial;
-            animator.enabled = true;
-
+            Material.EnableKeyword("OUTBASE_ON");
+            Material.EnableKeyword("GREYSCALE_ON");
+        }
+        else
+        {
+            Material.DisableKeyword("OUTBASE_ON");
+            Material.DisableKeyword("GREYSCALE_ON");
         }
     }
 
@@ -146,7 +149,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// <summary>
     /// 输入代理（只有跳跃Jump是Down)
     /// </summary>
-    public virtual void InputAgent()
+      void InputAgent()
     {
         //为了配合安卓/IOS用的RepeatButton，取消单机按钮的判定，如有需要在相应的攻击方法中加限制
 
@@ -179,7 +182,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     }
 
 
-    public void FastUpdate()
+     void FastUpdate()
     {
 
 
@@ -374,25 +377,19 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         {
             //是那个球，直接无视平台
             case true:
-                Debug.Log("dnmdyidonga");
-                float Vertical = 0f;
                 if (StageCtrl.gameScoreSettings.Up)
                 {
-                    Vertical = 1f;
+                    Move(StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].MoveSpeed, true, Vector2.one, Vector2.up, Space.World);
                 }
                 else if(StageCtrl.gameScoreSettings.Down)
                 {
-                    Vertical = -1f;
+                    Move(StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].MoveSpeed, true, Vector2.one, Vector2.down, Space.World);
                 }
-                Move(StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].MoveSpeed, true, PlayerSlope.normalized, new Vector2(Vertical, StageCtrl.gameScoreSettings.Horizontal), Space.World);
                 break;
-
-                //正常情况（没死）
-            case false:
-                Move(StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].MoveSpeed, true, PlayerSlope.normalized, Vector2.right * StageCtrl.gameScoreSettings.Horizontal, Space.World);
-                break;
-
         }
+
+        Move(StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].MoveSpeed, true, PlayerSlope.normalized, Vector2.right * StageCtrl.gameScoreSettings.Horizontal, Space.World);
+
 
         // tr.Translate(StageCtrl.gameScoreSettings.Horizontal * Vector2.right * StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].MoveSpeed * MoveSpeedRatio * Time.deltaTime, Space.World);
 
@@ -662,15 +659,13 @@ public void HurtMyself()
     /// <summary>
     /// 判断：复活或者宝石黑掉了(Die动画最后一帧调用）
     /// </summary>
-   public   void RebirthOrGeamBroken()
+   public void RebirthOrGemBroken()
     {
 
         //宝石黑掉了
         if (StageCtrl.gameScoreSettings.SoulLimitInGame[PlayerId] <= 0)
         {
-            //注意调整动画过渡（ANimator的那个），把闪的那一部分去掉
             animator.SetInteger("Die", 2);
-
         }
         //复活
         else
@@ -706,15 +701,32 @@ public void HurtMyself()
     }
 
     /// <summary>
-    /// 宝石全碎了之后调用
+    /// 宝石碎了，玩家倒地，变成便服的动画调用
     /// </summary>
     /// <returns></returns>
-    public IEnumerator GeamBroken()
+    public void GemBroken()
     {
-        //黑烟，玩家变黑
-        yield return new WaitForSeconds(Time.deltaTime);
+        //玩家变黑，然后消失
+        Material.EnableKeyword("GREYSCALE_ON");//变黑
+        //消失准备
+        Material.EnableKeyword("FADE_ON");//开始消失的shader特征
+
+        //更换动画机，表演消失动画
+        animator.runtimeAnimatorController = StageCtrl.gameScoreSettings.GemBrokenFadeAnimator;
+        spriteRenderer.sprite = StageCtrl.gameScoreSettings.PlayerDieImage[MahouShoujoId];
+
+        //设置死亡状态
+        StageCtrl.gameScoreSettings.MagicalGirlsDie[MahouShoujoId] = true;
     }
 
+    /// <summary>
+    /// Fade效果结束，已经看不见玩家了（动画调用）
+    /// </summary>
+    public void DestroyPoorGirl()
+    {
+        //删除物体
+        Destroy(gameObject);
+    }
     #endregion
 }
 

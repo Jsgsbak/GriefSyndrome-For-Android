@@ -42,10 +42,10 @@ public class StageCtrl : MonoBehaviour
     public int BGMid = 5;//通常都为5，是道中曲
 
     #region 事件组
-    public class intEvent : UnityEvent<int> { }
-    public  intEvent Player1Hurt = new intEvent();
-    public  intEvent Player2Hurt = new intEvent();
-    public  intEvent Player3Hurt = new intEvent();
+    public class IntEvent : UnityEvent<int> { }
+    public IntEvent Player1Hurt = new IntEvent();
+    public IntEvent Player2Hurt = new IntEvent();
+    public IntEvent Player3Hurt = new IntEvent();
 
     /// <summary>
     /// 击败魔女
