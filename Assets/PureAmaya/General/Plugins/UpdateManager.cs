@@ -28,7 +28,6 @@ namespace PureAmaya.General
         /// 依赖于TIM的SlowUpdate
         /// </summary>
         public  UpdateEventClass SlowUpdate = new UpdateEventClass();
-
         private void Awake()
         {
             updateManager = this;
@@ -37,6 +36,7 @@ namespace PureAmaya.General
             FakeLateUpdate.RemoveAllListeners();
             SlowUpdate.RemoveAllListeners();
         }
+
         private void Start()
         {
            // DontDestroyOnLoad(gameObject);

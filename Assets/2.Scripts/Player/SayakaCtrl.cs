@@ -81,7 +81,7 @@ public class SayakaCtrl : APlayerCtrl
     public override void Magia()
     {     
         //特意为这个攻击方法重新写一下输入情况emmm
-        StageCtrl.gameScoreSettings.Magia = RebindableInput.GetKeyDown("Magia") && !BanInput;
+      //  StageCtrl.gameScoreSettings.Magia = RebindableInput.GetKeyDown("Magia") && !BanInput;
 
         if (MagiaDashSpeedRatio == 1f && StageCtrl.gameScoreSettings.Xattack &&IsAttack[2])
         {

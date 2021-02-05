@@ -10,14 +10,14 @@ using MEC;
 //击杀完魔女之后的 XXX is defeated需要用到魔女的脚本，但是还没写）
 
 /// <summary>
-/// 包含安卓输入在内的UI控制
+/// 包含安卓输入在内的UI控制（是否启用在UICtrl中控制）
 /// </summary>
 [DisallowMultipleComponent]
 public class UICtrl : MonoBehaviour
 {
     public static UICtrl uiCtrl;
 
-    public ScreenInput screenInput;
+    public CameraAndScreenAndInput screenInput;
 
     //控制方法：调用相应的PlayerInf方法，更新UI信息
     [Header("玩家信息预设")]
@@ -72,6 +72,9 @@ public class UICtrl : MonoBehaviour
         uiCtrl = this;
 
         UpdateInf.RemoveAllListeners();
+
+
+
     }
 
     private void Start()
@@ -79,6 +82,10 @@ public class UICtrl : MonoBehaviour
 
         UpdateManager.updateManager.SlowUpdate.AddListener(SlowUpdate);
         UpdateManager.updateManager.FastUpdate.AddListener(FastUpdate);
+
+        //屏幕输入 虚拟按键
+        screenInput.enabled = StageCtrl.gameScoreSettings.UseScreenInput != 0;
+
         #region 注册事件
         //音量事件注册与设置
         BGMVol.onValueChanged.AddListener(BGMVolChange);
@@ -101,9 +108,6 @@ public class UICtrl : MonoBehaviour
         #endregion
 
         #region 初始化UI界面
-
-        //.屏幕输入 虚拟按键
-            screenInput.enabled = StageCtrl.gameScoreSettings.UseScreenInput;
 
 
 
@@ -160,9 +164,8 @@ public class UICtrl : MonoBehaviour
     /// </summary>
     void FastUpdate()
     { 
-        if (RebindableInput.GetKeyDown("Pause"))
+        if (StageCtrl.gameScoreSettings.Pause)
         {
-            Debug.Log("PAUISE");
             GamePauseSwitch();
         }
 

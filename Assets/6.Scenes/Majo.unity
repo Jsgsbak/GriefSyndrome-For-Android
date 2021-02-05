@@ -528,8 +528,9 @@ GameObject:
   - component: {fileID: 159391667}
   - component: {fileID: 159391666}
   - component: {fileID: 159391665}
+  - component: {fileID: 159391668}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: UI Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -550,8 +551,8 @@ RectTransform:
   - {fileID: 1999497791}
   - {fileID: 2066245709}
   - {fileID: 270092691}
-  m_Father: {fileID: 1318155394}
-  m_RootOrder: 0
+  m_Father: {fileID: 0}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -618,6 +619,35 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &159391668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 159391663}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16a907ac5eee5b14d9b96901e17e7749, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  screenInput: {fileID: 519420030}
+  PlayerInf: {fileID: 6862997016333489342, guid: d8f04b6b86c70f949a14ebe3647542e0,
+    type: 3}
+  PIUParent: {fileID: 12450136}
+  pausePlayerInf: {fileID: 5448901606509444862, guid: 0132a90af36732249bcff58464744de0,
+    type: 3}
+  PauseAtlas: {fileID: 4343727234628468602, guid: 20783d1a9406c244187c56961c1abc72,
+    type: 2}
+  PPIParent: {fileID: 687691163}
+  Pause: {fileID: 1999497790}
+  BGMVol: {fileID: 1998909762}
+  SEVol: {fileID: 824837349}
+  ConcInMajo: {fileID: 270092692}
+  MajoDieText: {fileID: 1437151130}
+  ThisMajoTimeText: {fileID: 203921181}
+  TotalTimeText: {fileID: 424403320}
+  ShowRandomBGM: {fileID: 2085369774}
 --- !u!1 &170063045
 GameObject:
   m_ObjectHideFlags: 0
@@ -1747,7 +1777,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1318155393}
+      - m_Target: {fileID: 0}
         m_MethodName: RandomPlayBGM
         m_Mode: 1
         m_Arguments:
@@ -2391,7 +2421,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1318155393}
+      - m_Target: {fileID: 0}
         m_MethodName: GamePauseSwitch
         m_Mode: 1
         m_Arguments:
@@ -2562,7 +2592,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a7680c986b115ca4cbf1f6dfae24447d, type: 3}
   m_Name: 
@@ -2640,7 +2670,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &560832110
 GameObject:
@@ -3785,7 +3815,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1318155393}
+      - m_Target: {fileID: 0}
         m_MethodName: GamePauseSwitch
         m_Mode: 1
         m_Arguments:
@@ -4994,7 +5024,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1318155393}
+      - m_Target: {fileID: 0}
         m_MethodName: ReturnToTitle
         m_Mode: 1
         m_Arguments:
@@ -5170,6 +5200,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 766366049}
+    - target: {fileID: 1807739838, guid: 691db146eb78dd74fbe51e6d5974d37e, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4035432619200351512, guid: 691db146eb78dd74fbe51e6d5974d37e,
         type: 3}
       propertyPath: m_RootOrder
@@ -5507,67 +5541,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!1 &1318155392
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1318155394}
-  - component: {fileID: 1318155393}
-  m_Layer: 0
-  m_Name: UI
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
-  m_IsActive: 1
---- !u!114 &1318155393
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1318155392}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 16a907ac5eee5b14d9b96901e17e7749, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  screenInput: {fileID: 519420030}
-  PlayerInf: {fileID: 6862997016333489342, guid: d8f04b6b86c70f949a14ebe3647542e0,
-    type: 3}
-  PIUParent: {fileID: 12450136}
-  pausePlayerInf: {fileID: 5448901606509444862, guid: 0132a90af36732249bcff58464744de0,
-    type: 3}
-  PauseAtlas: {fileID: 4343727234628468602, guid: 20783d1a9406c244187c56961c1abc72,
-    type: 2}
-  PPIParent: {fileID: 687691163}
-  Pause: {fileID: 1999497790}
-  BGMVol: {fileID: 1998909762}
-  SEVol: {fileID: 824837349}
-  ConcInMajo: {fileID: 270092692}
-  MajoDieText: {fileID: 1437151130}
-  ThisMajoTimeText: {fileID: 203921181}
-  TotalTimeText: {fileID: 424403320}
-  ShowRandomBGM: {fileID: 2085369774}
---- !u!4 &1318155394
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1318155392}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -70.927986, y: 48.12329, z: 90}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 159391664}
-  m_Father: {fileID: 0}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1408435641
 GameObject:
   m_ObjectHideFlags: 0

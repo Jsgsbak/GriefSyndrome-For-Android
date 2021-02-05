@@ -35,7 +35,7 @@ MonoBehaviour:
   GetHurtInGame: 000000
   IsBodyDieInGame: 000000
   IsSoulBallInGame: 000000
-  MagicalGirlsDie: 0000000001
+  MagicalGirlsDie: 0000000000
   PlayerDieImage:
   - {fileID: 0}
   - {fileID: 0}
@@ -49,6 +49,8 @@ MonoBehaviour:
   BattlingMajo: 0
   NewestMajo: 0
   MajoSceneToTitle: 1
+  BGMVol: 0.6
+  SEVol: 0.7
   mahouShoujos:
   - name: Homura
     BasicPow: 10
@@ -146,8 +148,175 @@ MonoBehaviour:
     Rebirth: 30
     MaigaVit: 50
     LongMagia: 0
-  BGMVol: 0.6
-  SEVol: 0.7
+  KeyPosScale:
+  - name: Left Button
+    UIName: "\u2190"
+    EditPosition:
+      serializedVersion: 2
+      x: 0
+      y: 360
+      width: 60
+      height: 60
+    PositionInUse:
+      serializedVersion: 2
+      x: 0
+      y: 360
+      width: 60
+      height: 60
+  - name: Right Button
+    UIName: "\u2192"
+    EditPosition:
+      serializedVersion: 2
+      x: 140
+      y: 360
+      width: 60
+      height: 60
+    PositionInUse:
+      serializedVersion: 2
+      x: 140
+      y: 360
+      width: 60
+      height: 60
+  - name: Up
+    UIName: "\u2191"
+    EditPosition:
+      serializedVersion: 2
+      x: 70
+      y: 290
+      width: 60
+      height: 60
+    PositionInUse:
+      serializedVersion: 2
+      x: 70
+      y: 290
+      width: 60
+      height: 60
+  - name: Down
+    UIName: "\u2193"
+    EditPosition:
+      serializedVersion: 2
+      x: 70
+      y: 430
+      width: 60
+      height: 60
+    PositionInUse:
+      serializedVersion: 2
+      x: 70
+      y: 430
+      width: 60
+      height: 60
+  - name: Jump
+    UIName: Jump
+    EditPosition:
+      serializedVersion: 2
+      x: 749.8
+      y: 500
+      width: 50
+      height: 50
+    PositionInUse:
+      serializedVersion: 2
+      x: 749.8
+      y: 500
+      width: 50
+      height: 50
+  - name: Weak
+    UIName: Weak
+    EditPosition:
+      serializedVersion: 2
+      x: 925.1
+      y: 480.8
+      width: 70
+      height: 70
+    PositionInUse:
+      serializedVersion: 2
+      x: 925.1
+      y: 480.8
+      width: 70
+      height: 70
+  - name: Strong
+    UIName: Strong
+    EditPosition:
+      serializedVersion: 2
+      x: 925.1
+      y: 390.2
+      width: 70
+      height: 70
+    PositionInUse:
+      serializedVersion: 2
+      x: 925.1
+      y: 390.2
+      width: 70
+      height: 70
+  - name: Magia
+    UIName: Magia
+    EditPosition:
+      serializedVersion: 2
+      x: 832.1
+      y: 432.5
+      width: 80
+      height: 80
+    PositionInUse:
+      serializedVersion: 2
+      x: 832.1
+      y: 432.5
+      width: 80
+      height: 80
+  - name: Pause
+    UIName: Pause
+    EditPosition:
+      serializedVersion: 2
+      x: 2.5
+      y: 81.8
+      width: 60
+      height: 60
+    PositionInUse:
+      serializedVersion: 2
+      x: 2.5
+      y: 81.8
+      width: 60
+      height: 60
+  - name: CleanSoul
+    UIName: 0  Soul
+    EditPosition:
+      serializedVersion: 2
+      x: 76.1
+      y: 81.8
+      width: 60
+      height: 60
+    PositionInUse:
+      serializedVersion: 2
+      x: 76.1
+      y: 81.8
+      width: 60
+      height: 60
+  - name: CleanVit
+    UIName: 0  Vit
+    EditPosition:
+      serializedVersion: 2
+      x: 155.03
+      y: 81.8
+      width: 60
+      height: 60
+    PositionInUse:
+      serializedVersion: 2
+      x: 155.03
+      y: 81.8
+      width: 60
+      height: 60
+  - name: HurtMe
+    UIName: HurtMe
+    EditPosition:
+      serializedVersion: 2
+      x: 236.4
+      y: 81.8
+      width: 60
+      height: 60
+    PositionInUse:
+      serializedVersion: 2
+      x: 236.4
+      y: 81.8
+      width: 60
+      height: 60
   Horizontal: 0
   Down: 0
   Up: 0
@@ -155,4 +324,8 @@ MonoBehaviour:
   Zattack: 0
   Xattack: 0
   Magia: 0
-  UseScreenInput: 0
+  Pause: 0
+  CleanSoul: 0
+  CleanVit: 0
+  HurtMyself: 0
+  UseScreenInput: 1

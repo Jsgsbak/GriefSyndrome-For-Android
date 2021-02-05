@@ -152,20 +152,23 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
       void InputAgent()
     {
         //为了配合安卓/IOS用的RepeatButton，取消单机按钮的判定，如有需要在相应的攻击方法中加限制
-
+        //安卓是直接作用于StageCtrl.gameScoreSettings.Horizontal
         //为了防止在不同的帧运行，所以放到了这里
         //屏幕输入的按钮放在了主相机脚本里
         //这个是通常版本，有的角色（比如沙耶加）可能重写了
-        if (!StageCtrl.gameScoreSettings.UseScreenInput)
+        if (StageCtrl.gameScoreSettings.UseScreenInput == 0)
         {
             StageCtrl.gameScoreSettings.Horizontal = RebindableInput.GetAxis("Horizontal");
             StageCtrl.gameScoreSettings.Jump = RebindableInput.GetKeyDown("Jump");
             StageCtrl.gameScoreSettings.Magia = RebindableInput.GetKey("Magia");
             StageCtrl.gameScoreSettings.Down = /* RebindableInput.GetKeyDown("Down") ||*/ RebindableInput.GetKey("Down");
             StageCtrl.gameScoreSettings.Up = /*RebindableInput.GetKeyDown("Up")  || */ RebindableInput.GetKey("Up");
-            //这个的话只要按下了攻击键/按住攻击键就算
             StageCtrl.gameScoreSettings.Zattack =/* RebindableInput.GetKeyDown("Zattack") || */ RebindableInput.GetKey("Zattack");
             StageCtrl.gameScoreSettings.Xattack = /* || RebindableInput.GetKeyDown("Xattack") */RebindableInput.GetKey("Xattack");
+
+
+            StageCtrl.gameScoreSettings.Pause = RebindableInput.GetKeyDown("Pause");
+
         }
 
         //如果禁用了输入

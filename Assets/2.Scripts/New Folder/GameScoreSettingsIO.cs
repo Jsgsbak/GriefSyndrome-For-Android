@@ -146,17 +146,24 @@ public class GameScoreSettingsIO : ScriptableObject
     #endregion
 
     #region 玩家设置
+
+    [Header("音量")]
+    public float BGMVol = 0.6f;
+    public float SEVol = 0.7f;
+
     /// <summary>
     /// 魔法少女属性设置
     /// </summary>
     [Header("魔法少女属性设置")]
     [SerializeField] public Variable.MahouShoujo[] mahouShoujos;
 
-    [Header("音量")]
-    public float BGMVol = 0.6f;
-    public float SEVol = 0.7f;
-    #endregion
+    /// <summary>
+    /// 虚拟按键-全部按钮位置大小设置（参考分辨率1010x568)
+    /// </summary>
+    [Header("虚拟按键-全部按钮位置大小设置")]
+    [SerializeField] public Variable.VirtualKeyInputPositionAndScale[] KeyPosScale;
 
+    #endregion
     #region 输入变量管理（所有的按键/屏幕输入的变量都在这里）
     /// <summary>
     /// 水平输入
@@ -171,11 +178,17 @@ public class GameScoreSettingsIO : ScriptableObject
     [HideInInspector] public bool Zattack = false;
     [HideInInspector] public bool Xattack = false;
     [HideInInspector] public bool Magia = false;
+    [HideInInspector] public bool Pause = false;
+    //一下为本测试版临时添加的
+    [HideInInspector] public bool CleanSoul = false;
+    [HideInInspector] public bool CleanVit = false;
+    [HideInInspector] public bool HurtMyself = false;
+
 
     /// <summary>
-    /// 使用屏幕模拟键盘输入，true时禁用键盘输入
+    /// 使用屏幕模拟键盘输入，0时禁用键盘输入 1按钮移动 2圆盘移动
     /// </summary>
-    public bool UseScreenInput = true;
+    public int UseScreenInput = 0;
     #endregion
 
 

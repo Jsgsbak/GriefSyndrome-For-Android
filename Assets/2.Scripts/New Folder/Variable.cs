@@ -132,4 +132,29 @@ public class Variable
     /// 没有参数的通常事件
     /// </summary>
     public class OrdinaryEvent : UnityEvent { }
+
+    /// <summary>
+    /// 虚拟按键-全部按钮位置大小设置（参考分辨率1010x568)
+    /// </summary>
+    [System.Serializable]
+    public class VirtualKeyInputPositionAndScale
+    {
+        public string name = "Button";
+        /// <summary>
+        /// UI内显示的文本
+        /// </summary>
+        [Header("UI内显示的文本")]
+        public string UIName = "Button";
+        /// <summary>
+        /// 设置中用于编辑的Rect
+        /// </summary>
+        [Space]
+        public Rect EditPosition;
+        /// <summary>
+        /// EditPosition经过分辨率修正之后的Rect
+        /// </summary>
+        [HideInInspector]
+        public Rect PositionInUse;
+        }
+
 }
