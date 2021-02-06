@@ -18,7 +18,7 @@ public class BeginningCtrl : MonoBehaviour
 #endif
 
 
-        LoadingCtrl.LoadScene(1, false);
+        LoadingCtrl.LoadScene(1, true);
     }
 
 }

@@ -45,6 +45,13 @@ public class GameScoreSettingsIO : ScriptableObject
     public Variable.PlayerFaceType[] BestTimeFace = new Variable.PlayerFaceType[] { Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null };
     [Header("正在打的周目数")]
     public int lap = 1;
+
+    /// <summary>
+    /// 本次游戏通关了吗
+    /// </summary>
+    [HideInInspector]
+    public bool Success = false;
+
     /// <summary>
     /// 上次游戏的周目数
     /// </summary>
@@ -175,6 +182,7 @@ public class GameScoreSettingsIO : ScriptableObject
     /// 水平输入
     /// </summary>
     [HideInInspector] public int Horizontal = 0;
+    [HideInInspector] public float joystick = 1f;
     /// <summary>
     /// 穿墙（地板）的时候，按↓的时候用的
     /// </summary>
@@ -208,6 +216,18 @@ public class GameScoreSettingsIO : ScriptableObject
         SaveGame.DeleteAll();
         Load();
     }
+
+    /// <summary>
+    /// ApplyEditPositionToRawPosition
+    /// </summary>
+    [ContextMenu("ApplyEditPositionToRawPosition")]
+    public void ApplyEditPositionToRawPosition()
+    {
+        for (int i = 0; i < KeyPosScale.Length; i++)
+        {
+            KeyPosScale[i].RawPosition = KeyPosScale[i].EditPosition;
+        }
+    }
 #endif
 
     /// <summary>
@@ -219,6 +239,7 @@ public class GameScoreSettingsIO : ScriptableObject
         //用于恢复开发时便于调试而弄的参数
 
         Score = new int[3] { 0, 0, 0 };
+        Success = false;
         Time = 0;
         SelectedGirlInGame = new Variable.PlayerFaceType[3] { Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null };
         BattlingMajo = Variable.Majo.Gertrud;
@@ -226,6 +247,7 @@ public class GameScoreSettingsIO : ScriptableObject
         MagicalGirlsDie = new bool[] { false, false, false, false, false };
         Level = new int[] { 1, 1, 1 };
         AllDie = false;
+        joystick = 1f;
     }
 
     /// <summary>
@@ -273,8 +295,15 @@ public class GameScoreSettingsIO : ScriptableObject
         //设置
         SaveGame.Save("BGMVol", BGMVol);
         SaveGame.Save("SEVol", SEVol);
+        SaveGame.Save("UseScreenInput", UseScreenInput);
+        for (int i = 0; i < KeyPosScale.Length; i++)
+        {
+            SaveGame.Save(string.Format("KeyPosScale_{0}_Rect", i.ToString()), KeyPosScale[i].EditPosition);
+        }
+
 
         Debug.Log("存档结束");
+
         yield return 0f;
     }
 
@@ -296,6 +325,12 @@ public class GameScoreSettingsIO : ScriptableObject
         //设置
         BGMVol = SaveGame.Load("BGMVol", 0.6f);
         SEVol = SaveGame.Load("SEVol", 0.7f);
+        SaveGame.Load("UseScreenInput", 2);
+        for (int i = 0; i < KeyPosScale.Length; i++)
+        {
+            SaveGame.Load(string.Format("KeyPosScale_{0}_Rect", i.ToString()), KeyPosScale[i].RawPosition);
+        }
+
     }
 
     /// <summary>

@@ -112,7 +112,7 @@ public class TitleCtrl : MonoBehaviour
         {
 
             //存档与设置获取
-            gameScoreSettingsIO.Load();//这里确实要堵一下主线程
+          //  gameScoreSettingsIO.Load();//这里确实要堵一下主线程
             /*初始化游戏（用于游戏刚开始的初始化。）
              * 游戏中途返回标题：Majo场景的Return to Title按钮执行初始化
              * 游戏结束（显示staff）：由StaffCtrl执行在返回标题的一瞬间初始化

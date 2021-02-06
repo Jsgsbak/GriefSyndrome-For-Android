@@ -225,6 +225,14 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         BanJump = IsAttack[0] || IsAttack[1] || IsAttack[2] || StageCtrl.gameScoreSettings.Zattack || StageCtrl.gameScoreSettings.Magia || StageCtrl.gameScoreSettings.Xattack;//在这里统一弄一个，直接在这里禁用移动，不再在各种攻击方法和动画事件中禁用了
 
         #endregion
+
+
+        #region 测试用按钮
+        if (StageCtrl.gameScoreSettings.CleanSoul)
+        {
+         //   StageCtrl.gameScoreSettings.mah
+        }
+        #endregion
     }
 
     #region  基础控制器
@@ -408,6 +416,14 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         }*/
     }
 
+    /// <summary>
+    /// 自带joystick 
+    /// </summary>
+    /// <param name="Speed"></param>
+    /// <param name="UseTimeDelta"></param>
+    /// <param name="Slope"></param>
+    /// <param name="Direction"></param>
+    /// <param name="space"></param>
     public void Move(float Speed, bool UseTimeDelta, Vector2 Slope, Vector2 Direction, Space space = Space.Self)
     {
 
@@ -415,11 +431,11 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
         if (UseTimeDelta)
         {
-            tr.Translate(Direction * Slope * Speed * MoveSpeedRatio * Time.deltaTime, space);
+            tr.Translate(Direction * Slope * Speed * StageCtrl.gameScoreSettings.joystick * MoveSpeedRatio * Time.deltaTime, space);
         }
         else
         {
-            tr.Translate(Direction * Slope * Speed * MoveSpeedRatio, space);
+            tr.Translate(Direction * Slope * Speed * StageCtrl.gameScoreSettings.joystick *  MoveSpeedRatio, space);
         }
     }
 

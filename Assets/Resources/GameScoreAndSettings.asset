@@ -23,6 +23,7 @@ MonoBehaviour:
   BestTime: 0
   BestTimeFace: 070000000700000007000000
   lap: 1
+  Success: 0
   LastLap: 1
   SelectedGirlInGame: 070000000700000007000000
   DoesMajoOrShoujoDie: 0
@@ -48,8 +49,8 @@ MonoBehaviour:
   AllDie: 0
   BattlingMajo: 0
   NewestMajo: 0
-  MajoSceneToTitle: 1
-  BGMVol: 0.6
+  MajoSceneToTitle: 0
+  BGMVol: 1
   SEVol: 0.7
   mahouShoujos:
   - name: Homura
@@ -163,6 +164,12 @@ MonoBehaviour:
       y: 361.26758
       width: 60.17822
       height: 60.211266
+    RawPosition:
+      serializedVersion: 2
+      x: 0
+      y: 360
+      width: 60
+      height: 60
     AllowPress: 1
   - name: Right Button
     UIName: "\u2192"
@@ -178,6 +185,12 @@ MonoBehaviour:
       y: 361.26758
       width: 60.17822
       height: 60.211266
+    RawPosition:
+      serializedVersion: 2
+      x: 140
+      y: 360
+      width: 60
+      height: 60
     AllowPress: 1
   - name: Up
     UIName: "\u2191"
@@ -193,6 +206,12 @@ MonoBehaviour:
       y: 291.02112
       width: 60.17822
       height: 60.211266
+    RawPosition:
+      serializedVersion: 2
+      x: 70
+      y: 290
+      width: 60
+      height: 60
     AllowPress: 1
   - name: Down
     UIName: "\u2193"
@@ -208,6 +227,12 @@ MonoBehaviour:
       y: 431.51407
       width: 60.17822
       height: 60.211266
+    RawPosition:
+      serializedVersion: 2
+      x: 70
+      y: 430
+      width: 60
+      height: 60
     AllowPress: 1
   - name: Jump
     UIName: Jump
@@ -223,6 +248,12 @@ MonoBehaviour:
       y: 501.76053
       width: 50.148518
       height: 50.176056
+    RawPosition:
+      serializedVersion: 2
+      x: 749.8
+      y: 500
+      width: 50
+      height: 50
     AllowPress: 0
   - name: Weak
     UIName: Weak
@@ -238,6 +269,12 @@ MonoBehaviour:
       y: 482.49292
       width: 70.207924
       height: 70.246475
+    RawPosition:
+      serializedVersion: 2
+      x: 925.1
+      y: 480.8
+      width: 70
+      height: 70
     AllowPress: 1
   - name: Strong
     UIName: Strong
@@ -253,6 +290,12 @@ MonoBehaviour:
       y: 391.57394
       width: 70.207924
       height: 70.246475
+    RawPosition:
+      serializedVersion: 2
+      x: 925.1
+      y: 390.2
+      width: 70
+      height: 70
     AllowPress: 1
   - name: Magia
     UIName: Magia
@@ -268,6 +311,12 @@ MonoBehaviour:
       y: 434.02286
       width: 80.237625
       height: 80.281685
+    RawPosition:
+      serializedVersion: 2
+      x: 832.1
+      y: 432.5
+      width: 80
+      height: 80
     AllowPress: 1
   - name: Pause
     UIName: Pause
@@ -283,6 +332,12 @@ MonoBehaviour:
       y: 82.08803
       width: 60.17822
       height: 60.211266
+    RawPosition:
+      serializedVersion: 2
+      x: 2.5
+      y: 81.8
+      width: 60
+      height: 60
     AllowPress: 0
   - name: CleanSoul
     UIName: 0  Soul
@@ -298,6 +353,12 @@ MonoBehaviour:
       y: 82.08803
       width: 60.17822
       height: 60.211266
+    RawPosition:
+      serializedVersion: 2
+      x: 76.1
+      y: 81.8
+      width: 60
+      height: 60
     AllowPress: 0
   - name: CleanVit
     UIName: 0  Vit
@@ -313,6 +374,12 @@ MonoBehaviour:
       y: 82.08803
       width: 60.17822
       height: 60.211266
+    RawPosition:
+      serializedVersion: 2
+      x: 155.03
+      y: 81.8
+      width: 60
+      height: 60
     AllowPress: 0
   - name: HurtMe
     UIName: HurtMe
@@ -328,9 +395,16 @@ MonoBehaviour:
       y: 82.08803
       width: 60.17822
       height: 60.211266
+    RawPosition:
+      serializedVersion: 2
+      x: 236.4
+      y: 81.8
+      width: 60
+      height: 60
     AllowPress: 0
   UseScreenInput: 2
   Horizontal: 0
+  joystick: 1
   Down: 0
   Up: 0
   Jump: 0

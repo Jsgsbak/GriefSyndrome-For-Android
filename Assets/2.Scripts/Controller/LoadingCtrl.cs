@@ -18,7 +18,11 @@ public class LoadingCtrl : MonoBehaviour
 	//用于异步加载场景
 	public Slider loadingSlider;
 
+	public GameScoreSettingsIO gameScoreSettings;//尽在这里弄一个单利
+
+
 	public Text loadingText;
+	public Text StatusText;
 
 	private float loadingSpeed = 1;
 
@@ -29,8 +33,6 @@ public class LoadingCtrl : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
-		//内存垃圾回收
-		System.GC.Collect();
 
 		loadingSlider.value = 0.0f;
 
@@ -46,12 +48,13 @@ public class LoadingCtrl : MonoBehaviour
 	/// </summary>
 	/// <param name="id">场景id</param>
 	/// <param name="UseLoadScene">使用有QB的加载场景吗</param>
-	public static void LoadScene(int id,bool UseLoadScene = true)
+	public static void LoadScene(int id,bool AsyncLoadScene = true)
     {
 		//设置好目标场景
 		Target = id;
 
 #if UNITY_EDITOR
+
 		//检查是否存在BGMCtrl
 		if (GameObject.FindObjectOfType<EasyBGMCtrl>() != null)
 		{
@@ -63,7 +66,7 @@ public class LoadingCtrl : MonoBehaviour
 			EasyBGMCtrl.easyBGMCtrl.PlayBGM(-1);
 #endif
 
-		if (UseLoadScene)
+		if (AsyncLoadScene)
         {
 			//然后进入Loading场景
 			SceneManager.LoadScene("Loading");
@@ -78,6 +81,30 @@ public class LoadingCtrl : MonoBehaviour
 
 	IEnumerator AsyncLoading()
 	{
+		StatusText.text = "载入游戏设置与状态";
+		yield return gameScoreSettings = (GameScoreSettingsIO)Resources.Load("GameScoreAndSettings");
+
+#if UNITY_EDITOR
+		gameScoreSettings.AllInitial();
+#endif
+
+
+		//游戏还没通关
+		if (!gameScoreSettings.Success)
+        {
+			StatusText.text = "加载存档与设置";
+			gameScoreSettings.Load();
+		}
+		else
+        {
+			StatusText.text = "保存存档与设置";
+			gameScoreSettings.Save();
+		}
+
+		StatusText.text = "垃圾回收（Beta）";
+		System.GC.Collect();
+
+		StatusText.text = "加载场景";
 		operation = SceneManager.LoadSceneAsync(Target);
 		//阻止当加载完成自动切换
 		operation.allowSceneActivation = false;

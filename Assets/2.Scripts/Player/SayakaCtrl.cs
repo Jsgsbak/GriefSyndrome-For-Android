@@ -139,7 +139,7 @@ public class SayakaCtrl : APlayerCtrl
     public override void OrdinaryX()
     {
         //从通常状态进入到X攻击准备状态
-        if ( StageCtrl.gameScoreSettings.Horizontal == 0 &&!IsAttack[1] && !StageCtrl.gameScoreSettings.Up && !StageCtrl.gameScoreSettings.Down && StageCtrl.gameScoreSettings.Xattack && !BanWalk && !XordinaryDash && Time.timeSinceLevelLoad -OrdinaryXTimer >= 0.3F)
+        if ( StageCtrl.gameScoreSettings.Horizontal == 0 && !IsAttack[1] && !StageCtrl.gameScoreSettings.Up && !StageCtrl.gameScoreSettings.Down && StageCtrl.gameScoreSettings.Xattack && !BanWalk && !XordinaryDash && Time.timeSinceLevelLoad -OrdinaryXTimer >= 0.3F)
         {
             animator.SetBool("OrdinaryXattackPrepare", true);
             CancelJump();//直接中断跳跃并且不恢复

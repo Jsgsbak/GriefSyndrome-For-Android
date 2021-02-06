@@ -9,18 +9,30 @@ public class CameraAndScreenAndInput : MonoBehaviour
 {
     bool[] Button;
     int ButtonLength;
+    public GameObject Joystick;
+
 
     private void Start()
     {
         //从游戏设置中获取按键位置和大小
         Button = new bool[StageCtrl.gameScoreSettings.KeyPosScale.Length];
        CorrectScreenInput();
+        
+        //根据需要卸载虚拟按键
+        if(StageCtrl.gameScoreSettings.UseScreenInput == 2)
+        {
+            Joystick.SetActive(true);
+        }
+        else
+        {
+            DestroyImmediate(Joystick);
+        }
 
         //缓存一下长度
          ButtonLength = StageCtrl.gameScoreSettings.KeyPosScale.Length;
 
-        
-
+        //游戏一开始先运行一下，修复不能停止移动的bug
+        MoveEnd();
     }
 
 
@@ -62,9 +74,7 @@ public class CameraAndScreenAndInput : MonoBehaviour
             }
             else 
             {
-                //不允许长按的键
-                Button[i] = GUI.Button(StageCtrl.gameScoreSettings.KeyPosScale[i].PositionInUse, StageCtrl.gameScoreSettings.KeyPosScale[i].UIName);
-
+                    Button[i] = GUI.Button(StageCtrl.gameScoreSettings.KeyPosScale[i].PositionInUse, StageCtrl.gameScoreSettings.KeyPosScale[i].UIName);
             }
 
             //单独为移动写的
@@ -135,6 +145,40 @@ public class CameraAndScreenAndInput : MonoBehaviour
             StageCtrl.gameScoreSettings.KeyPosScale[i].PositionInUse = new Rect(StageCtrl.gameScoreSettings.KeyPosScale[i].EditPosition.x * CorrectWidth, StageCtrl.gameScoreSettings.KeyPosScale[i].EditPosition.y * CorrectHeight, StageCtrl.gameScoreSettings.KeyPosScale[i].EditPosition.width * CorrectWidth, StageCtrl.gameScoreSettings.KeyPosScale[i].EditPosition.height* CorrectHeight);
         }
 
+
+    }
+
+    /// <summary>
+    /// 虚拟按键输入
+    /// </summary>
+    /// <param name="vector2"></param>
+    public void JoystickInput(Vector2 vector2)
+    {
+        //这个相当于为虚拟摇杆额外添加了移动灵敏度的属性（控制了速度的绝对值）
+        StageCtrl.gameScoreSettings.joystick = Mathf.Abs( vector2.x);
+
+        //这个是为了得到速度的方向以及兼容其他的输入方式
+        if(vector2.x > 0.1f)
+        {
+            StageCtrl.gameScoreSettings.Horizontal = 1;
+        }
+        else if (vector2.x < 0.1f)
+        {
+            StageCtrl.gameScoreSettings.Horizontal = -1;
+        }
+        else if(vector2.x <= 0.1f || vector2.x >= -0.1f)
+        {
+            StageCtrl.gameScoreSettings.Horizontal = 0;
+        }
+        StageCtrl.gameScoreSettings.Up = vector2.y >= 0.8f;
+        StageCtrl.gameScoreSettings.Down = vector2.y <= -0.8f;
+    }
+
+    public void MoveEnd()
+    {
+        StageCtrl.gameScoreSettings.Up = false;
+        StageCtrl.gameScoreSettings.Down = false;
+        StageCtrl.gameScoreSettings.Horizontal = 0;
 
     }
 }

@@ -157,6 +157,11 @@ public class Variable
         public Rect PositionInUse;
 
         /// <summary>
+        /// 默认设置，重置游戏之后读取这个设置
+        /// </summary>
+        public Rect RawPosition;
+
+        /// <summary>
         /// 允许长按
         /// </summary>
         [Header("允许长按")]
