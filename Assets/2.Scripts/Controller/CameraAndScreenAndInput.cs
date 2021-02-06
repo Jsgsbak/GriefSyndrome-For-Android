@@ -8,12 +8,19 @@ using UnityEngine;
 public class CameraAndScreenAndInput : MonoBehaviour
 {
     bool[] Button;
+    int ButtonLength;
 
     private void Start()
     {
         //从游戏设置中获取按键位置和大小
         Button = new bool[StageCtrl.gameScoreSettings.KeyPosScale.Length];
        CorrectScreenInput();
+
+        //缓存一下长度
+         ButtonLength = StageCtrl.gameScoreSettings.KeyPosScale.Length;
+
+        
+
     }
 
 
@@ -34,22 +41,42 @@ public class CameraAndScreenAndInput : MonoBehaviour
             return;
         }
 
-        //缓存一下
-        int ButtonLength = StageCtrl.gameScoreSettings.KeyPosScale.Length;
+
+
         for (int i = 0; i < ButtonLength; i++)
         {
+            if(i == 0 | i == 1 | i == 2 | i == 3 & StageCtrl.gameScoreSettings.UseScreenInput == 2)
+            {
+                //使用虚拟摇杆的时候，直接跳过箭头的绘制
+                continue;
+            }
+
+
+
             //按键名字设置（UI上显示的）   预先弄一个布尔值是为了让那些按钮一直显示（并且方便后续处理）
             //除了部分按键外（跳跃键，暂停键，测试用soul清零键，测试用hp清零键，测试用通关键），所有按键都使用RepeatButton，需要得到“按下”属性的在脚本中自己限制
-            Button[i] = GUI.RepeatButton(StageCtrl.gameScoreSettings.KeyPosScale[i].PositionInUse, StageCtrl.gameScoreSettings.KeyPosScale[i].UIName);
-           
-            //每个按钮的事件在这里写
+             if(StageCtrl.gameScoreSettings.KeyPosScale[i].AllowPress)
+            {
+                //允许长按的键
+                Button[i] = GUI.RepeatButton(StageCtrl.gameScoreSettings.KeyPosScale[i].PositionInUse, StageCtrl.gameScoreSettings.KeyPosScale[i].UIName);
+            }
+            else 
+            {
+                //不允许长按的键
+                Button[i] = GUI.Button(StageCtrl.gameScoreSettings.KeyPosScale[i].PositionInUse, StageCtrl.gameScoreSettings.KeyPosScale[i].UIName);
+
+            }
+
+            //单独为移动写的
             if (Button[i])
             {
                 switch (i)
                 {
+                    //左移
                     case 0:
                         StageCtrl.gameScoreSettings.Horizontal = -1;
                         break;
+                        //右移
                     case 1:
                         StageCtrl.gameScoreSettings.Horizontal = 1;
                         break;
@@ -68,7 +95,28 @@ public class CameraAndScreenAndInput : MonoBehaviour
                 }
 
             }
+
+
+
         }
+
+        //布尔值得按键输入
+        StageCtrl.gameScoreSettings.Up = Button[2];
+        StageCtrl.gameScoreSettings.Down = Button[3];
+        StageCtrl.gameScoreSettings.Jump = Button[4];
+        StageCtrl.gameScoreSettings.Zattack = Button[5];
+        StageCtrl.gameScoreSettings.Xattack = Button[6];
+        StageCtrl.gameScoreSettings.Magia = Button[7];
+        StageCtrl.gameScoreSettings.Pause = Button[8];
+        StageCtrl.gameScoreSettings.CleanSoul = Button[9];
+        StageCtrl.gameScoreSettings.CleanVit = Button[10];
+        StageCtrl.gameScoreSettings.HurtMyself = Button[11];
+
+
+
+
+
+
 
     }
 

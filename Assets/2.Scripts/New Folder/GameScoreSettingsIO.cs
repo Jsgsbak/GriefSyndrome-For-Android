@@ -163,6 +163,12 @@ public class GameScoreSettingsIO : ScriptableObject
     [Header("虚拟按键-全部按钮位置大小设置")]
     [SerializeField] public Variable.VirtualKeyInputPositionAndScale[] KeyPosScale;
 
+    /// <summary>
+    /// 使用屏幕模拟键盘输入，0时禁用键盘输入 1按钮移动 2圆盘移动
+    /// </summary>
+    public int UseScreenInput = 0;
+
+
     #endregion
     #region 输入变量管理（所有的按键/屏幕输入的变量都在这里）
     /// <summary>
@@ -185,10 +191,6 @@ public class GameScoreSettingsIO : ScriptableObject
     [HideInInspector] public bool HurtMyself = false;
 
 
-    /// <summary>
-    /// 使用屏幕模拟键盘输入，0时禁用键盘输入 1按钮移动 2圆盘移动
-    /// </summary>
-    public int UseScreenInput = 0;
     #endregion
 
 

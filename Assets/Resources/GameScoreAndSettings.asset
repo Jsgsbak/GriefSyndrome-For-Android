@@ -160,9 +160,10 @@ MonoBehaviour:
     PositionInUse:
       serializedVersion: 2
       x: 0
-      y: 360
-      width: 60
-      height: 60
+      y: 361.26758
+      width: 60.17822
+      height: 60.211266
+    AllowPress: 1
   - name: Right Button
     UIName: "\u2192"
     EditPosition:
@@ -173,10 +174,11 @@ MonoBehaviour:
       height: 60
     PositionInUse:
       serializedVersion: 2
-      x: 140
-      y: 360
-      width: 60
-      height: 60
+      x: 140.41585
+      y: 361.26758
+      width: 60.17822
+      height: 60.211266
+    AllowPress: 1
   - name: Up
     UIName: "\u2191"
     EditPosition:
@@ -187,10 +189,11 @@ MonoBehaviour:
       height: 60
     PositionInUse:
       serializedVersion: 2
-      x: 70
-      y: 290
-      width: 60
-      height: 60
+      x: 70.207924
+      y: 291.02112
+      width: 60.17822
+      height: 60.211266
+    AllowPress: 1
   - name: Down
     UIName: "\u2193"
     EditPosition:
@@ -201,10 +204,11 @@ MonoBehaviour:
       height: 60
     PositionInUse:
       serializedVersion: 2
-      x: 70
-      y: 430
-      width: 60
-      height: 60
+      x: 70.207924
+      y: 431.51407
+      width: 60.17822
+      height: 60.211266
+    AllowPress: 1
   - name: Jump
     UIName: Jump
     EditPosition:
@@ -215,10 +219,11 @@ MonoBehaviour:
       height: 50
     PositionInUse:
       serializedVersion: 2
-      x: 749.8
-      y: 500
-      width: 50
-      height: 50
+      x: 752.02716
+      y: 501.76053
+      width: 50.148518
+      height: 50.176056
+    AllowPress: 0
   - name: Weak
     UIName: Weak
     EditPosition:
@@ -229,10 +234,11 @@ MonoBehaviour:
       height: 70
     PositionInUse:
       serializedVersion: 2
-      x: 925.1
-      y: 480.8
-      width: 70
-      height: 70
+      x: 927.84784
+      y: 482.49292
+      width: 70.207924
+      height: 70.246475
+    AllowPress: 1
   - name: Strong
     UIName: Strong
     EditPosition:
@@ -243,10 +249,11 @@ MonoBehaviour:
       height: 70
     PositionInUse:
       serializedVersion: 2
-      x: 925.1
-      y: 390.2
-      width: 70
-      height: 70
+      x: 927.84784
+      y: 391.57394
+      width: 70.207924
+      height: 70.246475
+    AllowPress: 1
   - name: Magia
     UIName: Magia
     EditPosition:
@@ -257,10 +264,11 @@ MonoBehaviour:
       height: 80
     PositionInUse:
       serializedVersion: 2
-      x: 832.1
-      y: 432.5
-      width: 80
-      height: 80
+      x: 834.5716
+      y: 434.02286
+      width: 80.237625
+      height: 80.281685
+    AllowPress: 1
   - name: Pause
     UIName: Pause
     EditPosition:
@@ -271,10 +279,11 @@ MonoBehaviour:
       height: 60
     PositionInUse:
       serializedVersion: 2
-      x: 2.5
-      y: 81.8
-      width: 60
-      height: 60
+      x: 2.5074258
+      y: 82.08803
+      width: 60.17822
+      height: 60.211266
+    AllowPress: 0
   - name: CleanSoul
     UIName: 0  Soul
     EditPosition:
@@ -285,10 +294,11 @@ MonoBehaviour:
       height: 60
     PositionInUse:
       serializedVersion: 2
-      x: 76.1
-      y: 81.8
-      width: 60
-      height: 60
+      x: 76.32604
+      y: 82.08803
+      width: 60.17822
+      height: 60.211266
+    AllowPress: 0
   - name: CleanVit
     UIName: 0  Vit
     EditPosition:
@@ -299,10 +309,11 @@ MonoBehaviour:
       height: 60
     PositionInUse:
       serializedVersion: 2
-      x: 155.03
-      y: 81.8
-      width: 60
-      height: 60
+      x: 155.4905
+      y: 82.08803
+      width: 60.17822
+      height: 60.211266
+    AllowPress: 0
   - name: HurtMe
     UIName: HurtMe
     EditPosition:
@@ -313,10 +324,12 @@ MonoBehaviour:
       height: 60
     PositionInUse:
       serializedVersion: 2
-      x: 236.4
-      y: 81.8
-      width: 60
-      height: 60
+      x: 237.10219
+      y: 82.08803
+      width: 60.17822
+      height: 60.211266
+    AllowPress: 0
+  UseScreenInput: 2
   Horizontal: 0
   Down: 0
   Up: 0
@@ -328,4 +341,3 @@ MonoBehaviour:
   CleanSoul: 0
   CleanVit: 0
   HurtMyself: 0
-  UseScreenInput: 1

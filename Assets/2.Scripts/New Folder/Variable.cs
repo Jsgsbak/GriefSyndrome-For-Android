@@ -155,6 +155,12 @@ public class Variable
         /// </summary>
         [HideInInspector]
         public Rect PositionInUse;
+
+        /// <summary>
+        /// 允许长按
+        /// </summary>
+        [Header("允许长按")]
+        public bool AllowPress = true;
         }
 
 }
