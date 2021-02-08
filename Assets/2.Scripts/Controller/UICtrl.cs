@@ -255,7 +255,6 @@ public class UICtrl : MonoBehaviour
         //确认音效
         EasyBGMCtrl.easyBGMCtrl.PlaySE(0);
         EasyBGMCtrl.easyBGMCtrl.PlayBGM(Random.Range(0, EasyBGMCtrl.easyBGMCtrl.BGM.Length));
-        ShowRandomBGM.text = string.Format("正在播放：{0}", EasyBGMCtrl.easyBGMCtrl.BGMPlayer.clip.name);
     }
 
     /// <summary>
@@ -355,4 +354,52 @@ public class UICtrl : MonoBehaviour
             LoadingCtrl.LoadScene(1, false);
         }
     }
+
+
+    #region 0.0.7临时用
+    public void JumpUp()
+    {
+        StageCtrl.gameScoreSettings.Jump = false;
+    }
+    public void CleanSoulUp()
+    {
+        StageCtrl.gameScoreSettings.CleanSoul = false;
+    }
+
+    public void cleanvitUp()
+    {
+        StageCtrl.gameScoreSettings.CleanVit = false;
+    }
+
+    public void HurtMeUp()
+    {
+        StageCtrl.gameScoreSettings.HurtMyself = false;
+    }
+    public void SucceedUp()
+    {
+        StageCtrl.gameScoreSettings.Succeed = false;
+    }
+    public void JumpDown()
+    {
+        StageCtrl.gameScoreSettings.Jump = true;
+    }
+    public void CleanSoulDOwn()
+    {
+        StageCtrl.gameScoreSettings.CleanSoul = true;
+    }
+
+    public void cleanvitDown()
+    {
+        StageCtrl.gameScoreSettings.CleanVit = true;
+    }
+
+    public void HurtMeDown()
+    {
+        StageCtrl.gameScoreSettings.HurtMyself = true;
+    }
+    public void SucceedDOwn()
+    {
+        StageCtrl.gameScoreSettings.Succeed = true;
+    }
+    #endregion
 }

@@ -241,23 +241,9 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
         #endregion
 
-        #region 0.0.7版测试用按钮
-        if (StageCtrl.gameScoreSettings.CleanSoul && !StageCtrl.gameScoreSettings.DoesMajoOrShoujoDie)
-        {
-            GetHurt(56756756);
-           StageCtrl. gameScoreSettings.CleanSoul = true;
-        }
-        else if (StageCtrl.gameScoreSettings.CleanVit)
-        {
-            GetHurt(StageCtrl.gameScoreSettings.GirlsVit[MahouShoujoId]);
-        }
-        else if (StageCtrl.gameScoreSettings.HurtMyself)
-        {
-            GetHurt(20);
-        }
 
-        #endregion
     }
+           
 
     #region  基础控制器
     /// <summary>
@@ -766,7 +752,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// <summary>
     /// 受伤（调试版）
     /// </summary>
-    void GetHurt(int damage)
+   public void GetHurt(int damage)
     {
         //无敌不执行后续操作
         if (IsInvincible)

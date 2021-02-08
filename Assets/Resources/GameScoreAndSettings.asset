@@ -27,7 +27,7 @@ MonoBehaviour:
   LastLap: 1
   SelectedGirlInGame: 040000000700000007000000
   GirlsLevel: 0100000001000000010000000100000001000000
-  GirlSoulLimit: 00000000000000000000000000000000b74d0000
+  GirlSoulLimit: 00000000000000000000000000000000dd4d0000
   GirlsVit: 0000000000000000000000000000000058000000
   GirlsPow: 000000000000000000000000000000000a000000
   MagiaKeyDown: 000000
@@ -48,7 +48,7 @@ MonoBehaviour:
   AllDie: 0
   BattlingMajo: 0
   NewestMajo: 0
-  MajoSceneToTitle: 1
+  MajoSceneToTitle: 0
   BGMVol: 0.6
   SEVol: 0.7
   mahouShoujos:
@@ -160,9 +160,9 @@ MonoBehaviour:
     PositionInUse:
       serializedVersion: 2
       x: 0
-      y: 344.15494
-      width: 57.38614
-      height: 57.359154
+      y: 684.507
+      width: 139.00989
+      height: 114.0845
     RawPosition:
       serializedVersion: 2
       x: 0
@@ -180,10 +180,10 @@ MonoBehaviour:
       height: 60
     PositionInUse:
       serializedVersion: 2
-      x: 133.90099
-      y: 344.15494
-      width: 57.38614
-      height: 57.359154
+      x: 324.3564
+      y: 684.507
+      width: 139.00989
+      height: 114.0845
     RawPosition:
       serializedVersion: 2
       x: 140
@@ -201,10 +201,10 @@ MonoBehaviour:
       height: 60
     PositionInUse:
       serializedVersion: 2
-      x: 66.95049
-      y: 277.2359
-      width: 57.38614
-      height: 57.359154
+      x: 162.1782
+      y: 551.40845
+      width: 139.00989
+      height: 114.0845
     RawPosition:
       serializedVersion: 2
       x: 70
@@ -222,10 +222,10 @@ MonoBehaviour:
       height: 60
     PositionInUse:
       serializedVersion: 2
-      x: 66.95049
-      y: 411.07394
-      width: 57.38614
-      height: 57.359154
+      x: 162.1782
+      y: 817.60565
+      width: 139.00989
+      height: 114.0845
     RawPosition:
       serializedVersion: 2
       x: 70
@@ -243,10 +243,10 @@ MonoBehaviour:
       height: 50
     PositionInUse:
       serializedVersion: 2
-      x: 717.13544
-      y: 477.99295
-      width: 47.82178
-      height: 47.799294
+      x: 1737.1603
+      y: 950.7042
+      width: 115.84158
+      height: 95.07042
     RawPosition:
       serializedVersion: 2
       x: 749.8
@@ -264,10 +264,10 @@ MonoBehaviour:
       height: 70
     PositionInUse:
       serializedVersion: 2
-      x: 884.7986
-      y: 459.638
-      width: 66.95049
-      height: 66.919014
+      x: 2143.3008
+      y: 914.19714
+      width: 162.1782
+      height: 133.09859
     RawPosition:
       serializedVersion: 2
       x: 925.1
@@ -285,10 +285,10 @@ MonoBehaviour:
       height: 70
     PositionInUse:
       serializedVersion: 2
-      x: 884.7986
-      y: 373.02573
-      width: 66.95049
-      height: 66.919014
+      x: 2143.3008
+      y: 741.92957
+      width: 162.1782
+      height: 133.09859
     RawPosition:
       serializedVersion: 2
       x: 925.1
@@ -306,10 +306,10 @@ MonoBehaviour:
       height: 80
     PositionInUse:
       serializedVersion: 2
-      x: 795.85004
-      y: 413.4639
-      width: 76.51485
-      height: 76.478874
+      x: 1927.8354
+      y: 822.35913
+      width: 185.34653
+      height: 152.11267
     RawPosition:
       serializedVersion: 2
       x: 832.1
@@ -327,10 +327,10 @@ MonoBehaviour:
       height: 60
     PositionInUse:
       serializedVersion: 2
-      x: 2.391089
-      y: 78.19965
-      width: 57.38614
-      height: 57.359154
+      x: 5.792079
+      y: 155.53522
+      width: 139.00989
+      height: 114.0845
     RawPosition:
       serializedVersion: 2
       x: 2.5
@@ -348,10 +348,10 @@ MonoBehaviour:
       height: 60
     PositionInUse:
       serializedVersion: 2
-      x: 72.78475
-      y: 78.19965
-      width: 57.38614
-      height: 57.359154
+      x: 176.31088
+      y: 155.53522
+      width: 139.00989
+      height: 114.0845
     RawPosition:
       serializedVersion: 2
       x: 76.1
@@ -369,10 +369,10 @@ MonoBehaviour:
       height: 60
     PositionInUse:
       serializedVersion: 2
-      x: 148.27621
-      y: 78.19965
-      width: 57.38614
-      height: 57.359154
+      x: 359.1784
+      y: 155.53522
+      width: 139.00989
+      height: 114.0845
     RawPosition:
       serializedVersion: 2
       x: 155.03
@@ -390,10 +390,10 @@ MonoBehaviour:
       height: 60
     PositionInUse:
       serializedVersion: 2
-      x: 226.10138
-      y: 78.19965
-      width: 57.38614
-      height: 57.359154
+      x: 547.699
+      y: 155.53522
+      width: 139.00989
+      height: 114.0845
     RawPosition:
       serializedVersion: 2
       x: 236.4
@@ -411,10 +411,10 @@ MonoBehaviour:
       height: 60
     PositionInUse:
       serializedVersion: 2
-      x: 308.24963
-      y: 78.19965
-      width: 57.38614
-      height: 57.359154
+      x: 746.69165
+      y: 155.53522
+      width: 139.00989
+      height: 114.0845
     RawPosition:
       serializedVersion: 2
       x: 322.29
@@ -423,6 +423,7 @@ MonoBehaviour:
       height: 60
     AllowPress: 0
   UseScreenInput: 2
+  SettingsForJoyStick: {x: 8.14, y: 17.2, z: 130, w: 80}
   joystick: {x: 0, y: 0}
   Horizontal: 0
   Down: 0

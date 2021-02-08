@@ -29,7 +29,6 @@ public class TitleCtrl : MonoBehaviour
     public Button RandomStaff;
     public Slider BGMVol;
     public Slider SEVol;
-
     /// <summary>
     /// 场景切换控制 顺序：MainTitle，SelectMajo，SelectMaigcalGirl
     /// </summary>
@@ -103,8 +102,6 @@ public class TitleCtrl : MonoBehaviour
             easyBGMCtrl.IsClone = true;
         }
 #endif
-
-
 
         //用于防止多次不必要执行一些操作
         //刚打开游戏/staff返回到标题，并不是从魔女场景中返回

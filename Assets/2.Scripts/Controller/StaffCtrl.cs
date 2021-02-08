@@ -15,12 +15,6 @@ public class StaffCtrl : MonoBehaviour
 
     RectTransform[] StaffRectTr = new RectTransform[2];
 
-    /// <summary>
-    /// 提示正在下载staff的那个
-    /// </summary>
-    public GameObject s;
-
-   [SerializeField] bool IsOnline = true;
 
     [Header("结局图")]
     /// <summary>
@@ -67,8 +61,6 @@ public class StaffCtrl : MonoBehaviour
 
         //存档
         StartCoroutine(GetText());
-        //告知用户在下载
-        s.SetActive(true);
 
         //背景图与BGM
         SetConcImageAndBGM();
@@ -153,13 +145,14 @@ public class StaffCtrl : MonoBehaviour
         StaffRectTr[0].SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, staff[0].preferredHeight);
         StaffRectTr[1].SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, staff[1].preferredHeight);
 
-        //取消下载提示的显示，另外还用来通知staff滚动
-        s.SetActive(false);
 
         //最后，逐渐显现结局图
         image.gameObject.SetActive(true);
+     
         for (int i = 0; i < 10; i++)
         {
+            image.gameObject.SetActive(true);
+
             image.color = new Color(1f, 1f, 1f, image.color.a + 0.1f);
 
             yield return new WaitForSeconds(0.1f);
@@ -173,13 +166,13 @@ public class StaffCtrl : MonoBehaviour
     {
 
         //staff被激活，开始滚动 
-        if (!s.gameObject.active && Mathf.Abs(StaffRectTr[0].localPosition.y - StaffRectTr[0].sizeDelta.y) > 0.1f)
+        if ( Mathf.Abs(StaffRectTr[0].localPosition.y - StaffRectTr[0].sizeDelta.y) > 0.1f)
         {
             StaffRectTr[0].Translate(Vector2.up * 0.22f * Time.deltaTime);
         }
 
         //staff被激活，开始滚动
-        if (!s.gameObject.active && Mathf.Abs(StaffRectTr[1].localPosition.y - StaffRectTr[1].sizeDelta.y) > 0.1f)
+        if (Mathf.Abs(StaffRectTr[1].localPosition.y - StaffRectTr[1].sizeDelta.y) > 0.1f)
         {
             StaffRectTr[1].transform.Translate(Vector2.up * 0.22f * Time.deltaTime);
         }

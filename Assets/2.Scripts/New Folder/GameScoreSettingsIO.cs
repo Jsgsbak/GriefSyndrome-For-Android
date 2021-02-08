@@ -173,6 +173,8 @@ public class GameScoreSettingsIO : ScriptableObject
     /// 使用屏幕模拟键盘输入，0时禁用键盘输入 1按钮移动 2圆盘移动
     /// </summary>
     public int UseScreenInput = 0;
+    public Vector4 SettingsForJoyStick = new Vector4(8.14f, 17.2f, 130f, 80f);
+
 
     [HideInInspector] public Vector2 joystick = Vector2.zero;
 
@@ -280,6 +282,16 @@ public class GameScoreSettingsIO : ScriptableObject
 
     }
 
+    [ContextMenu("使输入方式返回到最初的状态")]
+    public void RevokeInputChange()
+    {
+        for (int i = 0; i < KeyPosScale.Length; i++)
+        {
+              KeyPosScale[i].EditPosition = KeyPosScale[i].RawPosition;
+        }
+    }
+
+
 #if UNITY_EDITOR
     [ContextMenu("保存存档与设置")]
    public void SaveInEditor()
@@ -305,12 +317,7 @@ public class GameScoreSettingsIO : ScriptableObject
         //设置
         SaveGame.Save("BGMVol", BGMVol);
         SaveGame.Save("SEVol", SEVol);
-        SaveGame.Save("UseScreenInput", UseScreenInput);
-        for (int i = 0; i < KeyPosScale.Length; i++)
-        {
-            SaveGame.Save(string.Format("KeyPosScale_{0}_Rect", i.ToString()), KeyPosScale[i].EditPosition);
-        }
-
+        SaveInput();
 
         Debug.Log("存档结束");
 
@@ -331,15 +338,39 @@ public class GameScoreSettingsIO : ScriptableObject
         BestTime = SaveGame.Load("BestTime", 0);
         BestTimeFace = SaveGame.Load("BestTimeFace", new Variable.PlayerFaceType[] { Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null });
         lap = SaveGame.Load("LastLap", 1);
-
+       
         //设置
         BGMVol = SaveGame.Load("BGMVol", 0.6f);
         SEVol = SaveGame.Load("SEVol", 0.7f);
+        LoadInput();
+
+    }
+
+    /// <summary>
+    /// 加载输入设置
+    /// </summary>
+    public void LoadInput()
+    {
         SaveGame.Load("UseScreenInput", 2);
+
         for (int i = 0; i < KeyPosScale.Length; i++)
         {
             SaveGame.Load(string.Format("KeyPosScale_{0}_Rect", i.ToString()), KeyPosScale[i].RawPosition);
         }
+
+    }
+
+    /// <summary>
+    /// 保存输入设置
+    /// </summary>
+    public void SaveInput()
+    {
+        SaveGame.Save("UseScreenInput", UseScreenInput);
+        for (int i = 0; i < KeyPosScale.Length; i++)
+        {
+            SaveGame.Save(string.Format("KeyPosScale_{0}_Rect", i.ToString()), KeyPosScale[i].EditPosition);
+        }
+
 
     }
 

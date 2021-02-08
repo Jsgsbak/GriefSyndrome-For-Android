@@ -19,6 +19,7 @@ public class CameraAndScreenAndInput : MonoBehaviour
     /// </summary>
     bool GameOver = false;
 
+
     private void Start()
     {
         //从游戏设置中获取按键位置和大小
@@ -28,7 +29,7 @@ public class CameraAndScreenAndInput : MonoBehaviour
         //根据需要卸载虚拟按键
         if(StageCtrl.gameScoreSettings.UseScreenInput == 2)
         {
-            Joystick.SetActive(true);       
+            Joystick.gameObject.SetActive(true);       
             //游戏一开始先运行一下，修复不能停止移动的bug
             MoveEnd();
 
@@ -64,7 +65,7 @@ public class CameraAndScreenAndInput : MonoBehaviour
         //游戏暂停时停止绘制
         if(Time.timeScale == 0 || GameOver)
         {
-            if (StageCtrl.gameScoreSettings.UseScreenInput == 2) { Joystick.SetActive(false); }
+            if (StageCtrl.gameScoreSettings.UseScreenInput == 2) { Joystick.gameObject.SetActive(false); }
             return;
         }
 
@@ -73,11 +74,14 @@ public class CameraAndScreenAndInput : MonoBehaviour
         {
             Button[8] = GUI.Button(StageCtrl.gameScoreSettings.KeyPosScale[8].PositionInUse, StageCtrl.gameScoreSettings.KeyPosScale[8].UIName);
             if (Button[8]) StageCtrl.gameScoreSettings.Pause = true;
-            if (StageCtrl.gameScoreSettings.UseScreenInput == 2) { Joystick.SetActive(false); }
+            if (StageCtrl.gameScoreSettings.UseScreenInput == 2) { Joystick.gameObject.SetActive(false); }
             return;
         }
 
-        if (StageCtrl.gameScoreSettings.UseScreenInput == 2) { Joystick.SetActive(Time.timeScale != 0); }
+        //绘制摇杆
+        if (StageCtrl.gameScoreSettings.UseScreenInput == 2)
+        { Joystick.gameObject.SetActive(Time.timeScale != 0);  
+        }
        
 
 
@@ -99,12 +103,17 @@ public class CameraAndScreenAndInput : MonoBehaviour
                 Button[i] = GUI.RepeatButton(StageCtrl.gameScoreSettings.KeyPosScale[i].PositionInUse, StageCtrl.gameScoreSettings.KeyPosScale[i].UIName);
             }
             else 
-            {
-                Button[i] = GUI.Button(StageCtrl.gameScoreSettings.KeyPosScale[i].PositionInUse, StageCtrl.gameScoreSettings.KeyPosScale[i].UIName);
+            {//0.0.7暂时去掉
+                //Button[i] = GUI.Button(StageCtrl.gameScoreSettings.KeyPosScale[i].PositionInUse, StageCtrl.gameScoreSettings.KeyPosScale[i].UIName);
             }
         }
 
+        //0.0.7 画暂停键
+        Button[8] = GUI.Button(StageCtrl.gameScoreSettings.KeyPosScale[8].PositionInUse, StageCtrl.gameScoreSettings.KeyPosScale[8].UIName);
+
+
         //单独为移动写的
+        StageCtrl.gameScoreSettings.Horizontal = 0;
         if (Button[0])
         {
             //左移
@@ -123,6 +132,7 @@ public class CameraAndScreenAndInput : MonoBehaviour
         StageCtrl.gameScoreSettings.Zattack = Button[5];
         StageCtrl.gameScoreSettings.Xattack = Button[6];
         StageCtrl.gameScoreSettings.Magia = Button[7];
+        Debug.Log(StageCtrl.gameScoreSettings.Jump);
         if(Button[8]) StageCtrl.gameScoreSettings.Pause = true;
         //0.0.7版测试用
         StageCtrl.gameScoreSettings.CleanSoul = Button[9];
