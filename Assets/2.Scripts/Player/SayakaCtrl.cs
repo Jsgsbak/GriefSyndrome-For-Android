@@ -69,7 +69,7 @@ public class SayakaCtrl : APlayerCtrl
                         animator.SetBool("UpXattack", false);
                         break;
                      case 2:
-                        if(StageCtrl.gameScoreSettings.VitInGame[PlayerId] <= 0) animator.SetBool("Magia", false);
+                        if(StageCtrl.gameScoreSettings.GirlsVit[MahouShoujoId] <= 0) animator.SetBool("Magia", false);
 
                         break;
                 }
@@ -88,6 +88,9 @@ public class SayakaCtrl : APlayerCtrl
             MagiaDashSpeedRatio = 1.5f;
             //重新播放
             animator.Play("MagiaWithAttack", 0, 0f);
+
+            //用于UI中HP血条信息更新
+            StageCtrl.gameScoreSettings.MagiaKeyDown[PlayerId] = true;
         }
 
 
@@ -101,12 +104,14 @@ public class SayakaCtrl : APlayerCtrl
             BanGravityRay = true;
 
             animator.SetBool("Magia", true);
+
+            StageCtrl.gameScoreSettings.GirlsVit[MahouShoujoId] = StageCtrl.gameScoreSettings.GirlsVit[MahouShoujoId] - StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].MaigaVit;
         }
 
         //冲刺
         if (MagiaDash)
         {
-            Move(8f * MagiaDashSpeedRatio, true, PlayerSlope, Vector3.right);
+            Move(8f * MagiaDashSpeedRatio , true, PlayerSlope, Vector3.right);
         }
     }
 

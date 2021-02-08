@@ -58,6 +58,7 @@ namespace PureAmaya.General
         void Start()
         {
             tr = transform;
+            Debug.Log(tr.rotation);
 
             //周期旋转
             if (AllowRotateTime)

@@ -280,30 +280,34 @@ public class TitleCtrl : MonoBehaviour
             {
                 //没挂，正常选择
                 gameScoreSettingsIO.SelectedGirlInGame[0] = (Variable.PlayerFaceType)id;//玩家1，联机的话要在处理0：玩家1
-            }
 
-            //应该所有玩家都选择完在进行处理
-            //切换场景
-            LoadingCtrl.LoadScene(2);
+
+                //应该所有玩家都选择完在进行处理
+                //切换场景
+                LoadingCtrl.LoadScene(2);
+
+            }
 
             return;
         }
 
 
-        if (gameScoreSettingsIO.MagicalGirlsDie[id])
+      else  if (gameScoreSettingsIO.MagicalGirlsDie[id])
         {
-            //挂了，选择为QB
-            gameScoreSettingsIO.SelectedGirlInGame[0] = Variable.PlayerFaceType.QB;//玩家1，联机的话要在处理 0：玩家1
+            //挂了，选择为QB 0.0.7暂时禁用
+            //gameScoreSettingsIO.SelectedGirlInGame[0] = Variable.PlayerFaceType.QB;//玩家1，联机的话要在处理 0：玩家1
         }
         else
         {
             //没挂，正常选择
             gameScoreSettingsIO.SelectedGirlInGame[0] = (Variable.PlayerFaceType)id;//玩家1，联机的话要在处理0：玩家1
+
+            //应该所有玩家都选择完在进行处理
+            //切换场景
+            LoadingCtrl.LoadScene(2);
+
         }
 
-        //应该所有玩家都选择完在进行处理
-        //切换场景
-        LoadingCtrl.LoadScene(2);
 
     }
 

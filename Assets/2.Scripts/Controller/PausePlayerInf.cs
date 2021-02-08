@@ -7,18 +7,18 @@ using UnityEngine.U2D;
 
 public class PausePlayerInf : MonoBehaviour
 {
-    public int PlayerId = -1;
+    int MahouShoujoId = -1;
     public TMP_Text text;
     public Image PlayerImage;
 
     private void OnEnable()
     {
         //放置一开游戏就调用这个函数而引发错误
-        if(PlayerId != -1)
+        if(MahouShoujoId != -1)
         {
-            text.text = string.Format("{0}\n\n\nLevel:{2}\n\n\nVit:{3}\n\n\nSoul:{4}\n\n\nPow:{5}\n",
-                                        name,PlayerId.ToString(),StageCtrl.gameScoreSettings.Level[PlayerId - 1].ToString(),
-                                       StageCtrl.gameScoreSettings.VitInGame[PlayerId -1].ToString(),StageCtrl.gameScoreSettings.SoulLimitInGame[PlayerId -1].ToString(),StageCtrl.gameScoreSettings.PowInGame[PlayerId  -1].ToString() );
+            text.text = string.Format("{0}\n\n\nLevel:{1}\n\n\nVit:{2}\n\n\nSoul:{3}\n\n\nPow:{4}\n",
+                                        name,StageCtrl.gameScoreSettings.GirlsLevel[MahouShoujoId].ToString(),
+                                       StageCtrl.gameScoreSettings.GirlsVit[MahouShoujoId].ToString(),StageCtrl.gameScoreSettings.GirlSoulLimit[MahouShoujoId].ToString(),StageCtrl.gameScoreSettings.GirlsPow[MahouShoujoId].ToString() );
         }
     }
 
@@ -30,26 +30,32 @@ public class PausePlayerInf : MonoBehaviour
 
         if (Name == string.Empty)
         {
+            MahouShoujoId = 4;
             Name = "Miki Sayaka";
         }
         else if (Name.Equals("Homura") | Name.Equals("Homura_m"))
         {
+            MahouShoujoId = 0;
             Name = "Akemi Homura";
         }
         else if (Name.Equals("Kyoko"))
         {
+            MahouShoujoId = 1;
             Name = "Sakura Koyko";
         }
         else if (Name.Equals("Madoka"))
         {
+            MahouShoujoId = 2;
             Name = "Kaname Madoka";
         }
         else if (Name.Equals("Mami"))
         {
+            MahouShoujoId = 3;
             Name = "Tomoe Mami";
         }
         else if (Name == "Sayaka")
         {
+            MahouShoujoId = 4;
             Name = "Miki Sayaka";
         }
         else

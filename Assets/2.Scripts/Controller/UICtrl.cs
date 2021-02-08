@@ -29,6 +29,8 @@ public class UICtrl : MonoBehaviour
     
     public GameObject Pause;
 
+    public GameObject DebugUI;
+
     [Header("音量滑条")]
     public Slider BGMVol;
     public Slider SEVol;
@@ -65,6 +67,10 @@ public class UICtrl : MonoBehaviour
     /// 更新玩家信息
     /// </summary>
     public Variable.OrdinaryEvent UpdateInf = new Variable.OrdinaryEvent();
+    /// <summary>
+    /// 是否暂停游戏
+    /// </summary>
+    public Variable.BoolEvent PauseGame = new Variable.BoolEvent();
     #endregion
 
     private void Awake()
@@ -96,7 +102,7 @@ public class UICtrl : MonoBehaviour
         //魔女被击败
         StageCtrl.stageCtrl.MajoDefeated.AddListener(delegate() {/*修改状态，防止游戏暂停*/StageCtrl.gameScoreSettings. DoesMajoOrShoujoDie = true; /*启用结算界面*/Timing.RunCoroutine(Conclusion());});
         //魔法少女被击败（所选全死）
-        StageCtrl.stageCtrl.AllGirlsDieInGame.AddListener(delegate() {/*修改状态，防止游戏暂停*/StageCtrl.gameScoreSettings.DoesMajoOrShoujoDie = true; /*启用结算界面*/Timing.RunCoroutine(ShoujoDie()); });
+        StageCtrl.stageCtrl.AllGirlsInGameDie.AddListener(delegate() {/*修改状态，防止游戏暂停*/StageCtrl.gameScoreSettings.DoesMajoOrShoujoDie = true; /*启用结算界面*/Timing.RunCoroutine(ShoujoDie()); });
         #endregion
 
         #region 场景UI初始化
@@ -137,7 +143,6 @@ public class UICtrl : MonoBehaviour
            
             //暂停界面的
             pausePlayerInfInGame[i] = Instantiate(pausePlayerInf);
-            pausePlayerInfInGame[i].PlayerId = i + 1;
             pausePlayerInfInGame[i].transform.SetParent(PPIParent);
             pausePlayerInfInGame[i].transform.localScale = 1.1f * Vector2.one;//修正规模
             pausePlayerInfInGame[i].SetNameAndImage(StageCtrl.gameScoreSettings.SelectedGirlInGame[i].ToString(), PauseAtlas); ;
@@ -164,7 +169,7 @@ public class UICtrl : MonoBehaviour
     /// </summary>
     void FastUpdate()
     { 
-        if (StageCtrl.gameScoreSettings.Pause)
+        if (StageCtrl.gameScoreSettings.Pause && Time.timeScale != 0)
         {
             GamePauseSwitch();
         }
@@ -193,21 +198,28 @@ public class UICtrl : MonoBehaviour
     [ContextMenu("游戏暂停切换")]
     public void GamePauseSwitch()
     {
-
+        
+        PauseGame.Invoke(Time.timeScale != 0);
 
         //游戏暂停
         if (Time.timeScale != 0 && !StageCtrl.gameScoreSettings.DoesMajoOrShoujoDie)
-        {       
+        {
+            Debug.Log("游戏暂停开始");
+            DebugUI.SetActive(false);
             //暂停音效
             EasyBGMCtrl.easyBGMCtrl.PlaySE(2);
             Time.timeScale = 0;
             EasyBGMCtrl.easyBGMCtrl.BGMPlayer.Pause();
             Pause.SetActive(true);
             MEC.Timing.TimeBetweenSlowUpdateCalls = 999999999999999f;
+            Debug.Log("游戏暂停结束");
+
         }
         //暂停恢复
         else if(Time.timeScale == 0)
         {
+            DebugUI.SetActive(true);
+            StageCtrl.gameScoreSettings.Pause = false;
             Time.timeScale = 1;
             //确认音效
             EasyBGMCtrl.easyBGMCtrl.PlaySE(0);
@@ -238,7 +250,6 @@ public class UICtrl : MonoBehaviour
     /// <summary>
     /// 随机播放bgm（按钮检查面板注入）
     /// </summary>
-    [System.Obsolete("need UPDATE",false)]
     public void RandomPlayBGM()
     {
         //确认音效
@@ -257,7 +268,7 @@ public class UICtrl : MonoBehaviour
         if (StageCtrl.gameScoreSettings.AllDie)
         {
             //借助结算界面的文本框通知玩家你成功打出了be
-            MajoDieText.text = "    Saraba sekai...";
+            MajoDieText.text = "    Se kai saraba...";
         }
         else
         {
@@ -302,7 +313,7 @@ public class UICtrl : MonoBehaviour
         //击败提示
         if (StageCtrl.gameScoreSettings.BattlingMajo != Variable.Majo.Walpurgisnacht)
         {
-            MajoDieText.text = string.Format("{0} was defeated\n         and left griefseed.", StageCtrl.gameScoreSettings.BattlingMajo.ToString());
+            MajoDieText.text = string.Format("{0} was defeated\n                                   and left griefseed.", StageCtrl.gameScoreSettings.BattlingMajo.ToString());
         }
         else
         {

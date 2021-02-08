@@ -25,18 +25,17 @@ MonoBehaviour:
   lap: 1
   Success: 0
   LastLap: 1
-  SelectedGirlInGame: 070000000700000007000000
-  DoesMajoOrShoujoDie: 0
-  Level: 010000000100000001000000
-  SoulLimitInGame: 000000000000000000000000
-  VitInGame: 000000000000000000000000
-  PowInGame: 000000000000000000000000
+  SelectedGirlInGame: 040000000700000007000000
+  GirlsLevel: 0100000001000000010000000100000001000000
+  GirlSoulLimit: 00000000000000000000000000000000204d0000
+  GirlsVit: 0000000000000000000000000000000020010000
+  GirlsPow: 000000000000000000000000000000000a000000
   MagiaKeyDown: 000000
-  MaxVitInGame: 000000000000000000000000
   GetHurtInGame: 000000
   IsBodyDieInGame: 000000
   IsSoulBallInGame: 000000
-  MagicalGirlsDie: 0000000000
+  DoesMajoOrShoujoDie: 0
+  MagicalGirlsDie: 0101010100
   PlayerDieImage:
   - {fileID: 0}
   - {fileID: 0}
@@ -49,8 +48,8 @@ MonoBehaviour:
   AllDie: 0
   BattlingMajo: 0
   NewestMajo: 0
-  MajoSceneToTitle: 0
-  BGMVol: 1
+  MajoSceneToTitle: 1
+  BGMVol: 0.6
   SEVol: 0.7
   mahouShoujos:
   - name: Homura
@@ -161,9 +160,9 @@ MonoBehaviour:
     PositionInUse:
       serializedVersion: 2
       x: 0
-      y: 361.26758
-      width: 60.17822
-      height: 60.211266
+      y: 344.15494
+      width: 57.38614
+      height: 57.359154
     RawPosition:
       serializedVersion: 2
       x: 0
@@ -181,10 +180,10 @@ MonoBehaviour:
       height: 60
     PositionInUse:
       serializedVersion: 2
-      x: 140.41585
-      y: 361.26758
-      width: 60.17822
-      height: 60.211266
+      x: 133.90099
+      y: 344.15494
+      width: 57.38614
+      height: 57.359154
     RawPosition:
       serializedVersion: 2
       x: 140
@@ -202,10 +201,10 @@ MonoBehaviour:
       height: 60
     PositionInUse:
       serializedVersion: 2
-      x: 70.207924
-      y: 291.02112
-      width: 60.17822
-      height: 60.211266
+      x: 66.95049
+      y: 277.2359
+      width: 57.38614
+      height: 57.359154
     RawPosition:
       serializedVersion: 2
       x: 70
@@ -223,10 +222,10 @@ MonoBehaviour:
       height: 60
     PositionInUse:
       serializedVersion: 2
-      x: 70.207924
-      y: 431.51407
-      width: 60.17822
-      height: 60.211266
+      x: 66.95049
+      y: 411.07394
+      width: 57.38614
+      height: 57.359154
     RawPosition:
       serializedVersion: 2
       x: 70
@@ -244,10 +243,10 @@ MonoBehaviour:
       height: 50
     PositionInUse:
       serializedVersion: 2
-      x: 752.02716
-      y: 501.76053
-      width: 50.148518
-      height: 50.176056
+      x: 717.13544
+      y: 477.99295
+      width: 47.82178
+      height: 47.799294
     RawPosition:
       serializedVersion: 2
       x: 749.8
@@ -265,10 +264,10 @@ MonoBehaviour:
       height: 70
     PositionInUse:
       serializedVersion: 2
-      x: 927.84784
-      y: 482.49292
-      width: 70.207924
-      height: 70.246475
+      x: 884.7986
+      y: 459.638
+      width: 66.95049
+      height: 66.919014
     RawPosition:
       serializedVersion: 2
       x: 925.1
@@ -286,10 +285,10 @@ MonoBehaviour:
       height: 70
     PositionInUse:
       serializedVersion: 2
-      x: 927.84784
-      y: 391.57394
-      width: 70.207924
-      height: 70.246475
+      x: 884.7986
+      y: 373.02573
+      width: 66.95049
+      height: 66.919014
     RawPosition:
       serializedVersion: 2
       x: 925.1
@@ -307,10 +306,10 @@ MonoBehaviour:
       height: 80
     PositionInUse:
       serializedVersion: 2
-      x: 834.5716
-      y: 434.02286
-      width: 80.237625
-      height: 80.281685
+      x: 795.85004
+      y: 413.4639
+      width: 76.51485
+      height: 76.478874
     RawPosition:
       serializedVersion: 2
       x: 832.1
@@ -328,10 +327,10 @@ MonoBehaviour:
       height: 60
     PositionInUse:
       serializedVersion: 2
-      x: 2.5074258
-      y: 82.08803
-      width: 60.17822
-      height: 60.211266
+      x: 2.391089
+      y: 78.19965
+      width: 57.38614
+      height: 57.359154
     RawPosition:
       serializedVersion: 2
       x: 2.5
@@ -349,10 +348,10 @@ MonoBehaviour:
       height: 60
     PositionInUse:
       serializedVersion: 2
-      x: 76.32604
-      y: 82.08803
-      width: 60.17822
-      height: 60.211266
+      x: 72.78475
+      y: 78.19965
+      width: 57.38614
+      height: 57.359154
     RawPosition:
       serializedVersion: 2
       x: 76.1
@@ -370,10 +369,10 @@ MonoBehaviour:
       height: 60
     PositionInUse:
       serializedVersion: 2
-      x: 155.4905
-      y: 82.08803
-      width: 60.17822
-      height: 60.211266
+      x: 148.27621
+      y: 78.19965
+      width: 57.38614
+      height: 57.359154
     RawPosition:
       serializedVersion: 2
       x: 155.03
@@ -391,10 +390,10 @@ MonoBehaviour:
       height: 60
     PositionInUse:
       serializedVersion: 2
-      x: 237.10219
-      y: 82.08803
-      width: 60.17822
-      height: 60.211266
+      x: 226.10138
+      y: 78.19965
+      width: 57.38614
+      height: 57.359154
     RawPosition:
       serializedVersion: 2
       x: 236.4
@@ -402,9 +401,30 @@ MonoBehaviour:
       width: 60
       height: 60
     AllowPress: 0
+  - name: Succeed
+    UIName: Succeed
+    EditPosition:
+      serializedVersion: 2
+      x: 322.29
+      y: 81.8
+      width: 60
+      height: 60
+    PositionInUse:
+      serializedVersion: 2
+      x: 308.24963
+      y: 78.19965
+      width: 57.38614
+      height: 57.359154
+    RawPosition:
+      serializedVersion: 2
+      x: 322.29
+      y: 81.8
+      width: 60
+      height: 60
+    AllowPress: 0
   UseScreenInput: 2
+  joystick: {x: 0, y: 0}
   Horizontal: 0
-  joystick: 1
   Down: 0
   Up: 0
   Jump: 0
@@ -415,3 +435,5 @@ MonoBehaviour:
   CleanSoul: 0
   CleanVit: 0
   HurtMyself: 0
+  Succeed: 0
+  LevelUp: 0

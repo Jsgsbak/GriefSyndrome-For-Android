@@ -81,13 +81,10 @@ public class LoadingCtrl : MonoBehaviour
 
 	IEnumerator AsyncLoading()
 	{
+		loadingText.text = "灵魂宝石诅咒含量：0%";
+
 		StatusText.text = "载入游戏设置与状态";
 		yield return gameScoreSettings = (GameScoreSettingsIO)Resources.Load("GameScoreAndSettings");
-
-#if UNITY_EDITOR
-		gameScoreSettings.AllInitial();
-#endif
-
 
 		//游戏还没通关
 		if (!gameScoreSettings.Success)

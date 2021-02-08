@@ -63,39 +63,33 @@ public class GameScoreSettingsIO : ScriptableObject
     [Header("玩家选择的魔法少女")]//null用于占位子
     public Variable.PlayerFaceType[] SelectedGirlInGame = new Variable.PlayerFaceType[3] { Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null };
 
+    /// <summary>
+    /// 魔法少女等级
+    /// </summary>
+    [Header("魔法少女等级")]
+    public int[] GirlsLevel = new int[] { 1,1,1,1,1 };
 
     /// <summary>
-    ///  魔女或者所选的魔法少女都死了吗
+    /// 魔法少女灵魂值
     /// </summary>
-    [Header("魔女或者所选的魔法少女都死了吗")]
-    public  bool DoesMajoOrShoujoDie = false;
-
+    public int[] GirlSoulLimit = new int[] { 0, 0, 0 ,0,0};
 
     /// <summary>
-    /// 玩家选择的魔法少女的等级
+    /// 魔法少女生命值
     /// </summary>
-    public int[] Level = new int[] { 1,1,1};
+    public int[] GirlsVit = new int[] { 0, 0, 0 ,0,0};
 
     /// <summary>
-    /// 玩家选择的魔法少女的soullimit
+    /// 玩家选择的魔法少女的Pow（power）
     /// </summary>
-    public int[] SoulLimitInGame = new int[] { 0, 0, 0 };
+    public int[] GirlsPow = new int[] { 0, 0, 0,0,0 };
+  
+    
+    
     /// <summary>
-    /// 玩家选择的魔法少女的VIT
-    /// </summary>
-    public int[] VitInGame = new int[] { 0, 0, 0 };
-    /// <summary>
-    /// 玩家选择的魔法少女的Pow
-    /// </summary>
-    public int[] PowInGame = new int[] { 0, 0, 0 };
-    /// <summary>
-    /// 是否按下Magia键（用于玩家信息更新）
+    /// 是否按下Magia键（用于玩家信息更新，在玩家自己的脚本中修改）
     /// </summary>
     public bool[] MagiaKeyDown = new bool[] { false, false, false };
-    /// <summary>
-    /// 玩家选择的魔法少女的最大vit
-    /// </summary>
-    public int[] MaxVitInGame = new int[] { 0, 0, 0 };
     /// <summary>
     /// 玩家受伤损失的vit
     /// </summary>
@@ -112,7 +106,12 @@ public class GameScoreSettingsIO : ScriptableObject
     /// 变成灵魂球了吗
     /// </summary>
     public bool[] IsSoulBallInGame = new bool[] { false, false, false };
-  
+
+    /// <summary>
+    ///  魔女或者所选的魔法少女都死了吗
+    /// </summary>
+    [Header("魔女或者所选的魔法少女都死了吗")]
+    public bool DoesMajoOrShoujoDie = false;
 
     /// <summary>
     /// 魔法少女是否变成魔女(2个吼姆拉放在一起了)
@@ -175,14 +174,14 @@ public class GameScoreSettingsIO : ScriptableObject
     /// </summary>
     public int UseScreenInput = 0;
 
+    [HideInInspector] public Vector2 joystick = Vector2.zero;
 
     #endregion
     #region 输入变量管理（所有的按键/屏幕输入的变量都在这里）
     /// <summary>
     /// 水平输入
     /// </summary>
-    [HideInInspector] public int Horizontal = 0;
-    [HideInInspector] public float joystick = 1f;
+    public int Horizontal = 0;
     /// <summary>
     /// 穿墙（地板）的时候，按↓的时候用的
     /// </summary>
@@ -197,7 +196,8 @@ public class GameScoreSettingsIO : ScriptableObject
     [HideInInspector] public bool CleanSoul = false;
     [HideInInspector] public bool CleanVit = false;
     [HideInInspector] public bool HurtMyself = false;
-
+    [HideInInspector] public bool Succeed = false;
+    [HideInInspector] public bool LevelUp = false;
 
     #endregion
 
@@ -215,6 +215,8 @@ public class GameScoreSettingsIO : ScriptableObject
         MaxFps = 60;
         SaveGame.DeleteAll();
         Load();
+        //做啥角色就换成啥
+        SelectedGirlInGame[0] = Variable.PlayerFaceType.Sayaka;
     }
 
     /// <summary>
@@ -241,13 +243,17 @@ public class GameScoreSettingsIO : ScriptableObject
         Score = new int[3] { 0, 0, 0 };
         Success = false;
         Time = 0;
+        DoesMajoOrShoujoDie = false;
         SelectedGirlInGame = new Variable.PlayerFaceType[3] { Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null };
         BattlingMajo = Variable.Majo.Gertrud;
         NewestMajo = Variable.Majo.Gertrud;
         MagicalGirlsDie = new bool[] { false, false, false, false, false };
-        Level = new int[] { 1, 1, 1 };
+        GirlsLevel = new int[] { 1, 1, 1 ,1,1};
         AllDie = false;
-        joystick = 1f;
+        //0.07
+        Succeed = false;
+        Pause = false;
+        MagicalGirlsDie = new bool[] { true, true, true, true, false };
     }
 
     /// <summary>
@@ -257,17 +263,21 @@ public class GameScoreSettingsIO : ScriptableObject
     {
         MajoSceneToTitle = true;
         Hits = 0;
-        VitInGame = new int[] { 0, 0, 0 };
-        SoulLimitInGame = new int[] { 0, 0, 0 }; 
-        MaxVitInGame = new int[] { 0, 0, 0 };
         //HurtVitInGame = new int[] { 0, 0, 0 };
+        DoesMajoOrShoujoDie = false;
+        Succeed = false;
         GetHurtInGame = new bool[] { false, false, false };
         MagiaKeyDown = new bool[] { false, false, false };
         IsBodyDieInGame = new bool[] { false, false, false };
         IsSoulBallInGame = new bool[] { false, false, false };
-        PowInGame = new int[] { 0, 0, 0 };
-        DoesMajoOrShoujoDie = false;
         LastLap = lap;
+
+        Succeed = false;
+        //0.0.7
+        CleanSoul = false;
+        CleanVit = false;
+        Pause = false;
+
     }
 
 #if UNITY_EDITOR

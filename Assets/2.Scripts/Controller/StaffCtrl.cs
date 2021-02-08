@@ -65,7 +65,7 @@ public class StaffCtrl : MonoBehaviour
     {
         gameScoreSettings = (GameScoreSettingsIO)Resources.Load("GameScoreAndSettings");
 
-        //下载与存档
+        //存档
         StartCoroutine(GetText());
         //告知用户在下载
         s.SetActive(true);
@@ -84,6 +84,7 @@ public class StaffCtrl : MonoBehaviour
     /// <returns></returns>
     IEnumerator GetText()
     {
+        /*
         //获取魔女文staff
         UnityWebRequest request = UnityWebRequest.Get("https://gitee.com/pureamaya/GriefSyndrome-For-Android/raw/master/StaffForGame/MAJO.stf");
         request.timeout = 3;
@@ -94,7 +95,6 @@ public class StaffCtrl : MonoBehaviour
 
         // 
         yield return request.Send();
-
         // 
         if (request.isNetworkError)
         {
@@ -141,6 +141,9 @@ public class StaffCtrl : MonoBehaviour
             }
         }
 
+                */
+
+        //取消网络了
         //网络部分处理完之后，使2个staff的上边对齐
         StaffRectTr[1].position = new Vector3(StaffRectTr[1].position.x, StaffRectTr[0].position.y);
         //这里才准备显示staff
@@ -209,7 +212,7 @@ public class StaffCtrl : MonoBehaviour
             }
         }
         //全员死亡
-        if (DeadMahoshoujos.Count == 5)
+        if (gameScoreSettings.AllDie)
         {
             //BE BGM
             EasyBGMCtrl.easyBGMCtrl.PlayBGM(3);

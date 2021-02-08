@@ -132,6 +132,9 @@ public class Variable
     /// 没有参数的通常事件
     /// </summary>
     public class OrdinaryEvent : UnityEvent { }
+    public class BoolEvent : UnityEvent<bool> { }
+    public class IntEvent : UnityEvent<int> { }
+
 
     /// <summary>
     /// 虚拟按键-全部按钮位置大小设置（参考分辨率1010x568)
@@ -167,5 +170,8 @@ public class Variable
         [Header("允许长按")]
         public bool AllowPress = true;
         }
+
+
+
 
 }

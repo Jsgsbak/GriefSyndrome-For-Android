@@ -17,13 +17,17 @@ public class StageCtrl : MonoBehaviour
     public static GameScoreSettingsIO gameScoreSettings;//尽在这里弄一个单利
     public static StageCtrl stageCtrl;
 
-
-    [Header("玩家生成设置")]
+    
+    [Header("玩家激活设置")]
     public GameObject[] Players;
     public Transform Point;
 
+    public GameObject Stage;
+
+#if UNITY_EDITOR
     [Header("检查视图中的预设")]
     public EasyBGMCtrl PerfebInAsset;
+#endif
 
     /// <summary>
     /// 玩家人数
@@ -37,15 +41,14 @@ public class StageCtrl : MonoBehaviour
     /// <summary>
     /// 打这个魔女的时间
     /// </summary>
-    [HideInInspector] public  int ThisMajoTime = 0;
+   [HideInInspector] public  int ThisMajoTime = 0;
    
     public int BGMid = 5;//通常都为5，是道中曲
 
     #region 事件组
-    public class IntEvent : UnityEvent<int> { }
-    public IntEvent Player1Hurt = new IntEvent();
-    public IntEvent Player2Hurt = new IntEvent();
-    public IntEvent Player3Hurt = new IntEvent();
+    public Variable.IntEvent Player1Hurt = new Variable.IntEvent();
+    public Variable.IntEvent Player2Hurt = new Variable.IntEvent();
+    public Variable.IntEvent Player3Hurt = new Variable.IntEvent();
 
     /// <summary>
     /// 击败魔女
@@ -54,7 +57,7 @@ public class StageCtrl : MonoBehaviour
     /// <summary>
     /// 魔法少女被击败（所选全死）
     /// </summary>
-    public Variable.OrdinaryEvent AllGirlsDieInGame = new Variable.OrdinaryEvent();
+    public Variable.OrdinaryEvent AllGirlsInGameDie = new Variable.OrdinaryEvent();
 
     #endregion
     private void Awake()
@@ -62,7 +65,7 @@ public class StageCtrl : MonoBehaviour
         stageCtrl = this;
 
         MajoDefeated.RemoveAllListeners();
-        AllGirlsDieInGame.RemoveAllListeners();
+        AllGirlsInGameDie.RemoveAllListeners();
 
 
         gameScoreSettings = (GameScoreSettingsIO)Resources.Load("GameScoreAndSettings");
@@ -82,6 +85,8 @@ public class StageCtrl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //事件组注册
+        UICtrl.uiCtrl.PauseGame.AddListener(PauseGameForStage);
 
         //初始化
         gameScoreSettings.MajoInitial();
@@ -89,19 +94,48 @@ public class StageCtrl : MonoBehaviour
         EasyBGMCtrl.easyBGMCtrl.ChangeVol(gameScoreSettings.BGMVol, true);
         EasyBGMCtrl.easyBGMCtrl.ChangeVol(gameScoreSettings.SEVol, false);
 
-        //播放BGM
+        //播放BGM（这里用的还是旧版的BGM播放器）
+        if(gameScoreSettings.BattlingMajo != Variable.Majo.Walpurgisnacht && gameScoreSettings.BattlingMajo != Variable.Majo.Oktavia)
+        {
+            BGMid = 5;
+        }
+        else if(gameScoreSettings.BattlingMajo == Variable.Majo.Walpurgisnacht)
+        {
+            BGMid = 6;
+        }
+        else
+        {
+            BGMid = 2;
+        }
         EasyBGMCtrl.easyBGMCtrl.PlayBGM(BGMid);
 
+        //先禁用所有玩家
+        foreach (var item in Players)
+        {
+            item.SetActive(false);
+        }
         //生成玩家（现在仅用来测试）
         for (int i = 0; i < 3; i++)
         {
             if(gameScoreSettings.SelectedGirlInGame[i] != Variable.PlayerFaceType.Null)
             {
-             GameObject player =   Instantiate(Players[(int)gameScoreSettings.SelectedGirlInGame[i]], Point);
-                if(gameScoreSettings.SelectedGirlInGame[i] != Variable.PlayerFaceType.QB)
+                Players[(int)gameScoreSettings.SelectedGirlInGame[i]].transform.SetPositionAndRotation(Point.position, Point.rotation);
+                Players[(int)gameScoreSettings.SelectedGirlInGame[i]].SetActive(true);
+                Players[(int)gameScoreSettings.SelectedGirlInGame[i]].transform.SetParent(Stage.transform);
+
+
+                if (gameScoreSettings.SelectedGirlInGame[i] != Variable.PlayerFaceType.QB)
                 {
                     playerNumber++;//玩家数记录（排除QB）
                 }
+            }
+        }
+        //删除其他玩家
+        foreach (var item in Players)
+        {
+            if (!item.activeInHierarchy)
+            {
+                Destroy(item);
             }
         }
 
@@ -115,6 +149,50 @@ public class StageCtrl : MonoBehaviour
         ThisMajoTime++;
     }
 
+    /// <summary>
+    /// 为Stage写的暂停游戏或否的方法
+    /// </summary>
+    public void PauseGameForStage(bool IsPaused)
+    {
+        Stage.SetActive(!IsPaused);
+    }
+
+    /// <summary>
+    /// 0.0.7测试用按钮才用的函数，啥时候去掉了那几个按钮才把这个方法去掉
+    /// </summary>
+    public void Update()
+    {
+        if (gameScoreSettings.Succeed)
+        {
+            //实际上，魔女hp=0的时候就要调用一次  StageCtrl.gameScoreSettings.DoesMajoOrShoujoDie = true;
+            //然后禁用输入按钮和输入
+            //之后魔女死亡动画播放
+            //掉落悲叹之种
+            //执行 GoodbyeMajo();
+            GoodbyeMajo();
+            StageCtrl.gameScoreSettings.DoesMajoOrShoujoDie = true;
+            //单纯为了别多次执行
+            gameScoreSettings.Succeed = false;
+
+//也是为了测试版才用这个的
+            enabled = false;
+
+        }
+
+        /*UI显示，玩家操控，切换场景测试成功，保留备用
+        else  if (gameScoreSettings.DoesMajoOrShoujoDie)
+        {
+            GirlsInGameDie();
+            gameScoreSettings.CleanSoul = false;
+            enabled = false;
+        }*/
+
+        else if (gameScoreSettings.AllDie)
+        {
+            LoadingCtrl.LoadScene(4, false);
+        }
+    }
+
 
     /// <summary>
     /// 顺利打完魔女之后的结算逻辑
@@ -122,6 +200,9 @@ public class StageCtrl : MonoBehaviour
     [ContextMenu("顺利结算")]
     public void GoodbyeMajo()
     {
+        //清除场景
+        Stage.SetActive(false);
+
         //停止计时器
         CancelInvoke("Timer");
         //BGM停止播放
@@ -155,7 +236,7 @@ public class StageCtrl : MonoBehaviour
     /// <summary>
     /// 游戏中登场的魔法少女死了（每一位死亡之后都调用 QB除外）
     /// </summary>
-    public void GirlDieInGame()
+    public void GirlsInGameDie()
     {
         //真惨。。。加把劲吧
 
@@ -186,7 +267,7 @@ public class StageCtrl : MonoBehaviour
         }
 
         //游戏中的魔法少女全死了的事件调用
-        AllGirlsDieInGame.Invoke();
+        AllGirlsInGameDie.Invoke();
     }
 
 
