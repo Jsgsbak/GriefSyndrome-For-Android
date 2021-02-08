@@ -97,7 +97,7 @@ public void UpdateScore()
                 Damaged.fillAmount = 1;
                 StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId - 1] = false;
             }
-            else if (StageCtrl.gameScoreSettings.MagiaKeyDown[PlayerId - 1])
+            else if (StageCtrl.gameScoreSettings.MagiaKeyDown[PlayerId - 1] && Magia.fillAmount < Health.fillAmount)
             {
                 Debug.Log("MAGIA");
                 StageCtrl.gameScoreSettings.MagiaKeyDown[PlayerId - 1] = false;

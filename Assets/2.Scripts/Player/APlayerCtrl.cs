@@ -233,6 +233,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         //这里加限制条件/修改状态要三思，主要是在抽象的方法里更改和限制
         if (!IsAttack[1] && !IsAttack[2] && !StageCtrl.gameScoreSettings.Xattack) { OrdinaryZ(); HorizontalZ(); VerticalZ(); }
         if (!IsAttack[0] && !IsAttack[2] && !StageCtrl.gameScoreSettings.Zattack) { OrdinaryX(); HorizontalX(); UpX(); DownX(); }
+        //magia对VIT/血条的处理在各自的脚本里
         if (!IsAttack[0] && !IsAttack[1]) { Magia(); }
 
         BanWalk = IsAttack[0] || IsAttack[1] || IsAttack[2] || StageCtrl.gameScoreSettings.Zattack || StageCtrl.gameScoreSettings.Magia || StageCtrl.gameScoreSettings.Xattack;//在这里统一弄一个，直接在这里禁用移动，不再在各种攻击方法和动画事件中禁用了

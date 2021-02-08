@@ -89,8 +89,6 @@ public class SayakaCtrl : APlayerCtrl
             //重新播放
             animator.Play("MagiaWithAttack", 0, 0f);
 
-            //用于UI中HP血条信息更新
-            StageCtrl.gameScoreSettings.MagiaKeyDown[PlayerId] = true;
         }
 
 
@@ -106,6 +104,10 @@ public class SayakaCtrl : APlayerCtrl
             animator.SetBool("Magia", true);
 
             StageCtrl.gameScoreSettings.GirlsVit[MahouShoujoId] = StageCtrl.gameScoreSettings.GirlsVit[MahouShoujoId] - StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].MaigaVit;
+
+            //用于UI中HP血条信息更新
+            StageCtrl.gameScoreSettings.MagiaKeyDown[PlayerId] = true;
+
         }
 
         //冲刺
