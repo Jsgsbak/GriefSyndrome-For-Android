@@ -162,7 +162,7 @@ public class StageCtrl : MonoBehaviour
     /// </summary>
     public void Update()
     {
-        if (gameScoreSettings.Succeed)
+        if (gameScoreSettings.Succeed && !StageCtrl.gameScoreSettings.DoesMajoOrShoujoDie)
         {
             //实际上，魔女hp=0的时候就要调用一次  StageCtrl.gameScoreSettings.DoesMajoOrShoujoDie = true;
             //然后禁用输入按钮和输入
@@ -173,10 +173,6 @@ public class StageCtrl : MonoBehaviour
             StageCtrl.gameScoreSettings.DoesMajoOrShoujoDie = true;
             //单纯为了别多次执行
             gameScoreSettings.Succeed = false;
-
-//也是为了测试版才用这个的
-            enabled = false;
-
         }
 
         /*UI显示，玩家操控，切换场景测试成功，保留备用
@@ -187,12 +183,17 @@ public class StageCtrl : MonoBehaviour
             enabled = false;
         }*/
 
-        else if (gameScoreSettings.AllDie)
-        {
-            LoadingCtrl.LoadScene(4, false);
-        }
     }
 
+    /// <summary>
+    /// 场上有一个玩家宝石没了
+    /// </summary>
+    public void PlayerDie()
+    {
+        //多人游戏的话，要判断是否三个人都死了
+        GirlsInGameDie();
+
+    }
 
     /// <summary>
     /// 顺利打完魔女之后的结算逻辑
@@ -267,7 +268,7 @@ public class StageCtrl : MonoBehaviour
         }
 
         //游戏中的魔法少女全死了的事件调用
-        AllGirlsInGameDie.Invoke();
+            AllGirlsInGameDie.Invoke();
     }
 
 

@@ -144,34 +144,14 @@ public class Variable
     {
         public string name = "Button";
         /// <summary>
-        /// UI内显示的文本
-        /// </summary>
-        [Header("UI内显示的文本")]
-        public string UIName = "Button";
-        /// <summary>
         /// 设置中用于编辑的Rect
         /// </summary>
         [Space]
         public Rect EditPosition;
         /// <summary>
-        /// EditPosition经过分辨率修正之后的Rect
-        /// </summary>
-        [HideInInspector]
-        public Rect PositionInUse;
-
-        /// <summary>
-        /// 默认设置，重置游戏之后读取这个设置
+        /// 默认设置，重置游戏之后读取这个设置（不允许玩家修改）
         /// </summary>
         public Rect RawPosition;
 
-        /// <summary>
-        /// 允许长按
-        /// </summary>
-        [Header("允许长按")]
-        public bool AllowPress = true;
-        }
-
-
-
-
+    }
 }

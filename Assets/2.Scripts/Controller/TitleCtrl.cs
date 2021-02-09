@@ -25,6 +25,7 @@ public class TitleCtrl : MonoBehaviour
     [Header("主标题按钮控制")]
     public Button StartGameButton;
     public TMP_InputField LapInput;
+    public Button InputSettings;
     public Button ExitButton;
     public Button RandomStaff;
     public Slider BGMVol;
@@ -34,7 +35,7 @@ public class TitleCtrl : MonoBehaviour
     /// </summary>
     [Space]
     //场景切换控制
-    [Header("场景切换控制 顺序：MainTitle，SelectMajo，SelectMaigcalGirl")]
+    [Header("场景切换控制 顺序：MainTitle，SelectMajo，SelectMaigcalGirl Settings")]
     public CanvasGroup[] ChangePart;
 
     [Space]
@@ -129,13 +130,16 @@ public class TitleCtrl : MonoBehaviour
             //禁用其他Part
             ChangePart[1].gameObject.SetActive(false);
             ChangePart[2].gameObject.SetActive(false);
+            ChangePart[3].gameObject.SetActive(false);
         }
 
         //从魔女场景返回，直接打开魔女选择part
         else
         {
             ChangePart[0].gameObject.SetActive(false);
-           Timing.RunCoroutine(ChangePartMethod(-1, 1));
+            ChangePart[3].gameObject.SetActive(false);
+
+            Timing.RunCoroutine(ChangePartMethod(-1, 1));
 
         }
 
@@ -156,11 +160,15 @@ public class TitleCtrl : MonoBehaviour
         StartGameButton.onClick.AddListener(delegate () { EasyBGMCtrl.easyBGMCtrl.PlaySE(0); Timing.RunCoroutine(ChangePartMethod(0, 1)); });//进入魔女选择part
         ExitButton.onClick.AddListener(delegate () { Timing.RunCoroutine( gameScoreSettingsIO.Save());/*这里保存一下*/   Application.Quit(0); });//关闭游戏
         RandomStaff.onClick.AddListener(delegate () { EasyBGMCtrl.easyBGMCtrl.PlaySE(0); RandomKillGirl(); });
+        InputSettings.onClick.AddListener(delegate () { EasyBGMCtrl.easyBGMCtrl.PlaySE(0); Timing.RunCoroutine(ChangePartMethod(0, 3)); });
         //魔女选择part
         ExitMajo.onClick.AddListener(delegate () { EasyBGMCtrl.easyBGMCtrl.PlaySE(1); Timing.RunCoroutine(ChangePartMethod(1, 0)); });//返回到主标题part
 
         //魔法少女选择part
         ExitMagicalGirls.onClick.AddListener(delegate () { EasyBGMCtrl.easyBGMCtrl.PlaySE(1); Timing.RunCoroutine(ChangePartMethod(2, -1)); });//范围到魔女选择part
+       
+        
+        
         #endregion
     }
 
@@ -440,7 +448,7 @@ public class TitleCtrl : MonoBehaviour
     //<sprite="PlayerFace" index=1> 
     #region 内部方法
     /// <summary>
-    /// 切换part和每个part需要的数据处理（在MainTitle SelectMajo SelectMaigcalGirl三个part中切换）
+    /// 切换part和每个part需要的数据处理（在MainTitle SelectMajo SelectMaigcalGirl InputSettings四个part中切换）
     /// </summary>
     /// <param name="OutId"></param>
     /// <param name="InId"></param>

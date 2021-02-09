@@ -11,7 +11,6 @@ public class SayakaCtrl : APlayerCtrl
         if (!StageCtrl.gameScoreSettings.DoesMajoOrShoujoDie)
         {
             GetHurt(56756756);
-            StageCtrl.gameScoreSettings.CleanSoul = true;
         }
 
     }
@@ -142,15 +141,19 @@ public class SayakaCtrl : APlayerCtrl
         //冲刺
         if (MagiaDash)
         {
-            Move(8f * MagiaDashSpeedRatio , true, PlayerSlope, Vector3.right);
+            if (DoLookRight)
+            {
+                Move(8f * MagiaDashSpeedRatio, true, PlayerSlope, Vector2.right);
+            }
+            else
+            {
+                Move(8f * MagiaDashSpeedRatio, true, PlayerSlope, Vector2.left);
+            }
         }
     }
 
     public override void HorizontalX()
     {
-        //特意为这个攻击方法重新写一下输入情况emmm
-        StageCtrl.gameScoreSettings.Xattack = RebindableInput.GetKeyDown("Xattack") && !BanInput;
-
         if (StageCtrl.gameScoreSettings.Horizontal != 0 && !IsAttack[1]  && StageCtrl.gameScoreSettings.Xattack && !animator.GetBool("HorizontalXattack") && !BanWalk)
         {
 
@@ -167,7 +170,14 @@ public class SayakaCtrl : APlayerCtrl
              BanInput = true; //BUG修复
 
             //移动
-            Move(8f, true, PlayerSlope, Vector3.right);
+            if (DoLookRight)
+            {
+                Move(8f, true, PlayerSlope, Vector3.right);
+            }
+            else
+            {
+                Move(8f, true, PlayerSlope, Vector3.left);
+            }
         }
     }
 
@@ -217,7 +227,15 @@ public class SayakaCtrl : APlayerCtrl
             {
                 OrdinaryXTimer = -Mathf.Clamp01((Time.timeSinceLevelLoad - OrdinaryXTimer) / 1.5F);
             }
-            tr.Translate(Vector3.right *(8F  -OrdinaryXTimer) *Time.deltaTime, Space.Self);
+
+            if (DoLookRight)
+            {
+                Move(8F - OrdinaryXTimer, true, PlayerSlope.normalized, Vector2.right);
+            }
+            else
+            {
+                Move(8F - OrdinaryXTimer, true, PlayerSlope.normalized, Vector2.left);
+            }
         }
     }
     public override void DownX()
@@ -241,8 +259,15 @@ public class SayakaCtrl : APlayerCtrl
         //下降
         else if (DownAttackMovingUpward == -1)
         {
-            Move(13f, true, Vector2.one, Vector2.right);
-            
+            if (DoLookRight)
+            {
+                Move(13f, true, Vector2.one, Vector2.right);
+            }
+            else
+            {
+                Move(13f, true, Vector2.one, Vector2.left);
+            }
+
             //碰到地了（仅执行一次）
             if (IsGround && !animator.GetBool("DownXattack-Done") )
             {
@@ -254,9 +279,18 @@ public class SayakaCtrl : APlayerCtrl
                 DownAttackMovingUpward = 2;
             }
         }
-        else if(DownAttackMovingUpward == 2)
+
+        //触地反弹
+        else if (DownAttackMovingUpward == 2)
         {
-            Move(4f, true, Vector2.one, new Vector2(-1,1));
+            if (DoLookRight)
+            {
+                Move(4f, true, Vector2.one, new Vector2(-1, 1));
+            }
+            else
+            {
+                Move(4f, true, Vector2.one, new Vector2(1, 1));
+            }
         }
 
     }
@@ -284,7 +318,14 @@ public class SayakaCtrl : APlayerCtrl
 
         if (UpAttackMove)
         {
-            Move(5f, true, Vector2.one, new Vector2(1, 3));
+            if (DoLookRight)
+            {
+                Move(5f, true, Vector2.one, new Vector2(1f, 3f));
+            }
+            else
+            {
+                Move(5f, true, Vector2.one, new Vector2(-1f, 3f));
+            }
         }
     }
 
@@ -372,7 +413,14 @@ public class SayakaCtrl : APlayerCtrl
                 GravityRatio = 0.7f;
 
                 //向前移动
-                tr.Translate(Vector3.right * 0.4f, Space.Self);
+                if (DoLookRight)
+                {
+                    Move(0.4f, false, PlayerSlope, Vector2.right);
+                }
+                else
+                {
+                    Move(0.4f, false, PlayerSlope, Vector2.left);
+                }
                 break;
 
             //Z攻击最后阶段结束
@@ -514,7 +562,14 @@ public class SayakaCtrl : APlayerCtrl
     {
         if (StageCtrl.gameScoreSettings.Horizontal != 0 )
         {
-            tr.Translate(Vector2.right * 0.02f);
+            if (DoLookRight)
+            {
+                Move(0.02f, false, PlayerSlope, Vector2.right);
+            }
+            else
+            {
+                Move(0.02f, false, PlayerSlope, Vector2.left);
+            }
         }
 
     }

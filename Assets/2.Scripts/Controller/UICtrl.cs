@@ -17,8 +17,6 @@ public class UICtrl : MonoBehaviour
 {
     public static UICtrl uiCtrl;
 
-    public CameraAndScreenAndInput screenInput;
-
     //控制方法：调用相应的PlayerInf方法，更新UI信息
     [Header("玩家信息预设")]
     public PlayerInfUpdate PlayerInf;
@@ -88,9 +86,6 @@ public class UICtrl : MonoBehaviour
 
         UpdateManager.updateManager.SlowUpdate.AddListener(SlowUpdate);
         UpdateManager.updateManager.FastUpdate.AddListener(FastUpdate);
-
-        //屏幕输入 虚拟按键
-        screenInput.enabled = StageCtrl.gameScoreSettings.UseScreenInput != 0;
 
         #region 注册事件
         //音量事件注册与设置
@@ -258,7 +253,7 @@ public class UICtrl : MonoBehaviour
     }
 
     /// <summary>
-    /// 所选魔法少女死亡
+    /// 所选都魔法少女死亡
     /// </summary>
     public IEnumerator<float> ShoujoDie()
     {

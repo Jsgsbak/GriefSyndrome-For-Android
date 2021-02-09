@@ -155,6 +155,9 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         //玩家属性每秒的变化
         InvokeRepeating("PerSecondChange", 1f, 1f);
 
+        //保存本地玩家选择的魔法少女的魔法少女id
+        StageCtrl.gameScoreSettings.PlayerSelectedGirlId = MahouShoujoId;
+
     }
 
 
@@ -203,6 +206,8 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
     void FastUpdate()
     {
+        Debug.Log(tr.localPosition.x);
+
         if (!BanGravity) Gravity();
         RayCtrl();
 
@@ -231,6 +236,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
         //前面的!IsAttack[1]是为了防止做这个攻击的时候意外发动其他的攻击
         //这里加限制条件/修改状态要三思，主要是在抽象的方法里更改和限制
+        //对于玩家来说，除了跳跃键，其他的都是能够接受长时间按住的
         if (!IsAttack[1] && !IsAttack[2] && !StageCtrl.gameScoreSettings.Xattack) { OrdinaryZ(); HorizontalZ(); VerticalZ(); }
         if (!IsAttack[0] && !IsAttack[2] && !StageCtrl.gameScoreSettings.Zattack) { OrdinaryX(); HorizontalX(); UpX(); DownX(); }
         //magia对VIT/血条的处理在各自的脚本里
@@ -408,11 +414,11 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             {
                 //是那个球，直接无视平台
                 case true:
-                    Move(StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].MoveSpeed, true, Vector2.one, StageCtrl.gameScoreSettings.joystick, Space.World);
+                    Move(StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].MoveSpeed, true, Vector2.one, StageCtrl.gameScoreSettings.joystick);
                     break;
                 //还没死呢
                 case false:
-                    Move(StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].MoveSpeed, true, PlayerSlope.normalized, Vector2.right * StageCtrl.gameScoreSettings.Horizontal, Space.World);
+                    Move(StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].MoveSpeed, true, PlayerSlope.normalized, Vector2.right * StageCtrl.gameScoreSettings.Horizontal);
                     break;
             }
         }
@@ -425,17 +431,17 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
                 case true:
                     if (StageCtrl.gameScoreSettings.Up)
                     {
-                        Move(StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].MoveSpeed, true, Vector2.one, Vector2.up, Space.World);
+                        Move(StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].MoveSpeed, true, Vector2.one, Vector2.up);
                     }
                     else if (StageCtrl.gameScoreSettings.Down)
                     {
-                        Move(StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].MoveSpeed, true, Vector2.one, Vector2.down, Space.World);
+                        Move(StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].MoveSpeed, true, Vector2.one, Vector2.down);
                     }
                     break;
             }
 
             //不管是否死亡都用同一个左右移动
-            Move(StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].MoveSpeed, true, PlayerSlope.normalized, Vector2.right * StageCtrl.gameScoreSettings.Horizontal, Space.World);
+            Move(StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].MoveSpeed, true, PlayerSlope.normalized, Vector2.right * StageCtrl.gameScoreSettings.Horizontal);
 
         }
 
@@ -454,14 +460,14 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     }
 
     /// <summary>
-    /// 自带joystick 
+    /// 自带joystick（Space为World，自行处理Direction的正负）
     /// </summary>
     /// <param name="Speed"></param>
     /// <param name="UseTimeDelta"></param>
     /// <param name="Slope"></param>
     /// <param name="Direction"></param>
     /// <param name="space"></param>
-    public void Move(float Speed, bool UseTimeDelta, Vector2 Slope, Vector2 Direction, Space space = Space.Self)
+    public void Move(float Speed, bool UseTimeDelta, Vector2 Slope, Vector2 Direction)
     {
         float x = Direction.x; float y = Direction.y;
         bool Border = false;
@@ -502,11 +508,11 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
         if (UseTimeDelta)
         {
-            tr.Translate(Direction * Slope * Speed * MoveSpeedRatio * Time.deltaTime, space);
+            tr.Translate(Direction * Slope.normalized * Speed * MoveSpeedRatio * Time.deltaTime,Space.World );
         }
         else
         {
-            tr.Translate(Direction * Slope * Speed * MoveSpeedRatio, space);
+            tr.Translate(Direction * Slope.normalized * Speed * MoveSpeedRatio, Space.World);
         }
     }
 
@@ -632,6 +638,12 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         if ( !StageCtrl.gameScoreSettings.DoesMajoOrShoujoDie && Time.timeScale != 0 && !IsInvincible && StageCtrl.gameScoreSettings.GirlsVit[MahouShoujoId] != 0 && StageCtrl.gameScoreSettings.GirlSoulLimit[MahouShoujoId] != 0 && !StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] && !StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId])
         {
             StageCtrl.gameScoreSettings.GirlSoulLimit[MahouShoujoId]--;
+
+            //soul随着时间扣没了
+            if (StageCtrl.gameScoreSettings.GirlSoulLimit[MahouShoujoId] <= 0)
+            {
+                Die(1);
+            }
 
             if (!StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] &&  StageCtrl.gameScoreSettings.GirlsVit[MahouShoujoId] < StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].BasicVit + Grow(StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].VitGrowth, StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].VitGrowthLevelLimit, true))
             {
@@ -763,6 +775,13 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
         BanInput = true;
 
+        //如果承受不住这个攻击，宝石直接碎了
+        if (StageCtrl.gameScoreSettings.GirlSoulLimit[MahouShoujoId] - damage * StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].Recovery <= 0)
+        {
+            StageCtrl.gameScoreSettings.GirlSoulLimit[MahouShoujoId] = 0;
+            Die(1);
+            return;
+        }
 
         if (StageCtrl.gameScoreSettings.GirlsVit[MahouShoujoId] > damage)
         {
@@ -771,6 +790,8 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             StageCtrl.gameScoreSettings.GirlsVit[MahouShoujoId] = StageCtrl.gameScoreSettings.GirlsVit[MahouShoujoId] - damage;
             //扣除soullimit
             StageCtrl.gameScoreSettings.GirlSoulLimit[MahouShoujoId] = StageCtrl.gameScoreSettings.GirlSoulLimit[MahouShoujoId] - damage * StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].Recovery;
+           
+            
             //   StageCtrl.gameScoreSettings.HurtGirlsVit[MahouShoujoId] = damage;
             StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId] = true;
             //这个要放在扣除vit之后，恢复vit/复活之前
@@ -792,7 +813,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// <summary>
     /// 死亡
     /// </summary>
-    void Die(int damage)
+   public void Die(int damage)
     {
 
         //扣除soullimit
@@ -820,6 +841,8 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         if (StageCtrl.gameScoreSettings.GirlSoulLimit[MahouShoujoId] <= 0)
         {
             animator.SetInteger("Die", 2);
+            //禁用脚本，防止bug
+            enabled = false;
         }
         //复活
         else
@@ -933,10 +956,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// </summary>
     public void DestroyPoorGirl()
     {
-        //多人游戏应该判断，这里就直接写true了（与stageCtrl配合）
-       StageCtrl.gameScoreSettings.DoesMajoOrShoujoDie = true; 
-        StageCtrl.gameScoreSettings.AllDie = true;
-
+      StageCtrl.stageCtrl.PlayerDie();
         //删除物体
         Destroy(gameObject);
     }

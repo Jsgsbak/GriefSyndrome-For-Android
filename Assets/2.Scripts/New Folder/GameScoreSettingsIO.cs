@@ -47,6 +47,12 @@ public class GameScoreSettingsIO : ScriptableObject
     public int lap = 1;
 
     /// <summary>
+    /// 本地玩家选择的魔法少女的魔法少女id
+    /// </summary>
+    [Header("本地玩家选择的魔法少女的魔法少女id")]
+    public int PlayerSelectedGirlId = 0;
+
+    /// <summary>
     /// 本次游戏通关了吗
     /// </summary>
     [HideInInspector]
@@ -173,12 +179,12 @@ public class GameScoreSettingsIO : ScriptableObject
     /// 使用屏幕模拟键盘输入，0时禁用键盘输入 1按钮移动 2圆盘移动
     /// </summary>
     public int UseScreenInput = 0;
-    public Vector4 SettingsForJoyStick = new Vector4(8.14f, 17.2f, 130f, 80f);
 
 
     [HideInInspector] public Vector2 joystick = Vector2.zero;
 
     #endregion
+   
     #region 输入变量管理（所有的按键/屏幕输入的变量都在这里）
     /// <summary>
     /// 水平输入

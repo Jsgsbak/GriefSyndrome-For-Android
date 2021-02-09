@@ -23,11 +23,12 @@ MonoBehaviour:
   BestTime: 0
   BestTimeFace: 070000000700000007000000
   lap: 1
+  PlayerSelectedGirlId: 4
   Success: 0
   LastLap: 1
   SelectedGirlInGame: 040000000700000007000000
   GirlsLevel: 0100000001000000010000000100000001000000
-  GirlSoulLimit: 00000000000000000000000000000000dd4d0000
+  GirlSoulLimit: 00000000000000000000000000000000f7ffffff
   GirlsVit: 0000000000000000000000000000000058000000
   GirlsPow: 000000000000000000000000000000000a000000
   MagiaKeyDown: 000000
@@ -149,281 +150,85 @@ MonoBehaviour:
     MaigaVit: 50
     LongMagia: 0
   KeyPosScale:
-  - name: Left Button
-    UIName: "\u2190"
+  - name: joy stick
     EditPosition:
       serializedVersion: 2
-      x: 0
-      y: 360
-      width: 60
-      height: 60
-    PositionInUse:
-      serializedVersion: 2
-      x: 0
-      y: 684.507
-      width: 139.00989
-      height: 114.0845
+      x: -320
+      y: -147
+      width: 130
+      height: 130
     RawPosition:
       serializedVersion: 2
-      x: 0
-      y: 360
-      width: 60
-      height: 60
-    AllowPress: 1
-  - name: Right Button
-    UIName: "\u2192"
-    EditPosition:
-      serializedVersion: 2
-      x: 140
-      y: 360
-      width: 60
-      height: 60
-    PositionInUse:
-      serializedVersion: 2
-      x: 324.3564
-      y: 684.507
-      width: 139.00989
-      height: 114.0845
-    RawPosition:
-      serializedVersion: 2
-      x: 140
-      y: 360
-      width: 60
-      height: 60
-    AllowPress: 1
-  - name: Up
-    UIName: "\u2191"
-    EditPosition:
-      serializedVersion: 2
-      x: 70
-      y: 290
-      width: 60
-      height: 60
-    PositionInUse:
-      serializedVersion: 2
-      x: 162.1782
-      y: 551.40845
-      width: 139.00989
-      height: 114.0845
-    RawPosition:
-      serializedVersion: 2
-      x: 70
-      y: 290
-      width: 60
-      height: 60
-    AllowPress: 1
-  - name: Down
-    UIName: "\u2193"
-    EditPosition:
-      serializedVersion: 2
-      x: 70
-      y: 430
-      width: 60
-      height: 60
-    PositionInUse:
-      serializedVersion: 2
-      x: 162.1782
-      y: 817.60565
-      width: 139.00989
-      height: 114.0845
-    RawPosition:
-      serializedVersion: 2
-      x: 70
-      y: 430
-      width: 60
-      height: 60
-    AllowPress: 1
-  - name: Jump
-    UIName: Jump
-    EditPosition:
-      serializedVersion: 2
-      x: 749.8
-      y: 500
-      width: 50
-      height: 50
-    PositionInUse:
-      serializedVersion: 2
-      x: 1737.1603
-      y: 950.7042
-      width: 115.84158
-      height: 95.07042
-    RawPosition:
-      serializedVersion: 2
-      x: 749.8
-      y: 500
-      width: 50
-      height: 50
-    AllowPress: 0
-  - name: Weak
-    UIName: Weak
-    EditPosition:
-      serializedVersion: 2
-      x: 925.1
-      y: 480.8
-      width: 70
-      height: 70
-    PositionInUse:
-      serializedVersion: 2
-      x: 2143.3008
-      y: 914.19714
-      width: 162.1782
-      height: 133.09859
-    RawPosition:
-      serializedVersion: 2
-      x: 925.1
-      y: 480.8
-      width: 70
-      height: 70
-    AllowPress: 1
-  - name: Strong
-    UIName: Strong
-    EditPosition:
-      serializedVersion: 2
-      x: 925.1
-      y: 390.2
-      width: 70
-      height: 70
-    PositionInUse:
-      serializedVersion: 2
-      x: 2143.3008
-      y: 741.92957
-      width: 162.1782
-      height: 133.09859
-    RawPosition:
-      serializedVersion: 2
-      x: 925.1
-      y: 390.2
-      width: 70
-      height: 70
-    AllowPress: 1
-  - name: Magia
-    UIName: Magia
-    EditPosition:
-      serializedVersion: 2
-      x: 832.1
-      y: 432.5
-      width: 80
-      height: 80
-    PositionInUse:
-      serializedVersion: 2
-      x: 1927.8354
-      y: 822.35913
-      width: 185.34653
-      height: 152.11267
-    RawPosition:
-      serializedVersion: 2
-      x: 832.1
-      y: 432.5
-      width: 80
-      height: 80
-    AllowPress: 1
+      x: -320
+      y: -147
+      width: 130
+      height: 130
   - name: Pause
-    UIName: Pause
     EditPosition:
       serializedVersion: 2
-      x: 2.5
-      y: 81.8
-      width: 60
-      height: 60
-    PositionInUse:
-      serializedVersion: 2
-      x: 5.792079
-      y: 155.53522
-      width: 139.00989
-      height: 114.0845
+      x: 353
+      y: 109
+      width: 55
+      height: 55
     RawPosition:
       serializedVersion: 2
-      x: 2.5
-      y: 81.8
-      width: 60
-      height: 60
-    AllowPress: 0
-  - name: CleanSoul
-    UIName: 0  Soul
+      x: 353
+      y: 109
+      width: 55
+      height: 55
+  - name: Jump
     EditPosition:
       serializedVersion: 2
-      x: 76.1
-      y: 81.8
-      width: 60
-      height: 60
-    PositionInUse:
-      serializedVersion: 2
-      x: 176.31088
-      y: 155.53522
-      width: 139.00989
-      height: 114.0845
+      x: 185
+      y: -178.76
+      width: 55
+      height: 55
     RawPosition:
       serializedVersion: 2
-      x: 76.1
-      y: 81.8
-      width: 60
-      height: 60
-    AllowPress: 0
-  - name: CleanVit
-    UIName: 0  Vit
+      x: 185
+      y: -178.76
+      width: 55
+      height: 55
+  - name: Weak
     EditPosition:
       serializedVersion: 2
-      x: 155.03
-      y: 81.8
-      width: 60
-      height: 60
-    PositionInUse:
-      serializedVersion: 2
-      x: 359.1784
-      y: 155.53522
-      width: 139.00989
-      height: 114.0845
+      x: 367
+      y: -163
+      width: 55
+      height: 55
     RawPosition:
       serializedVersion: 2
-      x: 155.03
-      y: 81.8
-      width: 60
-      height: 60
-    AllowPress: 0
-  - name: HurtMe
-    UIName: HurtMe
+      x: 367
+      y: -163
+      width: 55
+      height: 55
+  - name: Strong
     EditPosition:
       serializedVersion: 2
-      x: 236.4
-      y: 81.8
-      width: 60
-      height: 60
-    PositionInUse:
-      serializedVersion: 2
-      x: 547.699
-      y: 155.53522
-      width: 139.00989
-      height: 114.0845
+      x: 367
+      y: -76
+      width: 55
+      height: 55
     RawPosition:
       serializedVersion: 2
-      x: 236.4
-      y: 81.8
-      width: 60
-      height: 60
-    AllowPress: 0
-  - name: Succeed
-    UIName: Succeed
+      x: 367
+      y: -76
+      width: 55
+      height: 55
+  - name: Magia
     EditPosition:
       serializedVersion: 2
-      x: 322.29
-      y: 81.8
+      x: 272
+      y: -115
       width: 60
       height: 60
-    PositionInUse:
-      serializedVersion: 2
-      x: 746.69165
-      y: 155.53522
-      width: 139.00989
-      height: 114.0845
     RawPosition:
       serializedVersion: 2
-      x: 322.29
-      y: 81.8
+      x: 272
+      y: -115
       width: 60
       height: 60
-    AllowPress: 0
   UseScreenInput: 2
-  SettingsForJoyStick: {x: 8.14, y: 17.2, z: 130, w: 80}
   joystick: {x: 0, y: 0}
   Horizontal: 0
   Down: 0
