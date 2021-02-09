@@ -154,13 +154,13 @@ MonoBehaviour:
     EditPosition:
       serializedVersion: 2
       x: -320
-      y: -147
+      y: -135
       width: 130
       height: 130
     RawPosition:
       serializedVersion: 2
       x: -320
-      y: -147
+      y: -135
       width: 130
       height: 130
   - name: Pause

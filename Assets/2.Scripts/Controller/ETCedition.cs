@@ -160,6 +160,9 @@ public class ETCedition : MonoBehaviour
             case ETCActions.Magia:
                 StageCtrl.gameScoreSettings.Magia = true;
                 break;
+            case ETCActions.Pause:
+                StageCtrl.gameScoreSettings.Pause = true;
+                break;
         }
 
     }

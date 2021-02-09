@@ -16,7 +16,7 @@ public class TitleInputView : MonoBehaviour
 
     public TMP_InputField[] Rect;
 
-   public static int EditingButton;
+    public static int EditingButton = -1;
 
     public GameObject InputSetting;
     public GameObject MainTitle;
@@ -68,6 +68,9 @@ public class TitleInputView : MonoBehaviour
             }
         }
 
+        //禁用高度输入之后，是高度与宽度保持同步
+        Rect[3].text = Rect[2].text;
+
     }
     /// <summary>
     /// 编辑框显示数据
@@ -105,7 +108,10 @@ public class TitleInputView : MonoBehaviour
     /// </summary>
     public void RevokeAllChange()
     {
+        //读取RawPosition并覆盖EditPosition
         TitleCtrl.gameScoreSettingsIO.RevokeInputChange();
+        //同步输入框
+        EditorShow(EditingButton);
     }
 
     public void BackToTitle()
