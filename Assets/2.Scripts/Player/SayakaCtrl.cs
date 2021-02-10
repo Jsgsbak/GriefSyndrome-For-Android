@@ -282,11 +282,11 @@ public class SayakaCtrl : APlayerCtrl
         {
             if (DoLookRight)
             {
-                Move(4f, true, Vector2.one, new Vector2(-1, 1));
+                Move(10f, true, Vector2.one, new Vector2(-1, 1));
             }
             else
             {
-                Move(4f, true, Vector2.one, new Vector2(1, 1));
+                Move(10f, true, Vector2.one, new Vector2(1, 1));
             }
         }
 
@@ -580,7 +580,7 @@ public class SayakaCtrl : APlayerCtrl
         BanGravityRay = true;
         DownAttackMovingUpward = 2;
       //  IsStiff = true;这个也不能要，不然不会触发反弹效果
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.2f);
         DownAttackMovingUpward = 0;
         animator.SetBool("DownXattack-Done", false);
         //   Stiff(0.1f); 自带僵直效果了

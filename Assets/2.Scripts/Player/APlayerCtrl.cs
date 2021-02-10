@@ -86,7 +86,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// <summary>
     /// 禁止左右移动（-1左 1右）
     /// </summary>
-    int BanLeftOrRight = 0;
+     public  int BanLeftOrRight = 0;
 
     /// <summary>
     /// 向右看吗
@@ -379,13 +379,13 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         //重力射线
         if (!BanGravityRay)
         {
-            rays[0] = new Ray2D(GavityRayPos[0].position, Vector2.down * 0.01f);
-            rays[1] = new Ray2D(GavityRayPos[1].position, Vector2.down * 0.01f);
+            rays[0] = new Ray2D(GavityRayPos[0].position, Vector2.down * 0.1f);
+            rays[1] = new Ray2D(GavityRayPos[1].position, Vector2.down * 0.1f);
             infoLeft = Physics2D.Raycast(rays[1].origin, rays[1].direction, 0.01f);
              infoRight = Physics2D.Raycast(rays[0].origin, rays[0].direction, 0.01f);
 
-            Debug.DrawRay(rays[0].origin, rays[0].direction * 0.01f, Color.blue);
-            Debug.DrawRay(rays[1].origin, rays[1].direction * 0.01f, Color.blue);
+            Debug.DrawRay(rays[0].origin, rays[0].direction * 0.1f, Color.blue);
+            Debug.DrawRay(rays[1].origin, rays[1].direction * 0.1f, Color.blue);
 
             //在地上
             if (infoLeft.collider != null)// || infoRight.collider != null)
@@ -422,24 +422,37 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         }
 
         //水平移动防止穿墙射线
-        rays[0] = new Ray2D(GavityRayPos[0].position + Vector3.up * 0.5f, Vector2.right * 0.01f);
-        rays[1] = new Ray2D(GavityRayPos[1].position + Vector3.up * 0.5f, Vector2.left * 0.01f);
-         infoLeft = Physics2D.Raycast(rays[1].origin, rays[1].direction, 0.01f);
-         infoRight = Physics2D.Raycast(rays[0].origin, rays[0].direction, 0.01f);
+        if (DoLookRight)
+        {
+            rays[0] = new Ray2D(GavityRayPos[0].position + Vector3.up * 0.4f, Vector2.right);
+          //  rays[1] = new Ray2D(GavityRayPos[1].position + Vector3.up * 0.5f, Vector2.left * 10f);
+        }
+        else
+        {
+            rays[0] = new Ray2D(GavityRayPos[0].position + Vector3.up * 0.4f, -Vector2.right);
+         //   rays[1] = new Ray2D(GavityRayPos[1].position + Vector3.up * 0.5f, -Vector2.left * 10f);
+        }
+      //  infoLeft = Physics2D.Raycast(rays[1].origin, rays[1].direction,10f);
+         infoRight = Physics2D.Raycast(rays[0].origin, rays[0].direction,0.7f);
+        Debug.DrawRay(rays[0].origin, rays[0].direction * 0.4f, Color.red);
+       // Debug.DrawRay(rays[1].origin, rays[1].direction * 1f, Color.red);
+
         BanLeftOrRight = 0;
         //水平方向上碰到墙/平台了
-        if (infoLeft.collider != null)// || infoRight.collider != null)
-        {
-           if(infoLeft.collider.CompareTag("Platform"))
-            {
-                BanLeftOrRight = -1;
-            }
-        }
-        else if (infoRight.collider != null)// || infoRight.collider != null)
+       
+        if (infoRight.collider != null)// || infoRight.collider != null)
         {
             if (infoRight.collider.CompareTag("Platform"))
             {
-                BanLeftOrRight = 1;
+                if (DoLookRight)
+                {
+                    BanLeftOrRight = 1;
+                }
+                else
+                {
+                    BanLeftOrRight = -1;
+
+                }
             }
 
         }

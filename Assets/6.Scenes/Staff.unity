@@ -335,7 +335,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "<size=19>\u5236\u4F5C\u4EBA\u5458\u540D\u5355</size>\n(\u66F4\u65B0\u4E8E
-    ver.0.0.7)\n\n\u539F\u4F5C\uFF1A\n\u30B0\u30EA\u30FC\u30D5\u30B7\u30F3\u30C9\u30ED\u30FC\u30E0\n\n\u539F\u5236\u4F5C\u793E\u56E2\uFF1A\n\u9EC4\u660F\u30D5\u30ED\u30F3\u30C6\u30A3\u30A2\n\n\u9879\u76EE\u53D1\u8D77\u4EBA\uFF1A\nPureAmaya\n\n\u6E38\u620F\u7CFB\u7EDF\u79FB\u690D\uFF1A\nPureAmaya\n\n\u4EBA\u7269\u89D2\u8272\u79FB\u690D\uFF1A\nPureAmaya\n\n\u6E38\u620F\u6570\u503C\u4F18\u5316\uFF1A\n\n\n\u6D4B\u8BD5\uFF1A\nPureAmaya\nWalkonbothsides\r\nPink\nSTAR\u2191BEAT\u2193\n\n\n\u7279\u522B\u611F\u8C22\uFF1A\n\u8F6E\u56DE\u7684\u6551\u8D4E\nWalkonbothsides\r\n\u7FA4\u53CB\u7684\u5927\u529B\u5E2E\u52A9\n\n\n\n\nAnd
+    ver.0.0.7B)\n\n\u539F\u4F5C\uFF1A\n\u30B0\u30EA\u30FC\u30D5\u30B7\u30F3\u30C9\u30ED\u30FC\u30E0\n\n\u539F\u5236\u4F5C\u793E\u56E2\uFF1A\n\u9EC4\u660F\u30D5\u30ED\u30F3\u30C6\u30A3\u30A2\n\n\u9879\u76EE\u53D1\u8D77\u4EBA\uFF1A\nPureAmaya\n\n\u6E38\u620F\u7CFB\u7EDF\u79FB\u690D\uFF1A\nPureAmaya\n\n\u4EBA\u7269\u89D2\u8272\u79FB\u690D\uFF1A\nPureAmaya\n\n\u6E38\u620F\u6570\u503C\u4F18\u5316\uFF1A\n\n\n\u6D4B\u8BD5\uFF1A\nPureAmaya\nWalkonbothsides\r\nPink\nSTAR\u2191BEAT\u2193\n\n\n\u7279\u522B\u611F\u8C22\uFF1A\n\u8F6E\u56DE\u7684\u6551\u8D4E\nWalkonbothsides\r\n\u7FA4\u53CB\u7684\u5927\u529B\u5E2E\u52A9\n\n\n\n\nAnd
     you...\n\n\n\n\n\u611F\u8C22\u6E38\u73A9\uFF01\n\u8F7B\u89E6\u4EE5\u8FD4\u56DE\u6807\u9898\u754C\u9762"
 --- !u!222 &497306181
 CanvasRenderer:
@@ -728,7 +728,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "<size=19>Staff</size>\n(Ver.0.0.7 Updated)\n\nOriginal\uFF1A\ngriefsyndrome\n\nOriginal
+  m_Text: "<size=19>Staff</size>\n(Ver.0.0.7B Updated)\n\nOriginal\uFF1A\ngriefsyndrome\n\nOriginal
     Maker\uFF1A\nTwilight Frontier\n\nAuthor\uFF1A\nPureAmaya\n\nGame System Transplantation\uFF1A\nPureAmaya\n\nCharacter
     Transplantation\uFF1A\nPureAmaya\n\nGame Figure Improvation\uFF1A\n\n\nTest\uFF1A\nPureAmaya\nWalkonbothsides\r\nPureAmaya\nWalkonbothsides\r\nPink\nSTAR\u2191BEAT\u2193\n\nSpecial
     Thanks\uFF1A\nLHDJS\nWalkonbothsides\r\nQQ Group's significant helps\n\n  \n\n\nAnd
