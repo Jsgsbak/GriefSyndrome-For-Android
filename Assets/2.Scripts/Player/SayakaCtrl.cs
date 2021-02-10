@@ -71,9 +71,8 @@ public class SayakaCtrl : APlayerCtrl
         UpAttackMove = false;
         UpAttackCount = 0;
          MagiaDash = false;
-        MagiaDashSpeedRatio = 1f; 
-
-
+        MagiaDashSpeedRatio = 1f;
+        Debug.Log("CESHI");
         //攻击动画/状态消除
         for (int i = 0; i < 3; i++)
         {
@@ -108,8 +107,6 @@ public class SayakaCtrl : APlayerCtrl
 
     public override void Magia()
     {     
-        //特意为这个攻击方法重新写一下输入情况emmm
-      //  StageCtrl.gameScoreSettings.Magia = RebindableInput.GetKeyDown("Magia") && !BanInput;
 
         if (MagiaDashSpeedRatio == 1f && StageCtrl.gameScoreSettings.Xattack &&IsAttack[2])
         {
@@ -302,8 +299,6 @@ public class SayakaCtrl : APlayerCtrl
         //UpAttackCount < 1 受上一条IF干扰，第一次起跳不会增加UpAttackCount 
         if (StageCtrl.gameScoreSettings.Horizontal == 0  && !animator.GetBool("UpXattack") && UpAttackCount < 1 && !IsAttack[1] && StageCtrl.gameScoreSettings.Xattack && StageCtrl.gameScoreSettings.Up)
         {
-            Debug.Log("向上攻击");
-
             UpAttackCount++;
             UpAttackMove = true;
             IsAttack[1] = true;

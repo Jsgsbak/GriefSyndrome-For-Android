@@ -17,6 +17,11 @@ public class UICtrl : MonoBehaviour
 {
     public static UICtrl uiCtrl;
 
+    /// <summary>
+    /// 虚拟输入
+    /// </summary>
+    public GameObject VirtualInput;
+
     //控制方法：调用相应的PlayerInf方法，更新UI信息
     [Header("玩家信息预设")]
     public PlayerInfUpdate PlayerInf;
@@ -110,7 +115,11 @@ public class UICtrl : MonoBehaviour
 
         #region 初始化UI界面
 
-
+        //设置好虚拟按键是否启用
+        if(StageCtrl.gameScoreSettings.UseScreenInput != 2)
+        {
+            Destroy(VirtualInput);
+        }
 
         //先记录下玩家人数（当然现在是单机，不过还是为多人留点东西）
         for (int i = 0; i < 3; i++)
@@ -199,7 +208,6 @@ public class UICtrl : MonoBehaviour
         //游戏暂停
         if (Time.timeScale != 0 && !StageCtrl.gameScoreSettings.DoesMajoOrShoujoDie)
         {
-            Debug.Log("游戏暂停开始");
             DebugUI.SetActive(false);
             //暂停音效
             EasyBGMCtrl.easyBGMCtrl.PlaySE(2);
@@ -207,7 +215,6 @@ public class UICtrl : MonoBehaviour
             EasyBGMCtrl.easyBGMCtrl.BGMPlayer.Pause();
             Pause.SetActive(true);
             MEC.Timing.TimeBetweenSlowUpdateCalls = 999999999999999f;
-            Debug.Log("游戏暂停结束");
 
         }
         //暂停恢复

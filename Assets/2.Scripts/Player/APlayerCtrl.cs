@@ -74,11 +74,20 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// 重力射线
     /// </summary>
     readonly Ray2D[] rays = new Ray2D[2];
+    RaycastHit2D infoLeft;
+    RaycastHit2D infoRight;
+
     public float GravityRatio = 1f;
 
     public bool IsStiff = false;
 
     [HideInInspector] public float MoveSpeedRatio = 1f;
+
+    /// <summary>
+    /// 禁止左右移动（-1左 1右）
+    /// </summary>
+    int BanLeftOrRight = 0;
+
     /// <summary>
     /// 向右看吗
     /// </summary>
@@ -206,8 +215,6 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
     void FastUpdate()
     {
-        Debug.Log(tr.localPosition.x);
-
         if (!BanGravity) Gravity();
         RayCtrl();
 
@@ -239,8 +246,8 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         //对于玩家来说，除了跳跃键，其他的都是能够接受长时间按住的
         if (!IsAttack[1] && !IsAttack[2] && !StageCtrl.gameScoreSettings.Xattack) { OrdinaryZ(); HorizontalZ(); VerticalZ(); }
         if (!IsAttack[0] && !IsAttack[2] && !StageCtrl.gameScoreSettings.Zattack) { OrdinaryX(); HorizontalX(); UpX(); DownX(); }
-        //magia对VIT/血条的处理在各自的脚本里
-        if (!IsAttack[0] && !IsAttack[1]) { Magia(); }
+        //magia对VIT/血条的处理在各自的脚本里  限制vit有bug   松开魔法键之后仍然会执行魔法
+        if (!IsAttack[0] && !IsAttack[1] && /*StageCtrl.gameScoreSettings.Magia &&*/ StageCtrl.gameScoreSettings.GirlsVit[MahouShoujoId] > StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].MaigaVit | IsAttack[2]) {  Magia(); }
 
         BanWalk = IsAttack[0] || IsAttack[1] || IsAttack[2] || StageCtrl.gameScoreSettings.Zattack || StageCtrl.gameScoreSettings.Magia || StageCtrl.gameScoreSettings.Xattack;//在这里统一弄一个，直接在这里禁用移动，不再在各种攻击方法和动画事件中禁用了
         BanJump = IsAttack[0] || IsAttack[1] || IsAttack[2] || StageCtrl.gameScoreSettings.Zattack || StageCtrl.gameScoreSettings.Magia || StageCtrl.gameScoreSettings.Xattack;//在这里统一弄一个，直接在这里禁用移动，不再在各种攻击方法和动画事件中禁用了
@@ -274,6 +281,17 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         animator.SetBool("Walk", StageCtrl.gameScoreSettings.Horizontal != 0);
         animator.SetBool("Jump", IsJumping);
         animator.SetBool("Fall", !IsGround && !BanGravity && !IsJumping);
+        //如果有攻击状态，直接禁用这三个基本动画
+        foreach (var item in IsAttack)
+        {
+            if (item)
+            {
+                animator.SetBool("Walk", false);
+                animator.SetBool("Jump", false);
+                animator.SetBool("Fall",false);
+                break;
+            }
+        }
     }
 
     /// <summary>
@@ -282,10 +300,10 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     public void JumpAndFall()
     {
         //除了禁用跳跃的情况，攻击的时候也不能跳（单独写出来，不然太麻烦了）
-        if (BanJump || StageCtrl.gameScoreSettings.Zattack || StageCtrl.gameScoreSettings.Xattack) return;
+        if (BanJump || StageCtrl.gameScoreSettings.Zattack || StageCtrl.gameScoreSettings.Xattack || StageCtrl.gameScoreSettings.Magia) return;
 
         //跳跃触发
-        if (!StageCtrl.gameScoreSettings.Down && StageCtrl.gameScoreSettings.Jump && Mathf.Abs(JumpInteralTimer - Time.timeSinceLevelLoad) > 0.2F && JumpCount != 2)
+        if (!StageCtrl.gameScoreSettings.Down && StageCtrl.gameScoreSettings.Jump && Mathf.Abs(JumpInteralTimer - Time.timeSinceLevelLoad) > 0.1F && JumpCount != 1)//不知道为什么JumpCount会保持2个0
         {
             MoveSpeedRatio = 1f;
             JumpInteralTimer = Time.timeSinceLevelLoad;
@@ -297,11 +315,11 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         if (IsJumping)
         {
             //上升
-            if (Time.timeSinceLevelLoad - JumpInteralTimer <= 0.2f)
+            if (Time.timeSinceLevelLoad - JumpInteralTimer <= 0.3f)
             {
                 //解决一个很奇怪的BUG
                 IsGround = false;
-                tr.Translate(Vector3.up * JumpSpeed * Time.deltaTime * JumpInteralTimer / Time.timeSinceLevelLoad);
+                tr.Translate(Vector3.up * (JumpSpeed  - (Time.timeSinceLevelLoad - JumpInteralTimer) * JumpSpeed /0.3F) * Time.deltaTime );
             }
             //下降（其实就是取消跳跃状态）
             else
@@ -312,7 +330,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         }
 
         //跳跃计数器更新
-        if (IsGround) JumpCount = 0;
+        if (IsGround) { JumpCount = 0; }
 
         //穿过平台
         if (StageCtrl.gameScoreSettings.Down && StandOnPlatform && StageCtrl.gameScoreSettings.Jump)
@@ -357,13 +375,14 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// </summary>
     public void RayCtrl()
     {
+
         //重力射线
         if (!BanGravityRay)
         {
             rays[0] = new Ray2D(GavityRayPos[0].position, Vector2.down * 0.01f);
             rays[1] = new Ray2D(GavityRayPos[1].position, Vector2.down * 0.01f);
-            RaycastHit2D infoLeft = Physics2D.Raycast(rays[1].origin, rays[1].direction, 0.01f);
-            RaycastHit2D infoRight = Physics2D.Raycast(rays[0].origin, rays[0].direction, 0.01f);
+            infoLeft = Physics2D.Raycast(rays[1].origin, rays[1].direction, 0.01f);
+             infoRight = Physics2D.Raycast(rays[0].origin, rays[0].direction, 0.01f);
 
             Debug.DrawRay(rays[0].origin, rays[0].direction * 0.01f, Color.blue);
             Debug.DrawRay(rays[1].origin, rays[1].direction * 0.01f, Color.blue);
@@ -398,6 +417,29 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             if (StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId])
             {
                 BanGravity = true;
+            }
+
+        }
+
+        //水平移动防止穿墙射线
+        rays[0] = new Ray2D(GavityRayPos[0].position + Vector3.up * 0.5f, Vector2.right * 0.01f);
+        rays[1] = new Ray2D(GavityRayPos[1].position + Vector3.up * 0.5f, Vector2.left * 0.01f);
+         infoLeft = Physics2D.Raycast(rays[1].origin, rays[1].direction, 0.01f);
+         infoRight = Physics2D.Raycast(rays[0].origin, rays[0].direction, 0.01f);
+        BanLeftOrRight = 0;
+        //水平方向上碰到墙/平台了
+        if (infoLeft.collider != null)// || infoRight.collider != null)
+        {
+           if(infoLeft.collider.CompareTag("Platform"))
+            {
+                BanLeftOrRight = -1;
+            }
+        }
+        else if (infoRight.collider != null)// || infoRight.collider != null)
+        {
+            if (infoRight.collider.CompareTag("Platform"))
+            {
+                BanLeftOrRight = 1;
             }
 
         }
@@ -486,6 +528,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             y = 0f;
             Border = true;
         }
+
         //左右的空气墙
         if (tr.localPosition.x >= 8.2f && Direction.x > 0)
         {
@@ -493,6 +536,17 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             Border = true;
         }
         else if(tr.localPosition.x <= -8.2f && Direction.x < 0)
+        {
+            x = 0f;
+            Border = true;
+        }
+        //左右碰到平台（找个时间和上面的额合并一下）
+        if(BanLeftOrRight == -1 && Direction.x < 0)
+        {
+            x = 0f;
+            Border = true;
+        }
+        else if (BanLeftOrRight == 1 && Direction.x > 0)
         {
             x = 0f;
             Border = true;
@@ -521,12 +575,30 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// </summary>
     public void Gravity()
     {
-        if (!BanGravity)
+        /*
+        if(!IsGround | !IsJumping && !StartFall)
         {
+            FallTime = Time.timeSinceLevelLoad;
+            StartFall = true;
+        }
+        else
+        {
+            StartFall = false;
+        }
+
+
+        //加速度
+        if (StartFall)
+        {
+            GravityRatio = GravityRatio + 0.5f * Time.deltaTime;
+        }*/
+
             tr.Translate(Vector2.down * 9.8f * GravityRatio * Time.deltaTime, Space.World);
 
-        }
     }
+
+  
+
     #endregion
 
     #region 僵直
@@ -772,6 +844,8 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             return;
         }
 
+        //清除状态
+        VariableInitialization();
 
         BanInput = true;
 
@@ -794,8 +868,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             
             //   StageCtrl.gameScoreSettings.HurtGirlsVit[MahouShoujoId] = damage;
             StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId] = true;
-            //这个要放在扣除vit之后，恢复vit/复活之前
-            VariableInitialization();
+            
 
             //无敌状态
             StartCoroutine("Invincible");
@@ -900,7 +973,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     public virtual void VariableInitialization()
     {
         //攻击状态+动画参数消除需要重写
-
+        //这里是公用的，私用的重写
         BanInput = false;
         BanWalk = false;
         GravityRatio = 1F;

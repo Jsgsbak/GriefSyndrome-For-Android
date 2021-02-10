@@ -661,6 +661,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16a907ac5eee5b14d9b96901e17e7749, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  VirtualInput: {fileID: 1240349813}
   PlayerInf: {fileID: 6862997016333489342, guid: d8f04b6b86c70f949a14ebe3647542e0,
     type: 3}
   PIUParent: {fileID: 12450136}
@@ -916,7 +917,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -3294,7 +3295,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -4251,6 +4252,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bfefb9f185fc07542a2df3b58c16d6ea, type: 3}
+--- !u!1 &1240349813 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 963269164565360881, guid: a5f3e5458bee1234a944fda4655425d0,
+    type: 3}
+  m_PrefabInstance: {fileID: 963269164359158730}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1241280509
 GameObject:
   m_ObjectHideFlags: 0
