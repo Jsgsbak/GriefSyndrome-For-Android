@@ -40,26 +40,26 @@ public class ETCedition : MonoBehaviour
     void Start()
     {
         tr = GetComponent<RectTransform>();
+        //更新自身的Rect
+        UpdateRect();
 
         //费标题编辑模式，是游戏模式
         if (!TitleSettingMode)
         {
             //获取组件
-            if (buttonActions != ETCActions.Joystick)
+            if (buttonActions != ETCActions.Joystick )
             {
+                //我日你先人，明明不是你他妈却执行（buttonActions != ETCActions.Pause有这个的情况下
                 ETCButton = GetComponent<ETCButton>();
-            }
 
-            if (buttonActions != ETCActions.Joystick)
-            {
                 //更新按钮图片（摇杆不支持）
                 ETCButton.normalSprite = ActionLogos[StageCtrl.gameScoreSettings.PlayerSelectedGirlId];
                 ETCButton.pressedSprite = ActionLogos[StageCtrl.gameScoreSettings.PlayerSelectedGirlId];
             }
+          
         }
 
-        //更新自身的Rect
-        UpdateRect();
+
     }
 
     /// <summary>

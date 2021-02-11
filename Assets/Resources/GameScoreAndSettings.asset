@@ -28,7 +28,7 @@ MonoBehaviour:
   LastLap: 1
   SelectedGirlInGame: 040000000700000007000000
   GirlsLevel: 0100000001000000010000000100000001000000
-  GirlSoulLimit: 00000000000000000000000000000000c94d0000
+  GirlSoulLimit: 000000000000000000000000000000001f410000
   GirlsVit: 0000000000000000000000000000000058000000
   GirlsPow: 000000000000000000000000000000000a000000
   MagiaKeyDown: 000000
@@ -47,9 +47,9 @@ MonoBehaviour:
   GemBrokenFadeAnimator: {fileID: 9100000, guid: 5aabe6842bacccd40b05d2641ba23b77,
     type: 2}
   AllDie: 0
-  BattlingMajo: 0
+  BattlingMajo: 3
   NewestMajo: 0
-  MajoSceneToTitle: 0
+  MajoSceneToTitle: 1
   BGMVol: 0.6
   SEVol: 0.7
   mahouShoujos:
@@ -228,7 +228,7 @@ MonoBehaviour:
       y: -115
       width: 60
       height: 60
-  UseScreenInput: 2
+  UseScreenInput: 0
   joystick: {x: 0, y: 0}
   Horizontal: 0
   Down: 0

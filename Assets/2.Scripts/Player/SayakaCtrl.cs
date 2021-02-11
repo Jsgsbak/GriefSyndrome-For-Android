@@ -72,7 +72,6 @@ public class SayakaCtrl : APlayerCtrl
         UpAttackCount = 0;
          MagiaDash = false;
         MagiaDashSpeedRatio = 1f;
-        Debug.Log("CESHI");
         //攻击动画/状态消除
         for (int i = 0; i < 3; i++)
         {
@@ -84,6 +83,7 @@ public class SayakaCtrl : APlayerCtrl
                     case 0:
                         animator.SetBool("ZattackFin", false);
                         animator.SetBool("Zattack", false);
+                        Debug.Log("消除Z攻击");
                         break;
 
                     case 1:
@@ -94,10 +94,11 @@ public class SayakaCtrl : APlayerCtrl
                         animator.SetBool("DownXattack-MovingDownward", false);
                         animator.SetBool("DownXattack-Done", false);
                         animator.SetBool("UpXattack", false);
+                        Debug.Log("消除X攻击");
                         break;
                      case 2:
-                        if(StageCtrl.gameScoreSettings.GirlsVit[MahouShoujoId] <= 0) animator.SetBool("Magia", false);
-
+                        animator.SetBool("Magia", false);
+                        Debug.Log("消除A攻击");
                         break;
                 }
             }

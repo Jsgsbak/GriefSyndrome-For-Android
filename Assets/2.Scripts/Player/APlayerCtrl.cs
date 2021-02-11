@@ -66,16 +66,17 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     [HideInInspector] public Transform tr;
     [HideInInspector] public Animator animator;
     [HideInInspector] public SpriteRenderer spriteRenderer;
-    public Material Material;
+    Material Material;
     #endregion
 
     #region 私有状态机（不保存到GSS中）
     /// <summary>
     /// 重力射线
     /// </summary>
-    readonly Ray2D[] rays = new Ray2D[2];
-    RaycastHit2D infoLeft;
-    RaycastHit2D infoRight;
+    readonly Ray2D[] rays = new Ray2D[3];
+   public RaycastHit2D infoLeft;
+    public RaycastHit2D infoRight;
+    public RaycastHit2D infoHor;
 
     public float GravityRatio = 1f;
 
@@ -100,7 +101,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// <summary>
     /// 正在跳跃（专指上升阶段）
     /// </summary>
-    [HideInInspector] public bool IsJumping = false;
+   public bool IsJumping = false;
     /// <summary>
     /// 站在平台上
     /// </summary>
@@ -303,13 +304,14 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         if (BanJump || StageCtrl.gameScoreSettings.Zattack || StageCtrl.gameScoreSettings.Xattack || StageCtrl.gameScoreSettings.Magia) return;
 
         //跳跃触发
-        if (!StageCtrl.gameScoreSettings.Down && StageCtrl.gameScoreSettings.Jump && Mathf.Abs(JumpInteralTimer - Time.timeSinceLevelLoad) > 0.1F && JumpCount != 1)//不知道为什么JumpCount会保持2个0
+        if (!StageCtrl.gameScoreSettings.Down && StageCtrl.gameScoreSettings.Jump && Mathf.Abs(JumpInteralTimer - Time.timeSinceLevelLoad) > 0.1F && JumpCount != 2)
         {
             MoveSpeedRatio = 1f;
             JumpInteralTimer = Time.timeSinceLevelLoad;
             IsJumping = true;
             JumpCount++;
             BanGravity = true;
+            BanGravityRay = true;
         }
         //跳跃状态
         if (IsJumping)
@@ -324,13 +326,16 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             //下降（其实就是取消跳跃状态）
             else
             {
+                BanGravityRay = false;
                 BanGravity = false;
                 IsJumping = false;
             }
-        }
+        } 
 
         //跳跃计数器更新
         if (IsGround) { JumpCount = 0; }
+
+
 
         //穿过平台
         if (StageCtrl.gameScoreSettings.Down && StandOnPlatform && StageCtrl.gameScoreSettings.Jump)
@@ -376,9 +381,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     public void RayCtrl()
     {
 
-        //重力射线
-        if (!BanGravityRay)
-        {
+     //这里的判断不能被禁用
             rays[0] = new Ray2D(GavityRayPos[0].position, Vector2.down * 0.1f);
             rays[1] = new Ray2D(GavityRayPos[1].position, Vector2.down * 0.1f);
             infoLeft = Physics2D.Raycast(rays[1].origin, rays[1].direction, 0.01f);
@@ -386,7 +389,11 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
             Debug.DrawRay(rays[0].origin, rays[0].direction * 0.1f, Color.blue);
             Debug.DrawRay(rays[1].origin, rays[1].direction * 0.1f, Color.blue);
-
+      
+        
+        //重力射线
+        if (!BanGravityRay)
+        {
             //在地上
             if (infoLeft.collider != null)// || infoRight.collider != null)
             {
@@ -424,25 +431,25 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         //水平移动防止穿墙射线
         if (DoLookRight)
         {
-            rays[0] = new Ray2D(GavityRayPos[0].position + Vector3.up * 0.4f, Vector2.right);
+            rays[2] = new Ray2D(GavityRayPos[0].position + Vector3.up * 0.2f, Vector2.right * 0.8f);
           //  rays[1] = new Ray2D(GavityRayPos[1].position + Vector3.up * 0.5f, Vector2.left * 10f);
         }
-        else
+        else//
         {
-            rays[0] = new Ray2D(GavityRayPos[0].position + Vector3.up * 0.4f, -Vector2.right);
+            rays[2] = new Ray2D(GavityRayPos[0].position + Vector3.up * 0.2f, -Vector2.right * 0.8f);
          //   rays[1] = new Ray2D(GavityRayPos[1].position + Vector3.up * 0.5f, -Vector2.left * 10f);
         }
-      //  infoLeft = Physics2D.Raycast(rays[1].origin, rays[1].direction,10f);
-         infoRight = Physics2D.Raycast(rays[0].origin, rays[0].direction,0.7f);
-        Debug.DrawRay(rays[0].origin, rays[0].direction * 0.4f, Color.red);
+        //  infoLeft = Physics2D.Raycast(rays[1].origin, rays[1].direction,10f);
+        infoHor = Physics2D.Raycast(rays[2].origin, rays[2].direction,0.8f);
+        Debug.DrawRay(rays[2].origin, rays[2].direction * 0.5f, Color.red);
        // Debug.DrawRay(rays[1].origin, rays[1].direction * 1f, Color.red);
 
         BanLeftOrRight = 0;
         //水平方向上碰到墙/平台了
        
-        if (infoRight.collider != null)// || infoRight.collider != null)
+        if (infoHor.collider != null)// || infoRight.collider != null)
         {
-            if (infoRight.collider.CompareTag("Platform") || infoRight.collider.CompareTag("Wall"))
+            if (infoHor.collider.CompareTag("Platform") || infoHor.collider.CompareTag("Wall"))
             {
                 if (DoLookRight)
                 {
@@ -456,6 +463,32 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             }
 
         }
+
+
+        //脚插进地里检查
+        if (infoLeft.collider != null && infoHor.collider != null && !IsJumping && !GoThroughPlatform && IsGround)
+        {
+            //如果水平射线与脚底射线得到的东西一致，那么说明脚插在地里（不对地板进行处理）
+            if (!infoLeft.collider.CompareTag("Floor") && infoLeft.collider.gameObject.name.Equals(infoHor.collider.gameObject.name))
+            {
+                tr.Translate(Vector3.up * 0.1f, Space.World);
+                //不断重复，直到脚没插进地里
+                RayCtrl();
+                //防止两脚都插进去之后多次执行
+                return;
+            }
+        }
+        else if (infoRight.collider != null && infoHor.collider != null && !IsJumping && !GoThroughPlatform && IsGround)
+        {
+            //如果水平射线与脚底射线得到的东西一致，那么说明脚插在地里（不对地板进行处理）
+            if (!infoRight.collider.CompareTag("Floor") && infoRight.collider.gameObject.name.Equals(infoHor.collider.gameObject.name))
+            {
+                tr.Translate(Vector3.up * 0.1f, Space.World);
+                //不断重复，直到脚没插进地里
+                RayCtrl();
+            }
+        }
+
     }
 
     /// <summary>

@@ -115,6 +115,7 @@ public class UICtrl : MonoBehaviour
 
         #region 初始化UI界面
 
+        
         //设置好虚拟按键是否启用
         if(StageCtrl.gameScoreSettings.UseScreenInput != 2)
         {
