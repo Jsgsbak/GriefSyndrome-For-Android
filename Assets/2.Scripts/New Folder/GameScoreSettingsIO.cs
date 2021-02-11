@@ -222,6 +222,7 @@ public class GameScoreSettingsIO : ScriptableObject
         MajoSceneToTitle = false;//一定要放到魔女初始化后面
         MaxFps = 60;
         SaveGame.DeleteAll();
+        UseScreenInput = 2;
         Load();
         //做啥角色就换成啥
         SelectedGirlInGame[0] = Variable.PlayerFaceType.Sayaka;
