@@ -47,9 +47,9 @@ MonoBehaviour:
   GemBrokenFadeAnimator: {fileID: 9100000, guid: 5aabe6842bacccd40b05d2641ba23b77,
     type: 2}
   AllDie: 0
-  BattlingMajo: 3
+  BattlingMajo: 0
   NewestMajo: 0
-  MajoSceneToTitle: 1
+  MajoSceneToTitle: 0
   BGMVol: 0.6
   SEVol: 0.7
   mahouShoujos:
