@@ -10,9 +10,9 @@ TagManager:
   - Player1
   - Player2
   - Player3
-  - FloorOrWall
   - Floor
   - Platform
+  - Wall
   layers:
   - Default
   - TransparentFX

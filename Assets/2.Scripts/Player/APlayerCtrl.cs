@@ -391,16 +391,16 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             if (infoLeft.collider != null)// || infoRight.collider != null)
             {
                 StandOnPlatform = infoLeft.collider.CompareTag("Platform");
-                BanGravity = infoLeft.collider.CompareTag("Floor") | infoLeft.collider.CompareTag("Platform");
+                BanGravity = infoLeft.collider.CompareTag("Floor") | infoLeft.collider.CompareTag("Platform") | infoLeft.collider.CompareTag("Wall");
                 StandOnPlatform = infoLeft.collider.CompareTag("Platform");
-                StandOnFloor = infoLeft.collider.CompareTag("Floor");
+                StandOnFloor = infoLeft.collider.CompareTag("Floor") | infoLeft.collider.CompareTag("Wall");
             }
             else if (infoRight.collider != null)// || infoRight.collider != null)
             {
                 StandOnPlatform = infoRight.collider.CompareTag("Platform");
-                BanGravity = infoRight.collider.CompareTag("Floor") | infoRight.collider.CompareTag("Platform");
+                BanGravity = infoRight.collider.CompareTag("Floor") | infoRight.collider.CompareTag("Platform") | infoRight.collider.CompareTag("Wall");
                 StandOnPlatform = infoRight.collider.CompareTag("Platform");
-                StandOnFloor = infoRight.collider.CompareTag("Floor");
+                StandOnFloor = infoRight.collider.CompareTag("Floor") | infoRight.collider.CompareTag("Wall");
 
             }
             //啥也没才上，腾空
@@ -442,7 +442,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
        
         if (infoRight.collider != null)// || infoRight.collider != null)
         {
-            if (infoRight.collider.CompareTag("Platform"))
+            if (infoRight.collider.CompareTag("Platform") || infoRight.collider.CompareTag("Wall"))
             {
                 if (DoLookRight)
                 {
