@@ -74,7 +74,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// 重力射线
     /// </summary>
     readonly Ray2D[] rays = new Ray2D[3];
-   public RaycastHit2D infoLeft;
+    public RaycastHit2D infoLeft;
     public RaycastHit2D infoRight;
     public RaycastHit2D infoHor;
 
@@ -87,7 +87,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// <summary>
     /// 禁止左右移动（-1左 1右）
     /// </summary>
-     public  int BanLeftOrRight = 0;
+    public int BanLeftOrRight = 0;
 
     /// <summary>
     /// 向右看吗
@@ -101,7 +101,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// <summary>
     /// 正在跳跃（专指上升阶段）
     /// </summary>
-   public bool IsJumping = false;
+    public bool IsJumping = false;
     /// <summary>
     /// 站在平台上
     /// </summary>
@@ -229,7 +229,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
         #region  基础控制器
         JumpAndFall();
-        
+
         if (!BanWalk) Walk();
         AnimationCtrl();
         #endregion
@@ -250,7 +250,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         if (!IsAttack[1] && !IsAttack[2] && !StageCtrl.gameScoreSettings.Xattack) { OrdinaryZ(); HorizontalZ(); VerticalZ(); }
         if (!IsAttack[0] && !IsAttack[2] && !StageCtrl.gameScoreSettings.Zattack) { OrdinaryX(); HorizontalX(); UpX(); DownX(); }
         //magia对VIT/血条的处理在各自的脚本里  限制vit有bug   松开魔法键之后仍然会执行魔法
-        if (!IsAttack[0] && !IsAttack[1] && /*StageCtrl.gameScoreSettings.Magia &&*/ StageCtrl.gameScoreSettings.GirlsVit[MahouShoujoId] > StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].MaigaVit | IsAttack[2]) {  Magia(); }
+        if (!IsAttack[0] && !IsAttack[1] && /*StageCtrl.gameScoreSettings.Magia &&*/ StageCtrl.gameScoreSettings.GirlsVit[MahouShoujoId] > StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].MaigaVit | IsAttack[2]) { Magia(); }
 
         BanWalk = IsAttack[0] || IsAttack[1] || IsAttack[2] || StageCtrl.gameScoreSettings.Zattack || StageCtrl.gameScoreSettings.Magia || StageCtrl.gameScoreSettings.Xattack;//在这里统一弄一个，直接在这里禁用移动，不再在各种攻击方法和动画事件中禁用了
         BanJump = IsAttack[0] || IsAttack[1] || IsAttack[2] || StageCtrl.gameScoreSettings.Zattack || StageCtrl.gameScoreSettings.Magia || StageCtrl.gameScoreSettings.Xattack;//在这里统一弄一个，直接在这里禁用移动，不再在各种攻击方法和动画事件中禁用了
@@ -259,7 +259,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
 
     }
-           
+
 
     #region  基础控制器
     /// <summary>
@@ -284,7 +284,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         animator.SetBool("Walk", StageCtrl.gameScoreSettings.Horizontal != 0);
         animator.SetBool("Jump", IsJumping);
         animator.SetBool("Fall", !IsGround && !BanGravity && !IsJumping);
-       
+
         //如果有攻击状态，直接禁用这三个基本动画
         foreach (var item in IsAttack)
         {
@@ -292,7 +292,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             {
                 animator.SetBool("Walk", false);
                 animator.SetBool("Jump", false);
-                animator.SetBool("Fall",false);
+                animator.SetBool("Fall", false);
                 break;
             }
         }
@@ -324,7 +324,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             {
                 //解决一个很奇怪的BUG
                 IsGround = false;
-                tr.Translate(Vector3.up * (JumpSpeed  - (Time.timeSinceLevelLoad - JumpInteralTimer) * JumpSpeed /0.3F) * Time.deltaTime );
+                tr.Translate(Vector3.up * (JumpSpeed - (Time.timeSinceLevelLoad - JumpInteralTimer) * JumpSpeed / 0.3F) * Time.deltaTime);
             }
             //下降（其实就是取消跳跃状态）
             else
@@ -333,7 +333,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
                 BanGravity = false;
                 IsJumping = false;
             }
-        } 
+        }
 
         //跳跃计数器更新
         if (IsGround) { JumpCount = 0; }
@@ -385,16 +385,16 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     public void RayCtrl()
     {
 
-     //这里的判断不能被禁用
-            rays[0] = new Ray2D(GavityRayPos[0].position, Vector2.down * 0.1f);
-            rays[1] = new Ray2D(GavityRayPos[1].position, Vector2.down * 0.1f);
-            infoLeft = Physics2D.Raycast(rays[1].origin, rays[1].direction, 0.01f);
-             infoRight = Physics2D.Raycast(rays[0].origin, rays[0].direction, 0.01f);
+        //这里的判断不能被禁用
+        rays[0] = new Ray2D(GavityRayPos[0].position, Vector2.down * 0.1f);
+        rays[1] = new Ray2D(GavityRayPos[1].position, Vector2.down * 0.1f);
+        infoLeft = Physics2D.Raycast(rays[1].origin, rays[1].direction, 0.01f);
+        infoRight = Physics2D.Raycast(rays[0].origin, rays[0].direction, 0.01f);
 
-            Debug.DrawRay(rays[0].origin, rays[0].direction * 0.1f, Color.blue);
-            Debug.DrawRay(rays[1].origin, rays[1].direction * 0.1f, Color.blue);
-      
-        
+        Debug.DrawRay(rays[0].origin, rays[0].direction * 0.1f, Color.blue);
+        Debug.DrawRay(rays[1].origin, rays[1].direction * 0.1f, Color.blue);
+
+
         //重力射线
         if (!BanGravityRay)
         {
@@ -436,21 +436,21 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         if (DoLookRight)
         {
             rays[2] = new Ray2D(GavityRayPos[0].position + Vector3.up * 0.2f, Vector2.right * 0.8f);
-          //  rays[1] = new Ray2D(GavityRayPos[1].position + Vector3.up * 0.5f, Vector2.left * 10f);
+            //  rays[1] = new Ray2D(GavityRayPos[1].position + Vector3.up * 0.5f, Vector2.left * 10f);
         }
         else//
         {
             rays[2] = new Ray2D(GavityRayPos[0].position + Vector3.up * 0.2f, -Vector2.right * 0.8f);
-         //   rays[1] = new Ray2D(GavityRayPos[1].position + Vector3.up * 0.5f, -Vector2.left * 10f);
+            //   rays[1] = new Ray2D(GavityRayPos[1].position + Vector3.up * 0.5f, -Vector2.left * 10f);
         }
         //  infoLeft = Physics2D.Raycast(rays[1].origin, rays[1].direction,10f);
-        infoHor = Physics2D.Raycast(rays[2].origin, rays[2].direction,0.8f);
+        infoHor = Physics2D.Raycast(rays[2].origin, rays[2].direction, 0.8f);
         Debug.DrawRay(rays[2].origin, rays[2].direction * 0.5f, Color.red);
-       // Debug.DrawRay(rays[1].origin, rays[1].direction * 1f, Color.red);
+        // Debug.DrawRay(rays[1].origin, rays[1].direction * 1f, Color.red);
 
         BanLeftOrRight = 0;
         //水平方向上碰到墙/平台了
-       
+
         if (infoHor.collider != null)// || infoRight.collider != null)
         {
             if (infoHor.collider.CompareTag("Platform") || infoHor.collider.CompareTag("Wall"))
@@ -475,7 +475,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             //如果水平射线与脚底射线得到的东西一致，那么说明脚插在地里（不对地板进行处理）
             if (!infoLeft.collider.CompareTag("Floor") && infoLeft.collider.GetInstanceID().Equals(infoHor.collider.GetInstanceID()))
             {
-                
+
                 tr.Translate(Vector3.up * 0.1f, Space.World);
                 //不断重复，直到脚没插进地里
                 RayCtrl();
@@ -569,12 +569,12 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         if (StandOnFloor && StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId] && Direction.y < 0)
         {
             //  Direction = new Vector2(Direction.x, 0f);
-           y = 0f;
+            y = 0f;
             Border = true;
         }
 
         //到天花板了，剔除向上移动方向
-       else if(tr.localPosition.y >= 4.1f && Direction.y > 0)
+        else if (tr.localPosition.y >= 4.1f && Direction.y > 0)
         {
             y = 0f;
             Border = true;
@@ -586,13 +586,13 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             x = 0f;
             Border = true;
         }
-        else if(tr.localPosition.x <= -8.2f && Direction.x < 0)
+        else if (tr.localPosition.x <= -8.2f && Direction.x < 0)
         {
             x = 0f;
             Border = true;
         }
         //左右碰到平台（找个时间和上面的额合并一下）
-        if(BanLeftOrRight == -1 && Direction.x < 0)
+        if (BanLeftOrRight == -1 && Direction.x < 0)
         {
             x = 0f;
             Border = true;
@@ -613,7 +613,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
         if (UseTimeDelta)
         {
-            tr.Translate(Direction * Slope.normalized * Speed * MoveSpeedRatio * Time.deltaTime,Space.World );
+            tr.Translate(Direction * Slope.normalized * Speed * MoveSpeedRatio * Time.deltaTime, Space.World);
         }
         else
         {
@@ -644,11 +644,11 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             GravityRatio = GravityRatio + 0.5f * Time.deltaTime;
         }*/
 
-            tr.Translate(Vector2.down * 9.8f * GravityRatio * Time.deltaTime, Space.World);
+        tr.Translate(Vector2.down * 9.8f * GravityRatio * Time.deltaTime, Space.World);
 
     }
 
-  
+
 
     #endregion
 
@@ -758,7 +758,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// </summary>
     void PerSecondChange()
     {
-        if ( !StageCtrl.gameScoreSettings.DoesMajoOrShoujoDie && Time.timeScale != 0 && !IsInvincible && StageCtrl.gameScoreSettings.GirlsVit[MahouShoujoId] != 0 && StageCtrl.gameScoreSettings.GirlSoulLimit[MahouShoujoId] != 0 && !StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] && !StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId])
+        if (!StageCtrl.gameScoreSettings.DoesMajoOrShoujoDie && Time.timeScale != 0 && !IsInvincible && StageCtrl.gameScoreSettings.GirlsVit[MahouShoujoId] != 0 && StageCtrl.gameScoreSettings.GirlSoulLimit[MahouShoujoId] != 0 && !StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] && !StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId])
         {
             StageCtrl.gameScoreSettings.GirlSoulLimit[MahouShoujoId]--;
 
@@ -768,7 +768,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
                 Die(1);
             }
 
-            if (!StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] &&  StageCtrl.gameScoreSettings.GirlsVit[MahouShoujoId] < StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].BasicVit + Grow(StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].VitGrowth, StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].VitGrowthLevelLimit, true))
+            if (!StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] && StageCtrl.gameScoreSettings.GirlsVit[MahouShoujoId] < StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].BasicVit + Grow(StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].VitGrowth, StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].VitGrowthLevelLimit, true))
             {
                 StageCtrl.gameScoreSettings.GirlsVit[MahouShoujoId] = StageCtrl.gameScoreSettings.GirlsVit[MahouShoujoId] + 7;
                 StageCtrl.gameScoreSettings.GirlsVit[MahouShoujoId] = Mathf.Clamp(StageCtrl.gameScoreSettings.GirlsVit[MahouShoujoId], 0, StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].MaxVit);
@@ -887,7 +887,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// <summary>
     /// 受伤（调试版）
     /// </summary>
-   public void GetHurt(int damage)
+    public void GetHurt(int damage)
     {
         //无敌不执行后续操作
         if (IsInvincible)
@@ -915,11 +915,11 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             StageCtrl.gameScoreSettings.GirlsVit[MahouShoujoId] = StageCtrl.gameScoreSettings.GirlsVit[MahouShoujoId] - damage;
             //扣除soullimit
             StageCtrl.gameScoreSettings.GirlSoulLimit[MahouShoujoId] = StageCtrl.gameScoreSettings.GirlSoulLimit[MahouShoujoId] - damage * StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].Recovery;
-           
-            
+
+
             //   StageCtrl.gameScoreSettings.HurtGirlsVit[MahouShoujoId] = damage;
             StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId] = true;
-            
+
 
             //无敌状态
             StartCoroutine("Invincible");
@@ -937,7 +937,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// <summary>
     /// 死亡
     /// </summary>
-   public void Die(int damage)
+    public void Die(int damage)
     {
 
         //扣除soullimit
@@ -981,7 +981,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
             BanInput = false;
             BanGravity = true;
-           // BanGravityRay = true;
+            // BanGravityRay = true;
 
         }
     }
@@ -1041,16 +1041,16 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     public void RebirthDone()
     {
         MoveSpeedRatio = 1f;
-       // BanGravity = false;
+        // BanGravity = false;
         animator.SetInteger("Die", 0);
         StartCoroutine("Invincible");
         StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId] = false;
         StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] = false;
 
         //在这里恢复VIT，为了得到血条恢复的效果
-      int MaxVit =  StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].BasicVit + Grow(StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].VitGrowth, StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].VitGrowthLevelLimit, true);
-       MaxVit = Mathf.Clamp(MaxVit, 0, StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].MaxVit);
-       StageCtrl.gameScoreSettings.GirlsVit[MahouShoujoId] = MaxVit;
+        int MaxVit = StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].BasicVit + Grow(StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].VitGrowth, StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].VitGrowthLevelLimit, true);
+        MaxVit = Mathf.Clamp(MaxVit, 0, StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].MaxVit);
+        StageCtrl.gameScoreSettings.GirlsVit[MahouShoujoId] = MaxVit;
 
     }
 
@@ -1083,7 +1083,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     public void DestroyPoorGirl()
     {
         //场上有一个玩家死了
-      StageCtrl.stageCtrl.PlayerDie();
+        StageCtrl.stageCtrl.PlayerDie();
         //删除物体
         Destroy(gameObject);
     }
