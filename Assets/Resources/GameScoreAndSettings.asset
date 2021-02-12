@@ -27,10 +27,10 @@ MonoBehaviour:
   LastLap: 1
   SelectedGirlInGame: 040000000700000007000000
   GirlsLevel: 0100000001000000010000000100000001000000
-  GirlSoulLimit: 00000000000000000000000000000000cb4d0000
-  GirlsVit: 0000000000000000000000000000000026000000
+  GirlSoulLimit: 00000000000000000000000000000000ce2e0000
+  GirlsVit: 0000000000000000000000000000000058000000
   GirlsPow: 000000000000000000000000000000000a000000
-  MagiaKeyDown: 010000
+  MagiaKeyDown: 000000
   GetHurtInGame: 000000
   IsBodyDieInGame: 000000
   IsSoulBallInGame: 000000
@@ -48,10 +48,10 @@ MonoBehaviour:
   AllDie: 0
   BattlingMajo: 0
   NewestMajo: 0
-  MajoSceneToTitle: 1
-  MaxFps: 300
+  MajoSceneToTitle: 0
+  MaxFps: 0
   BGMVol: 0.6
-  SEVol: 1
+  SEVol: 0.7
   mahouShoujos:
   - name: Homura
     BasicPow: 10
@@ -228,7 +228,7 @@ MonoBehaviour:
       y: -115
       width: 60
       height: 60
-  UseScreenInput: 0
+  UseScreenInput: 2
   joystick: {x: 0, y: 0}
   Horizontal: 0
   Down: 0
