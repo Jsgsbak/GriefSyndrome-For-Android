@@ -470,7 +470,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
 
         //脚插地修复
-        if (infoLeft.collider != null && infoHor.collider != null && !IsJumping && !GoThroughPlatform && IsGround)
+        if (infoLeft.collider != null && infoHor.collider != null && !IsJumping && !GoThroughPlatform && IsGround && !StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId])
         {
             //如果水平射线与脚底射线得到的东西一致，那么说明脚插在地里（不对地板进行处理）
             if (!infoLeft.collider.CompareTag("Floor") && infoLeft.collider.GetInstanceID().Equals(infoHor.collider.GetInstanceID()))
@@ -483,7 +483,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
                 return;
             }
         }
-        else if (infoRight.collider != null && infoHor.collider != null && !IsJumping && !GoThroughPlatform && IsGround)
+        else if (infoRight.collider != null && infoHor.collider != null && !IsJumping && !GoThroughPlatform && IsGround && !StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId])
         {
             //如果水平射线与脚底射线得到的东西一致，那么说明脚插在地里（不对地板进行处理）
             if (!infoRight.collider.CompareTag("Floor") && infoRight.collider.GetInstanceID().Equals(infoHor.collider.GetInstanceID()))
