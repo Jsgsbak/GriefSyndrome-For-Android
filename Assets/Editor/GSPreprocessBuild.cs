@@ -9,8 +9,8 @@ using UnityEngine;
 /// 打包的时候执行的脚本
 /// </summary>
 public class GSPreprocessBuild : Editor, IPreprocessBuildWithReport, IPostprocessBuildWithReport
-
 {
+
     public int callbackOrder { get { return 0; } }
 
     /// <summary>
@@ -31,6 +31,10 @@ public class GSPreprocessBuild : Editor, IPreprocessBuildWithReport, IPostproces
         //发包前全部初始化
         GameScoreSettingsIO gss = (GameScoreSettingsIO)Resources.Load("GameScoreAndSettings");
         gss.AllInitial();
+
+        //自动增加内部版本号，防止遗忘
+        PlayerSettings.Android.bundleVersionCode++;
+
 
     }
 }

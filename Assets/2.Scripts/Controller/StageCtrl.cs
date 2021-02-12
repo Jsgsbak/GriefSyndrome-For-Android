@@ -69,8 +69,7 @@ public class StageCtrl : MonoBehaviour
 
 
         gameScoreSettings = (GameScoreSettingsIO)Resources.Load("GameScoreAndSettings");
-        Application.targetFrameRate = gameScoreSettings.MaxFps;
-
+       
 #if UNITY_EDITOR
 
         //检查是否存在BGMCtrl
@@ -224,7 +223,7 @@ public class StageCtrl : MonoBehaviour
             //通知gss刷新最高分数，最短时间，最高连击，当前玩的lap
             gameScoreSettings.RefreshBestScoreAndSoOn();
             //存档（放在这里存档是为了防止有的人staff还没出现就关游戏）
-            Timing.RunCoroutine(gameScoreSettings.Save());
+            Timing.RunCoroutine(gameScoreSettings.SaveAll());
 
         }
 

@@ -25,11 +25,17 @@ public class TitleCtrl : MonoBehaviour
     [Header("主标题按钮控制")]
     public Button StartGameButton;
     public TMP_InputField LapInput;
-    public Button InputSettings;
+    public Button Settings;
     public Button ExitButton;
     public Button RandomStaff;
+
+    [Space]
+    [Header("设置界面")]
     public Slider BGMVol;
     public Slider SEVol;
+    public TMP_InputField MaxFpsField;
+    public Button[] SettingsReturnToTitle = new Button[2];
+
     /// <summary>
     /// 场景切换控制 顺序：MainTitle，SelectMajo，SelectMaigcalGirl
     /// </summary>
@@ -94,6 +100,9 @@ public class TitleCtrl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //限制帧率
+        Application.targetFrameRate = gameScoreSettingsIO.MaxFps;
+
 
 #if UNITY_EDITOR
         //检查是否存在BGMCtrl（仅供调试）
@@ -144,23 +153,48 @@ public class TitleCtrl : MonoBehaviour
         }
 
 
-        //BGM
+        //BGM和音效的音量从gss中读取，并同步显示在界面中
         EasyBGMCtrl.easyBGMCtrl.PlayBGM(0);
         EasyBGMCtrl.easyBGMCtrl.ChangeVol(gameScoreSettingsIO.BGMVol, true);
+        EasyBGMCtrl.easyBGMCtrl.ChangeVol(gameScoreSettingsIO.SEVol, false);
+        //最大帧率从GSS中获取，并同步显示在界面中
+        MaxFpsField.text = gameScoreSettingsIO.MaxFps.ToString();
+        //输入的话有自己的脚本
 
         #region  注册组件
         //主标题part
         LapInput.onValueChanged.AddListener(delegate (string lap) { gameScoreSettingsIO.lap = int.Parse(lap); });//向GSS中写入周目数
 
+        //设置即时保存
         //音量
         BGMVol.onValueChanged.AddListener(BGMVolChange);
         SEVol.onValueChanged.AddListener(SEVolChange);
+        //帧率输入合法性检查（仅支持非负数）
+        MaxFpsField.onValueChanged.AddListener(delegate (string s) 
+        {
+            int.TryParse(s, out int d);
+
+            if (d < 0)
+            {
+                d = -d;
+            }
+            else if(d < 30 && d!=0)
+            {
+                d = 30;
+            }
+
+            MaxFpsField.text = d.ToString();
+
+        });
+        MaxFpsField.onEndEdit.AddListener(delegate (string s) { int.TryParse(s, out gameScoreSettingsIO.MaxFps); Application.targetFrameRate = gameScoreSettingsIO.MaxFps;});
 
         //进入魔女选择part的音效放在了ChangePartMethod中
         StartGameButton.onClick.AddListener(delegate () { EasyBGMCtrl.easyBGMCtrl.PlaySE(0); Timing.RunCoroutine(ChangePartMethod(0, 1)); });//进入魔女选择part
-        ExitButton.onClick.AddListener(delegate () { Timing.RunCoroutine( gameScoreSettingsIO.Save());/*这里保存一下*/   Application.Quit(0); });//关闭游戏
+        ExitButton.onClick.AddListener(delegate () { Timing.RunCoroutine( gameScoreSettingsIO.SaveSettings());/*这里保存一下*/   Application.Quit(0); });//关闭游戏
         RandomStaff.onClick.AddListener(delegate () { EasyBGMCtrl.easyBGMCtrl.PlaySE(0); RandomKillGirl(); });
-        InputSettings.onClick.AddListener(delegate () { EasyBGMCtrl.easyBGMCtrl.PlaySE(0); Timing.RunCoroutine(ChangePartMethod(0, 3)); });
+        Settings.onClick.AddListener(delegate () { EasyBGMCtrl.easyBGMCtrl.PlaySE(0); Timing.RunCoroutine(ChangePartMethod(0, 3)); });
+        SettingsReturnToTitle[0].onClick.AddListener(delegate () { EasyBGMCtrl.easyBGMCtrl.PlaySE(0); Timing.RunCoroutine(gameScoreSettingsIO.SaveSettings()); Timing.RunCoroutine(ChangePartMethod(3, 0)); });
+        SettingsReturnToTitle[1].onClick.AddListener(delegate () { EasyBGMCtrl.easyBGMCtrl.PlaySE(0); Timing.RunCoroutine(gameScoreSettingsIO.SaveSettings()); Timing.RunCoroutine(ChangePartMethod(3, 0)); });
         //魔女选择part
         ExitMajo.onClick.AddListener(delegate () { EasyBGMCtrl.easyBGMCtrl.PlaySE(1); Timing.RunCoroutine(ChangePartMethod(1, 0)); });//返回到主标题part
 
@@ -445,8 +479,16 @@ public class TitleCtrl : MonoBehaviour
 
     }
 
+    public  void SetMaxFps()
+    {
+        Application.targetFrameRate = gameScoreSettingsIO.MaxFps;
+    }
+
     //<sprite="PlayerFace" index=1> 
     #region 内部方法
+
+
+
     /// <summary>
     /// 切换part和每个part需要的数据处理（在MainTitle SelectMajo SelectMaigcalGirl InputSettings四个part中切换）
     /// </summary>

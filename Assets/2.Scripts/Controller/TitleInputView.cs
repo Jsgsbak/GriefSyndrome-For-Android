@@ -18,8 +18,6 @@ public class TitleInputView : MonoBehaviour
 
     public static int EditingButton = -1;
 
-    public GameObject InputSetting;
-    public GameObject MainTitle;
     public GameObject Input;
 
     private void Start()
@@ -96,14 +94,6 @@ public class TitleInputView : MonoBehaviour
     }
 
     /// <summary>
-    /// 保存设置到存档
-    /// </summary>
-    void SaveToFile()
-    {
-        TitleCtrl.gameScoreSettingsIO.SaveInput();
-    }
-
-    /// <summary>
     /// 撤销所有变化
     /// </summary>
     public void RevokeAllChange()
@@ -113,11 +103,5 @@ public class TitleInputView : MonoBehaviour
         //同步输入框
         EditorShow(EditingButton);
     }
-
-    public void BackToTitle()
-    {
-        SaveToFile();
-        InputSetting.SetActive(false);
-        MainTitle.SetActive(true);
-    }   
+ 
 }

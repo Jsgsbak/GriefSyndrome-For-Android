@@ -169,11 +169,15 @@ public class UICtrl : MonoBehaviour
 
     }
 
-    /// <summary>
-    /// 提供键盘支持
-    /// </summary>
     void FastUpdate()
     { 
+        //响应安卓返回按键
+        if(Application.platform == RuntimePlatform.Android && Input.GetKeyDown(KeyCode.Escape))
+        {
+            StageCtrl.gameScoreSettings.Pause = true;
+        }
+
+        ///触发暂停
         if (StageCtrl.gameScoreSettings.Pause && Time.timeScale != 0)
         {
             GamePauseSwitch();

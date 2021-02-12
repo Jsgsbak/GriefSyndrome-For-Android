@@ -125,7 +125,6 @@ public class SayakaCtrl : APlayerCtrl
             BanWalk = true;
             BanTurnAround = true;
             BanGravity = true;
-            BanGravityRay = true;
 
             animator.SetBool("Magia", true);
 
@@ -191,7 +190,6 @@ public class SayakaCtrl : APlayerCtrl
             IsAttack[1] = true;
             BanWalk = true;
             BanTurnAround = true;
-       //     MagicRing.enabled = true ;
 
             //保存一下时间，用于得到蓄力的效果
             OrdinaryXTimer = Time.timeSinceLevelLoad;
@@ -244,8 +242,8 @@ public class SayakaCtrl : APlayerCtrl
             IsAttack[1] = true;
             animator.SetBool("DownXattack-MovingUpward", true);
             BanInput = true;//在这一套攻击里，就靠取消僵直来把这个设置为false了
-            BanGravity = true;
             BanGravityRay = true;
+            BanGravity = true;
             DownAttackMovingUpward = 1;
         }
 
@@ -283,11 +281,11 @@ public class SayakaCtrl : APlayerCtrl
         {
             if (DoLookRight)
             {
-                Move(10f, true, Vector2.one, new Vector2(-1, 1));
+                Move(12f, true, Vector2.one, new Vector2(-1, 1));
             }
             else
             {
-                Move(10f, true, Vector2.one, new Vector2(1, 1));
+                Move(12f, true, Vector2.one, new Vector2(1, 1));
             }
         }
 
@@ -300,13 +298,14 @@ public class SayakaCtrl : APlayerCtrl
         //UpAttackCount < 1 受上一条IF干扰，第一次起跳不会增加UpAttackCount 
         if (StageCtrl.gameScoreSettings.Horizontal == 0  && !animator.GetBool("UpXattack") && UpAttackCount < 1 && !IsAttack[1] && StageCtrl.gameScoreSettings.Xattack && StageCtrl.gameScoreSettings.Up)
         {
+            CancelJump();//直接中断跳跃并且不恢复
             UpAttackCount++;
             UpAttackMove = true;
             IsAttack[1] = true;
             BanWalk = true;
             BanTurnAround = true;
-            BanGravity = true;
             BanGravityRay = true;
+            BanGravity = true;
             BanJump = true;
 
             animator.SetBool("UpXattack", true);
@@ -515,8 +514,8 @@ public class SayakaCtrl : APlayerCtrl
     {
         UpAttackMove = false;
         IsAttack[1] = false;
-        BanGravity = true;
-        BanGravityRay = true;
+        BanGravity = true;//为了悬空效果，僵直结束之后变成false了
+
         if(UpAttackCount == 0)
         {
             Stiff(0.1f);
@@ -578,7 +577,6 @@ public class SayakaCtrl : APlayerCtrl
     public IEnumerator XattackBound()
     {
         BanGravity = true;
-        BanGravityRay = true;
         DownAttackMovingUpward = 2;
       //  IsStiff = true;这个也不能要，不然不会触发反弹效果
         yield return new WaitForSeconds(0.2f);
@@ -587,7 +585,6 @@ public class SayakaCtrl : APlayerCtrl
         //   Stiff(0.1f); 自带僵直效果了
       //  IsStiff = false;
         BanGravity = false;
-        BanGravityRay = false;
         BanInput = false;
        IsAttack[1] = false;
     }

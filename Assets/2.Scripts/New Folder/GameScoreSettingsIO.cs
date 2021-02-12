@@ -15,8 +15,6 @@ public class GameScoreSettingsIO : ScriptableObject
 {
     #region 正式玩的变量
 
-    [Header("最大帧率")]
-    public int MaxFps = 60;
 
     [Header("正式玩的变量")]
     [Header("当前玩家分数")]
@@ -157,11 +155,19 @@ public class GameScoreSettingsIO : ScriptableObject
 
     #endregion
 
-    #region 玩家设置
 
+    #region  主标题 设置
+    [Header("最大帧率")]
+    public int MaxFps = 0;
+  
     [Header("音量")]
     public float BGMVol = 0.6f;
     public float SEVol = 0.7f;
+
+    #endregion
+
+    #region 玩家设置
+
 
     /// <summary>
     /// 魔法少女属性设置
@@ -184,12 +190,12 @@ public class GameScoreSettingsIO : ScriptableObject
     [HideInInspector] public Vector2 joystick = Vector2.zero;
 
     #endregion
-   
+
     #region 输入变量管理（所有的按键/屏幕输入的变量都在这里）
     /// <summary>
     /// 水平输入
     /// </summary>
-    public int Horizontal = 0;
+    [HideInInspector] public int Horizontal = 0;
     /// <summary>
     /// 穿墙（地板）的时候，按↓的时候用的
     /// </summary>
@@ -220,12 +226,16 @@ public class GameScoreSettingsIO : ScriptableObject
         TitleInitial();
         MajoInitial();
         MajoSceneToTitle = false;//一定要放到魔女初始化后面
-        MaxFps = 60;
-        SaveGame.DeleteAll();
+        MaxFps = 0;
+        BGMVol = 0.6f;
+        SEVol = 0.7f;
         UseScreenInput = 2;
         Load();
         //做啥角色就换成啥
         SelectedGirlInGame[0] = Variable.PlayerFaceType.Sayaka;
+       //删除存档
+        SaveGame.DeleteAll();
+
     }
 
     /// <summary>
@@ -303,14 +313,22 @@ public class GameScoreSettingsIO : ScriptableObject
     [ContextMenu("保存存档与设置")]
    public void SaveInEditor()
     {
-         Timing.RunCoroutine(Save());
+         Timing.RunCoroutine(SaveAll());
     }
 #endif
+
+
+
+    #region  保存与加载
+
+    //保存设置：标题界面完成设置、返回主标题part的时候调用、打完瓦夜
+    //保存存档：打完瓦夜
+    //加载：异步加载场景的时候用
 
     /// <summary>
     /// 向硬盘保存存档与设置（瓦夜结算使用）
     /// </summary>
-    public IEnumerator<float> Save()
+    public IEnumerator<float> SaveAll()
     {
 
         //存档
@@ -324,12 +342,45 @@ public class GameScoreSettingsIO : ScriptableObject
         //设置
         SaveGame.Save("BGMVol", BGMVol);
         SaveGame.Save("SEVol", SEVol);
+        SaveGame.Save("MaxFps", MaxFps);
         SaveInput();
 
-        Debug.Log("存档结束");
+        yield return 0f;
+    }   
+
+    /// <summary>
+    /// 保存设置
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator<float> SaveSettings()
+    {
+        //设置
+        SaveGame.Save("BGMVol", BGMVol);
+        SaveGame.Save("SEVol", SEVol);
+        SaveGame.Save("MaxFps", MaxFps);
+        SaveInput();
 
         yield return 0f;
+
     }
+
+
+    /// <summary>
+    /// 保存输入设置
+    /// </summary>
+    public void SaveInput()
+    {
+        SaveGame.Save("UseScreenInput", UseScreenInput);
+      
+        for (int i = 0; i < KeyPosScale.Length; i++)
+        {
+            SaveGame.Save(string.Format("KeyPosScale_{0}_Rect", i.ToString()), KeyPosScale[i].EditPosition);
+        }
+
+
+    }
+
+
 
     /// <summary>
     /// 从硬盘读取存档与设置（标题界面使用）
@@ -349,6 +400,7 @@ public class GameScoreSettingsIO : ScriptableObject
         //设置
         BGMVol = SaveGame.Load("BGMVol", 0.6f);
         SEVol = SaveGame.Load("SEVol", 0.7f);
+        MaxFps = SaveGame.Load("MaxFps", 0);
         LoadInput();
 
     }
@@ -367,19 +419,7 @@ public class GameScoreSettingsIO : ScriptableObject
 
     }
 
-    /// <summary>
-    /// 保存输入设置
-    /// </summary>
-    public void SaveInput()
-    {
-        SaveGame.Save("UseScreenInput", UseScreenInput);
-        for (int i = 0; i < KeyPosScale.Length; i++)
-        {
-            SaveGame.Save(string.Format("KeyPosScale_{0}_Rect", i.ToString()), KeyPosScale[i].EditPosition);
-        }
-
-
-    }
+    #endregion
 
     /// <summary>
     /// 刷新最高分数，最短时间，最高连击，当前玩的lap（瓦夜结算使用）

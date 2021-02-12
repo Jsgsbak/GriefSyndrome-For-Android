@@ -228,16 +228,18 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         InputAgent();
 
         #region  基础控制器
+        JumpAndFall();
+        
         if (!BanWalk) Walk();
         AnimationCtrl();
-        JumpAndFall();
         #endregion
 
 
         #region 攻击方法
-        //这里都是抽象的，在各自的脚本里重写（包括攻击逻辑与攻击动画）
-        if (StageCtrl.gameScoreSettings.Jump)
+        //防止死亡状态、按下跳跃的瞬间发动攻击
+        if (StageCtrl.gameScoreSettings.Jump || StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] || IsInvincible)
         {
+            Debug.Log("??");
             //修复攻击过程中跳跃仍然显示攻击动画的bug
             return;
         }
@@ -282,6 +284,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         animator.SetBool("Walk", StageCtrl.gameScoreSettings.Horizontal != 0);
         animator.SetBool("Jump", IsJumping);
         animator.SetBool("Fall", !IsGround && !BanGravity && !IsJumping);
+       
         //如果有攻击状态，直接禁用这三个基本动画
         foreach (var item in IsAttack)
         {
@@ -360,7 +363,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     }
 
     /// <summary>
-    /// （千万不要多次重复执行！！！）对于正在跳跃过程中发动魔法/攻击的情况，直接取消跳跃状态
+    /// （千万不要多次重复执行！！！）对于正在跳跃过程中发动魔法/攻击的情况，直接取消跳跃状态  每个角色的每个攻击都要有
     /// </summary>
     public void CancelJump()
     {
@@ -371,6 +374,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         //既然要取消，那肯定是跳起来了
         animator.SetBool("Jump", false);
         BanGravity = false;
+        BanGravityRay = false;//有向上移动的攻击时，才能禁用这个
         IsGround = false;
         IsJumping = false;
     }
@@ -465,12 +469,13 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         }
 
 
-        //脚插进地里检查
+        //脚插地修复
         if (infoLeft.collider != null && infoHor.collider != null && !IsJumping && !GoThroughPlatform && IsGround)
         {
             //如果水平射线与脚底射线得到的东西一致，那么说明脚插在地里（不对地板进行处理）
-            if (!infoLeft.collider.CompareTag("Floor") && infoLeft.collider.gameObject.name.Equals(infoHor.collider.gameObject.name))
+            if (!infoLeft.collider.CompareTag("Floor") && infoLeft.collider.GetInstanceID().Equals(infoHor.collider.GetInstanceID()))
             {
+                
                 tr.Translate(Vector3.up * 0.1f, Space.World);
                 //不断重复，直到脚没插进地里
                 RayCtrl();
@@ -481,7 +486,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         else if (infoRight.collider != null && infoHor.collider != null && !IsJumping && !GoThroughPlatform && IsGround)
         {
             //如果水平射线与脚底射线得到的东西一致，那么说明脚插在地里（不对地板进行处理）
-            if (!infoRight.collider.CompareTag("Floor") && infoRight.collider.gameObject.name.Equals(infoHor.collider.gameObject.name))
+            if (!infoRight.collider.CompareTag("Floor") && infoRight.collider.GetInstanceID().Equals(infoHor.collider.GetInstanceID()))
             {
                 tr.Translate(Vector3.up * 0.1f, Space.World);
                 //不断重复，直到脚没插进地里
@@ -1068,6 +1073,8 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         StageCtrl.gameScoreSettings.MagicalGirlsDie[MahouShoujoId] = true;
 
         PlayerGemBroken.Invoke();
+
+        //StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] = false 不能设置，因为宝石碎了的前提就是身子挂了
     }
 
     /// <summary>
@@ -1075,6 +1082,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// </summary>
     public void DestroyPoorGirl()
     {
+        //场上有一个玩家死了
       StageCtrl.stageCtrl.PlayerDie();
         //删除物体
         Destroy(gameObject);

@@ -72,7 +72,7 @@ AnimatorStateTransition:
   serializedVersion: 3
   m_TransitionDuration: 0
   m_TransitionOffset: 0
-  m_ExitTime: 0.5
+  m_ExitTime: 4.8304255e-10
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -98,9 +98,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0
+  m_TransitionDuration: 0.000000014573818
   m_TransitionOffset: 0
-  m_ExitTime: 0.5
+  m_ExitTime: 0.0000000050489968
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -271,32 +271,6 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
---- !u!1102 &-6507693561996181045
-AnimatorState:
-  serializedVersion: 5
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: SayakaMagicRing_p1
-  m_Speed: 1
-  m_CycleOffset: 0
-  m_Transitions: []
-  m_StateMachineBehaviours: []
-  m_Position: {x: 50, y: 50, z: 0}
-  m_IKOnFeet: 0
-  m_WriteDefaultValues: 1
-  m_Mirror: 0
-  m_SpeedParameterActive: 0
-  m_MirrorParameterActive: 0
-  m_CycleOffsetParameterActive: 0
-  m_TimeParameterActive: 0
-  m_Motion: {fileID: 0}
-  m_Tag: 
-  m_SpeedParameter: 
-  m_MirrorParameter: 
-  m_CycleOffsetParameter: 
-  m_TimeParameter: 
 --- !u!1102 &-6266143457269845766
 AnimatorState:
   serializedVersion: 5
@@ -391,9 +365,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.24999976
-  m_TransitionOffset: 1.215092
-  m_ExitTime: 0.9910898
+  m_TransitionDuration: 0.22843409
+  m_TransitionOffset: 1.2513217
+  m_ExitTime: 0.9982784
   m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -1099,7 +1073,7 @@ AnimatorStateTransition:
   serializedVersion: 3
   m_TransitionDuration: 0
   m_TransitionOffset: 0
-  m_ExitTime: 0.4311112
+  m_ExitTime: 0.0000000010107927
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -1222,9 +1196,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.7232888
-  m_TransitionOffset: 0
-  m_ExitTime: 0.4948175
+  m_TransitionDuration: 0.6574024
+  m_TransitionOffset: 10.628796
+  m_ExitTime: 0.99499595
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -1524,7 +1498,7 @@ AnimatorStateTransition:
   serializedVersion: 3
   m_TransitionDuration: 0
   m_TransitionOffset: 0
-  m_ExitTime: 0.5
+  m_ExitTime: 1.5588146e-10
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -1627,7 +1601,7 @@ AnimatorStateTransition:
   serializedVersion: 3
   m_TransitionDuration: 0
   m_TransitionOffset: 0
-  m_ExitTime: 0.40000004
+  m_ExitTime: 0.0000000039360915
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -1868,8 +1842,8 @@ AnimatorStateTransition:
   m_IsExit: 0
   serializedVersion: 3
   m_TransitionDuration: 0
-  m_TransitionOffset: 0.012777199
-  m_ExitTime: 0.81999993
+  m_TransitionOffset: 0
+  m_ExitTime: 0
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -2160,38 +2134,12 @@ AnimatorStateTransition:
   serializedVersion: 3
   m_TransitionDuration: 0
   m_TransitionOffset: 0
-  m_ExitTime: 0.40000004
+  m_ExitTime: 7.791179e-12
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
---- !u!1102 &4644634145406159618
-AnimatorState:
-  serializedVersion: 5
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: SayakaMagicRing_p2
-  m_Speed: 1
-  m_CycleOffset: 0
-  m_Transitions: []
-  m_StateMachineBehaviours: []
-  m_Position: {x: 50, y: 50, z: 0}
-  m_IKOnFeet: 0
-  m_WriteDefaultValues: 1
-  m_Mirror: 0
-  m_SpeedParameterActive: 0
-  m_MirrorParameterActive: 0
-  m_CycleOffsetParameterActive: 0
-  m_TimeParameterActive: 0
-  m_Motion: {fileID: 0}
-  m_Tag: 
-  m_SpeedParameter: 
-  m_MirrorParameter: 
-  m_CycleOffsetParameter: 
-  m_TimeParameter: 
 --- !u!1101 &4707712593884390347
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -2314,7 +2262,7 @@ AnimatorStateTransition:
   serializedVersion: 3
   m_TransitionDuration: 0
   m_TransitionOffset: 0
-  m_ExitTime: 0.5
+  m_ExitTime: 5.4036065e-10
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -2339,7 +2287,7 @@ AnimatorStateTransition:
   serializedVersion: 3
   m_TransitionDuration: 0
   m_TransitionOffset: 0
-  m_ExitTime: 0.5
+  m_ExitTime: 0.0000000011912629
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -2533,7 +2481,7 @@ AnimatorStateTransition:
   serializedVersion: 3
   m_TransitionDuration: 0
   m_TransitionOffset: 0
-  m_ExitTime: 0.50000006
+  m_ExitTime: 2.4696914e-10
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -2585,7 +2533,7 @@ AnimatorStateTransition:
   serializedVersion: 3
   m_TransitionDuration: 0
   m_TransitionOffset: 0
-  m_ExitTime: 0.49999994
+  m_ExitTime: 0.0000000069613004
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -2680,7 +2628,7 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 6198707536190213078}
-    m_Position: {x: 230, y: 40, z: 0}
+    m_Position: {x: 220, y: 10, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 9046439901470948875}
     m_Position: {x: 520, y: -160, z: 0}
@@ -2695,7 +2643,7 @@ AnimatorStateMachine:
     m_Position: {x: 730, y: 10, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 7889426843857957451}
-    m_Position: {x: 440, y: 420, z: 0}
+    m_Position: {x: 370, y: 390, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -6573791737054824843}
     m_Position: {x: 50, y: 560, z: 0}
@@ -2725,19 +2673,13 @@ AnimatorStateMachine:
     m_Position: {x: 800, y: 350, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3373591405695630310}
-    m_Position: {x: -140, y: 60, z: 0}
+    m_Position: {x: -160, y: 60, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 5697933662346761484}
     m_Position: {x: -240, y: -50, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -2903212278895430993}
     m_Position: {x: -110, y: -160, z: 0}
-  - serializedVersion: 1
-    m_State: {fileID: -6507693561996181045}
-    m_Position: {x: -105, y: 225, z: 0}
-  - serializedVersion: 1
-    m_State: {fileID: 4644634145406159618}
-    m_Position: {x: -70, y: 290, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3818097508206366128}
     m_Position: {x: 0, y: 420, z: 0}
@@ -2751,7 +2693,7 @@ AnimatorStateMachine:
   m_EntryTransitions: []
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
-  m_AnyStatePosition: {x: 60, y: -30, z: 0}
+  m_AnyStatePosition: {x: 30, y: -40, z: 0}
   m_EntryPosition: {x: 50, y: 120, z: 0}
   m_ExitPosition: {x: 800, y: 120, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
@@ -2831,7 +2773,7 @@ AnimatorStateTransition:
   serializedVersion: 3
   m_TransitionDuration: 0
   m_TransitionOffset: 0
-  m_ExitTime: 0.5
+  m_ExitTime: 4.4672357e-10
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0

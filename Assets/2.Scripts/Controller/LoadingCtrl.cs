@@ -92,10 +92,11 @@ public class LoadingCtrl : MonoBehaviour
 			StatusText.text = "加载存档与设置";
 			gameScoreSettings.Load();
 		}
+		//通关（打完了瓦夜）
 		else
         {
 			StatusText.text = "保存存档与设置";
-			gameScoreSettings.Save();
+			Timing.RunCoroutine(gameScoreSettings.SaveAll());
 		}
 
 		StatusText.text = "垃圾回收（Beta）";
