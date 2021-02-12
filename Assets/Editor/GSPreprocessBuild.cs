@@ -2,19 +2,35 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.Build;
+using UnityEditor.Build.Reporting;
 using UnityEngine;
 
 /// <summary>
 /// 打包的时候执行的脚本
 /// </summary>
-public class GSPreprocessBuild : IPostprocessBuild
+public class GSPreprocessBuild : Editor, IPreprocessBuildWithReport, IPostprocessBuildWithReport
+
 {
     public int callbackOrder { get { return 0; } }
 
-    public void OnPostprocessBuild(BuildTarget target, string path)
+    /// <summary>
+    /// 打包完成之后的处理
+    /// </summary>
+    /// <param name="report"></param>
+    public void OnPostprocessBuild(BuildReport report)
+    {
+        Debug.Log(report.files);
+    }
+
+    /// <summary>
+    /// 打包之前
+    /// </summary>
+    /// <param name="report"></param>
+    public void OnPreprocessBuild(BuildReport report)
     {
         //发包前全部初始化
         GameScoreSettingsIO gss = (GameScoreSettingsIO)Resources.Load("GameScoreAndSettings");
         gss.AllInitial();
+
     }
 }
