@@ -467,6 +467,7 @@ public class SayakaCtrl : APlayerCtrl
                 XordinaryDash = false;
                 StopAttacking = true;
                 IsAttack[1] = false;
+                VariableInitialization();
                 //僵直
                 Stiff(0.1f);
                 break;

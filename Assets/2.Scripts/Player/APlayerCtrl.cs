@@ -663,7 +663,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     public virtual void Stiff(float Time)
     {
         //取消以前的僵直（仅仅是换成另一个僵直，并不是取消将至）
-        Timing.KillCoroutines("PlayerStiff");
+     //   Timing.KillCoroutines("PlayerStiff");
         //僵直状态
         StopAttacking = false;
         BanGravity = IsGround;
