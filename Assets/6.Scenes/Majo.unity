@@ -4506,6 +4506,7 @@ MonoBehaviour:
   IsAttack: 000000
   StopAttacking: 1
   XordinaryDash: 0
+  UpAttackCount: 0
   MagiaDashSpeedRatio: 1
 --- !u!4 &1241280514
 Transform:
@@ -5918,7 +5919,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 5.12, y: 1.92}
+  m_Size: {x: 3.84, y: 1.92}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0

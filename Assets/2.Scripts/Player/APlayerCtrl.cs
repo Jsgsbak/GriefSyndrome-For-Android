@@ -251,7 +251,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         //这里加限制条件/修改状态要三思，主要是在抽象的方法里更改和限制
         //对于玩家来说，除了跳跃键，其他的都是能够接受长时间按住的
         if (!IsAttack[1] && !IsAttack[2] && !StageCtrl.gameScoreSettings.Xattack) { OrdinaryZ(); HorizontalZ(); VerticalZ(); }
-        if (!IsAttack[0] && !IsAttack[2] && !StageCtrl.gameScoreSettings.Zattack) { OrdinaryX(); HorizontalX(); UpX(); DownX(); }
+        if (!IsAttack[0] && !IsAttack[2] && !StageCtrl.gameScoreSettings.Zattack ) { OrdinaryX(); HorizontalX(); UpX(); DownX(); }
         //magia对VIT/血条的处理在各自的脚本里  限制vit有bug   松开魔法键之后仍然会执行魔法
         if (!IsAttack[0] && !IsAttack[1] && /*StageCtrl.gameScoreSettings.Magia &&*/ StageCtrl.gameScoreSettings.GirlsVit[MahouShoujoId] > StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].MaigaVit | IsAttack[2]) { Magia(); }
 
@@ -302,7 +302,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     }
 
     /// <summary>
-    /// 跳跃和下降（落体或者从地板掉下来，地板的Layer是Wall）
+    /// 跳跃和穿过平台（落体或者从地板掉下来，地板的Layer是Wall）
     /// </summary>
     public void JumpAndFall()
     {
@@ -663,7 +663,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     public virtual void Stiff(float Time)
     {
         //取消以前的僵直（仅仅是换成另一个僵直，并不是取消将至）
-        StopCoroutine("PlayerStiff");
+        Timing.KillCoroutines("PlayerStiff");
         //僵直状态
         StopAttacking = false;
         BanGravity = IsGround;
@@ -676,6 +676,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
         //启用新的僵直
         StartCoroutine("PlayerStiff", Time);
+        Timing.RunCoroutine(PlayerStiff(Time), "PlayerStiff");
 
     }
     /// <summary>
@@ -683,10 +684,10 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// </summary>
     /// <param name="d"></param>
     /// <returns></returns>
-    public virtual IEnumerator PlayerStiff(float d)
+     IEnumerator<float> PlayerStiff(float d)
     {
 
-        yield return new WaitForSeconds(d);
+        yield return Timing.WaitForSeconds(d);
 
         //状态恢复
         BanWalk = false;
@@ -697,9 +698,12 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         BanGravityRay = false;
         BanTurnAround = false;
         BanJump = false;
-        BanInput = false;
         animator.enabled = true;
         IsStiff = false;
+        //第二帧才解除禁用
+        yield return Timing.WaitForOneFrame;
+        BanInput = false;
+
 
     }
     #endregion
@@ -1022,7 +1026,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     }
 
     /// <summary>
-    /// 动画、状态变量初始化
+    /// 动画、状态变量初始化（所有变量，范围最广）
     /// </summary>
     public virtual void VariableInitialization()
     {

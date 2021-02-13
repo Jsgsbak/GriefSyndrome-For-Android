@@ -53,7 +53,7 @@ public class SayakaCtrl : APlayerCtrl
     /// Up X攻击移动
     /// </summary>
     bool UpAttackMove = false;
-    int UpAttackCount = 0;
+   public int UpAttackCount = 0;
     bool MagiaDash = false;
     /// <summary>
     /// 魔法按了X键
@@ -187,7 +187,7 @@ public class SayakaCtrl : APlayerCtrl
     public override void OrdinaryX()
     {
         //从通常状态进入到X攻击准备状态
-        if ( StageCtrl.gameScoreSettings.Horizontal == 0 && !IsAttack[1] && !StageCtrl.gameScoreSettings.Up && !StageCtrl.gameScoreSettings.Down && !StageCtrl.gameScoreSettings.Xattack && StageCtrl.gameScoreSettings.XattackPressed && !BanWalk && !XordinaryDash && Time.timeSinceLevelLoad -OrdinaryXTimer >= 0.3F)
+        if (!animator.GetBool("OrdinaryXattackPrepare") && !animator.GetBool("OrdinaryXattack") && StageCtrl.gameScoreSettings.Horizontal == 0 && !IsAttack[1] && !StageCtrl.gameScoreSettings.Up && !StageCtrl.gameScoreSettings.Down && !StageCtrl.gameScoreSettings.Xattack && StageCtrl.gameScoreSettings.XattackPressed && !BanWalk && !XordinaryDash && Time.timeSinceLevelLoad -OrdinaryXTimer >= 0.3F)
         {
             animator.SetBool("OrdinaryXattackPrepare", true);
             CancelJump();//直接中断跳跃并且不恢复
@@ -243,7 +243,7 @@ public class SayakaCtrl : APlayerCtrl
         }
 
         //上升
-        if (DownAttackMovingUpward == 1 )
+        if (DownAttackMovingUpward == 1)
         {
             if (IsGround)
             {
@@ -295,7 +295,7 @@ public class SayakaCtrl : APlayerCtrl
 
     public override void UpX()
     {
-        if (IsGround) { UpAttackCount = 0;}
+        if (IsGround) { UpAttackCount = 0; }
 
         //UpAttackCount < 1 受上一条IF干扰，第一次起跳不会增加UpAttackCount 
         if (StageCtrl.gameScoreSettings.Horizontal == 0  && !animator.GetBool("UpXattack") && UpAttackCount < 1 && !IsAttack[1] && StageCtrl.gameScoreSettings.Xattack && StageCtrl.gameScoreSettings.Up)
@@ -463,11 +463,10 @@ public class SayakaCtrl : APlayerCtrl
                 //MagicRing.Stop();
                 //MagicRing.enabled = false;
                 BanTurnAround = false;
+                BanInput = false;
                 XordinaryDash = false;
                 StopAttacking = true;
                 IsAttack[1] = false;
-                //尝试用回复变量的方法来解决bug
-                VariableInitialization();
                 //僵直
                 Stiff(0.1f);
                 break;
@@ -529,19 +528,8 @@ public class SayakaCtrl : APlayerCtrl
         UpAttackMove = false;
         IsAttack[1] = false;
         BanGravity = true;//为了悬空效果，僵直结束之后变成false了
-                         
-        //尝试用回复变量的方法来解决bug
-        VariableInitialization();
-        if (UpAttackCount == 0)
-        {
-            Stiff(0.1f);
-        }
-        else
-        {
-            Stiff(0.5f);
-        }
-
         animator.SetBool("UpXattack", false);
+        Stiff(0.1f);
 
     }
 
