@@ -4431,7 +4431,6 @@ MonoBehaviour:
   animator: {fileID: 0}
   spriteRenderer: {fileID: 0}
   GravityRatio: 1
-  IsStiff: 0
   MoveSpeedRatio: 1
   BanLeftOrRight: 0
   DoLookRight: 1

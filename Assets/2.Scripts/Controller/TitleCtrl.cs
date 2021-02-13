@@ -101,7 +101,7 @@ public class TitleCtrl : MonoBehaviour
     void Start()
     {
         //限制帧率
-        Application.targetFrameRate = gameScoreSettingsIO.MaxFps;
+        Application.targetFrameRate = 60;
 
 
 #if UNITY_EDITOR
@@ -158,7 +158,7 @@ public class TitleCtrl : MonoBehaviour
         EasyBGMCtrl.easyBGMCtrl.ChangeVol(gameScoreSettingsIO.BGMVol, true);
         EasyBGMCtrl.easyBGMCtrl.ChangeVol(gameScoreSettingsIO.SEVol, false);
         //最大帧率从GSS中获取，并同步显示在界面中
-        MaxFpsField.text = gameScoreSettingsIO.MaxFps.ToString();
+      //  MaxFpsField.text = gameScoreSettingsIO.MaxFps.ToString();
         //输入的话有自己的脚本
 
         #region  注册组件
@@ -186,7 +186,7 @@ public class TitleCtrl : MonoBehaviour
             MaxFpsField.text = d.ToString();
 
         });
-        MaxFpsField.onEndEdit.AddListener(delegate (string s) { int.TryParse(s, out gameScoreSettingsIO.MaxFps); Application.targetFrameRate = gameScoreSettingsIO.MaxFps;});
+      //  MaxFpsField.onEndEdit.AddListener(delegate (string s) { int.TryParse(s, out gameScoreSettingsIO.MaxFps); Application.targetFrameRate = gameScoreSettingsIO.MaxFps;});
 
         //进入魔女选择part的音效放在了ChangePartMethod中
         StartGameButton.onClick.AddListener(delegate () { EasyBGMCtrl.easyBGMCtrl.PlaySE(0); Timing.RunCoroutine(ChangePartMethod(0, 1)); });//进入魔女选择part
@@ -477,11 +477,6 @@ public class TitleCtrl : MonoBehaviour
         int s = Mathf.FloorToInt(time - m * 60 - h * 3600);
        return string.Format("{0}:{1}:{2}", h.ToString("00"), m.ToString("00"), s.ToString("00"));
 
-    }
-
-    public  void SetMaxFps()
-    {
-        Application.targetFrameRate = 114514;
     }
 
     //<sprite="PlayerFace" index=1> 
