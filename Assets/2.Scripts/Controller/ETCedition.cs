@@ -143,6 +143,7 @@ public class ETCedition : MonoBehaviour
         StageCtrl.gameScoreSettings.joystick = Vector2.zero; ;
     }
 
+
     //无论是否支持长按，都在这里设置为true
     public void OnDown()
     {
@@ -153,12 +154,15 @@ public class ETCedition : MonoBehaviour
                 break;
             case ETCActions.Weak:
                 StageCtrl.gameScoreSettings.Zattack = true;
+                StageCtrl.gameScoreSettings.ZattackPressed = true;
                 break;
             case ETCActions.Strong:
                 StageCtrl.gameScoreSettings.Xattack = true;
+                StageCtrl.gameScoreSettings.XattackPressed = true;
                 break;
             case ETCActions.Magia:
                 StageCtrl.gameScoreSettings.Magia = true;
+                StageCtrl.gameScoreSettings.MagiaPressed = true;
                 break;
             case ETCActions.Pause:
                 StageCtrl.gameScoreSettings.Pause = true;
@@ -170,9 +174,23 @@ public class ETCedition : MonoBehaviour
     //不支持长按的按钮在这里设置为false
     public void OnPress()
     {
-        if (buttonActions == ETCActions.Jump)
+        switch (buttonActions)
         {
-            StageCtrl.gameScoreSettings.Jump = false;
+            case ETCActions.Jump:
+                StageCtrl.gameScoreSettings.Jump = false;
+                break;
+            case ETCActions.Weak:
+                StageCtrl.gameScoreSettings.Zattack = false;
+                break;
+            case ETCActions.Strong:
+                StageCtrl.gameScoreSettings.Xattack = false;
+                break;
+            case ETCActions.Magia:
+                StageCtrl.gameScoreSettings.Magia = false;
+                break;
+            case ETCActions.Pause:
+                StageCtrl.gameScoreSettings.Pause = false;
+                break;
         }
     }
 
@@ -182,13 +200,13 @@ public class ETCedition : MonoBehaviour
         switch (buttonActions)
         {
             case ETCActions.Weak:
-                StageCtrl.gameScoreSettings.Zattack = false;
+                StageCtrl.gameScoreSettings.ZattackPressed = false;
                 break;
             case ETCActions.Strong:
-                StageCtrl.gameScoreSettings.Xattack = false;
+                StageCtrl.gameScoreSettings.XattackPressed = false;
                 break;
             case ETCActions.Magia:
-                StageCtrl.gameScoreSettings.Magia = false;
+                StageCtrl.gameScoreSettings.MagiaPressed = false;
                 break;
 
         }

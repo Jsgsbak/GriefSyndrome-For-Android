@@ -189,12 +189,14 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         {
             StageCtrl.gameScoreSettings.Horizontal = RebindableInput.GetAxis("Horizontal");
             StageCtrl.gameScoreSettings.Jump = RebindableInput.GetKeyDown("Jump");
-            StageCtrl.gameScoreSettings.Magia = RebindableInput.GetKey("Magia");
-            StageCtrl.gameScoreSettings.Down = /* RebindableInput.GetKeyDown("Down") ||*/ RebindableInput.GetKey("Down");
-            StageCtrl.gameScoreSettings.Up = /*RebindableInput.GetKeyDown("Up")  || */ RebindableInput.GetKey("Up");
-            StageCtrl.gameScoreSettings.Zattack =/* RebindableInput.GetKeyDown("Zattack") || */ RebindableInput.GetKey("Zattack");
-            StageCtrl.gameScoreSettings.Xattack = /* || RebindableInput.GetKeyDown("Xattack") */RebindableInput.GetKey("Xattack");
-
+            StageCtrl.gameScoreSettings.Down = RebindableInput.GetKey("Down");
+            StageCtrl.gameScoreSettings.Up = RebindableInput.GetKey("Up");
+            StageCtrl.gameScoreSettings.Zattack =RebindableInput.GetKeyDown("Zattack");
+            StageCtrl.gameScoreSettings.ZattackPressed = RebindableInput.GetKey("Zattack");
+            StageCtrl.gameScoreSettings.Xattack = RebindableInput.GetKeyDown("Xattack");
+            StageCtrl.gameScoreSettings.XattackPressed = RebindableInput.GetKey("Xattack");
+            StageCtrl.gameScoreSettings.Magia = RebindableInput.GetKeyDown("Magia");
+            StageCtrl.gameScoreSettings.MagiaPressed = RebindableInput.GetKey("Magia");
 
             StageCtrl.gameScoreSettings.Pause = RebindableInput.GetKeyDown("Pause");
 
@@ -217,6 +219,8 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     void FastUpdate()
     {
         if (!BanGravity) Gravity();
+       
+
         RayCtrl();
 
         if (IsStiff)

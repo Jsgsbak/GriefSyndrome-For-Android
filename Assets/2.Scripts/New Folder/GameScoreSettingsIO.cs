@@ -203,8 +203,11 @@ public class GameScoreSettingsIO : ScriptableObject
     [HideInInspector] public bool Up = false;
     [HideInInspector] public bool Jump = false;
     [HideInInspector] public bool Zattack = false;
+    [HideInInspector] public bool ZattackPressed = false;//长按
     [HideInInspector] public bool Xattack = false;
+    [HideInInspector] public bool XattackPressed = false;
     [HideInInspector] public bool Magia = false;
+    [HideInInspector] public bool MagiaPressed = false;
     [HideInInspector] public bool Pause = false;
     //一下为本测试版临时添加的
     [HideInInspector] public bool CleanSoul = false;

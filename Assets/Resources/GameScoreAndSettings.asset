@@ -27,7 +27,7 @@ MonoBehaviour:
   LastLap: 1
   SelectedGirlInGame: 040000000700000007000000
   GirlsLevel: 0100000001000000010000000100000001000000
-  GirlSoulLimit: 00000000000000000000000000000000ce2e0000
+  GirlSoulLimit: 00000000000000000000000000000000dc4d0000
   GirlsVit: 0000000000000000000000000000000058000000
   GirlsPow: 000000000000000000000000000000000a000000
   MagiaKeyDown: 000000
@@ -48,7 +48,7 @@ MonoBehaviour:
   AllDie: 0
   BattlingMajo: 0
   NewestMajo: 0
-  MajoSceneToTitle: 0
+  MajoSceneToTitle: 1
   MaxFps: 0
   BGMVol: 0.6
   SEVol: 0.7
@@ -228,15 +228,18 @@ MonoBehaviour:
       y: -115
       width: 60
       height: 60
-  UseScreenInput: 2
+  UseScreenInput: 0
   joystick: {x: 0, y: 0}
   Horizontal: 0
   Down: 0
   Up: 0
   Jump: 0
   Zattack: 0
+  ZattackPressed: 0
   Xattack: 0
+  XattackPressed: 0
   Magia: 0
+  MagiaPressed: 0
   Pause: 0
   CleanSoul: 0
   CleanVit: 0
