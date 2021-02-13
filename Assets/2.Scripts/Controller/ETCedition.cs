@@ -19,11 +19,11 @@ public class ETCedition : MonoBehaviour
     public enum ETCActions
     {
         Jump = 2,
-        Weak =3,
+        Weak = 3,
         Strong = 4,
         Magia = 5,
-        Pause =1,
-        Joystick =0,
+        Pause = 1,
+        Joystick = 0,
     }
 
     /// <summary>
@@ -34,6 +34,7 @@ public class ETCedition : MonoBehaviour
     //一下为标题用
     public TMP_InputField[] Rect;
 
+    float ClickTime = 0f;
 
 
     // Start is called before the first frame update
@@ -47,7 +48,7 @@ public class ETCedition : MonoBehaviour
         if (!TitleSettingMode)
         {
             //获取组件
-            if (buttonActions != ETCActions.Joystick )
+            if (buttonActions != ETCActions.Joystick)
             {
                 //我日你先人，明明不是你他妈却执行（buttonActions != ETCActions.Pause有这个的情况下
                 ETCButton = GetComponent<ETCButton>();
@@ -56,7 +57,7 @@ public class ETCedition : MonoBehaviour
                 ETCButton.normalSprite = ActionLogos[StageCtrl.gameScoreSettings.PlayerSelectedGirlId];
                 ETCButton.pressedSprite = ActionLogos[StageCtrl.gameScoreSettings.PlayerSelectedGirlId];
             }
-          
+
         }
 
 
@@ -105,7 +106,7 @@ public class ETCedition : MonoBehaviour
             gss = StageCtrl.gameScoreSettings;
         }
 
-        tr.anchoredPosition = new Vector2( gss.KeyPosScale[(int)buttonActions].EditPosition.x, gss.KeyPosScale[(int)buttonActions].EditPosition.y);
+        tr.anchoredPosition = new Vector2(gss.KeyPosScale[(int)buttonActions].EditPosition.x, gss.KeyPosScale[(int)buttonActions].EditPosition.y);
         tr.sizeDelta = new Vector2(gss.KeyPosScale[(int)buttonActions].EditPosition.width, gss.KeyPosScale[(int)buttonActions].EditPosition.height);
     }
 
@@ -147,27 +148,46 @@ public class ETCedition : MonoBehaviour
     //无论是否支持长按，都在这里设置为true
     public void OnDown()
     {
+        //单点的按键有时间间隔
+        if (Time.timeSinceLevelLoad - ClickTime >= 0.1f)
+        {
+
+            ClickTime = Time.timeSinceLevelLoad;
+
+            switch (buttonActions)
+            {
+                case ETCActions.Jump:
+                    StageCtrl.gameScoreSettings.Jump = true;
+                    break;
+                case ETCActions.Weak:
+                    StageCtrl.gameScoreSettings.Zattack = true;
+                    break;
+                case ETCActions.Strong:
+                    StageCtrl.gameScoreSettings.Xattack = true;
+                    break;
+                case ETCActions.Magia:
+                    StageCtrl.gameScoreSettings.Magia = true;
+                    break;
+                case ETCActions.Pause:
+                    StageCtrl.gameScoreSettings.Pause = true;
+                    break;
+            }
+        }
+
+
         switch (buttonActions)
         {
-            case ETCActions.Jump:
-                StageCtrl.gameScoreSettings.Jump = true;
-                break;
             case ETCActions.Weak:
-                StageCtrl.gameScoreSettings.Zattack = true;
                 StageCtrl.gameScoreSettings.ZattackPressed = true;
                 break;
             case ETCActions.Strong:
-                StageCtrl.gameScoreSettings.Xattack = true;
                 StageCtrl.gameScoreSettings.XattackPressed = true;
                 break;
             case ETCActions.Magia:
-                StageCtrl.gameScoreSettings.Magia = true;
                 StageCtrl.gameScoreSettings.MagiaPressed = true;
                 break;
-            case ETCActions.Pause:
-                StageCtrl.gameScoreSettings.Pause = true;
-                break;
         }
+
 
     }
 
