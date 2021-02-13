@@ -80,8 +80,6 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
     public float GravityRatio = 1f;
 
-    public bool IsStiff = false;
-
     [HideInInspector] public float MoveSpeedRatio = 1f;
 
     /// <summary>
@@ -223,7 +221,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
         RayCtrl();
 
-        if (IsStiff)
+        if (StageCtrl.gameScoreSettings.LocalIsStiff)
         {
             return;
         }
@@ -250,8 +248,8 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         //前面的!IsAttack[1]是为了防止做这个攻击的时候意外发动其他的攻击
         //这里加限制条件/修改状态要三思，主要是在抽象的方法里更改和限制
         //对于玩家来说，除了跳跃键，其他的都是能够接受长时间按住的
-        if (!IsAttack[1] && !IsAttack[2] && !StageCtrl.gameScoreSettings.Xattack) { OrdinaryZ(); HorizontalZ(); VerticalZ(); }
-        if (!IsAttack[0] && !IsAttack[2] && !StageCtrl.gameScoreSettings.Zattack ) { OrdinaryX(); HorizontalX(); UpX(); DownX(); }
+        if (!IsAttack[1] && !IsAttack[2] && !StageCtrl.gameScoreSettings.Xattack &&!StageCtrl.gameScoreSettings.XattackPressed) { OrdinaryZ(); HorizontalZ(); VerticalZ(); }
+        if (!IsAttack[0] && !IsAttack[2] && !StageCtrl.gameScoreSettings.Zattack && !StageCtrl.gameScoreSettings.ZattackPressed ) { OrdinaryX(); HorizontalX(); UpX(); DownX(); }
         //magia对VIT/血条的处理在各自的脚本里  限制vit有bug   松开魔法键之后仍然会执行魔法
         if (!IsAttack[0] && !IsAttack[1] && /*StageCtrl.gameScoreSettings.Magia &&*/ StageCtrl.gameScoreSettings.GirlsVit[MahouShoujoId] > StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].MaigaVit | IsAttack[2]) { Magia(); }
 
@@ -672,7 +670,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         BanGravityRay = false;
         animator.enabled = !true;
         BanInput = !false;//这一个就够了
-        IsStiff = !false;
+        StageCtrl.gameScoreSettings.LocalIsStiff = !false;
 
         //启用新的僵直
         StartCoroutine("PlayerStiff", Time);
@@ -699,7 +697,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         BanTurnAround = false;
         BanJump = false;
         animator.enabled = true;
-        IsStiff = false;
+        StageCtrl.gameScoreSettings.LocalIsStiff = false;
         //第二帧才解除禁用
         yield return Timing.WaitForOneFrame;
         BanInput = false;

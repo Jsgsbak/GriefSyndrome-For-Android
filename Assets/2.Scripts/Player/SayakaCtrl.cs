@@ -188,18 +188,9 @@ public class SayakaCtrl : APlayerCtrl
 
     public override void OrdinaryX()
     {
-        //该攻击高频率发动卡死bug检查
-        if(!animator.GetBool("OrdinaryXattack") && XordinaryDash)
-        {
-            VariableInitialization();
-            Debug.Log("尝试修复");
-        }
-
-
         //从通常状态进入到X攻击准备状态
-        if (!BanXattack &&!animator.GetBool("OrdinaryXattackPrepare") && !animator.GetBool("OrdinaryXattack") && StageCtrl.gameScoreSettings.Horizontal == 0 && !IsAttack[1] && !StageCtrl.gameScoreSettings.Up && !StageCtrl.gameScoreSettings.Down && !StageCtrl.gameScoreSettings.Xattack && StageCtrl.gameScoreSettings.XattackPressed && !BanWalk && !XordinaryDash)
+        if ( !animator.GetBool("OrdinaryXattackPrepare") && !animator.GetBool("OrdinaryXattack") && StageCtrl.gameScoreSettings.Horizontal == 0 && !IsAttack[1] && !StageCtrl.gameScoreSettings.Up && !StageCtrl.gameScoreSettings.Down && !StageCtrl.gameScoreSettings.Xattack && StageCtrl.gameScoreSettings.XattackPressed && !BanWalk && !XordinaryDash)
         {
-            BanXattack = true;
             animator.SetBool("OrdinaryXattackPrepare", true);
             CancelJump();//直接中断跳跃并且不恢复
             IsAttack[1] = true;
@@ -458,27 +449,30 @@ public class SayakaCtrl : APlayerCtrl
 
     public override void XattackAnimationEvent(string AnimationName)
     {
+        Debug.Log("日");
+        
         switch (AnimationName)
         {
             case "OrdinaryDashDone":
                 //结束
                 GravityRatio = 1F;
-                animator.SetBool("OrdinaryXattack", false);
                 animator.SetBool("OrdinaryXattackPrepare", false);
                 BanTurnAround = false;
                 BanInput = false;
                 XordinaryDash = false;
                 IsAttack[1] = false;
-                BanXattack = false;
+                BanXattack = true;
                 break;
 
             case "Fuck":
+                animator.SetBool("OrdinaryXattack", false);
                 VariableInitialization();
                 //僵直
                 Stiff(0.1f);
+                BanXattack = false;
                 break;
         }
-               
+              
 
 
     }

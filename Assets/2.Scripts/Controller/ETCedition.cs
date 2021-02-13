@@ -148,6 +148,17 @@ public class ETCedition : MonoBehaviour
     //无论是否支持长按，都在这里设置为true
     public void OnDown()
     {
+        if (buttonActions == ETCActions.Pause)
+        {
+            StageCtrl.gameScoreSettings.Pause = true;
+        }
+
+
+        if (StageCtrl.gameScoreSettings.LocalIsStiff)
+        {
+            return;
+        }
+
         //单点的按键有时间间隔
         if (Time.timeSinceLevelLoad - ClickTime >= 0.1f)
         {
@@ -167,9 +178,6 @@ public class ETCedition : MonoBehaviour
                     break;
                 case ETCActions.Magia:
                     StageCtrl.gameScoreSettings.Magia = true;
-                    break;
-                case ETCActions.Pause:
-                    StageCtrl.gameScoreSettings.Pause = true;
                     break;
             }
         }

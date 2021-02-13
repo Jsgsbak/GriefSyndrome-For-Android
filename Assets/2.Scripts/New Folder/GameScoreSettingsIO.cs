@@ -49,6 +49,10 @@ public class GameScoreSettingsIO : ScriptableObject
     /// </summary>
     [Header("本地玩家选择的魔法少女的魔法少女id")]
     public int PlayerSelectedGirlId = 0;
+    /// <summary>
+    /// 本地玩家是否僵直
+    /// </summary>
+    public bool LocalIsStiff = false;
 
     /// <summary>
     /// 本次游戏通关了吗

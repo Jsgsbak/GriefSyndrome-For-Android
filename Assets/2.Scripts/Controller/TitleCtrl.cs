@@ -481,7 +481,7 @@ public class TitleCtrl : MonoBehaviour
 
     public  void SetMaxFps()
     {
-        Application.targetFrameRate = gameScoreSettingsIO.MaxFps;
+        Application.targetFrameRate = 114514;
     }
 
     //<sprite="PlayerFace" index=1> 
