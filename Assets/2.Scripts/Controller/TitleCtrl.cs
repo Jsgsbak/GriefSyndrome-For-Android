@@ -531,9 +531,9 @@ public class TitleCtrl : MonoBehaviour
         if (OutId >= 0)
         {
 
-            for (int i = 0; i < 40; i++)
+            for (int i = 0; i < 20; i++)
             {
-                ChangePart[OutId].alpha -= 0.025f;
+                ChangePart[OutId].alpha -= 0.05f;
                 yield return Timing.WaitForSeconds(0.015f);
             }
             ChangePart[OutId].gameObject.SetActive(false);
@@ -545,9 +545,9 @@ public class TitleCtrl : MonoBehaviour
             ChangePart[InId].alpha = 0;
             ChangePart[InId].gameObject.SetActive(true);
 
-            for (int i = 0; i < 40; i++)
+            for (int i = 0; i < 20; i++)
             {
-                ChangePart[InId].alpha += 0.025f;
+                ChangePart[InId].alpha += 0.05f;
                 yield return Timing.WaitForSeconds(0.015f);
             }
 
