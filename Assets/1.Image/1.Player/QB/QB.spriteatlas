@@ -40,10 +40,14 @@ SpriteAtlas:
       allowAlphaSplitting: 0
       enableRotation: 1
       enableTightPacking: 1
+    secondaryTextureSettings: {}
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 036644515b626c14a9f5a84fe4e0cd71, type: 3}
+    totalSpriteSurfaceArea: 221184
     bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: 3d5dc801483604e4c970461c5cdf2ee2, type: 3}
@@ -119,5 +123,6 @@ SpriteAtlas:
   - stand0007.cv2
   - emotionB0001.cv2
   - jump0002.cv2
+  m_RenderDataMap: {}
   m_Tag: QB
   m_IsVariant: 0

@@ -228,7 +228,6 @@ public class GameScoreSettingsIO : ScriptableObject
     {
         TitleInitial();
         MajoInitial();
-        MajoSceneToTitle = false;//一定要放到魔女初始化后面
         MaxFps = 0;
         BGMVol = 0.6f;
         SEVol = 0.7f;
@@ -238,6 +237,7 @@ public class GameScoreSettingsIO : ScriptableObject
         SelectedGirlInGame[0] = Variable.PlayerFaceType.Sayaka;
        //删除存档
         SaveGame.DeleteAll();
+        MajoSceneToTitle = false;//一定要放到魔女初始化后面
 
     }
 
@@ -283,6 +283,19 @@ public class GameScoreSettingsIO : ScriptableObject
     /// </summary>
     public void MajoInitial()
     {
+        //输入初始化
+        Jump = false;
+        Zattack = false;
+        ZattackPressed = false;
+        Xattack = false;
+        XattackPressed = false;
+        Magia = false;
+        MagiaPressed = false;
+        Horizontal = 0;
+        Up = false;
+        Down = false;
+        Pause = false;
+
         MajoSceneToTitle = true;
         Hits = 0;
         //HurtVitInGame = new int[] { 0, 0, 0 };
@@ -302,7 +315,7 @@ public class GameScoreSettingsIO : ScriptableObject
 
     }
 
-    [ContextMenu("使输入方式返回到最初的状态")]
+    [ContextMenu("使输入方式返回到最初的大小与位置")]
     public void RevokeInputChange()
     {
         for (int i = 0; i < KeyPosScale.Length; i++)

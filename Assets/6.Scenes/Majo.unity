@@ -8082,6 +8082,16 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 963269164980244249, guid: a5f3e5458bee1234a944fda4655425d0,
+        type: 3}
+      propertyPath: showBehaviourInspector
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 963269164980244249, guid: a5f3e5458bee1234a944fda4655425d0,
+        type: 3}
+      propertyPath: axis.showGeneralInspector
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 963269165712656806, guid: a5f3e5458bee1234a944fda4655425d0,
         type: 3}
       propertyPath: onDown.m_PersistentCalls.m_Calls.Array.data[0].m_Target

@@ -507,7 +507,6 @@ public class TitleCtrl : MonoBehaviour
         {
             //如果来的是SelectMajo，则检查一下马酒
             CheckMajo();
-            Debug.Log("检查");
             //音频
             EasyBGMCtrl.easyBGMCtrl.PlaySE(3);
         }
@@ -520,7 +519,7 @@ public class TitleCtrl : MonoBehaviour
         //主标题part
         else
         {
-            #region 从存档中读取主标题part中的保存数据，lap ,音量
+            #region 从GSS中读取主标题part中的保存数据，lap ,音量
             BGMVol.value = gameScoreSettingsIO.BGMVol;
             SEVol.value = gameScoreSettingsIO.SEVol;
             LapInput.text = gameScoreSettingsIO.LastLap.ToString();

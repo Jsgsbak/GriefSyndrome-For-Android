@@ -40,6 +40,7 @@ public class SayakaCtrl : APlayerCtrl
  //   public Animator MagicRing;
     int ZattackCount = 0;
    public  bool XordinaryDash = false;
+    bool BanXattack = false;
     /// <summary>
     /// 普通X攻击计时器，用于记录普通X准备用时与设定普通X攻击冲刺速度还有普通X冲刺完之后间隔0.3s才能再充一次
     /// </summary>
@@ -69,6 +70,7 @@ public class SayakaCtrl : APlayerCtrl
         XordinaryDash = false;
         OrdinaryXTimer = 0f;
         DownAttackMovingUpward = 0;
+        BanXattack = false;
         UpAttackMove = false;
         UpAttackCount = 0;
          MagiaDash = false;
@@ -186,12 +188,20 @@ public class SayakaCtrl : APlayerCtrl
 
     public override void OrdinaryX()
     {
-        //从通常状态进入到X攻击准备状态
-        if (!animator.GetBool("OrdinaryXattackPrepare") && !animator.GetBool("OrdinaryXattack") && StageCtrl.gameScoreSettings.Horizontal == 0 && !IsAttack[1] && !StageCtrl.gameScoreSettings.Up && !StageCtrl.gameScoreSettings.Down && !StageCtrl.gameScoreSettings.Xattack && StageCtrl.gameScoreSettings.XattackPressed && !BanWalk && !XordinaryDash && Time.timeSinceLevelLoad -OrdinaryXTimer >= 0.3F)
+        //该攻击高频率发动卡死bug检查
+        if(!animator.GetBool("OrdinaryXattack") && XordinaryDash)
         {
+            VariableInitialization();
+            Debug.Log("尝试修复");
+        }
+
+
+        //从通常状态进入到X攻击准备状态
+        if (!BanXattack &&!animator.GetBool("OrdinaryXattackPrepare") && !animator.GetBool("OrdinaryXattack") && StageCtrl.gameScoreSettings.Horizontal == 0 && !IsAttack[1] && !StageCtrl.gameScoreSettings.Up && !StageCtrl.gameScoreSettings.Down && !StageCtrl.gameScoreSettings.Xattack && StageCtrl.gameScoreSettings.XattackPressed && !BanWalk && !XordinaryDash)
+        {
+            BanXattack = true;
             animator.SetBool("OrdinaryXattackPrepare", true);
             CancelJump();//直接中断跳跃并且不恢复
-            StopAttacking = false;
             IsAttack[1] = true;
             BanWalk = true;
             BanTurnAround = true;
@@ -202,7 +212,7 @@ public class SayakaCtrl : APlayerCtrl
             GravityRatio = 0.3f;
         }
         //松开X键，但仍然处于X攻击状态，所以能往前冲
-        else if (!StageCtrl.gameScoreSettings.XattackPressed && IsAttack[1] && animator.GetBool("OrdinaryXattackPrepare") && !XordinaryDash)
+        else if (!StageCtrl.gameScoreSettings.XattackPressed && IsAttack[1]&& !animator.GetBool("OrdinaryXattack") && animator.GetBool("OrdinaryXattackPrepare") && !XordinaryDash)
         {
             animator.SetBool("OrdinaryXattackPrepare",false);
             animator.SetBool("OrdinaryXattack", true);
@@ -450,29 +460,25 @@ public class SayakaCtrl : APlayerCtrl
     {
         switch (AnimationName)
         {
-            //注意：准备阶段的动画
-            case "Prepare":
-
-               
-                break;
-
-            default:
+            case "OrdinaryDashDone":
                 //结束
                 GravityRatio = 1F;
                 animator.SetBool("OrdinaryXattack", false);
-                //MagicRing.Stop();
-                //MagicRing.enabled = false;
+                animator.SetBool("OrdinaryXattackPrepare", false);
                 BanTurnAround = false;
                 BanInput = false;
                 XordinaryDash = false;
-                StopAttacking = true;
                 IsAttack[1] = false;
+                BanXattack = false;
+                break;
+
+            case "Fuck":
                 VariableInitialization();
                 //僵直
                 Stiff(0.1f);
                 break;
         }
-
+               
 
 
     }
