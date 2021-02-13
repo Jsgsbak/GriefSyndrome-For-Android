@@ -212,7 +212,7 @@ AnimationClip:
     - time: 0
       value: {fileID: 0}
     - time: 0.41666666
-      value: {fileID: 21300000, guid: 6c6c2cd49bf4503469d4c22d1580cec4, type: 3}
+      value: {fileID: 0}
     attribute: m_Sprite
     path: Effect-2
     classID: 212
@@ -306,7 +306,7 @@ AnimationClip:
     - {fileID: 21300000, guid: d195393189151fa47bf56021fbab4f1c, type: 3}
     - {fileID: 0}
     - {fileID: 0}
-    - {fileID: 21300000, guid: 6c6c2cd49bf4503469d4c22d1580cec4, type: 3}
+    - {fileID: 0}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
