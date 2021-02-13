@@ -243,7 +243,6 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         //防止死亡状态、按下跳跃的瞬间发动攻击
         if (StageCtrl.gameScoreSettings.Jump || StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] || IsInvincible)
         {
-            Debug.Log("??");
             //修复攻击过程中跳跃仍然显示攻击动画的bug
             return;
         }
@@ -457,7 +456,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
         if (infoHor.collider != null)// || infoRight.collider != null)
         {
-            if (infoHor.collider.CompareTag("Platform") || infoHor.collider.CompareTag("Wall"))
+            if ( infoHor.collider.CompareTag("Wall"))
             {
                 if (DoLookRight)
                 {
@@ -578,7 +577,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         }
 
         //到天花板了，剔除向上移动方向
-        else if (tr.localPosition.y >= 4.1f && Direction.y > 0)
+        else if (tr.localPosition.y >= 4.1f && Direction.y > 0 && StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId])
         {
             y = 0f;
             Border = true;

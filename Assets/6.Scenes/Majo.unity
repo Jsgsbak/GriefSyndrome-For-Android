@@ -2468,7 +2468,7 @@ Camera:
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_RenderingPath: -1
+  m_RenderingPath: 0
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
   m_TargetEye: 0
@@ -4506,6 +4506,7 @@ MonoBehaviour:
   IsAttack: 000000
   StopAttacking: 1
   XordinaryDash: 0
+  MagiaDashSpeedRatio: 1
 --- !u!4 &1241280514
 Transform:
   m_ObjectHideFlags: 0
