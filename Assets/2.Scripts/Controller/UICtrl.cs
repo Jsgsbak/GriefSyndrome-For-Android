@@ -274,7 +274,7 @@ public class UICtrl : MonoBehaviour
         if (StageCtrl.gameScoreSettings.AllDie)
         {
             //借助结算界面的文本框通知玩家你成功打出了be
-            MajoDieText.text = "    Se kai saraba...";
+            MajoDieText.text = "    Sekai saraba...";
         }
         else
         {

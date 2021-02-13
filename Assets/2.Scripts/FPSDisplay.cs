@@ -3,11 +3,13 @@ using System.Collections;
 
 public class FPSDisplay : MonoBehaviour
 {
-	float deltaTime = 0.0f;
+	float LastTime = 0.0f;
 	GUIStyle style = new GUIStyle();
 	Rect rect;
+	int fps;
+	string text;
 
-    private void Start()
+	private void Start()
     {
 		int w = Screen.width, h = Screen.height;
 		rect = new Rect(0, 0, w, h * 2 / 100);
@@ -19,12 +21,13 @@ public class FPSDisplay : MonoBehaviour
 	}
 	void OnGUI()
 	{
-		deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
-
-		//new Color (0.0f, 0.0f, 0.5f, 1.0f);
-		float msec = deltaTime * 1000.0f;
-		float fps = 1.0f / deltaTime;
-		string text = string.Format("{0:0.0} ms ({1:0.} fps)", msec.ToString(), fps.ToString());
+		if (Time.timeSinceLevelLoad - LastTime>= 1f)
+        {
+			 fps = (int)(1.0f / Time.unscaledDeltaTime);
+			text = string.Format("         {0:0} fps", fps.ToString());
+			LastTime = Time.timeSinceLevelLoad;
+		}
 		GUI.Label(rect, text, style);
+
 	}
 }

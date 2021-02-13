@@ -384,7 +384,7 @@ public class SayakaCtrl : APlayerCtrl
             //Z攻击打完，
             case "ZattackDone":
                     StopAttacking = true;//可以中断攻击
-                    IsAttack[0] = StageCtrl.gameScoreSettings.Zattack;//连接处不属于攻击阶段，可以切换到其他动画和状态
+                    IsAttack[0] = StageCtrl.gameScoreSettings.ZattackPressed;//连接处不属于攻击阶段，可以切换到其他动画和状态
                 BanTurnAround = false;//可以转身
 
                 //攻击完了恢复移动速度与重力

@@ -164,7 +164,7 @@ public class GameScoreSettingsIO : ScriptableObject
     [Header("音量")]
     public float BGMVol = 0.6f;
     public float SEVol = 0.7f;
-
+    public int MaxFps = 60;
     #endregion
 
     #region 玩家设置
@@ -229,7 +229,7 @@ public class GameScoreSettingsIO : ScriptableObject
     {
         TitleInitial();
         MajoInitial();
-        //MaxFps = 0;
+        MaxFps = 60;
         BGMVol = 0.6f;
         SEVol = 0.7f;
         UseScreenInput = 2;
@@ -359,7 +359,7 @@ public class GameScoreSettingsIO : ScriptableObject
         //设置
         SaveGame.Save("BGMVol", BGMVol);
         SaveGame.Save("SEVol", SEVol);
-       // SaveGame.Save("MaxFps", MaxFps);
+        SaveGame.Save("MaxFps", MaxFps);
         SaveInput();
 
         yield return 0f;
@@ -374,7 +374,7 @@ public class GameScoreSettingsIO : ScriptableObject
         //设置
         SaveGame.Save("BGMVol", BGMVol);
         SaveGame.Save("SEVol", SEVol);
-       // SaveGame.Save("MaxFps", MaxFps);
+        SaveGame.Save("MaxFps", MaxFps);
         SaveInput();
 
         yield return 0f;
@@ -417,7 +417,7 @@ public class GameScoreSettingsIO : ScriptableObject
         //设置
         BGMVol = SaveGame.Load("BGMVol", 0.6f);
         SEVol = SaveGame.Load("SEVol", 0.7f);
-        //MaxFps = SaveGame.Load("MaxFps", 0);
+        MaxFps = SaveGame.Load("MaxFps", 60);
         LoadInput();
 
     }
