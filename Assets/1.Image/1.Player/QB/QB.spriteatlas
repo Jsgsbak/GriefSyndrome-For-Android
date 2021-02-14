@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: QB
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 512
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 2800000, guid: c1476a721368f7d4283100acce33198d, type: 3}
+    - {fileID: 2800000, guid: 13e359d1f71a75248a60480c1205ab66, type: 3}
+    - {fileID: 2800000, guid: 6063e011f47475f458ac40898efca67b, type: 3}
+    - {fileID: 2800000, guid: d74ac983423e7434a8916a5c18771fcc, type: 3}
+    - {fileID: 2800000, guid: d991b6768a67dbe41a4c23f5eab7a564, type: 3}
+    - {fileID: 2800000, guid: 161467f622247a442ac592454d17f4fd, type: 3}
+    - {fileID: 2800000, guid: 7d77ec59ec20f85468b52ffd40c6be26, type: 3}
+    totalSpriteSurfaceArea: 43008
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 6063e011f47475f458ac40898efca67b, type: 3}
+  - {fileID: 21300000, guid: 13e359d1f71a75248a60480c1205ab66, type: 3}
+  - {fileID: 21300000, guid: c1476a721368f7d4283100acce33198d, type: 3}
+  - {fileID: 21300000, guid: d74ac983423e7434a8916a5c18771fcc, type: 3}
+  - {fileID: 21300000, guid: d991b6768a67dbe41a4c23f5eab7a564, type: 3}
+  - {fileID: 21300000, guid: 161467f622247a442ac592454d17f4fd, type: 3}
+  - {fileID: 21300000, guid: 7d77ec59ec20f85468b52ffd40c6be26, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - emotionC0001.cv2
+  - emotionC0002.cv2
+  - emotionC0000.cv2
+  - emotionC0003.cv2
+  - emotionC0004.cv2
+  - emotionC0005.cv2
+  - emotionC0006.cv2
+  m_RenderDataMap: {}
+  m_Tag: QB
+  m_IsVariant: 0
