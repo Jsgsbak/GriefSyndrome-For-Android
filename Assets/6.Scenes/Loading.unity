@@ -296,8 +296,8 @@ MonoBehaviour:
   AtlasAnimations:
   - name: 
     Description: 
-    Length: 7
-    StartFromZero: 1
+    Length: 6
+    StartFromZero: 0
     Cycle: 1
     Interval: 0.1
     BeginningRepair: 0

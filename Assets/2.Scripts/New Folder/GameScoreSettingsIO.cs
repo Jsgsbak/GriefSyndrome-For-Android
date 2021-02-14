@@ -240,6 +240,8 @@ public class GameScoreSettingsIO : ScriptableObject
         SaveGame.DeleteAll();
         MajoSceneToTitle = false;//一定要放到魔女初始化后面
 
+        Debug.Log("全部初始化成功");
+
     }
 
     /// <summary>
