@@ -91,6 +91,8 @@ public class LoadingCtrl : MonoBehaviour
         {
 			StatusText.text = "加载存档与设置";
 			gameScoreSettings.Load();
+			StatusText.text = "保存设置";
+			Timing.RunCoroutine(gameScoreSettings.SaveSettings()); 
 		}
 		//通关（打完了瓦夜）
 		else

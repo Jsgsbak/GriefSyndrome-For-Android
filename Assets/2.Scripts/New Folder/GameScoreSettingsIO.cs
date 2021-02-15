@@ -16,7 +16,9 @@ public class GameScoreSettingsIO : ScriptableObject
     #region 正式玩的变量
 
 
-    [Header("正式玩的变量")]
+    /// <summary>
+    /// 当前玩家分数
+    /// </summary>
     [Header("当前玩家分数")]
     public int[] Score = new int[3] { 0,0, 0 };
     [Header("历史最高分数")]
@@ -236,9 +238,9 @@ public class GameScoreSettingsIO : ScriptableObject
         Load();
         //做啥角色就换成啥
         SelectedGirlInGame[0] = Variable.PlayerFaceType.Sayaka;
-       //删除存档
-        SaveGame.DeleteAll();
         MajoSceneToTitle = false;//一定要放到魔女初始化后面
+                                 
+        SaveGame.DeleteAll();//删除存档
 
         Debug.Log("全部初始化成功");
 
@@ -269,16 +271,18 @@ public class GameScoreSettingsIO : ScriptableObject
         Success = false;
         Time = 0;
         DoesMajoOrShoujoDie = false;
+        MajoSceneToTitle = false;
         SelectedGirlInGame = new Variable.PlayerFaceType[3] { Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null };
         BattlingMajo = Variable.Majo.Gertrud;
         NewestMajo = Variable.Majo.Gertrud;
         MagicalGirlsDie = new bool[] { false, false, false, false, false };
         GirlsLevel = new int[] { 1, 1, 1 ,1,1};
         AllDie = false;
+        LocalIsStiff = false;
         //0.07
         Succeed = false;
         Pause = false;
-        MagicalGirlsDie = new bool[] { true, true, true, true, false };
+        MagicalGirlsDie = new bool[] { true, true, true, true, false }; //这个版本临时改成这样
     }
 
     /// <summary>

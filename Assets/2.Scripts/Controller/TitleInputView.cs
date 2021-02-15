@@ -31,10 +31,11 @@ public class TitleInputView : MonoBehaviour
         });
         Rect[2].onValueChanged.AddListener(delegate (string c) {
             TitleCtrl.gameScoreSettingsIO.KeyPosScale[EditingButton].EditPosition.width = float.Parse(Rect[2].text);
+            TitleCtrl.gameScoreSettingsIO.KeyPosScale[EditingButton].EditPosition.height = TitleCtrl.gameScoreSettingsIO.KeyPosScale[EditingButton].EditPosition.width;
+
+
         });
-        Rect[3].onValueChanged.AddListener(delegate (string c) {
-            TitleCtrl.gameScoreSettingsIO.KeyPosScale[EditingButton].EditPosition.height = float.Parse(Rect[3].text);
-        });
+       
     }
     private void OnEnable()
     {
@@ -54,6 +55,7 @@ public class TitleInputView : MonoBehaviour
 
     private void Update()
     {
+        //保存输入方式
         for (int i = 0; i < 3; i++)
         {
             if (InputToggle[i].isOn)
@@ -87,9 +89,10 @@ public class TitleInputView : MonoBehaviour
     /// </summary>
     public void SaveToGSS(int index)
     {
+        TitleCtrl.gameScoreSettingsIO.KeyPosScale[index].EditPosition.x = float.Parse(Rect[0].text);
         TitleCtrl.gameScoreSettingsIO.KeyPosScale[index].EditPosition.y = float.Parse(Rect[1].text);
         TitleCtrl.gameScoreSettingsIO.KeyPosScale[index].EditPosition.width = float.Parse(Rect[2].text);
-        TitleCtrl.gameScoreSettingsIO.KeyPosScale[index].EditPosition.height = float.Parse(Rect[3].text);
+        TitleCtrl.gameScoreSettingsIO.KeyPosScale[index].EditPosition.height = float.Parse(Rect[2].text);
 
     }
 

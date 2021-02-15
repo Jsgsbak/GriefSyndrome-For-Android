@@ -323,7 +323,7 @@ public class UICtrl : MonoBehaviour
         }
         else
         {
-            MajoDieText.text = string.Format("   {0} was over.", StageCtrl.gameScoreSettings.BattlingMajo.ToString());
+            MajoDieText.text = string.Format("     {0} was over.", StageCtrl.gameScoreSettings.BattlingMajo.ToString());
         }
 
         //这个魔女被击败的用时
@@ -353,6 +353,13 @@ public class UICtrl : MonoBehaviour
         //瓦夜打完，结算界面结束后进入staff / 或者五色全挂，进入staff
         if(StageCtrl.gameScoreSettings.BattlingMajo == Variable.Majo.Walpurgisnacht || StageCtrl.gameScoreSettings.AllDie)
         {
+            //预先修改一些变量，防止出现Bug
+            StageCtrl.gameScoreSettings.MajoSceneToTitle = false;
+            if(StageCtrl.gameScoreSettings.BattlingMajo == Variable.Majo.Walpurgisnacht)
+            {
+                //通关设置
+                StageCtrl.gameScoreSettings.Success = true;
+            }
             LoadingCtrl.LoadScene(4, false);
         }
         //其他魔女打完，结算界面结束后进入魔女选择part

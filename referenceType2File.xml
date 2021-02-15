@@ -1,0 +1,1623 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfTypeDate xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <TypeDate>
+    <guid>2d2433f4570c1404da40af9ea0b12741</guid>
+    <fileName>Assets/Plugins/Trinary Software/Timing.cs</fileName>
+    <timeStamp>2020-09-13T10:27:41.3665922+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>661b2fa1a83c9b64b98f9c067c3af319</guid>
+    <fileName>Assets/2.Scripts/EnemyAttack.cs</fileName>
+    <timeStamp>2020-09-13T19:06:03.7364562+08:00</timeStamp>
+    <typeFullName>
+      <string>EnemyAttack</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>ad2ee014f12fd1e42b5ba225b6d0ee38</guid>
+    <fileName>Assets/2.Scripts/FPSDisplay.cs</fileName>
+    <timeStamp>2021-02-14T17:44:05.9995852+08:00</timeStamp>
+    <typeFullName>
+      <string>FPSDisplay</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>867456342a42e5a48a0b4785384e9ae3</guid>
+    <fileName>Assets/2.Scripts/Controller/AdjustInputBox.cs</fileName>
+    <timeStamp>2021-02-09T20:17:34.742599+08:00</timeStamp>
+    <typeFullName>
+      <string>AdjustInputBox</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>9953edca165b71d4ba82de08ad658426</guid>
+    <fileName>Assets/2.Scripts/Controller/BeginningCtrl.cs</fileName>
+    <timeStamp>2021-02-07T21:02:36.0740724+08:00</timeStamp>
+    <typeFullName>
+      <string>BeginningCtrl</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>341c89327a525184d96f2b1fb5690282</guid>
+    <fileName>Assets/2.Scripts/Controller/ETCedition.cs</fileName>
+    <timeStamp>2021-02-14T17:44:05.9122947+08:00</timeStamp>
+    <typeFullName>
+      <string>ETCedition</string>
+      <string>ETCedition+ETCActions</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>f19f5f6a66d298146a6c6aaf377cf02d</guid>
+    <fileName>Assets/2.Scripts/Controller/LoadingCtrl.cs</fileName>
+    <timeStamp>2021-02-12T12:40:29.3389243+08:00</timeStamp>
+    <typeFullName>
+      <string>LoadingCtrl</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>24e4b7040f7238a4db253a0c26b10328</guid>
+    <fileName>Assets/2.Scripts/Controller/PausePlayerInf.cs</fileName>
+    <timeStamp>2021-02-07T13:13:56.5867071+08:00</timeStamp>
+    <typeFullName>
+      <string>PausePlayerInf</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>5183e5fc5ed6fd64483262b232438830</guid>
+    <fileName>Assets/2.Scripts/Controller/PlayerInfUpdate.cs</fileName>
+    <timeStamp>2021-02-11T18:37:24.0612831+08:00</timeStamp>
+    <typeFullName>
+      <string>PlayerInfUpdate</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>15e45e37900315a43b681471491fa725</guid>
+    <fileName>Assets/2.Scripts/Controller/StaffCtrl.cs</fileName>
+    <timeStamp>2021-02-09T12:21:49.682509+08:00</timeStamp>
+    <typeFullName>
+      <string>StaffCtrl</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>abb5944fdc75b5f4695273d48677cec3</guid>
+    <fileName>Assets/2.Scripts/Controller/StageCtrl.cs</fileName>
+    <timeStamp>2021-02-12T12:34:59.5560639+08:00</timeStamp>
+    <typeFullName>
+      <string>StageCtrl</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>dcc97bb0b9d77094abba5535a9c99ec9</guid>
+    <fileName>Assets/2.Scripts/Controller/TitleCtrl.cs</fileName>
+    <timeStamp>2021-02-14T17:44:05.9697984+08:00</timeStamp>
+    <typeFullName>
+      <string>TitleCtrl</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>3cc4154d917d2c545a3230b6f588c2e0</guid>
+    <fileName>Assets/2.Scripts/Controller/TitleInputView.cs</fileName>
+    <timeStamp>2021-02-12T12:49:02.9132324+08:00</timeStamp>
+    <typeFullName>
+      <string>TitleInputView</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>16a907ac5eee5b14d9b96901e17e7749</guid>
+    <fileName>Assets/2.Scripts/Controller/UICtrl.cs</fileName>
+    <timeStamp>2021-02-14T17:44:05.9985778+08:00</timeStamp>
+    <typeFullName>
+      <string>UICtrl</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>0ed0a4e9584ba80438340e64d5d76b8c</guid>
+    <fileName>Assets/2.Scripts/Interface/IMove.cs</fileName>
+    <timeStamp>2021-02-09T14:28:55.920943+08:00</timeStamp>
+    <typeFullName>
+      <string>IMove</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>313b2d6938c7ddd4890779c79cd6dffe</guid>
+    <fileName>Assets/2.Scripts/New Folder/GameScoreSettingsIO.cs</fileName>
+    <timeStamp>2021-02-14T19:20:17.7787162+08:00</timeStamp>
+    <typeFullName>
+      <string>GameScoreSettingsIO</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>9544dba03555a3447927166f076ff8c0</guid>
+    <fileName>Assets/2.Scripts/New Folder/Variable.cs</fileName>
+    <timeStamp>2021-02-09T15:24:54.6007906+08:00</timeStamp>
+    <typeFullName>
+      <string>Variable</string>
+      <string>Variable+ScoreType</string>
+      <string>Variable+PlayerFaceType</string>
+      <string>Variable+Majo</string>
+      <string>Variable+MahouShoujo</string>
+      <string>Variable+OrdinaryEvent</string>
+      <string>Variable+BoolEvent</string>
+      <string>Variable+IntEvent</string>
+      <string>Variable+VirtualKeyInputPositionAndScale</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>fd54a670619ee1c4396aa20a7283265d</guid>
+    <fileName>Assets/2.Scripts/Player/APlayerCtrl.cs</fileName>
+    <timeStamp>2021-02-14T17:44:06.0157484+08:00</timeStamp>
+    <typeFullName>
+      <string>APlayerCtrl</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>2a8134759974d17408aa0e7767c538bf</guid>
+    <fileName>Assets/2.Scripts/Player/HomuraCtrl.cs</fileName>
+    <timeStamp>2020-09-15T19:42:21.7836328+08:00</timeStamp>
+    <typeFullName>
+      <string>HomuraCtrl</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>c97fc0b72e634fb489ca86c6f0ad9556</guid>
+    <fileName>Assets/2.Scripts/Player/KyokoCtrl.cs</fileName>
+    <timeStamp>2020-09-15T19:42:06.8789876+08:00</timeStamp>
+    <typeFullName>
+      <string>KyokoCtrl</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>e3873a738b9702745aaa79910f621e5e</guid>
+    <fileName>Assets/2.Scripts/Player/MadokaCtrl.cs</fileName>
+    <timeStamp>2020-09-15T19:42:09.7860718+08:00</timeStamp>
+    <typeFullName>
+      <string>MadokaCtrl</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>6f143f798453ead4eb571067053bd8a8</guid>
+    <fileName>Assets/2.Scripts/Player/MamiCtrl.cs</fileName>
+    <timeStamp>2020-09-15T19:42:11.6715492+08:00</timeStamp>
+    <typeFullName>
+      <string>MamiCtrl</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>4a16ce2407492f7448107c7b67f188a9</guid>
+    <fileName>Assets/2.Scripts/Player/QBCtrl.cs</fileName>
+    <timeStamp>2020-09-15T19:42:13.8962994+08:00</timeStamp>
+    <typeFullName>
+      <string>QBCtrl</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>994ff0d1a1d8e3d40930d1d28af9b59e</guid>
+    <fileName>Assets/2.Scripts/Player/SayakaCtrl.cs</fileName>
+    <timeStamp>2021-02-14T17:44:06.0167477+08:00</timeStamp>
+    <typeFullName>
+      <string>SayakaCtrl</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>37c665276a087354183400ba4890d297</guid>
+    <fileName>Assets/2.Scripts/Stage/WallAndFloor.cs</fileName>
+    <timeStamp>2021-01-14T20:14:36.9954095+08:00</timeStamp>
+    <typeFullName>
+      <string>WallAndFloor</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>b549ed925b49d274c876184f60faabdf</guid>
+    <fileName>Assets/AllIn1SpriteShader/Demo/Scripts/All1ShaderDemoController.cs</fileName>
+    <timeStamp>2020-11-19T08:56:01+08:00</timeStamp>
+    <typeFullName>
+      <string>All1ShaderDemoController</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>cc188be2d64e8d041aed6f375d92c463</guid>
+    <fileName>Assets/AllIn1SpriteShader/Demo/Scripts/Demo2AutoScroll.cs</fileName>
+    <timeStamp>2020-11-19T08:56:05+08:00</timeStamp>
+    <typeFullName>
+      <string>Demo2AutoScroll</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>fcb2e887baa071545bad04c7b0e87cce</guid>
+    <fileName>Assets/AllIn1SpriteShader/Demo/Scripts/DemoCamera.cs</fileName>
+    <timeStamp>2020-11-19T08:56:15+08:00</timeStamp>
+    <typeFullName>
+      <string>DemoCamera</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>6972382efdee4c642812251660f0c4bb</guid>
+    <fileName>Assets/AllIn1SpriteShader/Demo/Scripts/DemoCircleExpositor.cs</fileName>
+    <timeStamp>2020-11-19T08:55:44+08:00</timeStamp>
+    <typeFullName>
+      <string>DemoCircleExpositor</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>98b644315d7a92842b89e04f55c48e02</guid>
+    <fileName>Assets/AllIn1SpriteShader/Demo/Scripts/DemoItem.cs</fileName>
+    <timeStamp>2020-11-19T08:55:53+08:00</timeStamp>
+    <typeFullName>
+      <string>DemoItem</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>4ef3964599ee48c4ea5a4ecf012ed949</guid>
+    <fileName>Assets/AllIn1SpriteShader/Demo/Scripts/DemoRandomColorSwap.cs</fileName>
+    <timeStamp>2020-11-19T08:55:37+08:00</timeStamp>
+    <typeFullName>
+      <string>DemoRandomColorSwap</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>78232fc1cf0e9c445a36b7bf7fc49fdb</guid>
+    <fileName>Assets/AllIn1SpriteShader/Editor/AllIn1ShaderScriptEditor.cs</fileName>
+    <timeStamp>2020-11-19T08:55:46+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>f42211545c188ae41b1e35cc1ce38187</guid>
+    <fileName>Assets/AllIn1SpriteShader/Editor/AllIn1SpriteShader.cs</fileName>
+    <timeStamp>2020-11-19T08:56:13+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>bcdb12210426bb34cb44a19ffb54132d</guid>
+    <fileName>Assets/AllIn1SpriteShader/Editor/AllIn1SpriteShaderStencil.cs</fileName>
+    <timeStamp>2020-11-19T08:56:01+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>264cca4d0f5bbb54eb9de18ca54d1506</guid>
+    <fileName>Assets/AllIn1SpriteShader/Scripts/All1CreateUnifiedOutline.cs</fileName>
+    <timeStamp>2020-11-19T08:55:29+08:00</timeStamp>
+    <typeFullName>
+      <string>All1CreateUnifiedOutline</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>ee158225ee1e59f4791627785501d950</guid>
+    <fileName>Assets/AllIn1SpriteShader/Scripts/AllIn1Shader.cs</fileName>
+    <timeStamp>2020-11-19T08:56:12+08:00</timeStamp>
+    <typeFullName>
+      <string>AllIn1Shader</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>b642652081667ab4fad9f2579fec0e51</guid>
+    <fileName>Assets/AllIn1SpriteShader/Scripts/AllIn1ShaderWindow.cs</fileName>
+    <timeStamp>2020-11-19T08:56:01+08:00</timeStamp>
+    <typeFullName>
+      <string>AllIn1ShaderWindow</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>6078fd4d3c5bd6f4087f8869458662dd</guid>
+    <fileName>Assets/AllIn1SpriteShader/Scripts/RandomSeed.cs</fileName>
+    <timeStamp>2020-11-19T08:55:41+08:00</timeStamp>
+    <typeFullName>
+      <string>RandomSeed</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>1625263d85e5d554284989eb9052e863</guid>
+    <fileName>Assets/AllIn1SpriteShader/Scripts/SetAtlasUvs.cs</fileName>
+    <timeStamp>2021-02-04T12:35:22.1853867+08:00</timeStamp>
+    <typeFullName>
+      <string>SetAtlasUvs</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>ee7031a07aea7674fad9a0795b193f56</guid>
+    <fileName>Assets/AllIn1SpriteShader/Scripts/SetGlobalTime.cs</fileName>
+    <timeStamp>2020-11-19T08:56:12+08:00</timeStamp>
+    <typeFullName>
+      <string>AllIn1SpriteShader.SetGlobalTime</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>965b49e01c565c24cb29bc2afae8efbd</guid>
+    <fileName>Assets/BayatGames/SaveGameFree/Examples/Auto Save/ExampleMoveObject.cs</fileName>
+    <timeStamp>2020-09-13T10:27:41.1667226+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>5b43e46bfe117094197a50bc0d11da28</guid>
+    <fileName>Assets/BayatGames/SaveGameFree/Examples/Save Custom/ExampleSaveCustom.cs</fileName>
+    <timeStamp>2020-09-13T10:27:41.1685746+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>fb993ecefb6bf3744bdf049c9d43828e</guid>
+    <fileName>Assets/BayatGames/SaveGameFree/Examples/Save Position/ExampleSavePosition.cs</fileName>
+    <timeStamp>2020-09-13T10:27:41.1715847+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>10d17969e1ad26641b2acdec79d4715f</guid>
+    <fileName>Assets/BayatGames/SaveGameFree/Examples/Save Rotation/ExampleSaveRotation.cs</fileName>
+    <timeStamp>2020-09-13T10:27:41.1736601+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>5c8c129be0611f24dbacf92cc521b63a</guid>
+    <fileName>Assets/BayatGames/SaveGameFree/Examples/Save Scale/ExampleSaveScale.cs</fileName>
+    <timeStamp>2020-09-13T10:27:41.1761785+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>ff23d7a521647b74fb67e989105a7c07</guid>
+    <fileName>Assets/BayatGames/SaveGameFree/Examples/Save Web/ExampleSaveWeb.cs</fileName>
+    <timeStamp>2020-09-13T10:27:41.1793807+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>b74ca9d92dd00484b990705d81c0904b</guid>
+    <fileName>Assets/BayatGames/SaveGameFree/Examples/Shared/Scripts/SerializerDropdown.cs</fileName>
+    <timeStamp>2020-09-13T10:27:41.1845295+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>37e43b64d96fe9b4bbae6f0068bea185</guid>
+    <fileName>Assets/BayatGames/SaveGameFree/Scripts/SaveGame.cs</fileName>
+    <timeStamp>2020-09-13T10:27:41.2095266+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>104ea6790eeb62e4fbc61601a70eb86b</guid>
+    <fileName>Assets/BayatGames/SaveGameFree/Scripts/SaveGameAuto.cs</fileName>
+    <timeStamp>2020-09-13T10:27:41.2105229+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>57acd7a24fd4e76499824f150b6cef57</guid>
+    <fileName>Assets/BayatGames/SaveGameFree/Scripts/SaveGameWeb.cs</fileName>
+    <timeStamp>2020-09-13T10:27:41.2115224+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>f4b7a84024d2fb24a9314d250876d96c</guid>
+    <fileName>Assets/BayatGames/SaveGameFree/Scripts/Encoders/ISaveGameEncoder.cs</fileName>
+    <timeStamp>2020-09-13T10:27:41.2075239+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>118532b849a8c1a4daefc7c545411b80</guid>
+    <fileName>Assets/BayatGames/SaveGameFree/Scripts/Encoders/SaveGameSimpleEncoder.cs</fileName>
+    <timeStamp>2020-09-13T10:27:41.2085237+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>7de98063df0654449a3edc3e4f63ac3d</guid>
+    <fileName>Assets/BayatGames/SaveGameFree/Scripts/Serializers/ISaveGameSerializer.cs</fileName>
+    <timeStamp>2020-09-13T10:27:41.2125226+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>aca44e3bb6bef6445b1faf25fcd8ca07</guid>
+    <fileName>Assets/BayatGames/SaveGameFree/Scripts/Serializers/SaveGameBinarySerializer.cs</fileName>
+    <timeStamp>2020-09-13T10:27:41.2145216+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>fc6cbbacce9587842a7fdcbec4a12e9d</guid>
+    <fileName>Assets/BayatGames/SaveGameFree/Scripts/Serializers/SaveGameJsonSerializer.cs</fileName>
+    <timeStamp>2020-09-13T10:27:41.2145216+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>4aac03cecff2aaa4faf32108f0e8bc8b</guid>
+    <fileName>Assets/BayatGames/SaveGameFree/Scripts/Serializers/SaveGameXmlSerializer.cs</fileName>
+    <timeStamp>2020-09-13T10:27:41.2155233+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>08d80f924aa872f459389de9107a29f3</guid>
+    <fileName>Assets/BayatGames/SaveGameFree/Scripts/Types/Color32Save.cs</fileName>
+    <timeStamp>2020-09-13T10:27:41.2175348+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>d2ccc2100fda8234cb74b188f02f5179</guid>
+    <fileName>Assets/BayatGames/SaveGameFree/Scripts/Types/ColorSave.cs</fileName>
+    <timeStamp>2020-09-13T10:27:41.2175348+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>1c9682573139a3c448dedcabd384ce21</guid>
+    <fileName>Assets/BayatGames/SaveGameFree/Scripts/Types/MeshSave.cs</fileName>
+    <timeStamp>2020-09-13T10:27:41.2195213+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>d8d7e9466bf3e144aabe7bedc3b32dbd</guid>
+    <fileName>Assets/BayatGames/SaveGameFree/Scripts/Types/QuaternionSave.cs</fileName>
+    <timeStamp>2020-09-13T10:27:41.2195213+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>cb704f66c798860409022f54505ad172</guid>
+    <fileName>Assets/BayatGames/SaveGameFree/Scripts/Types/Vector2Save.cs</fileName>
+    <timeStamp>2020-09-13T10:27:41.2205216+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>d990e6b1c110f8e4f81aba20231342eb</guid>
+    <fileName>Assets/BayatGames/SaveGameFree/Scripts/Types/Vector3Save.cs</fileName>
+    <timeStamp>2020-09-13T10:27:41.2215214+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>8d6d91eeab36bf14fa2fcc4a7083e8a2</guid>
+    <fileName>Assets/BayatGames/SaveGameFree/Scripts/Types/Vector4Save.cs</fileName>
+    <timeStamp>2020-09-13T10:27:41.2225192+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>842f43ac94b4b4f72ac0898650ddcc44</guid>
+    <fileName>Assets/Cleaner/Editor/AssetCollector.cs</fileName>
+    <timeStamp>2015-12-10T02:51:26+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>805140a4856714e288ea84985d3023df</guid>
+    <fileName>Assets/Cleaner/Editor/AssetReferenceCollection.cs</fileName>
+    <timeStamp>2015-12-10T02:51:26+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>202c278a17939b24c8b79c0ee1f94d8f</guid>
+    <fileName>Assets/Cleaner/Editor/ClassReferenceCollection.cs</fileName>
+    <timeStamp>2015-12-10T02:51:26+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>0d05386265df34bac8d0b6df44aa494c</guid>
+    <fileName>Assets/Cleaner/Editor/CollectionData.cs</fileName>
+    <timeStamp>2015-12-10T02:51:26+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>74eec3bfba0594259ac2843353c082a3</guid>
+    <fileName>Assets/Cleaner/Editor/FindUnusedAssetsWindow.cs</fileName>
+    <timeStamp>2015-12-10T02:51:26+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>2c4f01a79a77a45a9a84004cc2b78098</guid>
+    <fileName>Assets/Cleaner/Editor/ShaderReferenceCollection.cs</fileName>
+    <timeStamp>2015-12-10T02:51:26+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>db7f11d9ad8a0764a9b3dbe2f43daa93</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Examples/4.X/LoadExamples.cs</fileName>
+    <timeStamp>2017-08-16T15:19:48+08:00</timeStamp>
+    <typeFullName>
+      <string>LoadExamples</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>e216320e99cdf2a46b09dfd99909dd12</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Examples/4.X/AdvancedExamples/AutoSelect/MultiLayerTouch.cs</fileName>
+    <timeStamp>2017-08-16T15:19:54+08:00</timeStamp>
+    <typeFullName>
+      <string>MultiLayerTouch</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>6f90638b553ac94438157f6b4c58cbad</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Examples/4.X/AdvancedExamples/AutoSelect/MultiLayerUI.cs</fileName>
+    <timeStamp>2017-08-16T15:18:22+08:00</timeStamp>
+    <typeFullName>
+      <string>MultiLayerUI</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>4632564b2dbf5804a9d37598f0b5b601</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Examples/4.X/AdvancedExamples/MultiCamera/MultiCameraTouch.cs</fileName>
+    <timeStamp>2017-08-16T15:17:52+08:00</timeStamp>
+    <typeFullName>
+      <string>MultiCameraTouch</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>e50b1bdf57f5ec14abc2c012c9b3b572</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Examples/4.X/AdvancedExamples/MultiCamera/MultiCameraUI.cs</fileName>
+    <timeStamp>2017-08-16T15:19:55+08:00</timeStamp>
+    <typeFullName>
+      <string>MultiCameraUI</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>68d853e7dd8695b4a8079972e40963e6</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Examples/4.X/GameExemple/RTSExample/CubeSelect.cs</fileName>
+    <timeStamp>2017-08-16T15:18:17+08:00</timeStamp>
+    <typeFullName>
+      <string>CubeSelect</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>4ada74f31ee49e34681124dbda740a5c</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Examples/4.X/GameExemple/RTSExample/RTSCamera.cs</fileName>
+    <timeStamp>2017-08-16T15:17:54+08:00</timeStamp>
+    <typeFullName>
+      <string>RTSCamera</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>0ab70292744e9c9448bf89c713e8d90a</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Examples/4.X/GameExemple/RunBall/Ball.cs</fileName>
+    <timeStamp>2017-08-16T15:17:18+08:00</timeStamp>
+    <typeFullName>
+      <string>Ball</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>f2c2690da05f1ee41b37fea93ee7fd77</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Examples/4.X/GameExemple/RunBall/BallRunPlayer.cs</fileName>
+    <timeStamp>2017-08-16T15:20:06+08:00</timeStamp>
+    <typeFullName>
+      <string>BallRunPlayer</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>d84d76fc294bc384d9ea022f75bf9fe1</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Examples/4.X/GameExemple/RunBall/ThirdPersonCamera.cs</fileName>
+    <timeStamp>2017-08-16T15:19:47+08:00</timeStamp>
+    <typeFullName>
+      <string>ThirdPersonCamera</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>7c81a78944a453f46829a14c2789f59e</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Examples/4.X/SimpleExamples/MultiFinger/FingerTouch.cs</fileName>
+    <timeStamp>2017-08-16T15:18:30+08:00</timeStamp>
+    <typeFullName>
+      <string>FingerTouch</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>917423f633dae9f46afdbd2a301af9d4</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Examples/4.X/SimpleExamples/MultiFinger/MutliFingersScreenTouch.cs</fileName>
+    <timeStamp>2017-08-16T15:18:47+08:00</timeStamp>
+    <typeFullName>
+      <string>MutliFingersScreenTouch</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>7d557199f581b794bbfd7a9d35a3f973</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Examples/4.X/SimpleExamples/OneFinger/DoubleTapMe.cs</fileName>
+    <timeStamp>2017-08-16T15:18:31+08:00</timeStamp>
+    <typeFullName>
+      <string>DoubleTapMe</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>c0374fa01d32d07449d95d045798efd4</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Examples/4.X/SimpleExamples/OneFinger/DragMe.cs</fileName>
+    <timeStamp>2017-08-16T15:19:24+08:00</timeStamp>
+    <typeFullName>
+      <string>DragMe</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>e42eb6686b4c49a4b813dd56294fffba</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Examples/4.X/SimpleExamples/OneFinger/LongTapMe.cs</fileName>
+    <timeStamp>2017-08-16T15:19:55+08:00</timeStamp>
+    <typeFullName>
+      <string>LongTapMe</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>ec1dbe3df0ef246469010be22ddf3652</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Examples/4.X/SimpleExamples/OneFinger/Swipe.cs</fileName>
+    <timeStamp>2017-08-16T15:20:00+08:00</timeStamp>
+    <typeFullName>
+      <string>Swipe</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>0a5d800b35e8f5945878e883b3d2a525</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Examples/4.X/SimpleExamples/OneFinger/TapMe.cs</fileName>
+    <timeStamp>2017-08-16T15:17:18+08:00</timeStamp>
+    <typeFullName>
+      <string>TapMe</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>91705704ea736ef41a8cb3a6c149cc38</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Examples/4.X/SimpleExamples/OneFinger/TouchMe.cs</fileName>
+    <timeStamp>2017-08-16T15:18:47+08:00</timeStamp>
+    <typeFullName>
+      <string>TouchMe</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>9e0c0637362429045b51848c8ecde3e8</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Examples/4.X/SimpleExamples/TwoFingers/PinchMe.cs</fileName>
+    <timeStamp>2017-08-16T15:18:55+08:00</timeStamp>
+    <typeFullName>
+      <string>PinchMe</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>7f681517e2331d74f8b93a0f2f648948</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Examples/4.X/SimpleExamples/TwoFingers/TooglePickMethodUI.cs</fileName>
+    <timeStamp>2017-08-16T15:18:33+08:00</timeStamp>
+    <typeFullName>
+      <string>TooglePickMethodUI</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>dfc81fbca6ade17489686010b0aa93b2</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Examples/4.X/SimpleExamples/TwoFingers/TwistMe.cs</fileName>
+    <timeStamp>2017-08-16T15:19:52+08:00</timeStamp>
+    <typeFullName>
+      <string>TwistMe</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>fffad73ea4da41a4aa105bd2a8c5d90f</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Examples/4.X/SimpleExamples/TwoFingers/TwoDoubleTapMe.cs</fileName>
+    <timeStamp>2017-08-16T15:20:14+08:00</timeStamp>
+    <typeFullName>
+      <string>TwoDoubleTapMe</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>85f24bf25a126d046a7f0f659fab80d8</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Examples/4.X/SimpleExamples/TwoFingers/TwoDragMe.cs</fileName>
+    <timeStamp>2017-08-16T15:18:41+08:00</timeStamp>
+    <typeFullName>
+      <string>TwoDragMe</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>7a3b433d016ead3409fcbcd22bc9d730</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Examples/4.X/SimpleExamples/TwoFingers/TwoLongTapMe.cs</fileName>
+    <timeStamp>2017-08-16T15:18:29+08:00</timeStamp>
+    <typeFullName>
+      <string>TwoLongTapMe</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>f134654b31a6bd64abbfe8a3bd3dfbd2</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Examples/4.X/SimpleExamples/TwoFingers/TwoSwipe.cs</fileName>
+    <timeStamp>2017-08-16T15:20:05+08:00</timeStamp>
+    <typeFullName>
+      <string>TwoSwipe</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>051cd1f9ca5241146b22abaf55148bab</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Examples/4.X/SimpleExamples/TwoFingers/TwoTapMe.cs</fileName>
+    <timeStamp>2017-08-16T15:17:14+08:00</timeStamp>
+    <typeFullName>
+      <string>TwoTapMe</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>18f5c6c178d81794aac2b4aaed8e2443</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Examples/4.X/SimpleExamples/TwoFingers/TwoTouchMe.cs</fileName>
+    <timeStamp>2017-08-16T15:17:25+08:00</timeStamp>
+    <typeFullName>
+      <string>TwoTouchMe</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>6ccfc5726b9e77a4bbd70ca5cf41667f</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Examples/4.X/UnityUI/UICompatibility/ETWindow.cs</fileName>
+    <timeStamp>2017-08-16T15:18:19+08:00</timeStamp>
+    <typeFullName>
+      <string>ETWindow</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>efba75273de65054e88ef18fe36e7861</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Examples/4.X/UnityUI/UICompatibility/GlobalEasyTouchEvent.cs</fileName>
+    <timeStamp>2017-08-16T15:20:05+08:00</timeStamp>
+    <typeFullName>
+      <string>GlobalEasyTouchEvent</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>a39275133a80ef847b811dc44498e522</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Examples/4.X/UnityUI/UICompatibility/UICompatibility.cs</fileName>
+    <timeStamp>2017-08-16T15:19:01+08:00</timeStamp>
+    <typeFullName>
+      <string>UICompatibility</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>507335065ad687d409f652b32157a533</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Examples/4.X/UnityUI/UICompatibility/UIWindow.cs</fileName>
+    <timeStamp>2017-08-16T15:17:59+08:00</timeStamp>
+    <typeFullName>
+      <string>UIWindow</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>8c17e2f5c251e2945b2ee5c0d8a7bcd6</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Examples/4.X/UnityUI/UITwistPinch/UIDrag.cs</fileName>
+    <timeStamp>2017-08-16T15:18:45+08:00</timeStamp>
+    <typeFullName>
+      <string>UIDrag</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>ac23532f5f5ff844aa05600846e0083f</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Examples/4.X/UnityUI/UITwistPinch/UIPinch.cs</fileName>
+    <timeStamp>2017-08-16T15:19:08+08:00</timeStamp>
+    <typeFullName>
+      <string>UIPinch</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>afdea22f564463c49b8a8740799e93ee</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Examples/4.X/UnityUI/UITwistPinch/UITwist.cs</fileName>
+    <timeStamp>2017-08-16T15:19:11+08:00</timeStamp>
+    <typeFullName>
+      <string>UITwist</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>eebd60ce99822854cbf4faa41ce76854</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Examples/5.X new features/Script/RTS_NewSyntaxe.cs</fileName>
+    <timeStamp>2017-08-16T15:20:03+08:00</timeStamp>
+    <typeFullName>
+      <string>RTS_NewSyntaxe</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>b734d6c34eb013b47baa30c6a7a37e83</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Examples/5.X new features/Script/SimpleActionExample.cs</fileName>
+    <timeStamp>2017-08-16T15:19:17+08:00</timeStamp>
+    <typeFullName>
+      <string>SimpleActionExample</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>a8c8100645ce3444a84b9f5e0164ad76</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Plugins/Components/EasyTouchTrigger.cs</fileName>
+    <timeStamp>2017-08-16T15:19:05+08:00</timeStamp>
+    <typeFullName>
+      <string>HedgehogTeam.EasyTouch.EasyTouchTrigger</string>
+      <string>HedgehogTeam.EasyTouch.EasyTouchTrigger+ETTParameter</string>
+      <string>HedgehogTeam.EasyTouch.EasyTouchTrigger+ETTType</string>
+      <string>HedgehogTeam.EasyTouch.EasyTouchTrigger+EasyTouchReceiver</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>7d28476965576224d90d72d674d604cf</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Plugins/Components/QuickBase.cs</fileName>
+    <timeStamp>2017-08-16T15:18:30+08:00</timeStamp>
+    <typeFullName>
+      <string>HedgehogTeam.EasyTouch.QuickBase</string>
+      <string>HedgehogTeam.EasyTouch.QuickBase+DirectAction</string>
+      <string>HedgehogTeam.EasyTouch.QuickBase+AffectedAxesAction</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>7961076ef9aef0341b2c9f8a38bfbc71</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Plugins/Components/QuickDrag.cs</fileName>
+    <timeStamp>2017-08-16T15:18:29+08:00</timeStamp>
+    <typeFullName>
+      <string>HedgehogTeam.EasyTouch.QuickDrag</string>
+      <string>HedgehogTeam.EasyTouch.QuickDrag+OnDragStart</string>
+      <string>HedgehogTeam.EasyTouch.QuickDrag+OnDrag</string>
+      <string>HedgehogTeam.EasyTouch.QuickDrag+OnDragEnd</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>e9b7affbfb3c1534484689f270420489</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Plugins/Components/QuickEnterOverExist.cs</fileName>
+    <timeStamp>2017-08-16T15:19:58+08:00</timeStamp>
+    <typeFullName>
+      <string>HedgehogTeam.EasyTouch.QuickEnterOverExist</string>
+      <string>HedgehogTeam.EasyTouch.QuickEnterOverExist+OnTouchEnter</string>
+      <string>HedgehogTeam.EasyTouch.QuickEnterOverExist+OnTouchOver</string>
+      <string>HedgehogTeam.EasyTouch.QuickEnterOverExist+OnTouchExit</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>96373da5010ca9442a11456032621dc3</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Plugins/Components/QuickLongTap.cs</fileName>
+    <timeStamp>2017-08-16T15:18:50+08:00</timeStamp>
+    <typeFullName>
+      <string>HedgehogTeam.EasyTouch.QuickLongTap</string>
+      <string>HedgehogTeam.EasyTouch.QuickLongTap+OnLongTap</string>
+      <string>HedgehogTeam.EasyTouch.QuickLongTap+ActionTriggering</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>82a53e7679dd5fe4a97e230b88ebc585</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Plugins/Components/QuickPinch.cs</fileName>
+    <timeStamp>2017-08-16T15:18:37+08:00</timeStamp>
+    <typeFullName>
+      <string>HedgehogTeam.EasyTouch.QuickPinch</string>
+      <string>HedgehogTeam.EasyTouch.QuickPinch+OnPinchAction</string>
+      <string>HedgehogTeam.EasyTouch.QuickPinch+ActionTiggering</string>
+      <string>HedgehogTeam.EasyTouch.QuickPinch+ActionPinchDirection</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>df757cf29e57b9449a27cd9dc4a9404a</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Plugins/Components/QuickSwipe.cs</fileName>
+    <timeStamp>2017-08-16T15:19:51+08:00</timeStamp>
+    <typeFullName>
+      <string>HedgehogTeam.EasyTouch.QuickSwipe</string>
+      <string>HedgehogTeam.EasyTouch.QuickSwipe+OnSwipeAction</string>
+      <string>HedgehogTeam.EasyTouch.QuickSwipe+ActionTriggering</string>
+      <string>HedgehogTeam.EasyTouch.QuickSwipe+SwipeDirection</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>e9c933eb8b407754a8f98425dfaa784f</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Plugins/Components/QuickTap.cs</fileName>
+    <timeStamp>2017-08-16T15:19:59+08:00</timeStamp>
+    <typeFullName>
+      <string>HedgehogTeam.EasyTouch.QuickTap</string>
+      <string>HedgehogTeam.EasyTouch.QuickTap+OnTap</string>
+      <string>HedgehogTeam.EasyTouch.QuickTap+ActionTriggering</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>5145c5785e18ed6459cb766ecf988d1a</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Plugins/Components/QuickTouch.cs</fileName>
+    <timeStamp>2017-08-16T15:18:00+08:00</timeStamp>
+    <typeFullName>
+      <string>HedgehogTeam.EasyTouch.QuickTouch</string>
+      <string>HedgehogTeam.EasyTouch.QuickTouch+OnTouch</string>
+      <string>HedgehogTeam.EasyTouch.QuickTouch+OnTouchNotOverMe</string>
+      <string>HedgehogTeam.EasyTouch.QuickTouch+ActionTriggering</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>f38cfe9733704674da647859a90a3734</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Plugins/Components/QuickTwist.cs</fileName>
+    <timeStamp>2017-08-16T15:20:07+08:00</timeStamp>
+    <typeFullName>
+      <string>HedgehogTeam.EasyTouch.QuickTwist</string>
+      <string>HedgehogTeam.EasyTouch.QuickTwist+OnTwistAction</string>
+      <string>HedgehogTeam.EasyTouch.QuickTwist+ActionTiggering</string>
+      <string>HedgehogTeam.EasyTouch.QuickTwist+ActionRotationDirection</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>e6e29b830398aee4baf62ac78801cce1</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Plugins/Editor/EasytouchHierachyCallBack.cs</fileName>
+    <timeStamp>2017-08-16T15:19:56+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>8dd4aa16173f5604085d778e85702c2e</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Plugins/Editor/EasyTouchInspector.cs</fileName>
+    <timeStamp>2017-08-16T15:18:45+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>febc228cacb117e4ca61d1754161d7be</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Plugins/Editor/EasyTouchMenu.cs</fileName>
+    <timeStamp>2017-08-16T15:20:13+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>c805d42d461a3ee41a947ec0f9e12636</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Plugins/Editor/EasyTouchTriggerInspector.cs</fileName>
+    <timeStamp>2017-08-16T15:19:33+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>d92488c9dd498a84eacbd541c4bf40d2</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Plugins/Editor/EasyTouchWelcomeScreen.cs</fileName>
+    <timeStamp>2021-02-06T14:49:47.0500582+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>6e63e92782febb546b01ef0a99394021</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Plugins/Editor/HTGuiTools.cs</fileName>
+    <timeStamp>2017-08-16T15:18:19+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>90d40bf8ecbb8e54fa449fff98f7c89c</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Plugins/Editor/QuickDragInspector.cs</fileName>
+    <timeStamp>2017-08-16T15:18:46+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>963a6fd84b5553a49a198120ed07763a</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Plugins/Editor/QuickEnterExitInspector.cs</fileName>
+    <timeStamp>2017-08-16T15:18:50+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>dfe87ecedc3ffc64cbf16271e67e7db9</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Plugins/Editor/QuickLongTapInspector.cs</fileName>
+    <timeStamp>2017-08-16T15:19:53+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>e225b198a1829584097e5fceee345264</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Plugins/Editor/QuickPinchInspector.cs</fileName>
+    <timeStamp>2017-08-16T15:19:54+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>29f3f85edd767f34da2094756988511f</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Plugins/Editor/QuickSwipeInspector.cs</fileName>
+    <timeStamp>2017-08-16T15:17:36+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>e3e03caf02a475448be04b282362697d</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Plugins/Editor/QuickTapInspector.cs</fileName>
+    <timeStamp>2017-08-16T15:19:54+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>525af5a608b3ff549823bdcffc6979e1</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Plugins/Editor/QuickTouchInspector.cs</fileName>
+    <timeStamp>2017-08-16T15:18:01+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>08c96add5e005424aab15d266b33a173</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Plugins/Editor/QuickTwistInspector.cs</fileName>
+    <timeStamp>2017-08-16T15:17:16+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>8dfe7526dc614dd4a8e7249e52174f98</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Plugins/Engine/BaseFinger.cs</fileName>
+    <timeStamp>2017-08-16T15:18:45+08:00</timeStamp>
+    <typeFullName>
+      <string>HedgehogTeam.EasyTouch.BaseFinger</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>42241010c6f9ddc46b78abdc21d505c5</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Plugins/Engine/EasyTouch.cs</fileName>
+    <timeStamp>2017-08-16T15:17:50+08:00</timeStamp>
+    <typeFullName>
+      <string>HedgehogTeam.EasyTouch.EasyTouch</string>
+      <string>HedgehogTeam.EasyTouch.EasyTouch+TouchCancelHandler</string>
+      <string>HedgehogTeam.EasyTouch.EasyTouch+Cancel2FingersHandler</string>
+      <string>HedgehogTeam.EasyTouch.EasyTouch+TouchStartHandler</string>
+      <string>HedgehogTeam.EasyTouch.EasyTouch+TouchDownHandler</string>
+      <string>HedgehogTeam.EasyTouch.EasyTouch+TouchUpHandler</string>
+      <string>HedgehogTeam.EasyTouch.EasyTouch+SimpleTapHandler</string>
+      <string>HedgehogTeam.EasyTouch.EasyTouch+DoubleTapHandler</string>
+      <string>HedgehogTeam.EasyTouch.EasyTouch+LongTapStartHandler</string>
+      <string>HedgehogTeam.EasyTouch.EasyTouch+LongTapHandler</string>
+      <string>HedgehogTeam.EasyTouch.EasyTouch+LongTapEndHandler</string>
+      <string>HedgehogTeam.EasyTouch.EasyTouch+DragStartHandler</string>
+      <string>HedgehogTeam.EasyTouch.EasyTouch+DragHandler</string>
+      <string>HedgehogTeam.EasyTouch.EasyTouch+DragEndHandler</string>
+      <string>HedgehogTeam.EasyTouch.EasyTouch+SwipeStartHandler</string>
+      <string>HedgehogTeam.EasyTouch.EasyTouch+SwipeHandler</string>
+      <string>HedgehogTeam.EasyTouch.EasyTouch+SwipeEndHandler</string>
+      <string>HedgehogTeam.EasyTouch.EasyTouch+TouchStart2FingersHandler</string>
+      <string>HedgehogTeam.EasyTouch.EasyTouch+TouchDown2FingersHandler</string>
+      <string>HedgehogTeam.EasyTouch.EasyTouch+TouchUp2FingersHandler</string>
+      <string>HedgehogTeam.EasyTouch.EasyTouch+SimpleTap2FingersHandler</string>
+      <string>HedgehogTeam.EasyTouch.EasyTouch+DoubleTap2FingersHandler</string>
+      <string>HedgehogTeam.EasyTouch.EasyTouch+LongTapStart2FingersHandler</string>
+      <string>HedgehogTeam.EasyTouch.EasyTouch+LongTap2FingersHandler</string>
+      <string>HedgehogTeam.EasyTouch.EasyTouch+LongTapEnd2FingersHandler</string>
+      <string>HedgehogTeam.EasyTouch.EasyTouch+TwistHandler</string>
+      <string>HedgehogTeam.EasyTouch.EasyTouch+TwistEndHandler</string>
+      <string>HedgehogTeam.EasyTouch.EasyTouch+PinchInHandler</string>
+      <string>HedgehogTeam.EasyTouch.EasyTouch+PinchOutHandler</string>
+      <string>HedgehogTeam.EasyTouch.EasyTouch+PinchEndHandler</string>
+      <string>HedgehogTeam.EasyTouch.EasyTouch+PinchHandler</string>
+      <string>HedgehogTeam.EasyTouch.EasyTouch+DragStart2FingersHandler</string>
+      <string>HedgehogTeam.EasyTouch.EasyTouch+Drag2FingersHandler</string>
+      <string>HedgehogTeam.EasyTouch.EasyTouch+DragEnd2FingersHandler</string>
+      <string>HedgehogTeam.EasyTouch.EasyTouch+SwipeStart2FingersHandler</string>
+      <string>HedgehogTeam.EasyTouch.EasyTouch+Swipe2FingersHandler</string>
+      <string>HedgehogTeam.EasyTouch.EasyTouch+SwipeEnd2FingersHandler</string>
+      <string>HedgehogTeam.EasyTouch.EasyTouch+EasyTouchIsReadyHandler</string>
+      <string>HedgehogTeam.EasyTouch.EasyTouch+OverUIElementHandler</string>
+      <string>HedgehogTeam.EasyTouch.EasyTouch+UIElementTouchUpHandler</string>
+      <string>HedgehogTeam.EasyTouch.EasyTouch+GesturePriority</string>
+      <string>HedgehogTeam.EasyTouch.EasyTouch+DoubleTapDetection</string>
+      <string>HedgehogTeam.EasyTouch.EasyTouch+GestureType</string>
+      <string>HedgehogTeam.EasyTouch.EasyTouch+SwipeDirection</string>
+      <string>HedgehogTeam.EasyTouch.EasyTouch+TwoFingerPickMethod</string>
+      <string>HedgehogTeam.EasyTouch.EasyTouch+EvtType</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>404eb304606225a41845f4e87b8531cc</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Plugins/Engine/EasyTouchInput.cs</fileName>
+    <timeStamp>2017-08-16T15:17:49+08:00</timeStamp>
+    <typeFullName>
+      <string>HedgehogTeam.EasyTouch.EasyTouchInput</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>524815593fe79cf46b3c7e1ae30e948e</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Plugins/Engine/ECamera.cs</fileName>
+    <timeStamp>2017-08-16T15:18:01+08:00</timeStamp>
+    <typeFullName>
+      <string>HedgehogTeam.EasyTouch.ECamera</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>91501b99eb179804686edef05f75f7e3</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Plugins/Engine/Finger.cs</fileName>
+    <timeStamp>2017-08-16T15:18:46+08:00</timeStamp>
+    <typeFullName>
+      <string>HedgehogTeam.EasyTouch.Finger</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>42d70a45bcf6a3b4cb6fbc54cefed1e4</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Plugins/Engine/Gesture.cs</fileName>
+    <timeStamp>2017-08-16T15:17:51+08:00</timeStamp>
+    <typeFullName>
+      <string>HedgehogTeam.EasyTouch.Gesture</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>b166c9002d8a98e4d9923f6b75a54197</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouch/Plugins/Engine/TwoFingerGesture.cs</fileName>
+    <timeStamp>2017-08-16T15:19:13+08:00</timeStamp>
+    <typeFullName>
+      <string>HedgehogTeam.EasyTouch.TwoFingerGesture</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>acbe1911d599bc541a2ef42432895267</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouchControls/Component/ETCSetDirectActionTransform.cs</fileName>
+    <timeStamp>2017-08-16T15:19:08+08:00</timeStamp>
+    <typeFullName>
+      <string>ETCSetDirectActionTransform</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>bfa1c8dcd57f41b48a4714a5ac2b6bf2</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouchControls/Examples/Version 1.X/LoadLevelScript.cs</fileName>
+    <timeStamp>2017-08-16T15:19:24+08:00</timeStamp>
+    <typeFullName>
+      <string>LoadLevelScript</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>bd3fd38d33fe8b2448a545e7958200a1</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouchControls/Examples/Version 1.X/Button-Event-Input/ButtonInputUI.cs</fileName>
+    <timeStamp>2017-08-16T15:19:22+08:00</timeStamp>
+    <typeFullName>
+      <string>ButtonInputUI</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>7d1e820e2fde81a47a5a206069333583</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouchControls/Examples/Version 1.X/Button-Event-Input/ButtonUIEvent.cs</fileName>
+    <timeStamp>2017-08-16T15:18:30+08:00</timeStamp>
+    <typeFullName>
+      <string>ButtonUIEvent</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>25654e83a9afffc45b9c3d9a4a945b56</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouchControls/Examples/Version 1.X/ControlEventInput/ControlUIEvent.cs</fileName>
+    <timeStamp>2017-08-16T15:17:34+08:00</timeStamp>
+    <typeFullName>
+      <string>ControlUIEvent</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>d233f3bf7cda10442bee49710a428e0f</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouchControls/Examples/Version 1.X/ControlEventInput/ControlUIInput.cs</fileName>
+    <timeStamp>2017-08-16T15:19:41+08:00</timeStamp>
+    <typeFullName>
+      <string>ControlUIInput</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>fcb6beb47fc88514481b6edaab31c5fc</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouchControls/Examples/Version 1.X/DPadClassicalTime/DPadParameterUI.cs</fileName>
+    <timeStamp>2017-08-16T15:20:11+08:00</timeStamp>
+    <typeFullName>
+      <string>DPadParameterUI</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>58871baa628154d47b264d4d0dd4192f</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouchControls/Examples/Version 1.X/FPSExample/FPSPlayerControl.cs</fileName>
+    <timeStamp>2017-08-16T15:18:05+08:00</timeStamp>
+    <typeFullName>
+      <string>FPSPlayerControl</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>f9a1f2a7dc42f9348b929dbb9a879e73</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouchControls/Examples/Version 1.X/FPSExample/ImpactEffect.cs</fileName>
+    <timeStamp>2017-08-16T15:20:09+08:00</timeStamp>
+    <typeFullName>
+      <string>ImpactEffect</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>fa79fde406c9ffe4799b0929f7badad3</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouchControls/Examples/Version 1.X/JoystickParameter/AxisXUi.cs</fileName>
+    <timeStamp>2017-08-16T15:20:09+08:00</timeStamp>
+    <typeFullName>
+      <string>AxisXUi</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>af6756f62458dd74d943ef1d5ff35450</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouchControls/Examples/Version 1.X/TouchPad-Event-Input/TouchPadUIEvent.cs</fileName>
+    <timeStamp>2017-08-16T15:19:10+08:00</timeStamp>
+    <typeFullName>
+      <string>TouchPadUIEvent</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>665cc9d4bda6c7b48a7c4a6a9b1f0812</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouchControls/Examples/Version 2.X_New Features/Script/CharacterAnimation.cs</fileName>
+    <timeStamp>2017-08-16T15:18:15+08:00</timeStamp>
+    <typeFullName>
+      <string>CharacterAnimation</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>0f8434a6b91f9c745acd5f2a89161cc0</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouchControls/Examples/Version 2.X_New Features/Script/CharacterAnimationDungeon.cs</fileName>
+    <timeStamp>2017-08-16T15:17:22+08:00</timeStamp>
+    <typeFullName>
+      <string>CharacterAnimationDungeon</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>64b7289fbd8c390439506a945d647faf</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouchControls/Examples/_Medias/SliderText.cs</fileName>
+    <timeStamp>2017-08-16T15:18:13+08:00</timeStamp>
+    <typeFullName>
+      <string>SliderText</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>61f6616e83430e8429a016f507ddffc9</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouchControls/Plugins/ComponentExtensions.cs</fileName>
+    <timeStamp>2017-08-16T15:18:12+08:00</timeStamp>
+    <typeFullName>
+      <string>ComponentExtensions</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>c513711e195288b44ac497df25a51bc9</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouchControls/Plugins/ETCArea.cs</fileName>
+    <timeStamp>2017-08-16T15:19:31+08:00</timeStamp>
+    <typeFullName>
+      <string>ETCArea</string>
+      <string>ETCArea+AreaPreset</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>675b228153e2a5d42a1a6d0e7c024e4d</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouchControls/Plugins/ETCAxis.cs</fileName>
+    <timeStamp>2017-08-16T15:18:15+08:00</timeStamp>
+    <typeFullName>
+      <string>ETCAxis</string>
+      <string>ETCAxis+DirectAction</string>
+      <string>ETCAxis+AxisInfluenced</string>
+      <string>ETCAxis+AxisValueMethod</string>
+      <string>ETCAxis+AxisState</string>
+      <string>ETCAxis+ActionOn</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>400767940b4a04142904dd864a3bb2ca</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouchControls/Plugins/ETCBase.cs</fileName>
+    <timeStamp>2017-08-16T15:17:48+08:00</timeStamp>
+    <typeFullName>
+      <string>ETCBase</string>
+      <string>ETCBase+ControlType</string>
+      <string>ETCBase+RectAnchor</string>
+      <string>ETCBase+DPadAxis</string>
+      <string>ETCBase+CameraMode</string>
+      <string>ETCBase+CameraTargetMode</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>ba60450c5a1202b41869d8ee7136c85f</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouchControls/Plugins/ETCButton.cs</fileName>
+    <timeStamp>2017-08-16T15:19:19+08:00</timeStamp>
+    <typeFullName>
+      <string>ETCButton</string>
+      <string>ETCButton+OnDownHandler</string>
+      <string>ETCButton+OnPressedHandler</string>
+      <string>ETCButton+OnPressedValueandler</string>
+      <string>ETCButton+OnUPHandler</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>d631d0ec62ed0d848943d0eb92457201</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouchControls/Plugins/ETCDPad.cs</fileName>
+    <timeStamp>2017-08-16T15:19:43+08:00</timeStamp>
+    <typeFullName>
+      <string>ETCDPad</string>
+      <string>ETCDPad+OnMoveStartHandler</string>
+      <string>ETCDPad+OnMoveHandler</string>
+      <string>ETCDPad+OnMoveSpeedHandler</string>
+      <string>ETCDPad+OnMoveEndHandler</string>
+      <string>ETCDPad+OnTouchStartHandler</string>
+      <string>ETCDPad+OnTouchUPHandler</string>
+      <string>ETCDPad+OnDownUpHandler</string>
+      <string>ETCDPad+OnDownDownHandler</string>
+      <string>ETCDPad+OnDownLeftHandler</string>
+      <string>ETCDPad+OnDownRightHandler</string>
+      <string>ETCDPad+OnPressUpHandler</string>
+      <string>ETCDPad+OnPressDownHandler</string>
+      <string>ETCDPad+OnPressLeftHandler</string>
+      <string>ETCDPad+OnPressRightHandler</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>dc670a4ad12868e41967682a2dc32d6e</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouchControls/Plugins/ETCInput.cs</fileName>
+    <timeStamp>2017-08-16T15:19:49+08:00</timeStamp>
+    <typeFullName>
+      <string>ETCInput</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>c26c7a0dcd8138d4194e0a4435a4740c</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouchControls/Plugins/ETCJoystick.cs</fileName>
+    <timeStamp>2017-08-16T15:19:27+08:00</timeStamp>
+    <typeFullName>
+      <string>ETCJoystick</string>
+      <string>ETCJoystick+OnMoveStartHandler</string>
+      <string>ETCJoystick+OnMoveSpeedHandler</string>
+      <string>ETCJoystick+OnMoveHandler</string>
+      <string>ETCJoystick+OnMoveEndHandler</string>
+      <string>ETCJoystick+OnTouchStartHandler</string>
+      <string>ETCJoystick+OnTouchUpHandler</string>
+      <string>ETCJoystick+OnDownUpHandler</string>
+      <string>ETCJoystick+OnDownDownHandler</string>
+      <string>ETCJoystick+OnDownLeftHandler</string>
+      <string>ETCJoystick+OnDownRightHandler</string>
+      <string>ETCJoystick+OnPressUpHandler</string>
+      <string>ETCJoystick+OnPressDownHandler</string>
+      <string>ETCJoystick+OnPressLeftHandler</string>
+      <string>ETCJoystick+OnPressRightHandler</string>
+      <string>ETCJoystick+JoystickArea</string>
+      <string>ETCJoystick+JoystickType</string>
+      <string>ETCJoystick+RadiusBase</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>32a30ee4cdcaaca44a064b72231de6ed</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouchControls/Plugins/ETCTouchPad.cs</fileName>
+    <timeStamp>2017-08-16T15:17:40+08:00</timeStamp>
+    <typeFullName>
+      <string>ETCTouchPad</string>
+      <string>ETCTouchPad+OnMoveStartHandler</string>
+      <string>ETCTouchPad+OnMoveHandler</string>
+      <string>ETCTouchPad+OnMoveSpeedHandler</string>
+      <string>ETCTouchPad+OnMoveEndHandler</string>
+      <string>ETCTouchPad+OnTouchStartHandler</string>
+      <string>ETCTouchPad+OnTouchUPHandler</string>
+      <string>ETCTouchPad+OnDownUpHandler</string>
+      <string>ETCTouchPad+OnDownDownHandler</string>
+      <string>ETCTouchPad+OnDownLeftHandler</string>
+      <string>ETCTouchPad+OnDownRightHandler</string>
+      <string>ETCTouchPad+OnPressUpHandler</string>
+      <string>ETCTouchPad+OnPressDownHandler</string>
+      <string>ETCTouchPad+OnPressLeftHandler</string>
+      <string>ETCTouchPad+OnPressRightHandler</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>0a0f10474976d824c99a9d062ec019ea</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouchControls/Plugins/Editor/ETCAreaInspector.cs</fileName>
+    <timeStamp>2017-08-16T15:17:17+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>bc25b1314a32d914e8f5ccc1f2e1b7c4</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouchControls/Plugins/Editor/ETCAxisInspector.cs</fileName>
+    <timeStamp>2017-08-16T15:19:20+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>f5d2bb642fc59d04d8b0995b6314da9e</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouchControls/Plugins/Editor/ETCButtonInspector.cs</fileName>
+    <timeStamp>2017-08-16T15:20:08+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>df835bd3a69de644fb54c87bfb9bda94</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouchControls/Plugins/Editor/ETCDPadInspector.cs</fileName>
+    <timeStamp>2017-08-16T15:19:51+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>a31a31493fff120489cb08d25223c348</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouchControls/Plugins/Editor/ETCGuiTools.cs</fileName>
+    <timeStamp>2017-08-16T15:19:00+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>f2f2fa0cf4d0fdf42984991aca25c8d4</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouchControls/Plugins/Editor/ETCJoystickInspector.cs</fileName>
+    <timeStamp>2017-08-16T15:20:07+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>c52a4feee6da59241bca83794226ba71</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouchControls/Plugins/Editor/ETCMenu.cs</fileName>
+    <timeStamp>2017-08-16T15:19:32+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>851890ee64a88374ea5a358719ccf5f7</guid>
+    <fileName>Assets/EasyTouchBundle/EasyTouchControls/Plugins/Editor/ETCTouchPadInspector.cs</fileName>
+    <timeStamp>2017-08-16T15:18:40+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>a9190723d727fa24b84e68032e566b43</guid>
+    <fileName>Assets/Editor/GameScoreSettingsIOEditor.cs</fileName>
+    <timeStamp>2020-09-13T10:27:41.2255178+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>fede2e9197711254493150a23b142710</guid>
+    <fileName>Assets/Editor/GSPreprocessBuild.cs</fileName>
+    <timeStamp>2021-02-12T21:35:19.9186861+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>34b7c7ae07002cc4d9275b3d518f046a</guid>
+    <fileName>Assets/Editor/NewBehaviourScript.cs</fileName>
+    <timeStamp>2021-02-06T11:31:40.874643+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>7057a7a17d883014ca279b2b7981b9ce</guid>
+    <fileName>Assets/Editor/ScriptableObjectUtility.cs</fileName>
+    <timeStamp>2020-09-13T10:27:41.2265177+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>923a9959ac73fb44abc4c0879e031427</guid>
+    <fileName>Assets/FCAudioTools/Demo/LoopMusic/AnimationClipEventReceive.cs</fileName>
+    <timeStamp>2020-09-13T10:27:41.2295306+08:00</timeStamp>
+    <typeFullName>
+      <string>FutureCartographer.FCAudioTools.Demo.AnimationClipEventReceive</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>d8970accb5ed7bb4aa3296bbea411ecf</guid>
+    <fileName>Assets/FCAudioTools/Demo/LoopMusic/LoopMusicDemo.cs</fileName>
+    <timeStamp>2020-09-13T10:27:41.2305297+08:00</timeStamp>
+    <typeFullName>
+      <string>FutureCartographer.FCAudioTools.Demo.LoopMusicDemo</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>34627bc2957f0da468d104e283faa005</guid>
+    <fileName>Assets/FCAudioTools/Runtime/Preview/FCATPreviewPlay.cs</fileName>
+    <timeStamp>2020-09-13T10:27:41.3528122+08:00</timeStamp>
+    <typeFullName>
+      <string>FutureCartographer.FCAudioTools.PreviewPlay.FCATPreviewPlay</string>
+    </typeFullName>
+    <assemblly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assemblly>
+  </TypeDate>
+  <TypeDate>
+    <guid>159351ef07e2f5044ad0b17a92595d01</guid>
+    <fileName>Assets/PureAmaya/General/Plugins/AtlasAnimation.cs</fileName>
+    <timeStamp>2020-09-13T10:27:41.4026474+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>cc921b96c2b07cc4681b008cda449f18</guid>
+    <fileName>Assets/PureAmaya/General/Plugins/AtlasAnimForImage.cs</fileName>
+    <timeStamp>2020-09-13T10:27:41.3807878+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>e8275ccff3f296c48a6ceec67c9e2fbc</guid>
+    <fileName>Assets/PureAmaya/General/Plugins/ButtonToRB.cs</fileName>
+    <timeStamp>2020-09-13T10:27:41.4026474+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>c791b95f99fd56943b1aad828466a777</guid>
+    <fileName>Assets/PureAmaya/General/Plugins/CombinedSprite.cs</fileName>
+    <timeStamp>2020-09-13T10:27:41.4116576+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>a77f363545afcd24f9d62a92438365af</guid>
+    <fileName>Assets/PureAmaya/General/Plugins/EasyBGMCtrl.cs</fileName>
+    <timeStamp>2021-02-01T11:36:18.3419632+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>7032d48030202524499448f0ce8371e5</guid>
+    <fileName>Assets/PureAmaya/General/Plugins/EasyMove.cs</fileName>
+    <timeStamp>2021-02-08T12:04:24.3965356+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>5d132015b31f4364eae82a6eed92e717</guid>
+    <fileName>Assets/PureAmaya/General/Plugins/GetSpriteFormAtlas.cs</fileName>
+    <timeStamp>2020-09-13T18:26:54.4984634+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>17c9bbfeb16c56a4a808d2ffe892883f</guid>
+    <fileName>Assets/PureAmaya/General/Plugins/ImitateKeyboard.cs</fileName>
+    <timeStamp>2020-09-13T10:27:41.4366819+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>64a9a7812d6bf3344a19157ab97e925f</guid>
+    <fileName>Assets/PureAmaya/General/Plugins/ImitateKeyBoardForState.cs</fileName>
+    <timeStamp>2020-09-13T10:27:41.4366819+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>28d40ae3821cee44a8fc23e830156f84</guid>
+    <fileName>Assets/PureAmaya/General/Plugins/UpdateManager.cs</fileName>
+    <timeStamp>2021-02-05T12:24:18.2757967+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>2a2bab18d9423564eb62f6a03b2009c8</guid>
+    <fileName>Assets/Rebindable Input/Plugins/RebindableAxis.cs</fileName>
+    <timeStamp>2020-09-13T10:27:41.9010631+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>516a82fd18676c242ada027fbaa6b80e</guid>
+    <fileName>Assets/Rebindable Input/Plugins/RebindableData.cs</fileName>
+    <timeStamp>2020-09-13T10:27:41.9020742+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>cffbbe23c050b1f4b9db1fa3f2ba9938</guid>
+    <fileName>Assets/Rebindable Input/Plugins/RebindableInput.cs</fileName>
+    <timeStamp>2020-09-13T10:27:41.9066143+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>8cb75e0a0cb67804f8d4a8a7ada2ae4c</guid>
+    <fileName>Assets/Rebindable Input/Plugins/RebindableKey.cs</fileName>
+    <timeStamp>2020-09-13T10:27:41.9066143+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+  <TypeDate>
+    <guid>3e1ef26809244764194875ec20942c3c</guid>
+    <fileName>Assets/Rebindable Input/Plugins/RebindableNotFoundException.cs</fileName>
+    <timeStamp>2020-09-13T10:27:41.9130565+08:00</timeStamp>
+    <typeFullName />
+  </TypeDate>
+</ArrayOfTypeDate>
