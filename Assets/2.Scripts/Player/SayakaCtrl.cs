@@ -40,7 +40,6 @@ public class SayakaCtrl : APlayerCtrl
  //   public Animator MagicRing;
     int ZattackCount = 0;
    public  bool XordinaryDash = false;
-    bool BanXattack = false;
     /// <summary>
     /// 普通X攻击计时器，用于记录普通X准备用时与设定普通X攻击冲刺速度还有普通X冲刺完之后间隔0.3s才能再充一次
     /// </summary>
@@ -70,7 +69,6 @@ public class SayakaCtrl : APlayerCtrl
         XordinaryDash = false;
         OrdinaryXTimer = 0f;
         DownAttackMovingUpward = 0;
-        BanXattack = false;
         UpAttackMove = false;
         UpAttackCount = 0;
          MagiaDash = false;
@@ -461,7 +459,6 @@ public class SayakaCtrl : APlayerCtrl
                 BanInput = false;
                 XordinaryDash = false;
                 IsAttack[1] = false;
-                BanXattack = true;
                 break;
 
             case "Fuck":
@@ -469,7 +466,6 @@ public class SayakaCtrl : APlayerCtrl
                 VariableInitialization();
                 //僵直
                 Stiff(0.1f);
-                BanXattack = false;
                 break;
         }
               
