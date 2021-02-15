@@ -9,7 +9,7 @@ using UnityEngine.Events;
 public class Variable
 {
     /// <summary>
-    /// 分数类型
+    /// 三种分数类型
     /// </summary>
     ///
    public enum ScoreType
@@ -70,6 +70,48 @@ public class Variable
         /// </summary>
         Oktavia = 5,
 
+    }
+
+    /// <summary>
+    /// 玩家状态
+    /// </summary>
+    public enum PlayerStatus
+    {
+        Idle = 0,
+        Walk,
+        Jump,
+        Fall,
+        JumpForward,
+        //倒下
+        PlayerDie_1,
+        //换成校服
+        PlayerDie_2,
+        /// <summary>
+        /// 指最后，变黑消失的特效，此时需要切换animator
+        /// </summary>
+        DeathFadeOut,
+        GetHurt,
+        PlayerSoul,
+        UpWeak,
+        DownWeak,
+        Weak_1,
+        Weak_2,
+        Weak_3,
+        Magia_1,
+        Magia_2,
+        Magia_3,
+        Strong_1,
+        Strong_2,
+        Strong_3,
+        UpStrong_1,
+        UpStrong_2,
+        Upstrong_3,
+        DownStrong_1,
+        DownStrong_2,
+        DownStrong_3,
+        HorizontalStrong_1,
+        HorizontalStrong_2,
+        HorizontalStrong_3
     }
 
     /// <summary>

@@ -104,6 +104,9 @@ public class GameScoreSettingsIO : ScriptableObject
     /// 玩家受伤损失的vit
     /// </summary>
    // public int[] HurtVitInGame = new int[] { 0, 0, 0 };
+
+    //这三个后面有InGame的是为了多人游戏的时候同步上方信息用的，除了玩家脚本可读写，其他的都是只读
+
     /// <summary>
     /// 受伤了吗
     /// </summary>

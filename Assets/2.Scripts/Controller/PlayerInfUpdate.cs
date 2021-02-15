@@ -94,7 +94,7 @@ public void UpdateScore()
             {
                 Magia.fillAmount = 0;
                 Damaged.fillAmount = 1;
-                StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId - 1] = false;
+                //StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId - 1] = false;  无敌时间内不允许攻击，所以不会产生魔法血条
             }
             else if (StageCtrl.gameScoreSettings.MagiaKeyDown[PlayerId - 1] && Magia.fillAmount < Health.fillAmount)
             {

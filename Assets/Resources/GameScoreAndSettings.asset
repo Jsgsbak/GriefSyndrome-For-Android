@@ -20,15 +20,15 @@ MonoBehaviour:
   MaxHitsFace: 070000000700000007000000
   Time: 0
   BestTime: 0
-  BestTimeFace: 070000000700000007000000
+  BestTimeFace: 040000000700000007000000
   lap: 1
   PlayerSelectedGirlId: 4
   LocalIsStiff: 0
   Success: 0
   LastLap: 1
-  SelectedGirlInGame: 070000000700000007000000
+  SelectedGirlInGame: 040000000700000007000000
   GirlsLevel: 0100000001000000010000000100000001000000
-  GirlSoulLimit: 00000000000000000000000000000000b44d0000
+  GirlSoulLimit: 00000000000000000000000000000000df4d0000
   GirlsVit: 0000000000000000000000000000000058000000
   GirlsPow: 000000000000000000000000000000000a000000
   MagiaKeyDown: 000000
@@ -49,8 +49,8 @@ MonoBehaviour:
   AllDie: 0
   BattlingMajo: 0
   NewestMajo: 0
-  MajoSceneToTitle: 0
-  BGMVol: 0
+  MajoSceneToTitle: 1
+  BGMVol: 0.9555987
   SEVol: 1
   MaxFps: 90
   mahouShoujos:

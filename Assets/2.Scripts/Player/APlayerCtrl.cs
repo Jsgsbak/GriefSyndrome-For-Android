@@ -5,6 +5,7 @@ using PureAmaya.General;
 using MEC;
 using System;
 
+//多人游戏玩家需要同步的信息：PlayerStatus， 输入，
 [DisallowMultipleComponent]
 public abstract class APlayerCtrl : MonoBehaviour, IMove
 {
@@ -71,6 +72,10 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
     #region 私有状态机（不保存到GSS中）
     /// <summary>
+    /// 玩家状态
+    /// </summary>
+    public Variable.PlayerStatus playerStatus;
+    /// <summary>
     /// 重力射线
     /// </summary>
     readonly Ray2D[] rays = new Ray2D[3];
@@ -113,10 +118,6 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// </summary>
     float PlatformTime = 0f;
     /// <summary>
-    /// 连击攻击最小间隔
-    /// </summary>
-    [HideInInspector] public float PressAttackInteral = 1f;
-    /// <summary>
     /// 正在攻击，防止意外切换到其他攻击状态 0 z 1 x 2 Magia
     /// </summary>
     public bool[] IsAttack = new bool[3];
@@ -124,6 +125,12 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// 能否可以/已经停止攻击（中断攻击）
     /// </summary>
     [HideInInspector] public bool StopAttacking = true;
+
+    /// <summary>
+    /// 播放玩家死亡第二阶段动画
+    /// </summary>
+    public bool PlayPlayerDie2 = false;
+
     #endregion
 
     private void Awake()
@@ -233,6 +240,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         JumpAndFall();
 
         if (!BanWalk) Walk();
+        SetStatus();
         AnimationCtrl();
         #endregion
 
@@ -241,9 +249,12 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         //防止死亡状态、按下跳跃的瞬间发动攻击
         if (StageCtrl.gameScoreSettings.Jump || StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] || IsInvincible)
         {
+            Debug.Log("??");
             //修复攻击过程中跳跃仍然显示攻击动画的bug
             return;
         }
+        Debug.Log("??2");
+
 
         //前面的!IsAttack[1]是为了防止做这个攻击的时候意外发动其他的攻击
         //这里加限制条件/修改状态要三思，主要是在抽象的方法里更改和限制
@@ -263,13 +274,60 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
 
     #region  基础控制器
+
+    /// <summary>
+    /// 设置玩家状态
+    /// </summary>
+    public virtual void SetStatus()
+    {
+        //通过对一些状态变量的判断，得出当前玩家的状态，并应用于动画
+
+       //基础的在这里写，攻击的在各自玩家脚本中重写
+        if(StageCtrl.gameScoreSettings.Horizontal == 0 && !IsAttack[0] && !IsAttack[1] &&!IsAttack[2] && IsGround && !IsJumping && !StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] && !StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId] && !StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId])
+        {
+            playerStatus = Variable.PlayerStatus.Idle;
+        }
+        else if (StageCtrl.gameScoreSettings.Horizontal != 0 && !IsAttack[0] && !IsAttack[1] && !IsAttack[2] && IsGround && !IsJumping && !StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] && !StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId]  && !StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId])
+        {
+            playerStatus = Variable.PlayerStatus.Walk;
+        }
+        else if ( !IsAttack[0] && !IsAttack[1] && !IsAttack[2] && IsJumping && !StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] && !StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId] && !StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId])
+        {
+            playerStatus = Variable.PlayerStatus.Jump;
+        }
+        else if (!IsAttack[0] && !IsAttack[1] && !IsAttack[2] && !IsGround && !IsJumping && !StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] && !StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId] && !StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId])
+        {
+            playerStatus = Variable.PlayerStatus.Fall;
+        }
+        else if (StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId]&& StageCtrl.gameScoreSettings.GirlSoulLimit[MahouShoujoId] >= 0)
+        {
+            playerStatus = Variable.PlayerStatus.GetHurt;
+        }
+        else if (StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId])
+        {
+            playerStatus = Variable.PlayerStatus.PlayerSoul;
+        }
+        else if (StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] && !StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId] && !PlayPlayerDie2 )
+        {
+            playerStatus = Variable.PlayerStatus.PlayerDie_1;
+        }
+        else if (PlayPlayerDie2)
+        {
+            playerStatus = Variable.PlayerStatus.PlayerDie_2;
+        }
+
+
+    }
+
+
+
     /// <summary>
     /// 动画控制器（攻击用动画与攻击逻辑放在了一起）
     /// </summary>
     public void AnimationCtrl()
     {
         //未停止攻击/受伤动画正在播放的时候不能切换到其他任何形态
-        if (!StopAttacking && animator.GetBool("GetHurt"))
+        if (!StopAttacking && playerStatus == Variable.PlayerStatus.GetHurt)
         {
             return;
         }
@@ -281,8 +339,25 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             else if (StageCtrl.gameScoreSettings.Horizontal == 1) { tr.rotation = Quaternion.Euler(0f, 0f, 0f); DoLookRight = true; }//spriteRenderer.flipX = StageCtrl.gameScoreSettings.Horizontal == -1;//
         }
 
+
+        animator.Play(playerStatus.ToString());
+        /*
         //现在根据状态机启用对应动画
-        animator.SetBool("Walk", StageCtrl.gameScoreSettings.Horizontal != 0);
+        if(StageCtrl.gameScoreSettings.Horizontal != 0)
+        {
+            animator.Play("Walk");
+            playerStatus = Variable.PlayerStatus.Walk;
+        }
+
+        if (IsJumping && StageCtrl.gameScoreSettings.Horizontal == 0)
+        {
+            animator.Play("Jump");
+            playerStatus = Variable.PlayerStatus.Jump;
+        }
+        else if(IsJumping && StageCtrl.gameScoreSettings.Horizontal != 0)
+        {
+
+        }
         animator.SetBool("Jump", IsJumping);
         animator.SetBool("Fall", !IsGround && !BanGravity && !IsJumping);
 
@@ -296,7 +371,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
                 animator.SetBool("Fall", false);
                 break;
             }
-        }
+        }*/
     }
 
     /// <summary>
@@ -373,7 +448,6 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             return;
         }
         //既然要取消，那肯定是跳起来了
-        animator.SetBool("Jump", false);
         BanGravity = false;
         BanGravityRay = false;//有向上移动的攻击时，才能禁用这个
         IsGround = false;
@@ -900,9 +974,9 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             return;
         }
 
+
         //清除状态
         VariableInitialization();
-
         BanInput = true;
 
         //如果承受不住这个攻击，宝石直接碎了
@@ -913,9 +987,9 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             return;
         }
 
+        //扣个血完事
         if (StageCtrl.gameScoreSettings.GirlsVit[MahouShoujoId] > damage)
         {
-            animator.SetBool("GetHurt", true);
             //扣除hp（vit)
             StageCtrl.gameScoreSettings.GirlsVit[MahouShoujoId] = StageCtrl.gameScoreSettings.GirlsVit[MahouShoujoId] - damage;
             //扣除soullimit
@@ -929,6 +1003,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             //无敌状态
             StartCoroutine("Invincible");
         }
+        //挂了，但不至于宝石碎了
         else
         {
 
@@ -948,20 +1023,14 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         //扣除soullimit
         StageCtrl.gameScoreSettings.GirlSoulLimit[MahouShoujoId] = StageCtrl.gameScoreSettings.GirlSoulLimit[MahouShoujoId] - damage * StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].Rebirth;
 
-        //死亡动画
-        //动画强制停止再切换成受伤动画
-        animator.StopPlayback();
-        animator.Play("PlayerDie_1");
-
         StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] = true;
-        animator.SetBool("IsBodyDie", true);//为了修bug而才用的这个e....
 
         BanInput = true;
 
     }
 
     /// <summary>
-    /// 判断：复活或者宝石黑掉了(Die动画最后一帧调用）
+    /// 判断：复活或者宝石黑掉了(PlayerDie_1动画最后一帧调用）
     /// </summary>
     public void RebirthOrGemBroken()
     {
@@ -969,19 +1038,15 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         //宝石黑掉了
         if (StageCtrl.gameScoreSettings.GirlSoulLimit[MahouShoujoId] <= 0)
         {
-            animator.SetInteger("Die", 2);
-            //禁用脚本，防止bug
-            enabled = false;
+            PlayPlayerDie2 = true;
         }
         //复活
         else
         {
             StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId] = true;
 
-            animator.SetBool("IsBodyDie", false);//为了修bug而才用的这个e....为了消除歧义，通常的IsBodyDie是指死亡之后变成球之前，这里单纯的是为了限制动画
 
             //光球效果
-            animator.SetInteger("Die", 3);
             MoveSpeedRatio = 1.2f;
 
             BanInput = false;
@@ -998,7 +1063,6 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     {
         BanInput = false;
         StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId] = false;
-        animator.SetBool("GetHurt", false);
     }
 
     /// <summary>
@@ -1038,6 +1102,10 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         BanGravity = IsGround;
         BanGravityRay = false;
         BanTurnAround = false;
+        StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId] = false;
+        StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] = false;
+        StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId] = false;
+        StageCtrl.gameScoreSettings.LocalIsStiff = false;
     }
 
     /// <summary>
@@ -1047,7 +1115,6 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     {
         MoveSpeedRatio = 1f;
         // BanGravity = false;
-        animator.SetInteger("Die", 0);
         StartCoroutine("Invincible");
         StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId] = false;
         StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] = false;
