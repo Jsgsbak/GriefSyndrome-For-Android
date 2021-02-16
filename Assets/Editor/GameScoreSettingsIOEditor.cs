@@ -1,4 +1,4 @@
-﻿/*
+﻿
 using UnityEditor;
 
 public class GameScoreSettingsIOEditor
@@ -8,4 +8,4 @@ public class GameScoreSettingsIOEditor
     {
         ScriptableObjectUtility.CreateAsset<GameScoreSettingsIO>();
     }
-}*/
+}
