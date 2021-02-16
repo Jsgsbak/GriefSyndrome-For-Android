@@ -22,15 +22,15 @@ MonoBehaviour:
   BestTime: 0
   BestTimeFace: 070000000700000007000000
   lap: 1
-  PlayerSelectedGirlId: 0
+  PlayerSelectedGirlId: 4
   LocalIsStiff: 0
   Success: 0
   LastLap: 1
   SelectedGirlInGame: 040000000700000007000000
   GirlsLevel: 0100000001000000010000000100000001000000
-  GirlSoulLimit: 0000000000000000000000000000000000000000
-  GirlsVit: 0000000000000000000000000000000000000000
-  GirlsPow: 0000000000000000000000000000000000000000
+  GirlSoulLimit: 00000000000000000000000000000000df4d0000
+  GirlsVit: 0000000000000000000000000000000058000000
+  GirlsPow: 000000000000000000000000000000000a000000
   MagiaKeyDown: 000000
   GetHurtInGame: 000000
   IsBodyDieInGame: 000000
@@ -42,9 +42,10 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: 21300000, guid: d0f9f9a838d432440b26f32c83854794, type: 3}
   - {fileID: 0}
-  - {fileID: 0}
-  GemBrokenFadeAnimator: {fileID: 0}
+  GemBrokenFadeAnimator: {fileID: 9100000, guid: 2025469cc6b8be543a1b93993e746b75,
+    type: 2}
   AllDie: 0
   BattlingMajo: 0
   NewestMajo: 0
@@ -52,8 +53,182 @@ MonoBehaviour:
   BGMVol: 0.6
   SEVol: 0.7
   MaxFps: 60
-  mahouShoujos: []
-  KeyPosScale: []
+  mahouShoujos:
+  - name: Homura
+    BasicPow: 10
+    PowGrowth: 1
+    MaxPow: 108
+    MoveSpeed: 45
+    BasicSoulLimit: 17460
+    SoulGrowth: 102
+    MaxSoul: 27456
+    BasicVit: 88
+    VitGrowth: 04000000030000000200000001000000
+    VitGrowthLevelLimit: 01000000060000000d00000013000000
+    MaxVit: 221
+    Recovery: 18
+    Rebirth: 30
+    MaigaVit: 50
+    LongMagia: 0
+  - name: Kyoko
+    BasicPow: 10
+    PowGrowth: 1
+    MaxPow: 108
+    MoveSpeed: 45
+    BasicSoulLimit: 23742
+    SoulGrowth: 87
+    MaxSoul: 32268
+    BasicVit: 95
+    VitGrowth: 0500000004000000030000000200000001000000
+    VitGrowthLevelLimit: 01000000060000000d000000130000001a000000
+    MaxVit: 253
+    Recovery: 18
+    Rebirth: 30
+    MaigaVit: 35
+    LongMagia: 0
+  - name: Madoka
+    BasicPow: 10
+    PowGrowth: 1
+    MaxPow: 108
+    MoveSpeed: 45
+    BasicSoulLimit: 28875
+    SoulGrowth: 128
+    MaxSoul: 41419
+    BasicVit: 92
+    VitGrowth: 04000000030000000200000001000000
+    VitGrowthLevelLimit: 01000000060000000d00000013000000
+    MaxVit: 225
+    Recovery: 18
+    Rebirth: 30
+    MaigaVit: 45
+    LongMagia: 1
+  - name: Mami
+    BasicPow: 10
+    PowGrowth: 1
+    MaxPow: 108
+    MoveSpeed: 45
+    BasicSoulLimit: 22278
+    SoulGrowth: 84
+    MaxSoul: 30510
+    BasicVit: 110
+    VitGrowth: 0500000004000000030000000200000001000000
+    VitGrowthLevelLimit: 01000000060000000d000000130000001a000000
+    MaxVit: 268
+    Recovery: 18
+    Rebirth: 30
+    MaigaVit: 100
+    LongMagia: 1
+  - name: Sayaka
+    BasicPow: 10
+    PowGrowth: 1
+    MaxPow: 108
+    MoveSpeed: 10
+    BasicSoulLimit: 19935
+    SoulGrowth: 81
+    MaxSoul: 27873
+    BasicVit: 88
+    VitGrowth: 060000000500000004000000030000000200000001000000
+    VitGrowthLevelLimit: 01000000060000000d000000130000001a00000021000000
+    MaxVit: 328
+    Recovery: 6
+    Rebirth: 9
+    MaigaVit: 20
+    LongMagia: 0
+  - name: Homura_m
+    BasicPow: 10
+    PowGrowth: 1
+    MaxPow: 108
+    MoveSpeed: 45
+    BasicSoulLimit: 17460
+    SoulGrowth: 102
+    MaxSoul: 27456
+    BasicVit: 88
+    VitGrowth: 04000000030000000200000001000000
+    VitGrowthLevelLimit: 01000000060000000d00000013000000
+    MaxVit: 221
+    Recovery: 18
+    Rebirth: 30
+    MaigaVit: 50
+    LongMagia: 0
+  KeyPosScale:
+  - name: joy stick
+    EditPosition:
+      serializedVersion: 2
+      x: -320
+      y: -135
+      width: 130
+      height: 130
+    RawPosition:
+      serializedVersion: 2
+      x: -320
+      y: -135
+      width: 130
+      height: 130
+  - name: Pause
+    EditPosition:
+      serializedVersion: 2
+      x: 353
+      y: 109
+      width: 55
+      height: 55
+    RawPosition:
+      serializedVersion: 2
+      x: 353
+      y: 109
+      width: 55
+      height: 55
+  - name: Jump
+    EditPosition:
+      serializedVersion: 2
+      x: 185
+      y: -178.76
+      width: 55
+      height: 55
+    RawPosition:
+      serializedVersion: 2
+      x: 185
+      y: -178.76
+      width: 55
+      height: 55
+  - name: Weak
+    EditPosition:
+      serializedVersion: 2
+      x: 367
+      y: -163
+      width: 55
+      height: 55
+    RawPosition:
+      serializedVersion: 2
+      x: 367
+      y: -163
+      width: 55
+      height: 55
+  - name: Strong
+    EditPosition:
+      serializedVersion: 2
+      x: 367
+      y: -76
+      width: 55
+      height: 55
+    RawPosition:
+      serializedVersion: 2
+      x: 367
+      y: -76
+      width: 55
+      height: 55
+  - name: Magia
+    EditPosition:
+      serializedVersion: 2
+      x: 272
+      y: -115
+      width: 75
+      height: 75
+    RawPosition:
+      serializedVersion: 2
+      x: 272
+      y: -115
+      width: 60
+      height: 60
   UseScreenInput: 2
   joystick: {x: 0, y: 0}
   Horizontal: 0

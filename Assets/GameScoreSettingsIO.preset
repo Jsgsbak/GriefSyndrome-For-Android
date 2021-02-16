@@ -1,0 +1,1304 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!181963792 &2655988077585873504
+Preset:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: GameScoreSettingsIO
+  m_TargetType:
+    m_NativeTypeID: 114
+    m_ManagedTypePPtr: {fileID: 11500000, guid: 313b2d6938c7ddd4890779c79cd6dffe,
+      type: 3}
+    m_ManagedTypeFallback: 
+  m_Properties:
+  - target: {fileID: 0}
+    propertyPath: m_Enabled
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_EditorHideFlags
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_EditorClassIdentifier
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: Score.Array.size
+    value: 3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: Score.Array.data[0]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: Score.Array.data[1]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: Score.Array.data[2]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: HiScore
+    value: 10000
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: HiScoreFace.Array.size
+    value: 3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: HiScoreFace.Array.data[0]
+    value: 7
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: HiScoreFace.Array.data[1]
+    value: 7
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: HiScoreFace.Array.data[2]
+    value: 7
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: Hits
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: MaxHits
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: MaxHitsFace.Array.size
+    value: 3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: MaxHitsFace.Array.data[0]
+    value: 7
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: MaxHitsFace.Array.data[1]
+    value: 7
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: MaxHitsFace.Array.data[2]
+    value: 7
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: Time
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BestTime
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BestTimeFace.Array.size
+    value: 3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BestTimeFace.Array.data[0]
+    value: 4
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BestTimeFace.Array.data[1]
+    value: 7
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BestTimeFace.Array.data[2]
+    value: 7
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: lap
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: PlayerSelectedGirlId
+    value: 4
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: LocalIsStiff
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: Success
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: LastLap
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SelectedGirlInGame.Array.size
+    value: 3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SelectedGirlInGame.Array.data[0]
+    value: 4
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SelectedGirlInGame.Array.data[1]
+    value: 7
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SelectedGirlInGame.Array.data[2]
+    value: 7
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: GirlsLevel.Array.size
+    value: 5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: GirlsLevel.Array.data[0]
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: GirlsLevel.Array.data[1]
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: GirlsLevel.Array.data[2]
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: GirlsLevel.Array.data[3]
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: GirlsLevel.Array.data[4]
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: GirlSoulLimit.Array.size
+    value: 5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: GirlSoulLimit.Array.data[0]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: GirlSoulLimit.Array.data[1]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: GirlSoulLimit.Array.data[2]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: GirlSoulLimit.Array.data[3]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: GirlSoulLimit.Array.data[4]
+    value: 19935
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: GirlsVit.Array.size
+    value: 5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: GirlsVit.Array.data[0]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: GirlsVit.Array.data[1]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: GirlsVit.Array.data[2]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: GirlsVit.Array.data[3]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: GirlsVit.Array.data[4]
+    value: 88
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: GirlsPow.Array.size
+    value: 5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: GirlsPow.Array.data[0]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: GirlsPow.Array.data[1]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: GirlsPow.Array.data[2]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: GirlsPow.Array.data[3]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: GirlsPow.Array.data[4]
+    value: 10
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: MagiaKeyDown.Array.size
+    value: 3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: MagiaKeyDown.Array.data[0]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: MagiaKeyDown.Array.data[1]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: MagiaKeyDown.Array.data[2]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: GetHurtInGame.Array.size
+    value: 3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: GetHurtInGame.Array.data[0]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: GetHurtInGame.Array.data[1]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: GetHurtInGame.Array.data[2]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: IsBodyDieInGame.Array.size
+    value: 3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: IsBodyDieInGame.Array.data[0]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: IsBodyDieInGame.Array.data[1]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: IsBodyDieInGame.Array.data[2]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: IsSoulBallInGame.Array.size
+    value: 3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: IsSoulBallInGame.Array.data[0]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: IsSoulBallInGame.Array.data[1]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: IsSoulBallInGame.Array.data[2]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: DoesMajoOrShoujoDie
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: MagicalGirlsDie.Array.size
+    value: 5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: MagicalGirlsDie.Array.data[0]
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: MagicalGirlsDie.Array.data[1]
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: MagicalGirlsDie.Array.data[2]
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: MagicalGirlsDie.Array.data[3]
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: MagicalGirlsDie.Array.data[4]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: PlayerDieImage.Array.size
+    value: 6
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: PlayerDieImage.Array.data[0]
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: PlayerDieImage.Array.data[1]
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: PlayerDieImage.Array.data[2]
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: PlayerDieImage.Array.data[3]
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: PlayerDieImage.Array.data[4]
+    value: 
+    objectReference: {fileID: 21300000, guid: d0f9f9a838d432440b26f32c83854794, type: 3}
+  - target: {fileID: 0}
+    propertyPath: PlayerDieImage.Array.data[5]
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: GemBrokenFadeAnimator
+    value: 
+    objectReference: {fileID: 9100000, guid: 2025469cc6b8be543a1b93993e746b75, type: 2}
+  - target: {fileID: 0}
+    propertyPath: AllDie
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BattlingMajo
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: NewestMajo
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: MajoSceneToTitle
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BGMVol
+    value: 0.9555987
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SEVol
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: MaxFps
+    value: 90
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.size
+    value: 6
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[0].name
+    value: Homura
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[0].BasicPow
+    value: 10
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[0].PowGrowth
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[0].MaxPow
+    value: 108
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[0].MoveSpeed
+    value: 45
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[0].BasicSoulLimit
+    value: 17460
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[0].SoulGrowth
+    value: 102
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[0].MaxSoul
+    value: 27456
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[0].BasicVit
+    value: 88
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[0].VitGrowth.Array.size
+    value: 4
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[0].VitGrowth.Array.data[0]
+    value: 4
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[0].VitGrowth.Array.data[1]
+    value: 3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[0].VitGrowth.Array.data[2]
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[0].VitGrowth.Array.data[3]
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[0].VitGrowthLevelLimit.Array.size
+    value: 4
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[0].VitGrowthLevelLimit.Array.data[0]
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[0].VitGrowthLevelLimit.Array.data[1]
+    value: 6
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[0].VitGrowthLevelLimit.Array.data[2]
+    value: 13
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[0].VitGrowthLevelLimit.Array.data[3]
+    value: 19
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[0].MaxVit
+    value: 221
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[0].Recovery
+    value: 18
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[0].Rebirth
+    value: 30
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[0].MaigaVit
+    value: 50
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[0].LongMagia
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[1].name
+    value: Kyoko
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[1].BasicPow
+    value: 10
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[1].PowGrowth
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[1].MaxPow
+    value: 108
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[1].MoveSpeed
+    value: 45
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[1].BasicSoulLimit
+    value: 23742
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[1].SoulGrowth
+    value: 87
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[1].MaxSoul
+    value: 32268
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[1].BasicVit
+    value: 95
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[1].VitGrowth.Array.size
+    value: 5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[1].VitGrowth.Array.data[0]
+    value: 5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[1].VitGrowth.Array.data[1]
+    value: 4
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[1].VitGrowth.Array.data[2]
+    value: 3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[1].VitGrowth.Array.data[3]
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[1].VitGrowth.Array.data[4]
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[1].VitGrowthLevelLimit.Array.size
+    value: 5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[1].VitGrowthLevelLimit.Array.data[0]
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[1].VitGrowthLevelLimit.Array.data[1]
+    value: 6
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[1].VitGrowthLevelLimit.Array.data[2]
+    value: 13
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[1].VitGrowthLevelLimit.Array.data[3]
+    value: 19
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[1].VitGrowthLevelLimit.Array.data[4]
+    value: 26
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[1].MaxVit
+    value: 253
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[1].Recovery
+    value: 18
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[1].Rebirth
+    value: 30
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[1].MaigaVit
+    value: 35
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[1].LongMagia
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[2].name
+    value: Madoka
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[2].BasicPow
+    value: 10
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[2].PowGrowth
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[2].MaxPow
+    value: 108
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[2].MoveSpeed
+    value: 45
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[2].BasicSoulLimit
+    value: 28875
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[2].SoulGrowth
+    value: 128
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[2].MaxSoul
+    value: 41419
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[2].BasicVit
+    value: 92
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[2].VitGrowth.Array.size
+    value: 4
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[2].VitGrowth.Array.data[0]
+    value: 4
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[2].VitGrowth.Array.data[1]
+    value: 3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[2].VitGrowth.Array.data[2]
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[2].VitGrowth.Array.data[3]
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[2].VitGrowthLevelLimit.Array.size
+    value: 4
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[2].VitGrowthLevelLimit.Array.data[0]
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[2].VitGrowthLevelLimit.Array.data[1]
+    value: 6
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[2].VitGrowthLevelLimit.Array.data[2]
+    value: 13
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[2].VitGrowthLevelLimit.Array.data[3]
+    value: 19
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[2].MaxVit
+    value: 225
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[2].Recovery
+    value: 18
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[2].Rebirth
+    value: 30
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[2].MaigaVit
+    value: 45
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[2].LongMagia
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[3].name
+    value: Mami
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[3].BasicPow
+    value: 10
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[3].PowGrowth
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[3].MaxPow
+    value: 108
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[3].MoveSpeed
+    value: 45
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[3].BasicSoulLimit
+    value: 22278
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[3].SoulGrowth
+    value: 84
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[3].MaxSoul
+    value: 30510
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[3].BasicVit
+    value: 110
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[3].VitGrowth.Array.size
+    value: 5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[3].VitGrowth.Array.data[0]
+    value: 5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[3].VitGrowth.Array.data[1]
+    value: 4
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[3].VitGrowth.Array.data[2]
+    value: 3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[3].VitGrowth.Array.data[3]
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[3].VitGrowth.Array.data[4]
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[3].VitGrowthLevelLimit.Array.size
+    value: 5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[3].VitGrowthLevelLimit.Array.data[0]
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[3].VitGrowthLevelLimit.Array.data[1]
+    value: 6
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[3].VitGrowthLevelLimit.Array.data[2]
+    value: 13
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[3].VitGrowthLevelLimit.Array.data[3]
+    value: 19
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[3].VitGrowthLevelLimit.Array.data[4]
+    value: 26
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[3].MaxVit
+    value: 268
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[3].Recovery
+    value: 18
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[3].Rebirth
+    value: 30
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[3].MaigaVit
+    value: 100
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[3].LongMagia
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[4].name
+    value: Sayaka
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[4].BasicPow
+    value: 10
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[4].PowGrowth
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[4].MaxPow
+    value: 108
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[4].MoveSpeed
+    value: 10
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[4].BasicSoulLimit
+    value: 19935
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[4].SoulGrowth
+    value: 81
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[4].MaxSoul
+    value: 27873
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[4].BasicVit
+    value: 88
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[4].VitGrowth.Array.size
+    value: 6
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[4].VitGrowth.Array.data[0]
+    value: 6
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[4].VitGrowth.Array.data[1]
+    value: 5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[4].VitGrowth.Array.data[2]
+    value: 4
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[4].VitGrowth.Array.data[3]
+    value: 3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[4].VitGrowth.Array.data[4]
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[4].VitGrowth.Array.data[5]
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[4].VitGrowthLevelLimit.Array.size
+    value: 6
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[4].VitGrowthLevelLimit.Array.data[0]
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[4].VitGrowthLevelLimit.Array.data[1]
+    value: 6
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[4].VitGrowthLevelLimit.Array.data[2]
+    value: 13
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[4].VitGrowthLevelLimit.Array.data[3]
+    value: 19
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[4].VitGrowthLevelLimit.Array.data[4]
+    value: 26
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[4].VitGrowthLevelLimit.Array.data[5]
+    value: 33
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[4].MaxVit
+    value: 328
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[4].Recovery
+    value: 6
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[4].Rebirth
+    value: 9
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[4].MaigaVit
+    value: 20
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[4].LongMagia
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[5].name
+    value: Homura_m
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[5].BasicPow
+    value: 10
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[5].PowGrowth
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[5].MaxPow
+    value: 108
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[5].MoveSpeed
+    value: 45
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[5].BasicSoulLimit
+    value: 17460
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[5].SoulGrowth
+    value: 102
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[5].MaxSoul
+    value: 27456
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[5].BasicVit
+    value: 88
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[5].VitGrowth.Array.size
+    value: 4
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[5].VitGrowth.Array.data[0]
+    value: 4
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[5].VitGrowth.Array.data[1]
+    value: 3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[5].VitGrowth.Array.data[2]
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[5].VitGrowth.Array.data[3]
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[5].VitGrowthLevelLimit.Array.size
+    value: 4
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[5].VitGrowthLevelLimit.Array.data[0]
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[5].VitGrowthLevelLimit.Array.data[1]
+    value: 6
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[5].VitGrowthLevelLimit.Array.data[2]
+    value: 13
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[5].VitGrowthLevelLimit.Array.data[3]
+    value: 19
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[5].MaxVit
+    value: 221
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[5].Recovery
+    value: 18
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[5].Rebirth
+    value: 30
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[5].MaigaVit
+    value: 50
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mahouShoujos.Array.data[5].LongMagia
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.size
+    value: 6
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[0].name
+    value: joy stick
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[0].EditPosition.x
+    value: -320
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[0].EditPosition.y
+    value: -135
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[0].EditPosition.width
+    value: 130
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[0].EditPosition.height
+    value: 130
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[0].RawPosition.x
+    value: -320
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[0].RawPosition.y
+    value: -135
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[0].RawPosition.width
+    value: 130
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[0].RawPosition.height
+    value: 130
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[1].name
+    value: Pause
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[1].EditPosition.x
+    value: 353
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[1].EditPosition.y
+    value: 109
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[1].EditPosition.width
+    value: 55
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[1].EditPosition.height
+    value: 55
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[1].RawPosition.x
+    value: 353
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[1].RawPosition.y
+    value: 109
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[1].RawPosition.width
+    value: 55
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[1].RawPosition.height
+    value: 55
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[2].name
+    value: Jump
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[2].EditPosition.x
+    value: 185
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[2].EditPosition.y
+    value: -178.76
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[2].EditPosition.width
+    value: 55
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[2].EditPosition.height
+    value: 55
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[2].RawPosition.x
+    value: 185
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[2].RawPosition.y
+    value: -178.76
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[2].RawPosition.width
+    value: 55
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[2].RawPosition.height
+    value: 55
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[3].name
+    value: Weak
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[3].EditPosition.x
+    value: 367
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[3].EditPosition.y
+    value: -163
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[3].EditPosition.width
+    value: 55
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[3].EditPosition.height
+    value: 55
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[3].RawPosition.x
+    value: 367
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[3].RawPosition.y
+    value: -163
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[3].RawPosition.width
+    value: 55
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[3].RawPosition.height
+    value: 55
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[4].name
+    value: Strong
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[4].EditPosition.x
+    value: 367
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[4].EditPosition.y
+    value: -76
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[4].EditPosition.width
+    value: 55
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[4].EditPosition.height
+    value: 55
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[4].RawPosition.x
+    value: 367
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[4].RawPosition.y
+    value: -76
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[4].RawPosition.width
+    value: 55
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[4].RawPosition.height
+    value: 55
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[5].name
+    value: Magia
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[5].EditPosition.x
+    value: 272
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[5].EditPosition.y
+    value: -115
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[5].EditPosition.width
+    value: 75
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[5].EditPosition.height
+    value: 75
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[5].RawPosition.x
+    value: 272
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[5].RawPosition.y
+    value: -115
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[5].RawPosition.width
+    value: 60
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: KeyPosScale.Array.data[5].RawPosition.height
+    value: 60
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: UseScreenInput
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: joystick.x
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: joystick.y
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: Horizontal
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: Down
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: Up
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: Jump
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: Zattack
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: ZattackPressed
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: Xattack
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: XattackPressed
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: Magia
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: MagiaPressed
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: Pause
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: CleanSoul
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: CleanVit
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: HurtMyself
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: Succeed
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: LevelUp
+    value: 0
+    objectReference: {fileID: 0}
+  m_ExcludedProperties: []
