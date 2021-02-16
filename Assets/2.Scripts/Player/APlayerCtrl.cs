@@ -249,11 +249,9 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         //防止死亡状态、按下跳跃的瞬间发动攻击
         if (StageCtrl.gameScoreSettings.Jump || StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] || IsInvincible)
         {
-            Debug.Log("??");
             //修复攻击过程中跳跃仍然显示攻击动画的bug
             return;
         }
-        Debug.Log("??2");
 
 
         //前面的!IsAttack[1]是为了防止做这个攻击的时候意外发动其他的攻击
@@ -349,37 +347,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
 
         animator.Play(playerStatus.ToString());
-        /*
-        //现在根据状态机启用对应动画
-        if(StageCtrl.gameScoreSettings.Horizontal != 0)
-        {
-            animator.Play("Walk");
-            playerStatus = Variable.PlayerStatus.Walk;
-        }
-
-        if (IsJumping && StageCtrl.gameScoreSettings.Horizontal == 0)
-        {
-            animator.Play("Jump");
-            playerStatus = Variable.PlayerStatus.Jump;
-        }
-        else if(IsJumping && StageCtrl.gameScoreSettings.Horizontal != 0)
-        {
-
-        }
-        animator.SetBool("Jump", IsJumping);
-        animator.SetBool("Fall", !IsGround && !BanGravity && !IsJumping);
-
-        //如果有攻击状态，直接禁用这三个基本动画
-        foreach (var item in IsAttack)
-        {
-            if (item)
-            {
-                animator.SetBool("Walk", false);
-                animator.SetBool("Jump", false);
-                animator.SetBool("Fall", false);
-                break;
-            }
-        }*/
+       
     }
 
     /// <summary>

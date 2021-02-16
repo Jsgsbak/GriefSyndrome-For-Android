@@ -326,11 +326,12 @@ public class SayakaCtrl : APlayerCtrl
     }
 
     public override void OrdinaryZ()
-    {
+    { 
         if (StageCtrl.gameScoreSettings.ZattackPressed)
         {
             if (playerStatus != Variable.PlayerStatus.Weak_1 && playerStatus != Variable.PlayerStatus.Weak_2) CancelJump();//直接中断跳跃并且不恢复
-            playerStatus = Variable.PlayerStatus.Weak_1;
+            if (playerStatus != Variable.PlayerStatus.Weak_2 )  playerStatus = Variable.PlayerStatus.Weak_1;
+            IsAttack[0] = true;
             BanGravity = IsGround;//修复奇怪的bug
         }
 
@@ -494,7 +495,7 @@ public class SayakaCtrl : APlayerCtrl
 
                 //着陆
             case "Land":
-                StartCoroutine(XattackBound());
+              Timing.RunCoroutine(XattackBound());
                 break;
         }
     }
