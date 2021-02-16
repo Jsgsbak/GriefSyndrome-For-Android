@@ -159,7 +159,6 @@ public class GameScoreSettingsIO : ScriptableObject
     /// <summary>
     /// 是从魔女场景中返回标题界面吗（不包括返回到主标题按钮）
     /// </summary>
-    [HideInInspector]
     public bool MajoSceneToTitle = false;
 
     #endregion

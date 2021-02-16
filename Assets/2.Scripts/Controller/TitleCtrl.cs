@@ -118,28 +118,18 @@ public class TitleCtrl : MonoBehaviour
         if (!gameScoreSettingsIO.MajoSceneToTitle)
         {
 
-            //存档与设置获取
-          //  gameScoreSettingsIO.Load();//这里确实要堵一下主线程
-            /*初始化游戏（用于游戏刚开始的初始化。）
-             * 游戏中途返回标题：Majo场景的Return to Title按钮执行初始化
-             * 游戏结束（显示staff）：由StaffCtrl执行在返回标题的一瞬间初始化
-             */
-            gameScoreSettingsIO.TitleInitial();
 
-            //计分板调整
-            AdjustScoreAndTime(Variable.ScoreType.BestTime, gameScoreSettingsIO.BestTime.ToString(), gameScoreSettingsIO.BestTimeFace);
-            AdjustScoreAndTime(Variable.ScoreType.HiScore, gameScoreSettingsIO.HiScore.ToString(), gameScoreSettingsIO.HiScoreFace);
-            AdjustScoreAndTime(Variable.ScoreType.MaxHits, gameScoreSettingsIO.MaxHits.ToString(), gameScoreSettingsIO.MaxHitsFace);
-
+            //禁用其他Part
+            ChangePart[1].gameObject.SetActive(false);
+            ChangePart[2].gameObject.SetActive(false);
+            ChangePart[3].gameObject.SetActive(false);
 
             //淡入MainTitle part（用于刚刚打开游戏）
             ChangePart[0].gameObject.SetActive(true);
             ChangePart[0].alpha = 0;
             Timing.RunCoroutine(ChangePartMethod(-1, 0));
-            //禁用其他Part
-            ChangePart[1].gameObject.SetActive(false);
-            ChangePart[2].gameObject.SetActive(false);
-            ChangePart[3].gameObject.SetActive(false);
+
+            TitlePartShouldDo();
         }
 
         //从魔女场景返回，直接打开魔女选择part
@@ -170,7 +160,7 @@ public class TitleCtrl : MonoBehaviour
         BGMVol.onValueChanged.AddListener(BGMVolChange);
         SEVol.onValueChanged.AddListener(SEVolChange);
         //帧率输入合法性检查（仅支持非负数）
-        MaxFpsField.onValueChanged.AddListener(delegate (string s) 
+        MaxFpsField.onValueChanged.AddListener(delegate (string s)
         {
             int.TryParse(s, out int d);
 
@@ -187,11 +177,11 @@ public class TitleCtrl : MonoBehaviour
             MaxFpsField.text = d.ToString();
 
         });
-        MaxFpsField.onEndEdit.AddListener(delegate (string s) { int.TryParse(s, out gameScoreSettingsIO.MaxFps); Application.targetFrameRate = gameScoreSettingsIO.MaxFps;});
+        MaxFpsField.onEndEdit.AddListener(delegate (string s) { int.TryParse(s, out gameScoreSettingsIO.MaxFps); Application.targetFrameRate = gameScoreSettingsIO.MaxFps; });
 
         //进入魔女选择part的音效放在了ChangePartMethod中
         StartGameButton.onClick.AddListener(delegate () { EasyBGMCtrl.easyBGMCtrl.PlaySE(0); Timing.RunCoroutine(ChangePartMethod(0, 1)); });//进入魔女选择part
-        ExitButton.onClick.AddListener(delegate () { Timing.RunCoroutine( gameScoreSettingsIO.SaveSettings());/*这里保存一下*/   Application.Quit(0); });//关闭游戏
+        ExitButton.onClick.AddListener(delegate () { Timing.RunCoroutine(gameScoreSettingsIO.SaveSettings());/*这里保存一下*/   Application.Quit(0); });//关闭游戏
         RandomStaff.onClick.AddListener(delegate () { EasyBGMCtrl.easyBGMCtrl.PlaySE(0); RandomKillGirl(); });
         Settings.onClick.AddListener(delegate () { EasyBGMCtrl.easyBGMCtrl.PlaySE(0); Timing.RunCoroutine(ChangePartMethod(0, 3)); });
         SettingsReturnToTitle[0].onClick.AddListener(delegate () { EasyBGMCtrl.easyBGMCtrl.PlaySE(0); Timing.RunCoroutine(gameScoreSettingsIO.SaveSettings()); Timing.RunCoroutine(ChangePartMethod(3, 0)); });
@@ -201,9 +191,9 @@ public class TitleCtrl : MonoBehaviour
 
         //魔法少女选择part
         ExitMagicalGirls.onClick.AddListener(delegate () { EasyBGMCtrl.easyBGMCtrl.PlaySE(1); Timing.RunCoroutine(ChangePartMethod(2, -1)); });//范围到魔女选择part
-       
-        
-        
+
+
+
         #endregion
     }
 
@@ -219,7 +209,7 @@ public class TitleCtrl : MonoBehaviour
         {
 
             //麻花焰单独处理
-            if(i == 5)
+            if (i == 5)
             {
                 //如果魔法少女扑街，那么变灰
                 if (gameScoreSettingsIO.MagicalGirlsDie[0])
@@ -332,7 +322,7 @@ public class TitleCtrl : MonoBehaviour
         }
 
 
-      else  if (gameScoreSettingsIO.MagicalGirlsDie[id])
+        else if (gameScoreSettingsIO.MagicalGirlsDie[id])
         {
             //挂了，选择为QB 0.0.7暂时禁用
             //gameScoreSettingsIO.SelectedGirlInGame[0] = Variable.PlayerFaceType.QB;//玩家1，联机的话要在处理 0：玩家1
@@ -441,6 +431,9 @@ public class TitleCtrl : MonoBehaviour
 
     #endregion
 
+
+
+
     /// <summary>
     /// 调整标题界面展示的分数与最佳时间
     /// </summary>
@@ -476,13 +469,38 @@ public class TitleCtrl : MonoBehaviour
         int h = Mathf.FloorToInt(time / 3600);
         int m = Mathf.FloorToInt(time / 60 - h * 60);
         int s = Mathf.FloorToInt(time - m * 60 - h * 3600);
-       return string.Format("{0}:{1}:{2}", h.ToString("00"), m.ToString("00"), s.ToString("00"));
+        return string.Format("{0}:{1}:{2}", h.ToString("00"), m.ToString("00"), s.ToString("00"));
 
     }
 
     //<sprite="PlayerFace" index=1> 
     #region 内部方法
 
+    /// <summary>
+    /// 主标题part应该做的事情
+    /// </summary>
+    void TitlePartShouldDo()
+    {
+        //存档与设置获取
+        //  gameScoreSettingsIO.Load();//这里确实要堵一下主线程
+        /*初始化游戏（用于游戏刚开始的初始化。）
+         * 游戏中途返回标题：Majo场景的Return to Title按钮执行初始化
+         * 游戏结束（显示staff）：由StaffCtrl执行在返回标题的一瞬间初始化
+         */
+        gameScoreSettingsIO.TitleInitial();
+
+        //计分板调整
+        AdjustScoreAndTime(Variable.ScoreType.BestTime, gameScoreSettingsIO.BestTime.ToString(), gameScoreSettingsIO.BestTimeFace);
+        AdjustScoreAndTime(Variable.ScoreType.HiScore, gameScoreSettingsIO.HiScore.ToString(), gameScoreSettingsIO.HiScoreFace);
+        AdjustScoreAndTime(Variable.ScoreType.MaxHits, gameScoreSettingsIO.MaxHits.ToString(), gameScoreSettingsIO.MaxHitsFace);
+
+
+        /// 从GSS中读取主标题part中的保存数据，lap ,音量
+        BGMVol.value = gameScoreSettingsIO.BGMVol;
+        SEVol.value = gameScoreSettingsIO.SEVol;
+        LapInput.text = gameScoreSettingsIO.LastLap.ToString();
+
+    }
 
 
     /// <summary>
@@ -515,11 +533,9 @@ public class TitleCtrl : MonoBehaviour
         //主标题part
         else
         {
-            #region 从GSS中读取主标题part中的保存数据，lap ,音量
-            BGMVol.value = gameScoreSettingsIO.BGMVol;
-            SEVol.value = gameScoreSettingsIO.SEVol;
-            LapInput.text = gameScoreSettingsIO.LastLap.ToString();
-            #endregion
+
+            TitlePartShouldDo();
+
         }
 
         //一个先变黑另外一个才出来
