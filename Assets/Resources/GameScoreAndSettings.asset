@@ -18,9 +18,15 @@ MonoBehaviour:
   Hits: 0
   MaxHits: 0
   MaxHitsFace: 070000000700000007000000
+<<<<<<< Updated upstream
   Time: 2
   BestTime: 4
   BestTimeFace: 040000000700000007000000
+=======
+  Time: 0
+  BestTime: 0
+  BestTimeFace: 070000000700000007000000
+>>>>>>> Stashed changes
   lap: 1
   PlayerSelectedGirlId: 4
   LocalIsStiff: 0
@@ -48,8 +54,13 @@ MonoBehaviour:
     type: 2}
   AllDie: 0
   BattlingMajo: 0
+<<<<<<< Updated upstream
   NewestMajo: 1
   MajoSceneToTitle: 1
+=======
+  NewestMajo: 0
+  MajoSceneToTitle: 0
+>>>>>>> Stashed changes
   BGMVol: 0.6
   SEVol: 0.7
   MaxFps: 60
