@@ -101,7 +101,7 @@ public class GameScoreSettingsIO : ScriptableObject
     /// </summary>
     public bool[] MagiaKeyDown = new bool[] { false, false, false };
     /// <summary>
-    /// 玩家受伤损失的vit
+    /// 玩家受伤损失的vit（这个先打成注释，多人游戏保留备用）
     /// </summary>
    // public int[] HurtVitInGame = new int[] { 0, 0, 0 };
 
