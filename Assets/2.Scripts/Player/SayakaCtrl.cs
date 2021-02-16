@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using MEC;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 //先暂时不继承
@@ -107,18 +109,18 @@ public class SayakaCtrl : APlayerCtrl
         }
     }
 
+
+
     public override void Magia()
     {     
-
+        //带有攻击的magia，并且防止多次运行
         if (MagiaDashSpeedRatio == 1f && StageCtrl.gameScoreSettings.Xattack && IsAttack[2])
         {
             MagiaDashSpeedRatio = 1.5f;
-            //重新播放
-            animator.Play("MagiaWithAttack", 0, 0f);
-
+            playerStatus = Variable.PlayerStatus.Magia_2;
         }
 
-
+        //初始发动magia
         if(!IsAttack[2] && StageCtrl.gameScoreSettings.Magia)
         {
             IsAttack[2] = true;
@@ -128,7 +130,7 @@ public class SayakaCtrl : APlayerCtrl
             BanGravity = true;
             BanGravityRay = true;
 
-            animator.SetBool("Magia", true);
+            playerStatus = Variable.PlayerStatus.Magia_1;
 
             StageCtrl.gameScoreSettings.GirlsVit[MahouShoujoId] = StageCtrl.gameScoreSettings.GirlsVit[MahouShoujoId] - StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].MaigaVit;
 
@@ -156,7 +158,7 @@ public class SayakaCtrl : APlayerCtrl
 
     public override void HorizontalX()
     {
-        if (StageCtrl.gameScoreSettings.Horizontal != 0 && !IsAttack[1]  && StageCtrl.gameScoreSettings.Xattack && !animator.GetBool("HorizontalXattack") && !BanWalk)
+        if (StageCtrl.gameScoreSettings.Horizontal != 0 && !IsAttack[1]  && StageCtrl.gameScoreSettings.Xattack)
         {
 
             CancelJump();//直接中断跳跃并且不恢复
@@ -164,10 +166,10 @@ public class SayakaCtrl : APlayerCtrl
             BanInput = true;
             IsAttack[1] = true;
             StopAttacking = false;
-            animator.SetBool("HorizontalXattack", true);
+            playerStatus = Variable.PlayerStatus.HorizontalStrong_1;//移动
         }
 
-        if (animator.GetBool("HorizontalXattack"))
+        if (playerStatus == Variable.PlayerStatus.HorizontalStrong_1)
         {
              BanInput = true; //BUG修复
 
@@ -187,9 +189,9 @@ public class SayakaCtrl : APlayerCtrl
     public override void OrdinaryX()
     {
         //从通常状态进入到X攻击准备状态
-        if ( !animator.GetBool("OrdinaryXattackPrepare") && !animator.GetBool("OrdinaryXattack") && StageCtrl.gameScoreSettings.Horizontal == 0 && !IsAttack[1] && !StageCtrl.gameScoreSettings.Up && !StageCtrl.gameScoreSettings.Down && !StageCtrl.gameScoreSettings.Xattack && StageCtrl.gameScoreSettings.XattackPressed && !BanWalk && !XordinaryDash)
+        if (playerStatus != Variable.PlayerStatus.Strong_2 && StageCtrl.gameScoreSettings.Horizontal == 0 && !IsAttack[1] && !StageCtrl.gameScoreSettings.Up && !StageCtrl.gameScoreSettings.Down  && StageCtrl.gameScoreSettings.XattackPressed  && !XordinaryDash)
         {
-            animator.SetBool("OrdinaryXattackPrepare", true);
+            playerStatus = Variable.PlayerStatus.Strong_1;
             CancelJump();//直接中断跳跃并且不恢复
             IsAttack[1] = true;
             BanWalk = true;
@@ -201,11 +203,11 @@ public class SayakaCtrl : APlayerCtrl
             GravityRatio = 0.3f;
         }
         //松开X键，但仍然处于X攻击状态，所以能往前冲
-        else if (!StageCtrl.gameScoreSettings.XattackPressed && IsAttack[1]&& !animator.GetBool("OrdinaryXattack") && animator.GetBool("OrdinaryXattackPrepare") && !XordinaryDash)
+        else if (!StageCtrl.gameScoreSettings.XattackPressed && IsAttack[1]&& playerStatus == Variable.PlayerStatus.Strong_1 && !XordinaryDash)
         {
-            animator.SetBool("OrdinaryXattackPrepare",false);
-            animator.SetBool("OrdinaryXattack", true);
-            XordinaryDash = true;
+            playerStatus = Variable.PlayerStatus.Strong_2;
+
+                XordinaryDash = true;
             GravityRatio = 0.3f;//修复bug
         }
 
@@ -234,7 +236,7 @@ public class SayakaCtrl : APlayerCtrl
         {
             CancelJump();//直接中断跳跃并且不恢复
             IsAttack[1] = true;
-            animator.SetBool("DownXattack-MovingUpward", true);
+            playerStatus = Variable.PlayerStatus.DownStrong_1;//上升动作
             BanInput = true;//在这一套攻击里，就靠取消僵直来把这个设置为false了
             BanGravityRay = true;
             BanGravity = true;
@@ -266,13 +268,11 @@ public class SayakaCtrl : APlayerCtrl
             }
 
             //碰到地了（仅执行一次）
-            if (IsGround && !animator.GetBool("DownXattack-Done") )
+            if (IsGround && playerStatus != Variable.PlayerStatus.DownStrong_3)
             {
                 //反弹
-                StartCoroutine("XattackBound");
+              Timing.RunCoroutine(XattackBound());
 
-                animator.SetBool("DownXattack-MovingDownward", false);
-                animator.SetBool("DownXattack-Done", true);
                 DownAttackMovingUpward = 2;
             }
         }
@@ -297,7 +297,7 @@ public class SayakaCtrl : APlayerCtrl
         if (IsGround) { UpAttackCount = 0; }
 
         //UpAttackCount < 1 受上一条IF干扰，第一次起跳不会增加UpAttackCount 
-        if (StageCtrl.gameScoreSettings.Horizontal == 0  && !animator.GetBool("UpXattack") && UpAttackCount < 1 && !IsAttack[1] && StageCtrl.gameScoreSettings.Xattack && StageCtrl.gameScoreSettings.Up)
+        if (StageCtrl.gameScoreSettings.Horizontal == 0  && UpAttackCount < 1  && StageCtrl.gameScoreSettings.Xattack && StageCtrl.gameScoreSettings.Up)
         {
             CancelJump();//直接中断跳跃并且不恢复
             UpAttackCount++;
@@ -309,7 +309,7 @@ public class SayakaCtrl : APlayerCtrl
             BanGravity = true;
             BanJump = true;
 
-            animator.SetBool("UpXattack", true);
+            playerStatus = Variable.PlayerStatus.UpStrong_1;
         }
 
         if (UpAttackMove)
@@ -327,14 +327,13 @@ public class SayakaCtrl : APlayerCtrl
 
     public override void OrdinaryZ()
     {
-        if (StageCtrl.gameScoreSettings.ZattackPressed && !animator.GetBool("OrdinaryXattack") && !animator.GetBool("OrdinaryXattackPrepare") /*|| Time.timeSinceLevelLoad -  AttackTimer[0] <= PressAttackInteral && AttackTimer[0] != 0*/)
+        if (StageCtrl.gameScoreSettings.ZattackPressed)
         {
-            if (!animator.GetBool("Zattack") && !animator.GetBool("ZattackFin")) CancelJump();//直接中断跳跃并且不恢复
-            animator.SetBool("Zattack", true);
-            animator.SetBool("Fall", false);
-             BanGravity = IsGround;//修复奇怪的bug
+            if (playerStatus != Variable.PlayerStatus.Weak_1 && playerStatus != Variable.PlayerStatus.Weak_2) CancelJump();//直接中断跳跃并且不恢复
+            playerStatus = Variable.PlayerStatus.Weak_1;
+            BanGravity = IsGround;//修复奇怪的bug
         }
-    
+
     }
 
 
@@ -358,7 +357,6 @@ public class SayakaCtrl : APlayerCtrl
                 IsAttack[0] = true;
                 StopAttacking = false;
                 BanTurnAround = true;//攻击状态不能转身
-                animator.SetBool("Zattack", true);//不能中断动画
 
                 break;
 
@@ -368,8 +366,7 @@ public class SayakaCtrl : APlayerCtrl
                 StopAttacking = true;//可以中断攻击
                 BanTurnAround = false;//连接处可以转身
                 IsAttack[0] = StageCtrl.gameScoreSettings.ZattackPressed;//连接处不属于攻击阶段，可以切换到其他动画和状态
-                animator.SetBool("Zattack", StageCtrl.gameScoreSettings.ZattackPressed);//现在可以中断动画
-                animator.SetBool("Fall", !IsGround && !StageCtrl.gameScoreSettings.ZattackPressed);
+
                 GravityRatio = 1f;
 
                 if (!IsAttack[0])
@@ -381,17 +378,13 @@ public class SayakaCtrl : APlayerCtrl
 
             //Z攻击打完，
             case "ZattackDone":
-                    StopAttacking = true;//可以中断攻击
-                    IsAttack[0] = StageCtrl.gameScoreSettings.ZattackPressed;//连接处不属于攻击阶段，可以切换到其他动画和状态
+                StopAttacking = true;//可以中断攻击
+                IsAttack[0] = StageCtrl.gameScoreSettings.ZattackPressed;//连接处不属于攻击阶段，可以切换到其他动画和状态
                 BanTurnAround = false;//可以转身
 
                 //攻击完了恢复移动速度与重力
                 GravityRatio = 1F;
-                    //取消Z攻击状态，方便转换到idle或者ZattackFin
-                    animator.SetBool("Zattack", StageCtrl.gameScoreSettings.ZattackPressed);
-                    //允许下落状态
-                    animator.SetBool("Fall", !IsGround && !StageCtrl.gameScoreSettings.ZattackPressed);
-               
+
                 if (StageCtrl.gameScoreSettings.ZattackPressed)
                 {
                     //并且按着Z，满足条件后进入Z攻击最后阶段
@@ -400,7 +393,7 @@ public class SayakaCtrl : APlayerCtrl
 
                     if (ZattackCount == 2 && IsGround)//仅在地面上并且达到要求了才能发动
                     {
-                        animator.SetBool("ZattackFin", true);
+                        playerStatus = Variable.PlayerStatus.Weak_2;
                     }
                     StopAttacking = true;
                 }
@@ -426,8 +419,6 @@ public class SayakaCtrl : APlayerCtrl
 
             //Z攻击最后阶段结束
             case "ZattackFinDone":
-                animator.SetBool("ZattackFin", false);
-                animator.SetBool("Zattack", false);
                 StopAttacking = true;
                 BanInput = true;
                 //修改计数器重新循环动画
@@ -444,30 +435,23 @@ public class SayakaCtrl : APlayerCtrl
                 break;
         }
     }
-
+    
+    /// <summary>
+    /// 普通重工结束
+    /// </summary>
+    /// <param name="AnimationName"></param>
     public override void XattackAnimationEvent(string AnimationName)
-    {
-        Debug.Log("日");
-        
-        switch (AnimationName)
-        {
-            case "OrdinaryDashDone":
+    {        
                 //结束
                 GravityRatio = 1F;
-                animator.SetBool("OrdinaryXattackPrepare", false);
                 BanTurnAround = false;
                 BanInput = false;
                 XordinaryDash = false;
                 IsAttack[1] = false;
-                break;
 
-            case "Fuck":
-                animator.SetBool("OrdinaryXattack", false);
                 VariableInitialization();
                 //僵直
                 Stiff(0.1f);
-                break;
-        }
               
 
 
@@ -479,7 +463,6 @@ public class SayakaCtrl : APlayerCtrl
         BanInput = true;
         StopAttacking = true;
         IsAttack[1] = false;
-        animator.SetBool("HorizontalXattack", !true);
         //尝试用回复变量的方法来解决bug
         VariableInitialization();
         Stiff(0.2f);
@@ -497,8 +480,8 @@ public class SayakaCtrl : APlayerCtrl
 
                 //蹬了一脚，准备下移
             case "StartMovingDownward":
-                animator.SetBool("DownXattack-MovingDownward", true);
-                animator.SetBool("DownXattack-MovingUpward", false);
+                playerStatus = Variable.PlayerStatus.DownStrong_2;//下移动作
+
                 break;
 
                 //下移
@@ -525,7 +508,6 @@ public class SayakaCtrl : APlayerCtrl
         UpAttackMove = false;
         IsAttack[1] = false;
         BanGravity = true;//为了悬空效果，僵直结束之后变成false了
-        animator.SetBool("UpXattack", false);
         Stiff(0.1f);
 
     }
@@ -544,10 +526,6 @@ public class SayakaCtrl : APlayerCtrl
 
                 BanGravity = false;
                 Stiff(0.1f);
-
-                animator.Play("SayakaMagia", 0, 0F);
-
-                animator.SetBool("Magia", false);
 
                 break;
 
@@ -581,14 +559,15 @@ public class SayakaCtrl : APlayerCtrl
     /// DownX攻击触地之后的反弹
     /// </summary>
     /// <returns></returns>
-    public IEnumerator XattackBound()
+    IEnumerator<float> XattackBound()
     {
+        playerStatus = Variable.PlayerStatus.DownStrong_3;//反弹动作
+
         BanGravity = true;
         DownAttackMovingUpward = 2;
-      //  IsStiff = true;这个也不能要，不然不会触发反弹效果
-        yield return new WaitForSeconds(0.2f);
+        //  IsStiff = true;这个也不能要，不然不会触发反弹效果
+        yield return Timing.WaitForSeconds(0.2f);
         DownAttackMovingUpward = 0;
-        animator.SetBool("DownXattack-Done", false);
         //   Stiff(0.1f); 自带僵直效果了
       //  IsStiff = false;
         BanGravity = false;

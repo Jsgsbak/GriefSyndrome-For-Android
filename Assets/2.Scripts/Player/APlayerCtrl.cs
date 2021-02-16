@@ -241,7 +241,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
         if (!BanWalk) Walk();
         SetStatus();
-        AnimationCtrl();
+        if(!StageCtrl.gameScoreSettings.LocalIsStiff) AnimationCtrl();
         #endregion
 
 
@@ -278,24 +278,32 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// <summary>
     /// 设置玩家状态
     /// </summary>
-    public virtual void SetStatus()
+    public  void SetStatus()
     {
-        //通过对一些状态变量的判断，得出当前玩家的状态，并应用于动画
 
-       //基础的在这里写，攻击的在各自玩家脚本中重写
-        if(StageCtrl.gameScoreSettings.Horizontal == 0 && !IsAttack[0] && !IsAttack[1] &&!IsAttack[2] && IsGround && !IsJumping && !StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] && !StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId] && !StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId])
+
+        if (IsAttack[0] || IsAttack[1] || IsAttack[2])
+        {
+            return;
+        }
+
+            //通过对一些状态变量的判断，得出当前玩家的状态，并应用于动画
+
+            //基础的在这里写，攻击的在各自玩家脚本中重写
+            if (StageCtrl.gameScoreSettings.Horizontal == 0 &&  IsGround && !IsJumping && !StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] && !StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId] && !StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId])
         {
             playerStatus = Variable.PlayerStatus.Idle;
+            
         }
-        else if (StageCtrl.gameScoreSettings.Horizontal != 0 && !IsAttack[0] && !IsAttack[1] && !IsAttack[2] && IsGround && !IsJumping && !StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] && !StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId]  && !StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId])
+        else if (StageCtrl.gameScoreSettings.Horizontal != 0 && IsGround && !IsJumping && !StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] && !StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId]  && !StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId])
         {
             playerStatus = Variable.PlayerStatus.Walk;
         }
-        else if ( !IsAttack[0] && !IsAttack[1] && !IsAttack[2] && IsJumping && !StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] && !StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId] && !StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId])
+        else if ( IsJumping && !StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] && !StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId] && !StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId])
         {
             playerStatus = Variable.PlayerStatus.Jump;
         }
-        else if (!IsAttack[0] && !IsAttack[1] && !IsAttack[2] && !IsGround && !IsJumping && !StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] && !StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId] && !StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId])
+        else if ( !IsGround && !IsJumping && !StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] && !StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId] && !StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId])
         {
             playerStatus = Variable.PlayerStatus.Fall;
         }
@@ -732,7 +740,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// 设置僵直
     /// </summary>
     /// <param name="Time">僵直事件</param>
-    public virtual void Stiff(float Time)
+    public void Stiff(float Time)
     {
         //取消以前的僵直（仅仅是换成另一个僵直，并不是取消将至）
      //   Timing.KillCoroutines("PlayerStiff");
@@ -978,6 +986,15 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         //清除状态
         VariableInitialization();
         BanInput = true;
+     
+        IsAttack[0] = false;
+        IsAttack[1] = false;
+        if(MahouShoujoId != 4)
+        {
+            //沙耶加magia受击不中断攻击
+            IsAttack[2] = false;
+        }
+        
 
         //如果承受不住这个攻击，宝石直接碎了
         if (StageCtrl.gameScoreSettings.GirlSoulLimit[MahouShoujoId] - damage * StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].Recovery <= 0)
