@@ -114,7 +114,7 @@ public class TitleCtrl : MonoBehaviour
 #endif
 
         //用于防止多次不必要执行一些操作
-        //刚打开游戏/staff返回到标题，并不是从魔女场景中返回
+        //刚打开游戏/staff返回到标题，并不是从魔女场景中返回（指打完魔女）
         if (!gameScoreSettingsIO.MajoSceneToTitle)
         {
 
