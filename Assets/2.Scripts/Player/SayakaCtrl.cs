@@ -452,7 +452,7 @@ public class SayakaCtrl : APlayerCtrl
 
                 VariableInitialization();
                 //僵直
-                Stiff(0.1f);
+                Stiff(0.08f);
               
 
 

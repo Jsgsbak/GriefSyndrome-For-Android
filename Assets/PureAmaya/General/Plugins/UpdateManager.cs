@@ -6,8 +6,6 @@ using UnityEngine.Events;
 
 namespace PureAmaya.General
 {
-    //awake中会删除切换场景后残留的action。因此注册action的时候海清在start中。另外不推荐将该物体设置为DontDestroyOnLoad
-
     /// <summary>
     /// 提高Update效率
     /// </summary>
@@ -17,15 +15,21 @@ namespace PureAmaya.General
 
         public static UpdateManager updateManager;
 
-        //*新的事件版
         public class UpdateEventClass : UnityEvent { }
+
+        /// <summary>
+        /// Start之后,Update之前运行一次
+        /// </summary>
+        public UpdateEventClass LateStart = new UpdateEventClass();
+        bool LateStartRun = false;
+
         public  UpdateEventClass FastUpdate = new UpdateEventClass();
         /// <summary>
         /// 假的LateUpdate（所有FastUpdate执行后，且LateUpdate执行前执行）
         /// </summary>
         public  UpdateEventClass FakeLateUpdate = new UpdateEventClass();
         /// <summary>
-        /// 依赖于TIM的SlowUpdate
+        /// 依赖于MEC的SlowUpdate
         /// </summary>
         public  UpdateEventClass SlowUpdate = new UpdateEventClass();
         private void Awake()
@@ -41,10 +45,19 @@ namespace PureAmaya.General
         {
            // DontDestroyOnLoad(gameObject);
             Timing.RunCoroutine(SlowUpdatea(), Segment.SlowUpdate);
+
+            LateStartRun = true;
         }
 
         private void Update()
         {
+            //多了个if判定，比起后续的代码来说对性能的损失应该不会太大
+            if (LateStartRun)
+            {
+                LateStart.Invoke();
+                LateStartRun = false;
+            }
+
             FastUpdate.Invoke();
 
             FakeLateUpdate.Invoke();

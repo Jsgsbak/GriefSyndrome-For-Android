@@ -13,6 +13,7 @@ TagManager:
   - Floor
   - Platform
   - Wall
+  - Slope
   layers:
   - Default
   - TransparentFX

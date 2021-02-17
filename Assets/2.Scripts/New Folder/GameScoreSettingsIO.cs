@@ -181,6 +181,16 @@ public class GameScoreSettingsIO : ScriptableObject
     [SerializeField] public Variable.MahouShoujo[] mahouShoujos;
 
     /// <summary>
+    /// 魔法少女移动速度
+    /// </summary>
+    public const float MoveSpeed = 9f;
+   /// <summary>
+   /// 跳跃速度
+   /// </summary>
+    public const float JumpSpeed = 15f;
+
+
+    /// <summary>
     /// 虚拟按键-全部按钮位置大小设置（参考分辨率1010x568)
     /// </summary>
     [Header("虚拟按键-全部按钮位置大小设置")]
@@ -479,4 +489,5 @@ public class GameScoreSettingsIO : ScriptableObject
         //上一次打的lap刷新
         LastLap = lap;
     }
+
 }

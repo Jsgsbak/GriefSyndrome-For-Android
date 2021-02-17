@@ -128,9 +128,6 @@ public class Variable
         [Header("攻击力最大值")]
         public int MaxPow = 108;
 
-        [Header("移动速度")][SerializeField]
-        public float MoveSpeed = 45f;
-
         [Space]
         [Header("初始灵魂值")]
         public int BasicSoulLimit;
@@ -170,13 +167,6 @@ public class Variable
         public bool LongMagia = true;
     }
 
-    /// <summary>
-    /// 没有参数的通常事件
-    /// </summary>
-    public class OrdinaryEvent : UnityEvent { }
-    public class BoolEvent : UnityEvent<bool> { }
-    public class IntEvent : UnityEvent<int> { }
-
 
     /// <summary>
     /// 虚拟按键-全部按钮位置大小设置（参考分辨率1010x568)
@@ -196,4 +186,17 @@ public class Variable
         public Rect RawPosition;
 
     }
+
+
+
+    /// <summary>
+    /// 没有参数的通常事件
+    /// </summary>
+    public  class OrdinaryEvent : UnityEvent { }
+    public class BoolEvent : UnityEvent<bool> { }
+    public class IntEvent : UnityEvent<int> { }
+
+
+
+
 }

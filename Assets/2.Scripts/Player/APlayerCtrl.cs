@@ -13,8 +13,6 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     [Header("基础属性")]
     public int PlayerId = 0;
     public int MahouShoujoId = 0;
-    //为了便于调试先放在这里，以后应当移动到GSS中
-    public float JumpSpeed = 15f;
     /// <summary>
     /// 玩家所在斜坡的单位圆坐标（角度/三角函数那些）
     /// </summary>
@@ -72,7 +70,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
     #region 私有状态机（不保存到GSS中）
     /// <summary>
-    /// 玩家状态
+    /// 玩家状态（仅应用于动画机）
     /// </summary>
     public Variable.PlayerStatus playerStatus;
     /// <summary>
@@ -109,6 +107,9 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// 站在平台上
     /// </summary>
     public bool StandOnPlatform = false;
+
+    [HideInInspector] public int SlopeInstanceId = 0;
+
     /// <summary>
     /// 正在穿过平台
     /// </summary>
@@ -376,7 +377,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             {
                 //解决一个很奇怪的BUG
                 IsGround = false;
-                tr.Translate(Vector3.up * (JumpSpeed - (Time.timeSinceLevelLoad - JumpInteralTimer) * JumpSpeed / 0.3F) * Time.deltaTime);
+                tr.Translate(Vector3.up * (GameScoreSettingsIO.JumpSpeed - (Time.timeSinceLevelLoad - JumpInteralTimer) * GameScoreSettingsIO.JumpSpeed / 0.3F) * Time.deltaTime);
             }
             //下降（其实就是取消跳跃状态）
             else
@@ -453,16 +454,37 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             if (infoLeft.collider != null)// || infoRight.collider != null)
             {
                 StandOnPlatform = infoLeft.collider.CompareTag("Platform");
-                BanGravity = infoLeft.collider.CompareTag("Floor") | infoLeft.collider.CompareTag("Platform") | infoLeft.collider.CompareTag("Wall");
-                StandOnPlatform = infoLeft.collider.CompareTag("Platform");
-                StandOnFloor = infoLeft.collider.CompareTag("Floor") | infoLeft.collider.CompareTag("Wall");
+                StandOnFloor = infoLeft.collider.CompareTag("Floor") || infoLeft.collider.CompareTag("Wall") || infoLeft.collider.CompareTag("Slope");
+                //斜坡
+                if (infoLeft.collider.CompareTag("Slope") && SlopeInstanceId != infoLeft.collider.GetInstanceID())
+                {
+                    string[] vec = infoLeft.collider.name.Split(',');
+                    PlayerSlope = new Vector2(float.Parse(vec[0]), float.Parse(vec[1]));
+                    //这串代码感觉效率挺低的，所以加了一个ID判断
+                    SlopeInstanceId = infoLeft.collider.GetInstanceID();
+                }
+                else if (infoLeft.collider.CompareTag("Floor") || infoLeft.collider.CompareTag("Wall") || infoLeft.collider.CompareTag("Platform"))
+                {
+                    PlayerSlope = Vector2.right;
+                }
             }
             else if (infoRight.collider != null)// || infoRight.collider != null)
             {
                 StandOnPlatform = infoRight.collider.CompareTag("Platform");
-                BanGravity = infoRight.collider.CompareTag("Floor") | infoRight.collider.CompareTag("Platform") | infoRight.collider.CompareTag("Wall");
-                StandOnPlatform = infoRight.collider.CompareTag("Platform");
-                StandOnFloor = infoRight.collider.CompareTag("Floor") | infoRight.collider.CompareTag("Wall");
+                StandOnFloor = infoRight.collider.CompareTag("Floor") || infoRight.collider.CompareTag("Wall")|| infoRight.collider.CompareTag("Slope");
+                //斜坡
+                if (infoRight.collider.CompareTag("Slope") && SlopeInstanceId != infoRight.collider.GetInstanceID())
+                {
+                    string[] vec = infoRight.collider.name.Split(',');
+                    PlayerSlope = new Vector2(float.Parse(vec[0]), float.Parse(vec[1]));
+                    //这串代码感觉效率挺低的，所以加了一个ID判断
+                    SlopeInstanceId = infoRight.collider.GetInstanceID();
+                }
+                else if (infoRight.collider.CompareTag("Floor") || infoRight.collider.CompareTag("Wall") || infoRight.collider.CompareTag("Platform"))
+                {
+                    PlayerSlope = Vector2.right;
+                }
+
 
             }
             //啥也没才上，腾空
@@ -474,10 +496,12 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             }
 
             IsGround = StandOnFloor || StandOnPlatform;
+            BanGravity = IsGround;
 
             //直接在这里强制转化成true好了）
             if (StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId])
             {
+                IsGround = false;
                 BanGravity = true;
             }
 
@@ -496,7 +520,6 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         }
         //  infoLeft = Physics2D.Raycast(rays[1].origin, rays[1].direction,10f);
         infoHor = Physics2D.Raycast(rays[2].origin, rays[2].direction, 0.8f);
-        Debug.DrawRay(rays[2].origin, rays[2].direction * 0.5f, Color.red);
         // Debug.DrawRay(rays[1].origin, rays[1].direction * 1f, Color.red);
 
         BanLeftOrRight = 0;
@@ -521,11 +544,12 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
 
         //脚插地修复
-        if (infoLeft.collider != null && infoHor.collider != null && !IsJumping && !GoThroughPlatform && IsGround && !StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId])
+        if (infoLeft.collider != null && infoHor.collider != null &&  IsGround && !StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId] && PlayerSlope == Vector2.right)
         {
             //如果水平射线与脚底射线得到的东西一致，那么说明脚插在地里（不对地板进行处理）
-            if (!infoLeft.collider.CompareTag("Floor") && infoLeft.collider.GetInstanceID().Equals(infoHor.collider.GetInstanceID()))
+            if ( infoLeft.collider.GetInstanceID().Equals(infoHor.collider.GetInstanceID()))
             {
+                Debug.Log("YUKI.N> 紧急修正程序已启动");
 
                 tr.Translate(Vector3.up * 0.1f, Space.World);
                 //不断重复，直到脚没插进地里
@@ -534,11 +558,13 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
                 return;
             }
         }
-        else if (infoRight.collider != null && infoHor.collider != null && !IsJumping && !GoThroughPlatform && IsGround && !StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId])
+        else if (infoRight.collider != null && infoHor.collider != null && IsGround && !StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId] && PlayerSlope == Vector2.right)
         {
             //如果水平射线与脚底射线得到的东西一致，那么说明脚插在地里（不对地板进行处理）
-            if (!infoRight.collider.CompareTag("Floor") && infoRight.collider.GetInstanceID().Equals(infoHor.collider.GetInstanceID()))
+            if ( infoRight.collider.GetInstanceID().Equals(infoHor.collider.GetInstanceID()))
             {
+                Debug.Log("YUKI.N> 紧急修正程序已启动");
+
                 tr.Translate(Vector3.up * 0.1f, Space.World);
                 //不断重复，直到脚没插进地里
                 RayCtrl();
@@ -558,11 +584,11 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             {
                 //是那个球，直接无视平台
                 case true:
-                    Move(StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].MoveSpeed, true, Vector2.one, StageCtrl.gameScoreSettings.joystick);
+                    Move(GameScoreSettingsIO.MoveSpeed, true, Vector2.one, StageCtrl.gameScoreSettings.joystick);
                     break;
                 //还没死呢
                 case false:
-                    Move(StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].MoveSpeed, true, PlayerSlope.normalized, Vector2.right * StageCtrl.gameScoreSettings.Horizontal);
+                    Move(GameScoreSettingsIO.MoveSpeed, true, PlayerSlope.normalized, Vector2.right * StageCtrl.gameScoreSettings.Horizontal);
                     break;
             }
         }
@@ -575,17 +601,17 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
                 case true:
                     if (StageCtrl.gameScoreSettings.Up)
                     {
-                        Move(StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].MoveSpeed, true, Vector2.one, Vector2.up);
+                        Move(GameScoreSettingsIO.MoveSpeed, true, Vector2.one, Vector2.up);
                     }
                     else if (StageCtrl.gameScoreSettings.Down)
                     {
-                        Move(StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].MoveSpeed, true, Vector2.one, Vector2.down);
+                        Move(GameScoreSettingsIO.MoveSpeed, true, Vector2.one, Vector2.down);
                     }
                     break;
             }
 
             //不管是否死亡都用同一个左右移动
-            Move(StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].MoveSpeed, true, PlayerSlope.normalized, Vector2.right * StageCtrl.gameScoreSettings.Horizontal);
+            Move(GameScoreSettingsIO.MoveSpeed, true, PlayerSlope.normalized, Vector2.right * StageCtrl.gameScoreSettings.Horizontal);
 
         }
 
@@ -879,12 +905,13 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     int Grow(int[] GrowparaSetting, int[] LevelLimit, bool Returntotal)
     {
         int j = 0;
+        int length = LevelLimit.Length;
 
         if (Returntotal)
         {
 
             //先根据等级来判断采取多少级别的成长值
-            for (int i = 0; i < LevelLimit.Length; i++)
+            for (int i = 0; i < length; i++)
             {
                 //如果当前角色等级低于i阶等级限制的门槛
                 if (StageCtrl.gameScoreSettings.GirlsLevel[MahouShoujoId] < LevelLimit[i])
@@ -905,7 +932,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         else
         {
             //先根据等级来判断采取多少级别的成长值
-            for (int i = 0; i < LevelLimit.Length; i++)
+            for (int i = 0; i < length; i++)
             {
                 //如果当前角色等级低于i阶等级限制的门槛
                 if (StageCtrl.gameScoreSettings.GirlsLevel[MahouShoujoId] < LevelLimit[i])

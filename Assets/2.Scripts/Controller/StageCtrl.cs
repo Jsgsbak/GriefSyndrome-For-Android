@@ -153,7 +153,7 @@ public class StageCtrl : MonoBehaviour
     /// </summary>
     public void PauseGameForStage(bool IsPaused)
     {
-        Stage.SetActive(!IsPaused);
+        //Stage.SetActive(!IsPaused);
     }
 
     /// <summary>

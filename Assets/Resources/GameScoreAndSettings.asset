@@ -28,7 +28,7 @@ MonoBehaviour:
   LastLap: 1
   SelectedGirlInGame: 040000000700000007000000
   GirlsLevel: 0100000001000000010000000100000001000000
-  GirlSoulLimit: 00000000000000000000000000000000df4d0000
+  GirlSoulLimit: 00000000000000000000000000000000d04d0000
   GirlsVit: 0000000000000000000000000000000058000000
   GirlsPow: 000000000000000000000000000000000a000000
   MagiaKeyDown: 000000
@@ -49,7 +49,7 @@ MonoBehaviour:
   AllDie: 0
   BattlingMajo: 0
   NewestMajo: 0
-  MajoSceneToTitle: 0
+  MajoSceneToTitle: 1
   BGMVol: 0.6
   SEVol: 0.7
   MaxFps: 60
@@ -58,7 +58,6 @@ MonoBehaviour:
     BasicPow: 10
     PowGrowth: 1
     MaxPow: 108
-    MoveSpeed: 45
     BasicSoulLimit: 17460
     SoulGrowth: 102
     MaxSoul: 27456
@@ -74,7 +73,6 @@ MonoBehaviour:
     BasicPow: 10
     PowGrowth: 1
     MaxPow: 108
-    MoveSpeed: 45
     BasicSoulLimit: 23742
     SoulGrowth: 87
     MaxSoul: 32268
@@ -90,7 +88,6 @@ MonoBehaviour:
     BasicPow: 10
     PowGrowth: 1
     MaxPow: 108
-    MoveSpeed: 45
     BasicSoulLimit: 28875
     SoulGrowth: 128
     MaxSoul: 41419
@@ -106,7 +103,6 @@ MonoBehaviour:
     BasicPow: 10
     PowGrowth: 1
     MaxPow: 108
-    MoveSpeed: 45
     BasicSoulLimit: 22278
     SoulGrowth: 84
     MaxSoul: 30510
@@ -122,7 +118,6 @@ MonoBehaviour:
     BasicPow: 10
     PowGrowth: 1
     MaxPow: 108
-    MoveSpeed: 10
     BasicSoulLimit: 19935
     SoulGrowth: 81
     MaxSoul: 27873
@@ -138,7 +133,6 @@ MonoBehaviour:
     BasicPow: 10
     PowGrowth: 1
     MaxPow: 108
-    MoveSpeed: 45
     BasicSoulLimit: 17460
     SoulGrowth: 102
     MaxSoul: 27456
