@@ -20,6 +20,7 @@ public class SlopeCtrl : MonoBehaviour
 
       float y =  Mathf.Sin(transform.rotation.eulerAngles.z * (3.14159f * 2 / 360));
         float x = Mathf.Cos(transform.rotation.eulerAngles.z * (3.14159f * 2 / 360));
+        
 
         name = string.Format("{0},{1}", x.ToString(), y.ToString());
     }

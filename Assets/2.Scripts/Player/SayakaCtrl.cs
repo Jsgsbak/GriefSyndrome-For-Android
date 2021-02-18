@@ -78,33 +78,6 @@ public class SayakaCtrl : APlayerCtrl
         //攻击动画/状态消除
         for (int i = 0; i < 3; i++)
         {
-            //直接无脑遍历一遍好了emmmm，反正也不多
-            if (IsAttack[i])
-            {
-                switch (i)
-                {
-                    case 0:
-                        animator.SetBool("ZattackFin", false);
-                        animator.SetBool("Zattack", false);
-                        Debug.Log("消除Z攻击");
-                        break;
-
-                    case 1:
-                        animator.SetBool("OrdinaryXattackPrepare", false);
-                        animator.SetBool("OrdinaryXattack", false);
-                        animator.SetBool("HorizontalXattack", false);
-                        animator.SetBool("DownXattack-MovingUpward", false);
-                        animator.SetBool("DownXattack-MovingDownward", false);
-                        animator.SetBool("DownXattack-Done", false);
-                        animator.SetBool("UpXattack", false);
-                        Debug.Log("消除X攻击");
-                        break;
-                     case 2:
-                        animator.SetBool("Magia", false);
-                        Debug.Log("消除A攻击");
-                        break;
-                }
-            }
             IsAttack[i] = false;
         }
     }
@@ -128,7 +101,7 @@ public class SayakaCtrl : APlayerCtrl
             BanWalk = true;
             BanTurnAround = true;
             BanGravity = true;
-            BanGravityRay = true;
+          //  BanGravityRay = true;
 
             playerStatus = Variable.PlayerStatus.Magia_1;
 
@@ -147,11 +120,11 @@ public class SayakaCtrl : APlayerCtrl
 
             if (DoLookRight)
             {
-                Move(8f * MagiaDashSpeedRatio, true, PlayerSlope, Vector2.right);
+                Move(8f * MagiaDashSpeedRatio, true,  Vector2.right);
             }
             else
             {
-                Move(8f * MagiaDashSpeedRatio, true, PlayerSlope, Vector2.left);
+                Move(8f * MagiaDashSpeedRatio, true, Vector2.left);
             }
         }
     }
@@ -176,11 +149,11 @@ public class SayakaCtrl : APlayerCtrl
             //移动
             if (DoLookRight)
             {
-                Move(8f, true, PlayerSlope, Vector3.right);
+                Move(8f, true, Vector3.right);
             }
             else
             {
-                Move(8f, true, PlayerSlope, Vector3.left);
+                Move(8f, true, Vector3.left);
             }
         }
     }
@@ -189,7 +162,7 @@ public class SayakaCtrl : APlayerCtrl
     public override void OrdinaryX()
     {
         //从通常状态进入到X攻击准备状态
-        if (playerStatus != Variable.PlayerStatus.Strong_2 && StageCtrl.gameScoreSettings.Horizontal == 0 && !IsAttack[1] && !StageCtrl.gameScoreSettings.Up && !StageCtrl.gameScoreSettings.Down  && StageCtrl.gameScoreSettings.XattackPressed  && !XordinaryDash)
+        if ( StageCtrl.gameScoreSettings.Horizontal == 0 && !IsAttack[1] && !StageCtrl.gameScoreSettings.Up && !StageCtrl.gameScoreSettings.Down  && StageCtrl.gameScoreSettings.XattackPressed  && !XordinaryDash)
         {
             playerStatus = Variable.PlayerStatus.Strong_1;
             CancelJump();//直接中断跳跃并且不恢复
@@ -222,11 +195,11 @@ public class SayakaCtrl : APlayerCtrl
 
             if (DoLookRight)
             {
-                Move(8F - OrdinaryXTimer, true, PlayerSlope.normalized, Vector2.right);
+                Move(6F - OrdinaryXTimer, true, Vector2.right);
             }
             else
             {
-                Move(8F - OrdinaryXTimer, true, PlayerSlope.normalized, Vector2.left);
+                Move(6F - OrdinaryXTimer, true, Vector2.left);
             }
         }
     }
@@ -238,7 +211,6 @@ public class SayakaCtrl : APlayerCtrl
             IsAttack[1] = true;
             playerStatus = Variable.PlayerStatus.DownStrong_1;//上升动作
             BanInput = true;//在这一套攻击里，就靠取消僵直来把这个设置为false了
-            BanGravityRay = true;
             BanGravity = true;
             DownAttackMovingUpward = 1;
         }
@@ -248,11 +220,12 @@ public class SayakaCtrl : APlayerCtrl
         {
             if (IsGround)
             {
-                Move(13f, true, Vector2.one, Vector2.up);
+                Debug.Log("2");
+                Move(100f, true, Vector2.up);
             }
             else
             {
-                Move(5f, true, Vector2.one, Vector2.up);
+                Move(4f, true, Vector2.up);
             }
         }
         //下降
@@ -260,11 +233,11 @@ public class SayakaCtrl : APlayerCtrl
         {
             if (DoLookRight)
             {
-                Move(13f, true, Vector2.one, Vector2.right);
+                Move(13f, true,  Vector2.right);
             }
             else
             {
-                Move(13f, true, Vector2.one, Vector2.left);
+                Move(13f, true,  Vector2.left);
             }
 
             //碰到地了（仅执行一次）
@@ -282,11 +255,11 @@ public class SayakaCtrl : APlayerCtrl
         {
             if (DoLookRight)
             {
-                Move(12f, true, Vector2.one, new Vector2(-1f, 2f));
+                Move(5f, true, new Vector2(-1f, 1f));
             }
             else
             {
-                Move(12f, true, Vector2.one, new Vector2(1f, 2f));
+                Move(5f, true,  new Vector2(1f, 1f));
             }
         }
 
@@ -296,8 +269,7 @@ public class SayakaCtrl : APlayerCtrl
     {
         if (IsGround) { UpAttackCount = 0; }
 
-        //UpAttackCount < 1 受上一条IF干扰，第一次起跳不会增加UpAttackCount 
-        if (StageCtrl.gameScoreSettings.Horizontal == 0  && UpAttackCount < 1  && StageCtrl.gameScoreSettings.Xattack && StageCtrl.gameScoreSettings.Up)
+        if (StageCtrl.gameScoreSettings.Horizontal == 0  && UpAttackCount < 2  && StageCtrl.gameScoreSettings.Xattack && StageCtrl.gameScoreSettings.Up)
         {
             CancelJump();//直接中断跳跃并且不恢复
             UpAttackCount++;
@@ -305,7 +277,6 @@ public class SayakaCtrl : APlayerCtrl
             IsAttack[1] = true;
             BanWalk = true;
             BanTurnAround = true;
-            BanGravityRay = true;
             BanGravity = true;
             BanJump = true;
 
@@ -316,11 +287,11 @@ public class SayakaCtrl : APlayerCtrl
         {
             if (DoLookRight)
             {
-                Move(5f, true, Vector2.one, new Vector2(1f, 3f));
+                Move(4f, true, new Vector2(1f, 3f));
             }
             else
             {
-                Move(5f, true, Vector2.one, new Vector2(-1f, 3f));
+                Move(4f, true,  new Vector2(-1f, 3f));
             }
         }
     }
@@ -410,11 +381,11 @@ public class SayakaCtrl : APlayerCtrl
                 //向前移动
                 if (DoLookRight)
                 {
-                    Move(0.4f, false, PlayerSlope, Vector2.right);
+                    Move(0.4f, false, Vector2.right);
                 }
                 else
                 {
-                    Move(0.4f, false, PlayerSlope, Vector2.left);
+                    Move(0.4f, false, Vector2.left);
                 }
                 break;
 
@@ -489,7 +460,6 @@ public class SayakaCtrl : APlayerCtrl
             case "Doing-Down":
                 GravityRatio = 1.5F;
                 BanGravity = false;
-                BanGravityRay = false;
                 DownAttackMovingUpward = -1;
                 break;
 
@@ -545,11 +515,11 @@ public class SayakaCtrl : APlayerCtrl
         {
             if (DoLookRight)
             {
-                Move(0.02f, false, PlayerSlope, Vector2.right);
+                Move(0.02f, false, Vector2.right);
             }
             else
             {
-                Move(0.02f, false, PlayerSlope, Vector2.left);
+                Move(0.02f, false, Vector2.left);
             }
         }
 

@@ -183,7 +183,7 @@ public class GameScoreSettingsIO : ScriptableObject
     /// <summary>
     /// 魔法少女移动速度
     /// </summary>
-    public const float MoveSpeed = 9f;
+    public const float MoveSpeed = 7f;
    /// <summary>
    /// 跳跃速度
    /// </summary>

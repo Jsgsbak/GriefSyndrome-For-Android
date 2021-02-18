@@ -22,9 +22,9 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     //为了方便调试，这些Ban和Is先暂时放在这里
     public bool BanGravity = false;
     /// <summary>
-    /// 禁用重力射线。用于穿透地板
+    /// 禁用重力射线。用于穿透地板（仅AplayerCtrl可以修改）
     /// </summary>
-    public bool BanGravityRay = false;
+   [SerializeField] bool BanGravityRay = false;
     /// <summary>
     /// 禁用跳跃
     /// </summary>
@@ -493,7 +493,19 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             //啥也没才上，腾空
             else if (!IsJumping)//去除跳跃的情况
             {
-                BanGravity = false;
+                //非攻击状态
+                if (!IsAttack[0] && !IsAttack[1] && !IsAttack[2])
+                {
+                    BanGravity = IsGround;
+                }
+                //攻击状态
+                else
+                {
+                    //
+                    if (IsGround) BanGravity = true;
+                }
+
+
                 StandOnPlatform = false;
                 StandOnFloor = false;
                 SlopeInstanceId = 0;
@@ -505,7 +517,17 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             if (PlayerSlope != Vector2.right) IsGround = true;
 
             IsGround = StandOnFloor || StandOnPlatform;
-            BanGravity = IsGround;
+          //非攻击状态
+           if(!IsAttack[0] && !IsAttack[1] && !IsAttack[2])
+            {
+                BanGravity = IsGround;
+            }
+           //攻击状态
+            else
+            {
+                //
+                if (IsGround) BanGravity = true;
+            }
 
             //直接在这里强制转化成true好了）
             if (StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId])
@@ -530,12 +552,13 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         //  infoLeft = Physics2D.Raycast(rays[1].origin, rays[1].direction,10f);
         infoHor = Physics2D.Raycast(rays[2].origin, rays[2].direction, 0.8f);
         // Debug.DrawRay(rays[1].origin, rays[1].direction * 1f, Color.red);
-
+     
+        //撞墙限制移动
         BanLeftOrRight = 0;
-        //水平方向上碰到墙/平台了
 
         if (infoHor.collider != null)// || infoRight.collider != null)
         {
+            //撞墙限制移动
             if ( infoHor.collider.CompareTag("Wall"))
             {
                 if (DoLookRight)
@@ -551,7 +574,6 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
         }
 
-        /*
         //脚插地修复
         if (infoLeft.collider != null && infoHor.collider != null &&  IsGround && !StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId] && PlayerSlope == Vector2.right)
         {
@@ -561,8 +583,6 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
                 Debug.Log("YUKI.N> 紧急修正程序已启动");
 
                 tr.Translate(Vector3.up * 0.1f, Space.World);
-               
-                //防止两脚都插进去之后多次执行
                 return;
             }
         }
@@ -574,10 +594,8 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
                 Debug.Log("YUKI.N> 紧急修正程序已启动");
 
                 tr.Translate(Vector3.up * 0.1f, Space.World);
-                //不断重复，直到脚没插进地里
-               // RayCtrl();
             }
-        }*/
+        }
 
     }
 
@@ -592,15 +610,14 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             {
                 //是那个球，直接无视平台
                 case true:
-                    Move(GameScoreSettingsIO.MoveSpeed, true, Vector2.one, StageCtrl.gameScoreSettings.joystick);
+                    Move(GameScoreSettingsIO.MoveSpeed, true, StageCtrl.gameScoreSettings.joystick);
                     break;
                 //还没死呢
                 case false:
-                    Move(GameScoreSettingsIO.MoveSpeed, true, PlayerSlope, Vector2.right * StageCtrl.gameScoreSettings.Horizontal);
+                    Move(GameScoreSettingsIO.MoveSpeed, true, Vector2.right * StageCtrl.gameScoreSettings.Horizontal);
                     break;
             }
         }
-
         else
         {
             switch (StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId])
@@ -609,17 +626,17 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
                 case true:
                     if (StageCtrl.gameScoreSettings.Up)
                     {
-                        Move(GameScoreSettingsIO.MoveSpeed, true, Vector2.one, Vector2.up);
+                        Move(GameScoreSettingsIO.MoveSpeed, true, Vector2.up);
                     }
                     else if (StageCtrl.gameScoreSettings.Down)
                     {
-                        Move(GameScoreSettingsIO.MoveSpeed, true, Vector2.one, Vector2.down);
+                        Move(GameScoreSettingsIO.MoveSpeed, true, Vector2.down);
                     }
                     break;
             }
 
             //不管是否死亡都用同一个左右移动
-            Move(GameScoreSettingsIO.MoveSpeed, true, PlayerSlope.normalized, Vector2.right * StageCtrl.gameScoreSettings.Horizontal);
+            Move(GameScoreSettingsIO.MoveSpeed, true, Vector2.right * StageCtrl.gameScoreSettings.Horizontal);
 
         }
 
@@ -642,11 +659,25 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// </summary>
     /// <param name="Speed"></param>
     /// <param name="UseTimeDelta"></param>
-    /// <param name="Slope">斜坡计算倾斜度的时候，已经将向量化成单位向量了</param>
     /// <param name="Direction"></param>
     /// <param name="space"></param>
-    public void Move(float Speed, bool UseTimeDelta, Vector2 Slope, Vector2 Direction)
+    public void Move(float Speed, bool UseTimeDelta, Vector2 Direction)
     {
+        //应用斜坡
+        if(Direction == Vector2.right && DoLookRight)
+        {
+            Direction = PlayerSlope;
+        }
+        else if (Direction == Vector2.left && !DoLookRight && Direction != -PlayerSlope)
+        {
+            Debug.Log(Direction);
+            Direction = -PlayerSlope;
+
+        }
+
+
+
+
         float x = Direction.x; float y = Direction.y;
         bool Border = false;
 
@@ -687,14 +718,6 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             x = 0f;
             Border = true;
         }
-
-        //斜坡修正移动方向
-        if(Slope != Vector2.right)
-        {
-            y = 1f;
-            Border = true;
-        }
-
         if (Border)
         {
             //减少一个new
@@ -705,12 +728,11 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
         if (UseTimeDelta)
         {
-            Debug.Log(Direction * Slope);
-            tr.Translate(Direction * Slope * Speed * MoveSpeedRatio * Time.deltaTime, Space.World);
+            tr.Translate(Direction * Speed * MoveSpeedRatio * Time.deltaTime, Space.World);
         }
         else
         {
-            tr.Translate(Direction * Slope * Speed * MoveSpeedRatio, Space.World);
+            tr.Translate(Direction * Speed * MoveSpeedRatio, Space.World);
         }
     }
 

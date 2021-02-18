@@ -14,5 +14,5 @@ public interface IMove
     /// <param name="UseTimeDelta">是否使用TimeDelta</param>
     /// <param name="Slope">斜坡的角度（单位向量）</param>
     /// <param name="Direction">移动方向</param>
-   void Move(float Speed, bool UseTimeDelta, Vector2 Slope, Vector2 Direction);
+   void Move(float Speed, bool UseTimeDelta, Vector2 Direction);
 }
