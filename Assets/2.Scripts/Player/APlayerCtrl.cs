@@ -466,6 +466,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
                 else if (infoLeft.collider.CompareTag("Floor") || infoLeft.collider.CompareTag("Wall") || infoLeft.collider.CompareTag("Platform"))
                 {
                     PlayerSlope = Vector2.right;
+                    SlopeInstanceId = 0;
                 }
             }
             else if (infoRight.collider != null)// || infoRight.collider != null)
@@ -483,6 +484,8 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
                 else if (infoRight.collider.CompareTag("Floor") || infoRight.collider.CompareTag("Wall") || infoRight.collider.CompareTag("Platform"))
                 {
                     PlayerSlope = Vector2.right;
+                    SlopeInstanceId = 0;
+
                 }
 
 
@@ -493,7 +496,13 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
                 BanGravity = false;
                 StandOnPlatform = false;
                 StandOnFloor = false;
+                SlopeInstanceId = 0;
+                PlayerSlope = Vector2.right;
+
             }
+
+            //有斜坡参数，说明肯定在地上
+            if (PlayerSlope != Vector2.right) IsGround = true;
 
             IsGround = StandOnFloor || StandOnPlatform;
             BanGravity = IsGround;
@@ -542,7 +551,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
         }
 
-
+        /*
         //脚插地修复
         if (infoLeft.collider != null && infoHor.collider != null &&  IsGround && !StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId] && PlayerSlope == Vector2.right)
         {
@@ -552,8 +561,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
                 Debug.Log("YUKI.N> 紧急修正程序已启动");
 
                 tr.Translate(Vector3.up * 0.1f, Space.World);
-                //不断重复，直到脚没插进地里
-                RayCtrl();
+               
                 //防止两脚都插进去之后多次执行
                 return;
             }
@@ -567,9 +575,9 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
                 tr.Translate(Vector3.up * 0.1f, Space.World);
                 //不断重复，直到脚没插进地里
-                RayCtrl();
+               // RayCtrl();
             }
-        }
+        }*/
 
     }
 
@@ -588,7 +596,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
                     break;
                 //还没死呢
                 case false:
-                    Move(GameScoreSettingsIO.MoveSpeed, true, PlayerSlope.normalized, Vector2.right * StageCtrl.gameScoreSettings.Horizontal);
+                    Move(GameScoreSettingsIO.MoveSpeed, true, PlayerSlope, Vector2.right * StageCtrl.gameScoreSettings.Horizontal);
                     break;
             }
         }
@@ -634,7 +642,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// </summary>
     /// <param name="Speed"></param>
     /// <param name="UseTimeDelta"></param>
-    /// <param name="Slope"></param>
+    /// <param name="Slope">斜坡计算倾斜度的时候，已经将向量化成单位向量了</param>
     /// <param name="Direction"></param>
     /// <param name="space"></param>
     public void Move(float Speed, bool UseTimeDelta, Vector2 Slope, Vector2 Direction)
@@ -650,7 +658,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             Border = true;
         }
 
-        //到天花板了，剔除向上移动方向
+        //到天花板了，剔除向上移动方向（仅适用于灵魂球）
         else if (tr.localPosition.y >= 4.1f && Direction.y > 0 && StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId])
         {
             y = 0f;
@@ -680,6 +688,13 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             Border = true;
         }
 
+        //斜坡修正移动方向
+        if(Slope != Vector2.right)
+        {
+            y = 1f;
+            Border = true;
+        }
+
         if (Border)
         {
             //减少一个new
@@ -690,11 +705,12 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
         if (UseTimeDelta)
         {
-            tr.Translate(Direction * Slope.normalized * Speed * MoveSpeedRatio * Time.deltaTime, Space.World);
+            Debug.Log(Direction * Slope);
+            tr.Translate(Direction * Slope * Speed * MoveSpeedRatio * Time.deltaTime, Space.World);
         }
         else
         {
-            tr.Translate(Direction * Slope.normalized * Speed * MoveSpeedRatio, Space.World);
+            tr.Translate(Direction * Slope * Speed * MoveSpeedRatio, Space.World);
         }
     }
 

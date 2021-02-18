@@ -28,7 +28,7 @@ MonoBehaviour:
   LastLap: 1
   SelectedGirlInGame: 040000000700000007000000
   GirlsLevel: 0100000001000000010000000100000001000000
-  GirlSoulLimit: 00000000000000000000000000000000d04d0000
+  GirlSoulLimit: 00000000000000000000000000000000cc4d0000
   GirlsVit: 0000000000000000000000000000000058000000
   GirlsPow: 000000000000000000000000000000000a000000
   MagiaKeyDown: 000000
@@ -223,7 +223,7 @@ MonoBehaviour:
       y: -115
       width: 60
       height: 60
-  UseScreenInput: 2
+  UseScreenInput: 0
   joystick: {x: 0, y: 0}
   Horizontal: 0
   Down: 0
