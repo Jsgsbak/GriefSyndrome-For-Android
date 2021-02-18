@@ -604,6 +604,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// </summary>
     void Walk()
     {
+        /*
         if (StageCtrl.gameScoreSettings.UseScreenInput == 2)
         {
             switch (StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId])
@@ -617,9 +618,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
                     Move(GameScoreSettingsIO.MoveSpeed, true, Vector2.right * StageCtrl.gameScoreSettings.Horizontal);
                     break;
             }
-        }
-        else
-        {
+        }*/
             switch (StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId])
             {
                 //是那个球，直接无视平台
@@ -633,12 +632,9 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
                         Move(GameScoreSettingsIO.MoveSpeed, true, Vector2.down);
                     }
                     break;
-            }
-
-            //不管是否死亡都用同一个左右移动
-            Move(GameScoreSettingsIO.MoveSpeed, true, Vector2.right * StageCtrl.gameScoreSettings.Horizontal);
-
         }
+        //不管是否死亡都用同一个左右移动
+        Move(GameScoreSettingsIO.MoveSpeed, true, Vector2.right * StageCtrl.gameScoreSettings.Horizontal);
 
         // tr.Translate(StageCtrl.gameScoreSettings.Horizontal * Vector2.right * StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].MoveSpeed * MoveSpeedRatio * Time.deltaTime, Space.World);
 

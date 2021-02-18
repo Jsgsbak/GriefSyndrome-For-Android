@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 313b2d6938c7ddd4890779c79cd6dffe, type: 3}
   m_Name: GameScoreAndSettings
   m_EditorClassIdentifier: 
+  BundleVersionCode: 31
   Score: 000000000000000000000000
   HiScore: 10000
   HiScoreFace: 070000000700000007000000
@@ -26,9 +27,9 @@ MonoBehaviour:
   LocalIsStiff: 0
   Success: 0
   LastLap: 1
-  SelectedGirlInGame: 040000000700000007000000
+  SelectedGirlInGame: 070000000700000007000000
   GirlsLevel: 0100000001000000010000000100000001000000
-  GirlSoulLimit: 00000000000000000000000000000000ca4d0000
+  GirlSoulLimit: 00000000000000000000000000000000c54d0000
   GirlsVit: 0000000000000000000000000000000058000000
   GirlsPow: 000000000000000000000000000000000a000000
   MagiaKeyDown: 000000
@@ -49,7 +50,7 @@ MonoBehaviour:
   AllDie: 0
   BattlingMajo: 0
   NewestMajo: 0
-  MajoSceneToTitle: 1
+  MajoSceneToTitle: 0
   BGMVol: 0.6
   SEVol: 0.7
   MaxFps: 60
@@ -223,7 +224,7 @@ MonoBehaviour:
       y: -115
       width: 60
       height: 60
-  UseScreenInput: 0
+  UseScreenInput: 2
   joystick: {x: 0, y: 0}
   Horizontal: 0
   Down: 0
