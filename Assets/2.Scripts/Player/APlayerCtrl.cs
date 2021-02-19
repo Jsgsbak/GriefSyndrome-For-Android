@@ -455,6 +455,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             {
                 StandOnPlatform = infoLeft.collider.CompareTag("Platform");
                 StandOnFloor = infoLeft.collider.CompareTag("Floor") || infoLeft.collider.CompareTag("Wall") || infoLeft.collider.CompareTag("Slope");
+               
                 //斜坡
                 if (infoLeft.collider.CompareTag("Slope") && SlopeInstanceId != infoLeft.collider.GetInstanceID())
                 {
