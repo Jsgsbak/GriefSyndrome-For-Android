@@ -93,7 +93,7 @@ public class TitleCtrl : MonoBehaviour
         gameScoreSettingsIO = Resources.Load("GameScoreAndSettings") as GameScoreSettingsIO;
 
         //版本 号
-        Version.text = string.Format("Ver.{0} - {1}", Application.version,gameScoreSettingsIO.BundleVersionCode.ToString());
+        Version.text = string.Format(" v.{0} ", Application.version,gameScoreSettingsIO);
     }
 
 

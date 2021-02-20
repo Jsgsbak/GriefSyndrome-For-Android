@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEditor;
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
@@ -30,12 +31,10 @@ public class GSPreprocessBuild : Editor, IPreprocessBuildWithReport, IPostproces
     {
         //发包前全部初始化
         GameScoreSettingsIO gss = (GameScoreSettingsIO)Resources.Load("GameScoreAndSettings");
+
         gss.AllInitial();
         Debug.Log("初始化完成");
         //自动增加内部版本号，防止遗忘
         PlayerSettings.Android.bundleVersionCode++;
-        //gss同步内部版本号
-        gss.BundleVersionCode = PlayerSettings.Android.bundleVersionCode;
-
     }
 }
