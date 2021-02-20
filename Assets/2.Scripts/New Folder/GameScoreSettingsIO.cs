@@ -13,8 +13,6 @@ using UnityEngine.U2D;
 /// </summary>
 public class GameScoreSettingsIO : ScriptableObject
 {
-    [HideInInspector] public int BundleVersionCode = 31;
-
     #region 正式玩的变量
 
 
