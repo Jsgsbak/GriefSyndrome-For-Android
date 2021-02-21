@@ -114,6 +114,14 @@ public class Variable
         HorizontalStrong_3
     }
 
+
+
+    public enum SoundEffect
+    {
+        text1 = 0,
+        text2
+    }
+
     /// <summary>
     /// 魔法少女属性设置
     /// </summary>
@@ -163,8 +171,8 @@ public class Variable
         public int MaigaVit = 45;
 
         [Space]
-        [Header("是能够蓄力的Magia吗")]
-        public bool LongMagia = true;
+        [Header("具有向前跳的动画")]
+        public bool JumpForwardExist = true;
     }
 
 

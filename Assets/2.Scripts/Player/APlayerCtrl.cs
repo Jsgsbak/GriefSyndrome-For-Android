@@ -11,7 +11,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 {
     #region  基础属性
     [Header("基础属性")]
-    public int PlayerId = 0;
+    public int PlayerId = 1;
     public int MahouShoujoId = 0;
     /// <summary>
     /// 玩家所在斜坡的单位圆坐标（角度/三角函数那些）
@@ -103,6 +103,12 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// 正在跳跃（专指上升阶段）
     /// </summary>
     public bool IsJumping = false;
+
+    /// <summary>
+    /// 正在向前跳（仅对有向前跳动画的角色有用）
+    /// </summary>
+    public bool IsJumpingForward = false;
+
     /// <summary>
     /// 站在平台上
     /// </summary>
@@ -142,8 +148,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         spriteRenderer = GetComponent<SpriteRenderer>();
         Material = spriteRenderer.material;
         #endregion
-        //先这样写,多人游戏的话
-        PlayerId = 0;
+
     }
 
     private void Start()
@@ -174,6 +179,15 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         //保存本地玩家选择的魔法少女的魔法少女id
         StageCtrl.gameScoreSettings.PlayerSelectedGirlId = MahouShoujoId;
 
+        //获取PlayerId
+        for (int i = 0; i < 3; i++)
+        {
+            if (StageCtrl.gameScoreSettings.SelectedGirlInGame[i].ToString().Equals(name))
+            {
+                PlayerId = i;
+                break;
+            }
+        }
     }
 
 
@@ -298,9 +312,14 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         {
             playerStatus = Variable.PlayerStatus.Walk;
         }
-        else if ( IsJumping && !StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] && !StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId] && !StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId])
+        else if ( IsJumping && !IsJumpingForward && !StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] && !StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId] && !StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId])
         {
             playerStatus = Variable.PlayerStatus.Jump;
+        }
+        else if (IsJumping && IsJumpingForward && !StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] && !StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId] && !StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId])
+        {
+            playerStatus = Variable.PlayerStatus.JumpForward;
+
         }
         else if ( !IsGround && !IsJumping && !StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] && !StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId] && !StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId])
         {
@@ -360,7 +379,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         if (BanJump || StageCtrl.gameScoreSettings.Zattack || StageCtrl.gameScoreSettings.Xattack || StageCtrl.gameScoreSettings.Magia) return;
 
         //跳跃触发
-        if (!StageCtrl.gameScoreSettings.Down && StageCtrl.gameScoreSettings.Jump && Mathf.Abs(JumpInteralTimer - Time.timeSinceLevelLoad) > 0.1F && JumpCount != 2)
+        if (!StageCtrl.gameScoreSettings.Down && StageCtrl.gameScoreSettings.Jump && JumpCount != 2)
         {
             MoveSpeedRatio = 1f;
             JumpInteralTimer = Time.timeSinceLevelLoad;
@@ -368,12 +387,14 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             JumpCount++;
             BanGravity = true;
             BanGravityRay = true;
+
+            IsJumpingForward = StageCtrl.gameScoreSettings.Horizontal != 0;
         }
         //跳跃状态
         if (IsJumping)
         {
             //上升
-            if (Time.timeSinceLevelLoad - JumpInteralTimer <= 0.3f)
+            if (Time.timeSinceLevelLoad - JumpInteralTimer <= 0.35f)
             {
                 //解决一个很奇怪的BUG
                 IsGround = false;
@@ -385,6 +406,8 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
                 BanGravityRay = false;
                 BanGravity = false;
                 IsJumping = false;
+                IsJumpingForward = false;
+
             }
         }
 
@@ -429,6 +452,8 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         BanGravityRay = false;//有向上移动的攻击时，才能禁用这个
         IsGround = false;
         IsJumping = false;
+        IsJumpingForward = false;
+
     }
 
     /// <summary>
@@ -667,7 +692,6 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         }
         else if (Direction == Vector2.left && !DoLookRight && Direction != -PlayerSlope)
         {
-            Debug.Log(Direction);
             Direction = -PlayerSlope;
 
         }
@@ -859,13 +883,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
     public abstract void MagiaAnimationEvent(string AnimationName);
     #endregion
-
-
-
-    public void PlaySoundEffect(EasyBGMCtrl.SoundEffect playerSoundEffect)
-    {
-        EasyBGMCtrl.easyBGMCtrl.PlaySE((int)playerSoundEffect);
-    }
+   
 
     #region 时间变化 信息更新与升级
 
@@ -1006,8 +1024,8 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// </summary>
     public void GetHurt(int damage)
     {
-        //无敌不执行后续操作
-        if (IsInvincible)
+        //无敌、死亡、灵魂球不执行后续操作
+        if (IsInvincible || StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] || StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId])
         {
             return;
         }
@@ -1179,6 +1197,10 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// <returns></returns>
     public void GemBroken()
     {
+        //应用影子魔女的效果，尝试修复移动设备下不产生fade效果的bug
+        Material.EnableKeyword("OUTBASE_ON");
+        Material.EnableKeyword("GREYSCALE_ON");
+
         //玩家变黑，然后消失
         Material.EnableKeyword("GREYSCALE_ON");//变黑
         //消失准备

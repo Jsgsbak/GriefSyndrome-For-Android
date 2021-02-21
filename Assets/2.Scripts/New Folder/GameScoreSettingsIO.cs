@@ -249,7 +249,7 @@ public class GameScoreSettingsIO : ScriptableObject
         UseScreenInput = 2;
         Load();
         //做啥角色就换成啥
-        SelectedGirlInGame[0] = Variable.PlayerFaceType.Sayaka;
+        SelectedGirlInGame[0] = Variable.PlayerFaceType.Kyoko;
         MajoSceneToTitle = false;//一定要放到魔女初始化后面
                                  
         SaveGame.DeleteAll();//删除存档
@@ -291,10 +291,11 @@ public class GameScoreSettingsIO : ScriptableObject
         GirlsLevel = new int[] { 1, 1, 1 ,1,1};
         AllDie = false;
         LocalIsStiff = false;
-        //0.07
+        //0.1.X
         Succeed = false;
         Pause = false;
-        MagicalGirlsDie = new bool[] { true, true, true, true, false }; //这个版本临时改成这样
+        //0.2.X
+        MagicalGirlsDie = new bool[] { true, false, true, true, false }; //这个版本临时改成这样
     }
 
     /// <summary>
@@ -327,7 +328,7 @@ public class GameScoreSettingsIO : ScriptableObject
         LastLap = lap;
 
         Succeed = false;
-        //0.0.7
+        //0.1.X
         CleanSoul = false;
         CleanVit = false;
         Pause = false;

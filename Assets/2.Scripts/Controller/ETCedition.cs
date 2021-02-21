@@ -155,7 +155,7 @@ public class ETCedition : MonoBehaviour
             StageCtrl.gameScoreSettings.Pause = true;
         }
 
-
+        //僵直状态仅允许暂停游戏
         if (StageCtrl.gameScoreSettings.LocalIsStiff)
         {
             return;

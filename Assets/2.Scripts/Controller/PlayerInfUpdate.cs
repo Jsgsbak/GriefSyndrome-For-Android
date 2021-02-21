@@ -128,49 +128,49 @@ public void UpdateScore()
     [ContextMenu("设置名称，灵魂宝石图片 顺便剔除qb")]
     public void SetNameAndSG(string Name)
     {
-        if(Name == string.Empty)
-        {
-            MahouShoujoId = 4;
-            Name = "Miki Sayaka";
-            SoulGem.sprite = SoulGems[4];
-        }
-        else if (Name.Equals("Homura") | Name.Equals("Homura_m"))
-        {
-            MahouShoujoId = 0;
-            Name = "Akemi Homura";
-            SoulGem.sprite = SoulGems[0];
-        }
-        else if(Name.Equals("Kyoko"))
-        {
-            MahouShoujoId = 1;
-            Name = "Sakura Koyko";
-            SoulGem.sprite = SoulGems[1];
-        }
-        else if (Name.Equals("Madoka"))
-        {
-            MahouShoujoId = 2;
-            Name = "Kaname Madoka";
-            SoulGem.sprite = SoulGems[2];
-        }
-        else if (Name.Equals("Mami"))
-        {
-            MahouShoujoId = 3;
-            Name = "Tomoe Mami";
-            SoulGem.sprite = SoulGems[3];
-        }
-        else if (Name == "Sayaka")
-        {
-            MahouShoujoId = 4;
-            Name = "Miki Sayaka";
-            SoulGem.sprite = SoulGems[4];
-        }
-        else
-        {
-            //以防万一，剔除qb
-            Destroy(gameObject);
-        }
 
+        switch (Name)
+        {
+            case "Homura":
+                MahouShoujoId = 0;
+                Name = "Akemi Homura";
+                SoulGem.sprite = SoulGems[0];
+                break;
 
+            case "Homura_m":
+                goto case "Homura";
+
+            case "Kyoko":
+                MahouShoujoId = 1;
+                Name = "Sakura Kyoko";
+                SoulGem.sprite = SoulGems[1];
+                break;
+
+            case "Madoka":
+                MahouShoujoId = 2;
+                Name = "Kaname Madoka";
+                SoulGem.sprite = SoulGems[2];
+                break;
+
+            case "Mami":
+                MahouShoujoId = 3;
+                Name = "Tomoe Mami";
+                SoulGem.sprite = SoulGems[3];
+                break;
+
+            case "Sayaka":
+                MahouShoujoId = 4;
+                Name = "Miki Sayaka";
+                SoulGem.sprite = SoulGems[4];
+                break;
+
+            default:
+                //以防万一，剔除qb
+                Destroy(gameObject);
+                break;
+
+        }
+        //应用名字
         PlayerName.text = Name;
     }
 

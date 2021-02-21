@@ -287,15 +287,11 @@ public class TitleCtrl : MonoBehaviour
 
     //没有适配多人游戏！
     /// <summary>
-    /// 选择魔法少女（检查视图注入） 
+    /// 选择魔法少女（检查视图注入）
     /// </summary>
     public void SelectedMahoshoujo(int id)
     {
 
-        //确认音效 多人游戏的时候前2个玩家选择后播放。
-        //  EasyBGMCtrl.easyBGMCtrl.PlaySE(0);
-        //最后一个玩家，播放进入魔女结界的音效
-        EasyBGMCtrl.easyBGMCtrl.PlaySE(4);
 
 
         //麻花焰单独处理
@@ -303,14 +299,15 @@ public class TitleCtrl : MonoBehaviour
         {
             if (gameScoreSettingsIO.MagicalGirlsDie[0])
             {
-                //挂了，选择为QB
-                gameScoreSettingsIO.SelectedGirlInGame[0] = Variable.PlayerFaceType.QB;//玩家1，联机的话要在处理 0：玩家1
+                //挂了，选择为QB 因为没做QB，所以暂时不能用
+              //  gameScoreSettingsIO.SelectedGirlInGame[0] = Variable.PlayerFaceType.QB;//玩家1，联机的话要在处理 0：玩家1
             }
             else
             {
                 //没挂，正常选择
                 gameScoreSettingsIO.SelectedGirlInGame[0] = (Variable.PlayerFaceType)id;//玩家1，联机的话要在处理0：玩家1
 
+                MagiaGirlselectionSE();
 
                 //应该所有玩家都选择完在进行处理
                 //切换场景
@@ -324,13 +321,16 @@ public class TitleCtrl : MonoBehaviour
 
         else if (gameScoreSettingsIO.MagicalGirlsDie[id])
         {
-            //挂了，选择为QB 0.0.7暂时禁用
+            //挂了，选择为QB 因为没做QB，所以暂时不能用
             //gameScoreSettingsIO.SelectedGirlInGame[0] = Variable.PlayerFaceType.QB;//玩家1，联机的话要在处理 0：玩家1
         }
         else
         {
             //没挂，正常选择
             gameScoreSettingsIO.SelectedGirlInGame[0] = (Variable.PlayerFaceType)id;//玩家1，联机的话要在处理0：玩家1
+
+            MagiaGirlselectionSE();
+
 
             //应该所有玩家都选择完在进行处理
             //切换场景
@@ -340,6 +340,18 @@ public class TitleCtrl : MonoBehaviour
 
 
     }
+
+    /// <summary>
+    /// 魔法稍许选择音效
+    /// </summary>
+   void MagiaGirlselectionSE()
+    {
+        //确认音效 多人游戏的时候前2个玩家选择后播放。
+        //  EasyBGMCtrl.easyBGMCtrl.PlaySE(0);
+        //最后一个玩家，播放进入魔女结界的音效
+        EasyBGMCtrl.easyBGMCtrl.PlaySE(4);
+    }
+
 
     /// <summary>
     /// 随机staff用。随机杀死魔法少女（？）

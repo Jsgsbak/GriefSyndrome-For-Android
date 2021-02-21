@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 313b2d6938c7ddd4890779c79cd6dffe, type: 3}
   m_Name: GameScoreAndSettings
   m_EditorClassIdentifier: 
-  BundleVersionCode: 31
   Score: 000000000000000000000000
   HiScore: 10000
   HiScoreFace: 070000000700000007000000
@@ -23,21 +22,21 @@ MonoBehaviour:
   BestTime: 0
   BestTimeFace: 070000000700000007000000
   lap: 1
-  PlayerSelectedGirlId: 4
+  PlayerSelectedGirlId: 1
   LocalIsStiff: 0
   Success: 0
   LastLap: 1
-  SelectedGirlInGame: 070000000700000007000000
+  SelectedGirlInGame: 010000000700000007000000
   GirlsLevel: 0100000001000000010000000100000001000000
-  GirlSoulLimit: 00000000000000000000000000000000c54d0000
-  GirlsVit: 0000000000000000000000000000000058000000
-  GirlsPow: 000000000000000000000000000000000a000000
+  GirlSoulLimit: d1430000ab5c00000000000000000000db4d0000
+  GirlsVit: 580000005f000000000000000000000058000000
+  GirlsPow: 0a0000000a00000000000000000000000a000000
   MagiaKeyDown: 000000
   GetHurtInGame: 000000
   IsBodyDieInGame: 000000
   IsSoulBallInGame: 000000
   DoesMajoOrShoujoDie: 0
-  MagicalGirlsDie: 0101010100
+  MagicalGirlsDie: 0100010100
   PlayerDieImage:
   - {fileID: 0}
   - {fileID: 0}
@@ -50,7 +49,7 @@ MonoBehaviour:
   AllDie: 0
   BattlingMajo: 0
   NewestMajo: 0
-  MajoSceneToTitle: 0
+  MajoSceneToTitle: 1
   BGMVol: 0.6
   SEVol: 0.7
   MaxFps: 60
@@ -69,7 +68,7 @@ MonoBehaviour:
     Recovery: 18
     Rebirth: 30
     MaigaVit: 50
-    LongMagia: 0
+    JumpForwardExist: 1
   - name: Kyoko
     BasicPow: 10
     PowGrowth: 1
@@ -84,7 +83,7 @@ MonoBehaviour:
     Recovery: 18
     Rebirth: 30
     MaigaVit: 35
-    LongMagia: 0
+    JumpForwardExist: 1
   - name: Madoka
     BasicPow: 10
     PowGrowth: 1
@@ -99,7 +98,7 @@ MonoBehaviour:
     Recovery: 18
     Rebirth: 30
     MaigaVit: 45
-    LongMagia: 1
+    JumpForwardExist: 1
   - name: Mami
     BasicPow: 10
     PowGrowth: 1
@@ -114,7 +113,7 @@ MonoBehaviour:
     Recovery: 18
     Rebirth: 30
     MaigaVit: 100
-    LongMagia: 1
+    JumpForwardExist: 1
   - name: Sayaka
     BasicPow: 10
     PowGrowth: 1
@@ -129,7 +128,7 @@ MonoBehaviour:
     Recovery: 6
     Rebirth: 9
     MaigaVit: 20
-    LongMagia: 0
+    JumpForwardExist: 1
   - name: Homura_m
     BasicPow: 10
     PowGrowth: 1
@@ -144,7 +143,7 @@ MonoBehaviour:
     Recovery: 18
     Rebirth: 30
     MaigaVit: 50
-    LongMagia: 0
+    JumpForwardExist: 1
   KeyPosScale:
   - name: joy stick
     EditPosition:
