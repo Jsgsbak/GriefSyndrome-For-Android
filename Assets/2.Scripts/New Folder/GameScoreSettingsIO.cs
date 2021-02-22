@@ -188,6 +188,10 @@ public class GameScoreSettingsIO : ScriptableObject
    /// 跳跃速度
    /// </summary>
     public const float JumpSpeed = 15f;
+    /// <summary>
+    /// 动画hash值
+    /// </summary>
+    public static readonly int[] AnimationHash = new int[30];
 
 
     /// <summary>

@@ -1119,6 +1119,24 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!1 &292802374 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 963269164764891552, guid: a5f3e5458bee1234a944fda4655425d0,
+    type: 3}
+  m_PrefabInstance: {fileID: 963269164359158730}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &292802375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 292802374}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ef38ea5a41d7854bbadc8ebe57ec7ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &324936906
 GameObject:
   m_ObjectHideFlags: 0
@@ -1807,6 +1825,8 @@ GameObject:
   - component: {fileID: 351694831}
   - component: {fileID: 351694833}
   - component: {fileID: 351694834}
+  - component: {fileID: 351694836}
+  - component: {fileID: 351694835}
   m_Layer: 0
   m_Name: Kyoko
   m_TagString: Untagged
@@ -1959,6 +1979,53 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee158225ee1e59f4791627785501d950, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!50 &351694835
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 351694829}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!61 &351694836
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 351694829}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.53389597, y: -0.2235555}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 5.7656307, y: 3.8400002}
+    newSize: {x: 4.48, y: 5.12}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.5268407, y: 2.0705771}
+  m_EdgeRadius: 0
 --- !u!1 &362900779
 GameObject:
   m_ObjectHideFlags: 0
@@ -4946,13 +5013,15 @@ GameObject:
   - component: {fileID: 1241280512}
   - component: {fileID: 1241280511}
   - component: {fileID: 1241280510}
+  - component: {fileID: 1241280516}
+  - component: {fileID: 1241280515}
   m_Layer: 8
   m_Name: Sayaka
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1241280510
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5101,6 +5170,53 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!61 &1241280515
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1241280509}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.29377764, y: -0.1053164}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2.56, y: 2.56}
+    newSize: {x: 4.48, y: 5.12}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.9525372, y: 1.4624906}
+  m_EdgeRadius: 0
+--- !u!50 &1241280516
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1241280509}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &1279097983
 GameObject:
   m_ObjectHideFlags: 0
@@ -8971,6 +9087,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 963269164764891552, guid: a5f3e5458bee1234a944fda4655425d0,
+        type: 3}
+      propertyPath: m_Name
+      value: 0.1.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 963269164837966372, guid: a5f3e5458bee1234a944fda4655425d0,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 129.87305
+      objectReference: {fileID: 0}
     - target: {fileID: 963269164837966393, guid: a5f3e5458bee1234a944fda4655425d0,
         type: 3}
       propertyPath: m_Enabled
@@ -8988,24 +9114,89 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 963269165712656806, guid: a5f3e5458bee1234a944fda4655425d0,
         type: 3}
+      propertyPath: onDown.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 963269165712656806, guid: a5f3e5458bee1234a944fda4655425d0,
+        type: 3}
       propertyPath: onDown.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1241280513}
+      objectReference: {fileID: 292802375}
+    - target: {fileID: 963269165712656806, guid: a5f3e5458bee1234a944fda4655425d0,
+        type: 3}
+      propertyPath: onDown.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: HurtAllPlayer
+      objectReference: {fileID: 0}
+    - target: {fileID: 963269165712656806, guid: a5f3e5458bee1234a944fda4655425d0,
+        type: 3}
+      propertyPath: onDown.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: HurtImitate, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 963269165712656806, guid: a5f3e5458bee1234a944fda4655425d0,
+        type: 3}
+      propertyPath: onDown.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 963269165784765371, guid: a5f3e5458bee1234a944fda4655425d0,
         type: 3}
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 963269165797588692, guid: a5f3e5458bee1234a944fda4655425d0,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 79.92187
+      objectReference: {fileID: 0}
+    - target: {fileID: 963269165811995275, guid: a5f3e5458bee1234a944fda4655425d0,
+        type: 3}
+      propertyPath: onDown.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 963269165811995275, guid: a5f3e5458bee1234a944fda4655425d0,
         type: 3}
       propertyPath: onDown.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1241280513}
+      objectReference: {fileID: 292802375}
+    - target: {fileID: 963269165811995275, guid: a5f3e5458bee1234a944fda4655425d0,
+        type: 3}
+      propertyPath: onDown.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: HurtAllPlayer
+      objectReference: {fileID: 0}
+    - target: {fileID: 963269165811995275, guid: a5f3e5458bee1234a944fda4655425d0,
+        type: 3}
+      propertyPath: onDown.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: HurtImitate, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 963269165811995275, guid: a5f3e5458bee1234a944fda4655425d0,
+        type: 3}
+      propertyPath: onDown.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 963269165991234599, guid: a5f3e5458bee1234a944fda4655425d0,
+        type: 3}
+      propertyPath: onDown.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 963269165991234599, guid: a5f3e5458bee1234a944fda4655425d0,
         type: 3}
       propertyPath: onDown.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1241280513}
+      objectReference: {fileID: 292802375}
+    - target: {fileID: 963269165991234599, guid: a5f3e5458bee1234a944fda4655425d0,
+        type: 3}
+      propertyPath: onDown.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: HurtAllPlayer
+      objectReference: {fileID: 0}
+    - target: {fileID: 963269165991234599, guid: a5f3e5458bee1234a944fda4655425d0,
+        type: 3}
+      propertyPath: onDown.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: HurtImitate, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 963269165991234599, guid: a5f3e5458bee1234a944fda4655425d0,
+        type: 3}
+      propertyPath: onDown.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: 1145140
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a5f3e5458bee1234a944fda4655425d0, type: 3}
 --- !u!224 &963269164359158731 stripped

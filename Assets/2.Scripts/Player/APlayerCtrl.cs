@@ -148,7 +148,6 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         spriteRenderer = GetComponent<SpriteRenderer>();
         Material = spriteRenderer.material;
         #endregion
-
     }
 
     private void Start()
@@ -188,6 +187,35 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
                 break;
             }
         }
+        //注册受伤事件
+        switch (PlayerId)
+        {
+            case 0:
+                StageCtrl.stageCtrl.Player1Hurt.AddListener(GetHurt);
+                break;
+            case 1:
+                StageCtrl.stageCtrl.Player2Hurt.AddListener(GetHurt);
+                break;
+            case 2:
+                StageCtrl.stageCtrl.Player3Hurt.AddListener(GetHurt);
+                break;
+        }
+        //设置tag
+        tag = string.Format("Player{0}", (PlayerId+1).ToString());
+        //修正玩家层
+        gameObject.layer = 8;
+
+#if UNITY_EDITOR
+        //方便调试罢了
+        //计算动画hash值
+        int ii = 0;
+        foreach (var item in Enum.GetNames(typeof(Variable.PlayerStatus)))
+        {
+            GameScoreSettingsIO.AnimationHash[ii] = Animator.StringToHash(item);
+            ii++;
+        }
+#endif
+
     }
 
 
@@ -365,8 +393,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             else if (StageCtrl.gameScoreSettings.Horizontal == 1) { tr.rotation = Quaternion.Euler(0f, 0f, 0f); DoLookRight = true; }//spriteRenderer.flipX = StageCtrl.gameScoreSettings.Horizontal == -1;//
         }
 
-
-        animator.Play(playerStatus.ToString());
+        animator.Play(GameScoreSettingsIO.AnimationHash[(int)playerStatus]);
        
     }
 
@@ -1015,6 +1042,27 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     public void HurtMyself()
     {
         GetHurt(20);
+    }
+    [ContextMenu("CleanSoul")]
+    public void CleanSoul()
+    {
+        if (!StageCtrl.gameScoreSettings.DoesMajoOrShoujoDie)
+        {
+            GetHurt(56756756);
+        }
+
+    }
+    [ContextMenu("CleanVit")]
+    public void CleanVit()
+    {
+        GetHurt(StageCtrl.gameScoreSettings.GirlsVit[MahouShoujoId]);
+
+    }
+
+    [ContextMenu("Succeed")]
+    public void Succeed()
+    {
+        StageCtrl.gameScoreSettings.Succeed = true;
     }
 #endif
 

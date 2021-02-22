@@ -81,7 +81,7 @@ public class Variable
         Walk,
         Jump,
         Fall,
-        JumpForward,
+        JumpForward, //4
         //倒下
         PlayerDie_1,
         //换成校服
@@ -92,26 +92,26 @@ public class Variable
         DeathFadeOut,
         GetHurt,
         PlayerSoul,
-        UpWeak,
+        UpWeak, //10
         DownWeak,
         Weak_1,
         Weak_2,
         Weak_3,
-        Magia_1,
+        Magia_1, //15
         Magia_2,
         Magia_3,
         Strong_1,
         Strong_2,
-        Strong_3,
+        Strong_3, //20
         UpStrong_1,
         UpStrong_2,
         Upstrong_3,
         DownStrong_1,
         DownStrong_2,
-        DownStrong_3,
+        DownStrong_3,//26
         HorizontalStrong_1,
         HorizontalStrong_2,
-        HorizontalStrong_3
+        HorizontalStrong_3//29
     }
 
 

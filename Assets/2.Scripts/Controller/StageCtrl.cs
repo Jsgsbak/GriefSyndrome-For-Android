@@ -69,7 +69,37 @@ public class StageCtrl : MonoBehaviour
 
 
         gameScoreSettings = (GameScoreSettingsIO)Resources.Load("GameScoreAndSettings");
-       
+      
+        
+        //先禁用所有玩家
+        foreach (var item in Players)
+        {
+            item.SetActive(false);
+        }
+        //生成玩家（现在仅用来测试）
+        for (int i = 0; i < 3; i++)
+        {
+            if (gameScoreSettings.SelectedGirlInGame[i] != Variable.PlayerFaceType.Null)
+            {
+                Players[(int)gameScoreSettings.SelectedGirlInGame[i]].transform.SetPositionAndRotation(Point.position, Point.rotation);
+                Players[(int)gameScoreSettings.SelectedGirlInGame[i]].SetActive(true);
+                Players[(int)gameScoreSettings.SelectedGirlInGame[i]].transform.SetParent(Stage.transform);
+
+
+                if (gameScoreSettings.SelectedGirlInGame[i] != Variable.PlayerFaceType.QB)
+                {
+                    playerNumber++;//玩家数记录（排除QB）
+                }
+            }
+        }
+        //删除其他玩家
+        foreach (var item in Players)
+        {
+            if (!item.activeInHierarchy)
+            {
+                Destroy(item);
+            }
+        }
 #if UNITY_EDITOR
 
         //检查是否存在BGMCtrl
@@ -108,35 +138,7 @@ public class StageCtrl : MonoBehaviour
         }
         EasyBGMCtrl.easyBGMCtrl.PlayBGM(BGMid);
 
-        //先禁用所有玩家
-        foreach (var item in Players)
-        {
-            item.SetActive(false);
-        }
-        //生成玩家（现在仅用来测试）
-        for (int i = 0; i < 3; i++)
-        {
-            if(gameScoreSettings.SelectedGirlInGame[i] != Variable.PlayerFaceType.Null)
-            {
-                Players[(int)gameScoreSettings.SelectedGirlInGame[i]].transform.SetPositionAndRotation(Point.position, Point.rotation);
-                Players[(int)gameScoreSettings.SelectedGirlInGame[i]].SetActive(true);
-                Players[(int)gameScoreSettings.SelectedGirlInGame[i]].transform.SetParent(Stage.transform);
-
-
-                if (gameScoreSettings.SelectedGirlInGame[i] != Variable.PlayerFaceType.QB)
-                {
-                    playerNumber++;//玩家数记录（排除QB）
-                }
-            }
-        }
-        //删除其他玩家
-        foreach (var item in Players)
-        {
-            if (!item.activeInHierarchy)
-            {
-                Destroy(item);
-            }
-        }
+       
 
         //初始化计时器
         InvokeRepeating("Timer", 1f, 1f);

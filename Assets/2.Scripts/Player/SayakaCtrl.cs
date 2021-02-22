@@ -6,35 +6,6 @@ using UnityEngine;
 //先暂时不继承
 public class SayakaCtrl : APlayerCtrl
 {
-
-    #region 0.0.7版测试用按钮
-
-    public void cleanSOul()
-    {
-        if (!StageCtrl.gameScoreSettings.DoesMajoOrShoujoDie)
-        {
-            GetHurt(56756756);
-        }
-
-    }
-
-    public void cleanVit()
-    {
-        GetHurt(StageCtrl.gameScoreSettings.GirlsVit[MahouShoujoId]);
-
-    }
-
-    public void HurtMyself()
-    {
-        GetHurt(20);
-    }
-
-    public void Succeed()
-    {
-        StageCtrl.gameScoreSettings.Succeed = true;
-    }
-
-    #endregion
     /// <summary>
     /// 适用于X攻击蓄力的魔法阵
     /// </summary>
