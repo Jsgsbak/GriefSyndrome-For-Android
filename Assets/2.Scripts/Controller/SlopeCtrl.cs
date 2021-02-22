@@ -5,6 +5,7 @@ using UnityEngine;
 /// <summary>
 /// 计算斜坡的角度，并将该物体名字改成角度
 /// </summary>
+[RequireComponent(typeof(BoxCollider2D))]
 public class SlopeCtrl : MonoBehaviour
 {
 
