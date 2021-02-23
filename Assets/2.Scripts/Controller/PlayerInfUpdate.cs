@@ -18,7 +18,8 @@ public class PlayerInfUpdate : MonoBehaviour
     public TMP_Text Level;
     public TMP_Text SoulLimit;
     public TMP_Text PlayerName;
-
+    float RedSoulLimitTimer;
+    bool RedSoulLimit;
     public Image Health;
     public Image Damaged;
     public Image Magia;//魔法放在前面
@@ -71,10 +72,33 @@ public void UpdateScore()
     [ContextMenu("更新灵魂值")]
     public void UpdateSoulLimit()
     {
-        //Soul  limit <size=25> 19926</size>
-        SoulLimit.text = string.Format("Soul limit  <size=25>{0}</size>",Mathf.Clamp( StageCtrl.gameScoreSettings.GirlSoulLimit[MahouShoujoId],0,999999));
+        SoulLimit.text = string.Format("Soul limit  <size=25>{0}</size>", Mathf.Clamp(StageCtrl.gameScoreSettings.GirlSoulLimit[MahouShoujoId], 0, 999999));
+
+        /*还有个限制没写（sl数量限制）
+        //红黑闪烁
+
+        //每过一秒
+        if (Time.timeSinceLevelLoad - RedSoulLimitTimer >= 1f)
+            {
+                //重置计时器，便于下一次一秒的计算
+                RedSoulLimitTimer = Time.timeSinceLevelLoad;
+
+                switch (RedSoulLimit)
+                {
+                    case false:
+                        SoulLimit.text = string.Format("Soul limit  <color=white><size=25>{0}</size></color>", Mathf.Clamp(StageCtrl.gameScoreSettings.GirlSoulLimit[MahouShoujoId], 0, 999999));
+                        RedSoulLimit = true;
+                        break;
+
+                    case true:
+                        SoulLimit.text = string.Format("Soul limit  <color=red><size=25>{0}</size></color>", Mathf.Clamp(StageCtrl.gameScoreSettings.GirlSoulLimit[MahouShoujoId], 0, 999999));
+                        RedSoulLimit = false;
+                        break;
+                }
+
+            }*/
     }
-    
+
     public void UpdateSoulGem()
     {
         float now = Mathf.Clamp(StageCtrl.gameScoreSettings.GirlSoulLimit[MahouShoujoId], 0, 999999);

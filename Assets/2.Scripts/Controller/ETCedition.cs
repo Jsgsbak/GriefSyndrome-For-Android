@@ -118,6 +118,8 @@ public class ETCedition : MonoBehaviour
     /// <param name="vector2"></param>
     public void OnMove(Vector2 vector2)
     {
+
+
         //这个是为了得到速度的方向以及兼容其他的输入方式
         if (vector2.x > 0.3f)
         {
@@ -131,8 +133,8 @@ public class ETCedition : MonoBehaviour
         {
             StageCtrl.gameScoreSettings.Horizontal = 0;
         }
-        StageCtrl.gameScoreSettings.Up = vector2.y >= 0.8f;
-        StageCtrl.gameScoreSettings.Down = vector2.y <= -0.8f;
+        StageCtrl.gameScoreSettings.Up = vector2.y >= 0.7f;
+        StageCtrl.gameScoreSettings.Down = vector2.y <= -0.7f;
 
         StageCtrl.gameScoreSettings.joystick = vector2;
 

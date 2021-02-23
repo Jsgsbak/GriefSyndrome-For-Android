@@ -222,7 +222,7 @@ public class GameScoreSettingsIO : ScriptableObject
     [HideInInspector] public bool Up = false;
     [HideInInspector] public bool Jump = false;
     [HideInInspector] public bool Zattack = false;
-    [HideInInspector] public bool ZattackPressed = false;//长按
+    [HideInInspector] public bool ZattackPressed = false;//长按，和短按是一起变成true的
     [HideInInspector] public bool Xattack = false;
     [HideInInspector] public bool XattackPressed = false;
     [HideInInspector] public bool Magia = false;

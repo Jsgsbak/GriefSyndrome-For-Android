@@ -62,8 +62,8 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
 
     #region 组件
-    [HideInInspector] public Transform tr;
-    [HideInInspector] public Animator animator;
+    public Transform tr;
+   [HideInInspector]  public Animator animator;
     [HideInInspector] public SpriteRenderer spriteRenderer;
     Material Material;
     #endregion
@@ -143,7 +143,6 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     private void Awake()
     {
         #region 获取组件
-        tr = GetComponent<Transform>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         Material = spriteRenderer.material;
@@ -611,6 +610,10 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
         if (infoHor.collider != null)// || infoRight.collider != null)
         {
+            Debug.Log(infoHor.collider.name); 
+
+
+
             //撞墙限制移动
             if ( infoHor.collider.CompareTag("Wall"))
             {

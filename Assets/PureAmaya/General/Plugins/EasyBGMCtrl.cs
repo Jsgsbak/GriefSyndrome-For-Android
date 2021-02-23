@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 [DisallowMultipleComponent]
 [RequireComponent(typeof(AudioSource))]
@@ -72,6 +73,7 @@ public class EasyBGMCtrl : MonoBehaviour
     /// 播放BGM
     /// </summary>
     /// <param name="index">小于0停止播放</param>
+    [Obsolete("Wait for a update",false)]
   public void PlayBGM(int index)
     {
         if (index < 0)
@@ -91,6 +93,7 @@ public class EasyBGMCtrl : MonoBehaviour
     /// 播放音效
     /// </summary>
     /// <param name="index">小于0停止播放</param>
+    [Obsolete("Wait for a update", false)]
     public void PlaySE(int index)
     {
         if (index < 0)

@@ -529,26 +529,25 @@ public class TitleCtrl : MonoBehaviour
         eventSystem.SetActive(false);
 
         //事先处理一些数据
-        if (InId == 1)
+        switch (InId)
         {
-            //如果来的是SelectMajo，则检查一下马酒
-            CheckMajo();
-            //音频
-            EasyBGMCtrl.easyBGMCtrl.PlaySE(3);
-        }
-        else if (InId == 2)
-        {
-            //如果来的是SelectMagicalGirls，则检查一下马猴烧酒
-            CheckMahoshoujo();
+            //主标题part
+            case 0:
+                TitlePartShouldDo();
+                break;
+            case 1:
+                //如果来的是SelectMajo，则检查一下马酒
+                CheckMajo();
+                //音频
+                EasyBGMCtrl.easyBGMCtrl.PlaySE(3);
+                break;
 
+            case 2:
+                //如果来的是SelectMagicalGirls，则检查一下马猴烧酒
+                CheckMahoshoujo();
+                break;
         }
-        //主标题part
-        else
-        {
 
-            TitlePartShouldDo();
-
-        }
 
         //一个先变黑另外一个才出来
         if (OutId >= 0)
@@ -562,6 +561,7 @@ public class TitleCtrl : MonoBehaviour
             ChangePart[OutId].gameObject.SetActive(false);
         }
 
+        //即Inid小于0的时候仅仅是禁用当前part
         if (InId >= 0)
         {
 
