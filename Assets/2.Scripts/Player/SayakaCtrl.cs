@@ -161,6 +161,7 @@ public class SayakaCtrl : APlayerCtrl
             //使用正负号的不同来防止多次计算
             if (OrdinaryXTimer >= 0F)
             {
+                //从开始到蓄力完成有1.5s
                 OrdinaryXTimer = -Mathf.Clamp01((Time.timeSinceLevelLoad - OrdinaryXTimer) / 1.5F);
             }
 

@@ -327,19 +327,18 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             return;
         }
 
-            //通过对一些状态变量的判断，得出当前玩家的状态，并应用于动画
+        //通过对一些状态变量的判断，得出当前玩家的状态，并应用于动画
 
-            //基础的在这里写，攻击的在各自玩家脚本中重写
-            if (StageCtrl.gameScoreSettings.Horizontal == 0 &&  IsGround && !IsJumping && !StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] && !StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId] && !StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId])
+        //基础的在这里写，攻击的在各自玩家脚本中重写
+        if (StageCtrl.gameScoreSettings.Horizontal == 0 && IsGround && !IsJumping && !StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] && !StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId] && !StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId])
         {
             playerStatus = Variable.PlayerStatus.Idle;
-            
         }
-        else if (StageCtrl.gameScoreSettings.Horizontal != 0 && IsGround && !IsJumping && !StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] && !StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId]  && !StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId])
+        else if (StageCtrl.gameScoreSettings.Horizontal != 0 && IsGround && !IsJumping && !StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] && !StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId] && !StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId])
         {
             playerStatus = Variable.PlayerStatus.Walk;
         }
-        else if ( IsJumping && !IsJumpingForward && !StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] && !StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId] && !StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId])
+        else if (IsJumping && !IsJumpingForward && !StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] && !StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId] && !StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId])
         {
             playerStatus = Variable.PlayerStatus.Jump;
         }
@@ -348,11 +347,11 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             playerStatus = Variable.PlayerStatus.JumpForward;
 
         }
-        else if ( !IsGround && !IsJumping && !StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] && !StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId] && !StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId])
+        else if (!IsGround && !IsJumping && !StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] && !StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId] && !StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId])
         {
             playerStatus = Variable.PlayerStatus.Fall;
         }
-        else if (StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId]&& StageCtrl.gameScoreSettings.GirlSoulLimit[MahouShoujoId] >= 0)
+        else if (StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId] && StageCtrl.gameScoreSettings.GirlSoulLimit[MahouShoujoId] >= 0)
         {
             playerStatus = Variable.PlayerStatus.GetHurt;
         }
@@ -360,7 +359,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         {
             playerStatus = Variable.PlayerStatus.PlayerSoul;
         }
-        else if (StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] && !StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId] && !PlayPlayerDie2 )
+        else if (StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] && !StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId] && !PlayPlayerDie2)
         {
             playerStatus = Variable.PlayerStatus.PlayerDie_1;
         }
