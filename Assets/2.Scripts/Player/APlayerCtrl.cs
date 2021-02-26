@@ -412,6 +412,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             JumpCount++;
             BanGravity = true;
             BanGravityRay = true;
+            PlayerSlope = Vector2.right; //消除起跳上升阶段仍然保留斜坡属性的Bug
 
             IsJumpingForward = StageCtrl.gameScoreSettings.Horizontal != 0;
         }
@@ -809,7 +810,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             GravityRatio = GravityRatio + 0.5f * Time.deltaTime;
         }*/
 
-        tr.Translate(Vector2.down * 9.8f * GravityRatio * Time.deltaTime, Space.World);
+        tr.Translate(Vector2.down * 9.8f * GravityRatio  * Time.deltaTime, Space.World);
 
     }
 

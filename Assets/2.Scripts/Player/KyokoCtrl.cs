@@ -7,13 +7,16 @@ public class KyokoCtrl : APlayerCtrl
     bool StrongDash = false;
     int StrongForwardDash = 0;
     float OrdinaryXTimer = 0f;
-
+    bool UpAttackMove;
+    int UpAttackCount = 0;
 
     public override void VariableInitialization()
     {
         base.VariableInitialization();
         StrongDash = false;
         OrdinaryXTimer = 0f;
+        UpAttackCount = 0;
+        UpAttackMove = true;
     }
 
 
@@ -175,10 +178,48 @@ public class KyokoCtrl : APlayerCtrl
 
     public override void UpX()
     {
+        if (IsGround) { UpAttackCount = 0; }
+
+        if (StageCtrl.gameScoreSettings.Horizontal == 0 && UpAttackCount < 1 && StageCtrl.gameScoreSettings.Xattack && StageCtrl.gameScoreSettings.Up)
+        {
+            UpAttackCount++;
+            CancelJump();//直接中断跳跃并且不恢复
+            IsAttack[1] = true;
+            BanInput = true;
+            BanGravity = true;
+
+            playerStatus = Variable.PlayerStatus.UpStrong_1;
+        }
+
+        if (UpAttackMove)
+        {
+            if (DoLookRight)
+            {
+                Move(2f, true, new Vector2(0.5f, 3f));
+            }
+            else
+            {
+                Move(2f, true, new Vector2(-0.5f, 3f));
+            }
+        }
     }
 
     public override void UpXattackAnimationEvent(string AnimationName)
     {
+        switch (AnimationName)
+        {
+            case "Jump":
+                UpAttackMove = true;
+                break;
+
+            case "Done":
+                Stiff(0.05F);
+                UpAttackMove = false;
+                IsAttack[1] = false;
+                break;
+        }
+
+
     }
 
     public override void VerticalZ()
