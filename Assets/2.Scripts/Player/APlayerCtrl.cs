@@ -12,7 +12,8 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     #region  基础属性
     [Header("基础属性")]
     public int PlayerId = 1;
-    public int MahouShoujoId = 0;
+    public Variable.PlayerFaceType MahouShoujoType;
+    [HideInInspector] public int MahouShoujoId;
     /// <summary>
     /// 玩家所在斜坡的单位圆坐标（角度/三角函数那些）
     /// </summary>
@@ -175,6 +176,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         InvokeRepeating("PerSecondChange", 1f, 1f);
 
         //保存本地玩家选择的魔法少女的魔法少女id
+        MahouShoujoId = (int)MahouShoujoType;
         StageCtrl.gameScoreSettings.PlayerSelectedGirlId = MahouShoujoId;
 
         //获取PlayerId
