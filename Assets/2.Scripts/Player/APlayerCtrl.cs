@@ -684,7 +684,6 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
         }
 
-        /*
         //脚插地修复
         if (infoLeft.collider != null && infoHor.collider != null &&  IsGround && !StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId] && PlayerSlope == Vector2.right)
         {
@@ -707,7 +706,6 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
                 tr.Translate(Vector3.up * 0.1f, Space.World);
             }
         }
-        */
 
     }
 
@@ -846,7 +844,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// 下落重力
     /// </summary>
     public void Gravity()
-    {
+    {/*
         if (IsGround || IsJumping)
         {
             FallInteralTimer = 0F;
@@ -860,8 +858,8 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
         }
 
-
-        //   tr.Translate(Vector2.down * 9.8f * GravityRatio  * Time.deltaTime, Space.World);
+       */
+           tr.Translate(Vector2.down * 9.8f * GravityRatio  * Time.deltaTime, Space.World);
 
     }
 
