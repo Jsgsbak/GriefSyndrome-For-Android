@@ -80,9 +80,9 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     readonly Ray2D[] rays = new Ray2D[3];
     public RaycastHit2D infoLeft;
     public RaycastHit2D infoRight;
-    public RaycastHit2D infoHor;
+    public RaycastHit2D infoHor;//水平射线，检测撞墙
 
-    public float GravityRatio = 1f;
+    [HideInInspector] public float GravityRatio = 1f;
 
     [HideInInspector] public float MoveSpeedRatio = 1f;
 
@@ -101,9 +101,17 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// </summary>
     float JumpInteralTimer = 0f;
     /// <summary>
+    /// 掉落间隔计时器
+    /// </summary>
+    float FallInteralTimer = 0f;
+    /// <summary>
     /// 正在跳跃（专指上升阶段）
     /// </summary>
     public bool IsJumping = false;
+    /// <summary>
+    /// 正在下落
+    /// </summary>
+    public bool IsFalling = false;
 
     /// <summary>
     /// 正在向前跳（仅对有向前跳动画的角色有用）
@@ -349,7 +357,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             playerStatus = Variable.PlayerStatus.JumpForward;
 
         }
-        else if (!IsGround && !IsJumping && !StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] && !StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId] && !StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId])
+        else if ( !IsGround && !IsJumping && !StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId] && !StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId] && !StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId])
         {
             playerStatus = Variable.PlayerStatus.Fall;
         }
@@ -489,52 +497,100 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// </summary>
     public void RayCtrl()
     {
+        rays[0] = new Ray2D(GavityRayPos[0].position, Vector2.down);
+        rays[1] = new Ray2D(GavityRayPos[1].position, Vector2.down);
 
-        //这里的判断不能被禁用
-        rays[0] = new Ray2D(GavityRayPos[0].position, Vector2.down * 0.1f);
-        rays[1] = new Ray2D(GavityRayPos[1].position, Vector2.down * 0.1f);
-        infoLeft = Physics2D.Raycast(rays[1].origin, rays[1].direction, 0.01f);
-        infoRight = Physics2D.Raycast(rays[0].origin, rays[0].direction, 0.01f);
+        if (PlayerSlope.y < 0)
+        {
+            if (DoLookRight)
+            {
+                //右
+                infoRight = Physics2D.Raycast(rays[0].origin, rays[0].direction, 0.3f);
+                //左
+                infoLeft = Physics2D.Raycast(rays[1].origin, rays[1].direction, 0.15f);
+            }
+            else
+            {
+                //右
+                infoRight = Physics2D.Raycast(rays[0].origin, rays[0].direction, 0.15f);
+                //左
+                infoLeft = Physics2D.Raycast(rays[1].origin, rays[1].direction, 0.3f);
+            }
+        }
+        else
+        {
+            if (!DoLookRight)
+            {
+                //右
+                infoRight = Physics2D.Raycast(rays[0].origin, rays[0].direction, 0.3f);
+                //左
+                infoLeft = Physics2D.Raycast(rays[1].origin, rays[1].direction, 0.15f);
+            }
+            else
+            {
+                //右
+                infoRight = Physics2D.Raycast(rays[0].origin, rays[0].direction, 0.15f);
+                //左
+                infoLeft = Physics2D.Raycast(rays[1].origin, rays[1].direction, 0.3f);
+            }
 
-        Debug.DrawRay(rays[0].origin, rays[0].direction * 0.1f, Color.blue);
-        Debug.DrawRay(rays[1].origin, rays[1].direction * 0.1f, Color.blue);
+        }
 
+        infoLeft = Physics2D.Raycast(rays[1].origin, rays[1].direction, 0.15f);
 
         //重力射线
         if (!BanGravityRay)
         {
-            //在地上
+            //在地上 
             if (infoLeft.collider != null)// || infoRight.collider != null)
             {
                 StandOnPlatform = infoLeft.collider.CompareTag("Platform");
                 StandOnFloor = infoLeft.collider.CompareTag("Floor") || infoLeft.collider.CompareTag("Wall") || infoLeft.collider.CompareTag("Slope");
-               
+
                 //斜坡
                 if (infoLeft.collider.CompareTag("Slope") && SlopeInstanceId != infoLeft.collider.GetInstanceID())
                 {
                     string[] vec = infoLeft.collider.name.Split(',');
-                    PlayerSlope = new Vector2(float.Parse(vec[0]), float.Parse(vec[1]));
+                    if (tr.position.x >= float.Parse(vec[2]) && tr.position.x <= float.Parse(vec[3]))
+                    {
+                        PlayerSlope = new Vector2(float.Parse(vec[0]), float.Parse(vec[1]));
+                    }
+                    else
+                    {
+                        PlayerSlope = Vector2.right;
+                    }
                     //这串代码感觉效率挺低的，所以加了一个ID判断
                     SlopeInstanceId = infoLeft.collider.GetInstanceID();
                 }
+                //取消斜坡
                 else if (infoLeft.collider.CompareTag("Floor") || infoLeft.collider.CompareTag("Wall") || infoLeft.collider.CompareTag("Platform"))
                 {
                     PlayerSlope = Vector2.right;
                     SlopeInstanceId = 0;
+
                 }
             }
             else if (infoRight.collider != null)// || infoRight.collider != null)
             {
                 StandOnPlatform = infoRight.collider.CompareTag("Platform");
-                StandOnFloor = infoRight.collider.CompareTag("Floor") || infoRight.collider.CompareTag("Wall")|| infoRight.collider.CompareTag("Slope");
+                StandOnFloor = infoRight.collider.CompareTag("Floor") || infoRight.collider.CompareTag("Wall") || infoRight.collider.CompareTag("Slope");
+
                 //斜坡
                 if (infoRight.collider.CompareTag("Slope") && SlopeInstanceId != infoRight.collider.GetInstanceID())
                 {
                     string[] vec = infoRight.collider.name.Split(',');
-                    PlayerSlope = new Vector2(float.Parse(vec[0]), float.Parse(vec[1]));
+                    if (tr.position.x >= float.Parse(vec[2]) && tr.position.x <= float.Parse(vec[3]))
+                    {
+                        PlayerSlope = new Vector2(float.Parse(vec[0]), float.Parse(vec[1]));
+                    }
+                    else
+                    {
+                        PlayerSlope = Vector2.right;
+                    }
                     //这串代码感觉效率挺低的，所以加了一个ID判断
                     SlopeInstanceId = infoRight.collider.GetInstanceID();
                 }
+                //取消斜坡
                 else if (infoRight.collider.CompareTag("Floor") || infoRight.collider.CompareTag("Wall") || infoRight.collider.CompareTag("Platform"))
                 {
                     PlayerSlope = Vector2.right;
@@ -568,7 +624,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             }
 
             //有斜坡参数，说明肯定在地上
-            if (PlayerSlope != Vector2.right) IsGround = true;
+         //   if (PlayerSlope != Vector2.right) IsGround = true;
 
             IsGround = StandOnFloor || StandOnPlatform;
           //非攻击状态
@@ -612,10 +668,6 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
         if (infoHor.collider != null)// || infoRight.collider != null)
         {
-            Debug.Log(infoHor.collider.name); 
-
-
-
             //撞墙限制移动
             if ( infoHor.collider.CompareTag("Wall"))
             {
@@ -632,6 +684,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
         }
 
+        /*
         //脚插地修复
         if (infoLeft.collider != null && infoHor.collider != null &&  IsGround && !StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId] && PlayerSlope == Vector2.right)
         {
@@ -654,6 +707,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
                 tr.Translate(Vector3.up * 0.1f, Space.World);
             }
         }
+        */
 
     }
 
@@ -777,7 +831,6 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             Direction = new Vector2(x, y);
         }
 
-        //缺少：PlayerSlope计算（判断），左右版边限制移动
 
         if (UseTimeDelta)
         {
@@ -794,25 +847,21 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// </summary>
     public void Gravity()
     {
-        /*
-        if(!IsGround | !IsJumping && !StartFall)
+        if (IsGround || IsJumping)
         {
-            FallTime = Time.timeSinceLevelLoad;
-            StartFall = true;
+            FallInteralTimer = 0F;
         }
         else
         {
-            StartFall = false;
+            //开始下落，记录下落时间间隔
+            IsFalling = true;
+            FallInteralTimer = Time.timeSinceLevelLoad;
+            tr.Translate(Vector3.down * ((Time.timeSinceLevelLoad - JumpInteralTimer) * 17 * GravityRatio) * Time.deltaTime);
+
         }
 
 
-        //加速度
-        if (StartFall)
-        {
-            GravityRatio = GravityRatio + 0.5f * Time.deltaTime;
-        }*/
-
-        tr.Translate(Vector2.down * 9.8f * GravityRatio  * Time.deltaTime, Space.World);
+        //   tr.Translate(Vector2.down * 9.8f * GravityRatio  * Time.deltaTime, Space.World);
 
     }
 

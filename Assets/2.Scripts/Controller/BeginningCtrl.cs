@@ -21,7 +21,7 @@ public class BeginningCtrl : MonoBehaviour
         //使刚进入游戏一定显示标题画面，顺便初始化（title那里）
         gss.MajoSceneToTitle = false;
 
-        //计算动画hash值
+        //计算角色动画hash值
         int ii = 0;
         foreach (var item in Enum.GetNames(typeof(Variable.PlayerStatus)))
         {

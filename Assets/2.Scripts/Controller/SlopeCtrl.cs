@@ -8,22 +8,29 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider2D))]
 public class SlopeCtrl : MonoBehaviour
 {
+    /// <summary>
+    /// 左0 右1
+    /// </summary>
+    public Transform[] Borders = new Transform[2];
 
     private void Awake()
     {
+        //非斜坡不允许
         if (!CompareTag("Slope"))
         {
             Destroy(this);
-            //Destroy下一帧才会清除这个脚本，而且貌似比immediate更好一点，所以这样子写了
             return;
         }
 
 
       float y =  Mathf.Sin(transform.rotation.eulerAngles.z * (3.14159f * 2 / 360));
         float x = Mathf.Cos(transform.rotation.eulerAngles.z * (3.14159f * 2 / 360));
-        
 
-        name = string.Format("{0},{1}", x.ToString(), y.ToString());
+        Vector2 d = new Vector2(x, y);
+        d = d.normalized;
+        x = d.x;y = d.y;
+
+        name = string.Format("{0},{1},{2},{3}", x.ToString(), y.ToString(),Borders[0].position.x, Borders[1].position.x);
     }
 
 

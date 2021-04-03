@@ -16,7 +16,6 @@ public class StageCtrl : MonoBehaviour
 {
     public static GameScoreSettingsIO gameScoreSettings;//尽在这里弄一个单利
     public static StageCtrl stageCtrl;
-
     
     [Header("玩家激活设置")]
     public GameObject[] Players;

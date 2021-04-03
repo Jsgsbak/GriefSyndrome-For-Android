@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text;
 using UnityEngine;
 using UnityEngine.U2D;
@@ -495,4 +496,18 @@ public class GameScoreSettingsIO : ScriptableObject
         LastLap = lap;
     }
 
+
+
+#if UNITY_EDITOR
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="oldFile">旧包资源路径</param>
+    /// <param name="newFile">新包资源路径</param>
+    /// <param name="patch">导出的新包与旧包的资源差异包存放路径（导出）</param>
+    [DllImport("bsdiff")]
+    [ContextMenu("生成差异包")]
+    static extern void StartDiff(string oldFile,string newFile,string patch);
+    
+#endif
 }

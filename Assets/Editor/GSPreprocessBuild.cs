@@ -36,5 +36,7 @@ public class GSPreprocessBuild : Editor, IPreprocessBuildWithReport, IPostproces
         Debug.Log("初始化完成");
         //自动增加内部版本号，防止遗忘
         PlayerSettings.Android.bundleVersionCode++;
+
+
     }
 }
