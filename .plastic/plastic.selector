@@ -1,0 +1,4 @@
+repository "GriefSyndrome-For-Android-github@ssl://gsandroid@sh02-plasticscm.unity.cn:8787"
+  path "/"
+    smartbranch "/main/gkoishi0514" 
+     
