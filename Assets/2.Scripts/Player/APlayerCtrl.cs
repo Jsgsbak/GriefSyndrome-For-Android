@@ -464,7 +464,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             StandOnPlatform = false;//取消，防止多次执行
             PlatformTime = Time.timeSinceLevelLoad;
         }
-        if (GoThroughPlatform && Time.timeSinceLevelLoad - PlatformTime >= 0.1f)//0.2s大约射线能穿过平台
+        if (GoThroughPlatform && Time.timeSinceLevelLoad - PlatformTime >= 0.2f)//0.2s大约射线能穿过平台
         {
             //一定时间之后启用重力射线判定，防止穿墙途中停止落体
             GoThroughPlatform = false;

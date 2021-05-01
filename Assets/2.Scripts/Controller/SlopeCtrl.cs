@@ -15,12 +15,6 @@ public class SlopeCtrl : MonoBehaviour
 
     private void Awake()
     {
-        //·ÇÐ±ÆÂ²»ÔÊÐí
-        if (!CompareTag("Slope"))
-        {
-            Destroy(this);
-            return;
-        }
 
 
       float y =  Mathf.Sin(transform.rotation.eulerAngles.z * (3.14159f * 2 / 360));
