@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 705632395a96f4e478d075086f97cf98
+guid: 42f0e0d9b6e9e274fb35770b115a2057
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - MadokaMusical
+  - MadokaLetters
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0

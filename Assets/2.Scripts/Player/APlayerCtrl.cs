@@ -801,17 +801,6 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             Border = true;
         }
 
-        //左右的空气墙
-        if (tr.localPosition.x >= 8.2f && Direction.x > 0)
-        {
-            x = 0f;
-            Border = true;
-        }
-        else if (tr.localPosition.x <= -8.2f && Direction.x < 0)
-        {
-            x = 0f;
-            Border = true;
-        }
         //左右碰到平台（找个时间和上面的额合并一下）
         if (BanLeftOrRight == -1 && Direction.x < 0)
         {
