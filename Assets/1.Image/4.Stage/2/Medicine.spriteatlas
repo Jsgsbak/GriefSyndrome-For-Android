@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Medicine
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 8077033434665477231, guid: f4f1cb900b2925045a6851d3e66a6697, type: 3}
+    - {fileID: -5997156576544229267, guid: f4f1cb900b2925045a6851d3e66a6697, type: 3}
+    - {fileID: 1794949413700014120, guid: f4f1cb900b2925045a6851d3e66a6697, type: 3}
+    - {fileID: 73478556292298396, guid: f4f1cb900b2925045a6851d3e66a6697, type: 3}
+    - {fileID: 6545243335352193839, guid: f4f1cb900b2925045a6851d3e66a6697, type: 3}
+    - {fileID: -2369026206324573061, guid: f4f1cb900b2925045a6851d3e66a6697, type: 3}
+    - {fileID: -6079441032776678134, guid: f4f1cb900b2925045a6851d3e66a6697, type: 3}
+    - {fileID: -4578249542600280696, guid: f4f1cb900b2925045a6851d3e66a6697, type: 3}
+    - {fileID: 5900805956168502480, guid: f4f1cb900b2925045a6851d3e66a6697, type: 3}
+    totalSpriteSurfaceArea: 32130
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: -2369026206324573061, guid: f4f1cb900b2925045a6851d3e66a6697, type: 3}
+  - {fileID: -6079441032776678134, guid: f4f1cb900b2925045a6851d3e66a6697, type: 3}
+  - {fileID: 73478556292298396, guid: f4f1cb900b2925045a6851d3e66a6697, type: 3}
+  - {fileID: 6545243335352193839, guid: f4f1cb900b2925045a6851d3e66a6697, type: 3}
+  - {fileID: -5997156576544229267, guid: f4f1cb900b2925045a6851d3e66a6697, type: 3}
+  - {fileID: 1794949413700014120, guid: f4f1cb900b2925045a6851d3e66a6697, type: 3}
+  - {fileID: 8077033434665477231, guid: f4f1cb900b2925045a6851d3e66a6697, type: 3}
+  - {fileID: -4578249542600280696, guid: f4f1cb900b2925045a6851d3e66a6697, type: 3}
+  - {fileID: 5900805956168502480, guid: f4f1cb900b2925045a6851d3e66a6697, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - medicine_6
+  - medicine_7
+  - medicine_4
+  - medicine_5
+  - medicine_2
+  - medicine_3
+  - medicine_1
+  - medicine_8
+  - medicine_9
+  m_RenderDataMap: {}
+  m_Tag: Medicine
+  m_IsVariant: 0

@@ -5,6 +5,9 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// 这个脚本是挂在每一个ETC 控件上的，用于更新图片与响应操作012
+/// </summary>
 public class ETCedition : MonoBehaviour
 {
     //每个角色不同的图标

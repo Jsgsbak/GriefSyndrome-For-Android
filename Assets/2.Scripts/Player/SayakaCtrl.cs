@@ -71,7 +71,7 @@ public class SayakaCtrl : APlayerCtrl
             CancelJump();
             BanWalk = true;
             BanTurnAround = true;
-            BanGravity = true;
+            SetGravityRatio(0f);
           //  BanGravityRay = true;
 
             playerStatus = Variable.PlayerStatus.Magia_1;
@@ -87,7 +87,7 @@ public class SayakaCtrl : APlayerCtrl
         if (MagiaDash)
         {
             //掉落Bug修复
-            BanGravity = true;
+            SetGravityRatio(0f);
 
             if (DoLookRight)
             {
@@ -106,7 +106,7 @@ public class SayakaCtrl : APlayerCtrl
         {
 
             CancelJump();//直接中断跳跃并且不恢复
-            BanGravity = true;
+            SetGravityRatio(0f);
             BanInput = true;
             IsAttack[1] = true;
             StopAttacking = false;
@@ -144,15 +144,14 @@ public class SayakaCtrl : APlayerCtrl
             //保存一下时间，用于得到蓄力的效果
             OrdinaryXTimer = Time.timeSinceLevelLoad;
 
-            GravityRatio = 0.3f;
+            SetGravityRatio(0f);
         }
         //松开X键，但仍然处于X攻击状态，所以能往前冲
         else if (!StageCtrl.gameScoreSettings.XattackPressed && IsAttack[1]&& playerStatus == Variable.PlayerStatus.Strong_1 && !XordinaryDash)
         {
             playerStatus = Variable.PlayerStatus.Strong_2;
-
-                XordinaryDash = true;
-            GravityRatio = 0.3f;//修复bug
+            SetGravityRatio(1f);
+            XordinaryDash = true;
         }
 
         //冲刺移动（放在这里是为了移动流畅）
@@ -183,7 +182,7 @@ public class SayakaCtrl : APlayerCtrl
             IsAttack[1] = true;
             playerStatus = Variable.PlayerStatus.DownStrong_1;//上升动作
             BanInput = true;//在这一套攻击里，就靠取消僵直来把这个设置为false了
-            BanGravity = true;
+            SetGravityRatio(0f);
             DownAttackMovingUpward = 1;
         }
 
@@ -249,7 +248,7 @@ public class SayakaCtrl : APlayerCtrl
             IsAttack[1] = true;
             BanWalk = true;
             BanTurnAround = true;
-            BanGravity = true;
+            SetGravityRatio(0f);
             BanJump = true;
 
             playerStatus = Variable.PlayerStatus.UpStrong_1;
@@ -275,7 +274,16 @@ public class SayakaCtrl : APlayerCtrl
             if (playerStatus != Variable.PlayerStatus.Weak_1 && playerStatus != Variable.PlayerStatus.Weak_2) CancelJump();//直接中断跳跃并且不恢复
             if (playerStatus != Variable.PlayerStatus.Weak_2 )  playerStatus = Variable.PlayerStatus.Weak_1;
             IsAttack[0] = true;
-            BanGravity = IsGround;//修复奇怪的bug
+
+            //修复奇怪的bug
+            if (IsGround)
+            {
+                SetGravityRatio(0f);
+            }
+            else
+            {
+                SetGravityRatio(1f);
+            }
         }
 
     }
@@ -297,7 +305,7 @@ public class SayakaCtrl : APlayerCtrl
         {
             //Z攻击的动画正处于攻击状态，不能中断
             case "ZattackDoing":
-                GravityRatio = 0.7f;
+                SetGravityRatio(0.7f);
                 IsAttack[0] = true;
                 StopAttacking = false;
                 BanTurnAround = true;//攻击状态不能转身
@@ -311,7 +319,7 @@ public class SayakaCtrl : APlayerCtrl
                 BanTurnAround = false;//连接处可以转身
                 IsAttack[0] = StageCtrl.gameScoreSettings.ZattackPressed;//连接处不属于攻击阶段，可以切换到其他动画和状态
 
-                GravityRatio = 1f;
+                SetGravityRatio(1f);
 
                 if (!IsAttack[0])
                 {
@@ -327,7 +335,7 @@ public class SayakaCtrl : APlayerCtrl
                 BanTurnAround = false;//可以转身
 
                 //攻击完了恢复移动速度与重力
-                GravityRatio = 1F;
+                SetGravityRatio(1f);
 
                 if (StageCtrl.gameScoreSettings.ZattackPressed)
                 {
@@ -348,7 +356,7 @@ public class SayakaCtrl : APlayerCtrl
                 BanInput = true;
                 BanTurnAround = true;//向前跳的时候不能转身
                 StopAttacking = false;//不可以中断攻击
-                GravityRatio = 0.7f;
+                SetGravityRatio(0.7f);
 
                 //向前移动
                 if (DoLookRight)
@@ -387,7 +395,7 @@ public class SayakaCtrl : APlayerCtrl
     public override void XattackAnimationEvent(string AnimationName)
     {        
                 //结束
-                GravityRatio = 1F;
+                SetGravityRatio(1f);
                 BanTurnAround = false;
                 BanInput = false;
                 XordinaryDash = false;
@@ -430,8 +438,7 @@ public class SayakaCtrl : APlayerCtrl
 
                 //下移
             case "Doing-Down":
-                GravityRatio = 1.5F;
-                BanGravity = false;
+                SetGravityRatio(1.5f);
                 DownAttackMovingUpward = -1;
                 break;
 
@@ -450,7 +457,7 @@ public class SayakaCtrl : APlayerCtrl
     {
         UpAttackMove = false;
         IsAttack[1] = false;
-        BanGravity = true;//为了悬空效果，僵直结束之后变成false了
+        SetGravityRatio(0f);//为了悬空效果，僵直结束之后重力恢复
         Stiff(0.1f);
 
     }
@@ -467,7 +474,7 @@ public class SayakaCtrl : APlayerCtrl
                 //尝试用回复变量的方法来解决bug
                 VariableInitialization();
 
-                BanGravity = false;
+                SetGravityRatio(1f);
                 Stiff(0.1f);
 
                 break;
@@ -506,14 +513,14 @@ public class SayakaCtrl : APlayerCtrl
     {
         playerStatus = Variable.PlayerStatus.DownStrong_3;//反弹动作
 
-        BanGravity = true;
+        SetGravityRatio(0f);
         DownAttackMovingUpward = 2;
         //  IsStiff = true;这个也不能要，不然不会触发反弹效果
         yield return Timing.WaitForSeconds(0.2f);
         DownAttackMovingUpward = 0;
         //   Stiff(0.1f); 自带僵直效果了
-      //  IsStiff = false;
-        BanGravity = false;
+        //  IsStiff = false;
+        SetGravityRatio(1f);
         BanInput = false;
        IsAttack[1] = false;
 

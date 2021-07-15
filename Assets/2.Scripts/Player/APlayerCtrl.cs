@@ -19,9 +19,6 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// </summary>
     public Vector2 PlayerSlope = Vector2.right;
 
-    [Space]
-    //为了方便调试，这些Ban和Is先暂时放在这里
-    public bool BanGravity = false;
     /// <summary>
     /// 禁用重力射线。用于穿透地板（仅AplayerCtrl可以修改）
     /// </summary>
@@ -82,7 +79,26 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     public RaycastHit2D infoRight;
     public RaycastHit2D infoHor;//水平射线，检测撞墙
 
-    [HideInInspector] public float GravityRatio = 1f;
+    /// <summary>
+    /// 重力速率（仅能通过SetGravityRatio修改）
+    /// </summary>
+   float GravityRatio = 1f;
+    /// <summary>
+    /// 用这个设定重力速率
+    /// </summary>
+    /// <param name="number"></param>
+    public void SetGravityRatio(float number)
+    {
+        //恢复重力(GravityRatio = 0:用于判定是不是第一次从重力禁用状态恢复到重力启用状态）
+        if (number != 0f && GravityRatio == 0F)
+        {
+            //此时重置掉落间隔计时器，以实现正常的加速掉落（仅限第一次从重力禁用状态恢复到重力启用状态）
+            FallInteralTimer = Time.timeSinceLevelLoad;
+        }
+
+        GravityRatio = number;
+
+    }
 
     [HideInInspector] public float MoveSpeedRatio = 1f;
 
@@ -275,7 +291,8 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
     void FastUpdate()
     {
-        if (!BanGravity) Gravity();
+        //重力速率不为0才允许重力的计算
+        if (GravityRatio != 0) Gravity();
        
 
         RayCtrl();
@@ -420,7 +437,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             JumpInteralTimer = Time.timeSinceLevelLoad;
             IsJumping = true;
             JumpCount++;
-            BanGravity = true;
+            SetGravityRatio(0f);
             BanGravityRay = true;
             PlayerSlope = Vector2.right; //消除起跳上升阶段仍然保留斜坡属性的Bug
 
@@ -434,15 +451,17 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             {
                 //解决一个很奇怪的BUG
                 IsGround = false;
-                tr.Translate(Vector3.up * (GameScoreSettingsIO.JumpSpeed - (Time.timeSinceLevelLoad - JumpInteralTimer) * GameScoreSettingsIO.JumpSpeed / 0.3F) * Time.deltaTime);
+                Move((GameScoreSettingsIO.JumpSpeed - (Time.timeSinceLevelLoad - JumpInteralTimer) * GameScoreSettingsIO.JumpSpeed / 0.3F), true, Vector3.up);
             }
             //下降（其实就是取消跳跃状态）
             else
             {
                 BanGravityRay = false;
-                BanGravity = false;
+                //见上方，因为只有攻击才会修改GravityRatio为0，1以外的其他值，所以非攻击状态（指跳跃允许使用）且掉落，直接改成1
+                SetGravityRatio(1f);
                 IsJumping = false;
                 IsJumpingForward = false;
+
 
             }
         }
@@ -455,7 +474,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         //穿过平台
         if (StageCtrl.gameScoreSettings.Down && StandOnPlatform && StageCtrl.gameScoreSettings.Jump)
         {
-            BanGravity = false;
+            SetGravityRatio(0f);
             //禁用重力射线，防止中途停止落体
             BanGravityRay = true;
             IsJumping = false;
@@ -469,9 +488,8 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             //一定时间之后启用重力射线判定，防止穿墙途中停止落体
             GoThroughPlatform = false;
             BanGravityRay = false;
-            BanGravity = false;
+            SetGravityRatio(0f);
         }
-
     }
 
     /// <summary>
@@ -484,7 +502,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             return;
         }
         //既然要取消，那肯定是跳起来了
-        BanGravity = false;
+        SetGravityRatio(0f);
         BanGravityRay = false;//有向上移动的攻击时，才能禁用这个
         IsGround = false;
         IsJumping = false;
@@ -606,13 +624,20 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
                 //非攻击状态
                 if (!IsAttack[0] && !IsAttack[1] && !IsAttack[2])
                 {
-                    BanGravity = IsGround;
+                    if (IsGround)
+                    {
+                        SetGravityRatio(0f);
+                    }
+                    else
+                    {
+                        SetGravityRatio(1f);
+                    }
                 }
                 //攻击状态
                 else
                 {
-                    //
-                    if (IsGround) BanGravity = true;
+                    //在地上禁用重力
+                    if (IsGround) SetGravityRatio(0f);;
                 }
 
 
@@ -630,20 +655,27 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
           //非攻击状态
            if(!IsAttack[0] && !IsAttack[1] && !IsAttack[2])
             {
-                BanGravity = IsGround;
+                if (IsGround)
+                {
+                    SetGravityRatio(0f);
+                }
+                else
+                {
+                    SetGravityRatio(1f);
+                }
             }
            //攻击状态
             else
             {
                 //
-                if (IsGround) BanGravity = true;
+                if (IsGround) SetGravityRatio(0f);
             }
 
             //直接在这里强制转化成true好了）
             if (StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId])
             {
                 IsGround = false;
-                BanGravity = true;
+                SetGravityRatio(0f);
             }
 
         }
@@ -833,7 +865,12 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// 下落重力
     /// </summary>
     public void Gravity()
-    {/*
+    {
+        //降落速度用的跳跃速度玩 指JumpSpeed
+        Move(((Time.timeSinceLevelLoad - FallInteralTimer) * GameScoreSettingsIO.JumpSpeed / 0.3F) * GravityRatio, true, Vector3.down);
+      //  Debug.Log(Time.timeSinceLevelLoad - FallInteralTimer);
+
+        /*
         if (IsGround || IsJumping)
         {
             FallInteralTimer = 0F;
@@ -848,7 +885,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         }
 
        */
-           tr.Translate(Vector2.down * 9.8f * GravityRatio  * Time.deltaTime, Space.World);
+        //   tr.Translate(Vector2.down * 9.8f * GravityRatio  * Time.deltaTime, Space.World);
 
     }
 
@@ -863,12 +900,16 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// <param name="Time">僵直事件</param>
     public void Stiff(float Time)
     {
-        //取消以前的僵直（仅仅是换成另一个僵直，并不是取消将至）
-     //   Timing.KillCoroutines("PlayerStiff");
         //僵直状态
         StopAttacking = false;
-        BanGravity = IsGround;
-        GravityRatio = 1F;
+        if (IsGround)
+        {
+            SetGravityRatio(0f);
+        }
+        else
+        {
+            SetGravityRatio(1f);
+        }
         MoveSpeedRatio = 1F;
         BanGravityRay = false;
         animator.enabled = !true;
@@ -893,8 +934,14 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         //状态恢复
         BanWalk = false;
         StopAttacking = !false;
-        BanGravity = IsGround;
-        GravityRatio = 1F;
+        if (IsGround)
+        {
+            SetGravityRatio(0f);
+        }
+        else
+        {
+            SetGravityRatio(1f);
+        }
         MoveSpeedRatio = 1F;
         BanGravityRay = false;
         BanTurnAround = false;
@@ -1079,11 +1126,18 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     #region 受伤，死亡与无敌
 
 #if UNITY_EDITOR
+    /// <summary>
+    /// 调试模式按钮：对当前玩家造成20的伤害
+    /// </summary>
     [ContextMenu("Hurt")]
     public void HurtMyself()
     {
         GetHurt(20);
     }
+
+    /// <summary>
+    /// 调试模式按钮：清除当前灵魂值
+    /// </summary>
     [ContextMenu("CleanSoul")]
     public void CleanSoul()
     {
@@ -1093,6 +1147,9 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         }
 
     }
+    /// <summary>
+    /// 调试模式按钮：清除当前血量
+    /// </summary>
     [ContextMenu("CleanVit")]
     public void CleanVit()
     {
@@ -1100,6 +1157,9 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
     }
 
+    /// <summary>
+    /// 调式模式按钮：直接打赢魔女
+    /// </summary>
     [ContextMenu("Succeed")]
     public void Succeed()
     {
@@ -1204,7 +1264,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             MoveSpeedRatio = 1.2f;
 
             BanInput = false;
-            BanGravity = true;
+            SetGravityRatio(0f); ;
             // BanGravityRay = true;
 
         }
@@ -1250,10 +1310,16 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         //这里是公用的，私用的重写
         BanInput = false;
         BanWalk = false;
-        GravityRatio = 1F;
         MoveSpeedRatio = 1F;
         BanJump = false;
-        BanGravity = IsGround;
+        if (IsGround)
+        {
+            SetGravityRatio(0f);
+        }
+        else
+        {
+            SetGravityRatio(1f);
+        }
         BanGravityRay = false;
         BanTurnAround = false;
         StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId] = false;

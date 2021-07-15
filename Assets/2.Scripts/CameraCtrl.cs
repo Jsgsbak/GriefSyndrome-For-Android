@@ -21,7 +21,7 @@ public class CameraCtrl : MonoBehaviour
     {
         return Mathf.Abs(transform.position.y - Target.position.y) < YMargin + 89.0f;
     }
-    void FixedUpdate()
+    void LateUpdate()
     {
         FollowTarget();
     }

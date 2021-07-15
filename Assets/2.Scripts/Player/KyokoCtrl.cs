@@ -35,7 +35,7 @@ public class KyokoCtrl : APlayerCtrl
             Debug.Log("???");
 
             CancelJump();
-            GravityRatio = 0.1f;
+            SetGravityRatio(0.1f);
             BanWalk = true;
             BanTurnAround = true;
             BanJump = true;
@@ -123,7 +123,7 @@ public class KyokoCtrl : APlayerCtrl
             BanTurnAround = true;
             BanWalk = true;
             BanJump = true;
-            GravityRatio = 0.3f;
+            SetGravityRatio(0.3f);
 
             playerStatus = Variable.PlayerStatus.Strong_1;
             //冲刺计时器
@@ -186,7 +186,7 @@ public class KyokoCtrl : APlayerCtrl
             CancelJump();//直接中断跳跃并且不恢复
             IsAttack[1] = true;
             BanInput = true;
-            BanGravity = true;
+            SetGravityRatio(1f);
 
             playerStatus = Variable.PlayerStatus.UpStrong_1;
         }

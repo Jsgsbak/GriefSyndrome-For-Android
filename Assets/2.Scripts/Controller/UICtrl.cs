@@ -171,7 +171,7 @@ public class UICtrl : MonoBehaviour
 
     void FastUpdate()
     { 
-        //响应安卓返回按键
+        //响应安卓返回按键（游戏界面暂停）
         if(Application.platform == RuntimePlatform.Android && Input.GetKeyDown(KeyCode.Escape))
         {
             StageCtrl.gameScoreSettings.Pause = true;
@@ -370,11 +370,7 @@ public class UICtrl : MonoBehaviour
     }
 
 
-    #region 0.0.7临时用
-    public void JumpUp()
-    {
-        StageCtrl.gameScoreSettings.Jump = false;
-    }
+    #region 调试模式
     public void CleanSoulUp()
     {
         StageCtrl.gameScoreSettings.CleanSoul = false;

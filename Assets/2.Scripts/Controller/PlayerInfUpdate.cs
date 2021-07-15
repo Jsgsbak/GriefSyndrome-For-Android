@@ -29,6 +29,9 @@ public class PlayerInfUpdate : MonoBehaviour
 
     public Sprite[] SoulGems;
 
+    /// <summary>
+    /// 每个魔法少女自己的ID，而非玩家ID （指Player123）
+    /// </summary>
     int MahouShoujoId;
 
     private void Awake()
@@ -72,9 +75,8 @@ public void UpdateScore()
     [ContextMenu("更新灵魂值")]
     public void UpdateSoulLimit()
     {
-        SoulLimit.text = string.Format("Soul limit  <size=25>{0}</size>", Mathf.Clamp(StageCtrl.gameScoreSettings.GirlSoulLimit[MahouShoujoId], 0, 999999));
+        SoulLimit.text = string.Format("Soul limit  <size=25>{0}</size>", Mathf.Clamp(StageCtrl.gameScoreSettings.GirlSoulLimit[MahouShoujoId], 0, StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId ].MaxSoul));
 
-        /*还有个限制没写（sl数量限制）
         //红黑闪烁
 
         //每过一秒
@@ -95,14 +97,14 @@ public void UpdateScore()
                         RedSoulLimit = false;
                         break;
                 }
-
-            }*/
+            }
     }
 
     public void UpdateSoulGem()
     {
         float now = Mathf.Clamp(StageCtrl.gameScoreSettings.GirlSoulLimit[MahouShoujoId], 0, 999999);
         float max = StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].BasicSoulLimit + StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].SoulGrowth * (StageCtrl.gameScoreSettings.GirlsLevel[MahouShoujoId] - 1);
+       //灵魂宝石变黑（黑色图层逐渐显示）
         SoulGemBlack.color = new Color(0f, 0f, 0f, 1 - now / max);
     }
 
@@ -118,7 +120,6 @@ public void UpdateScore()
             {
                 Magia.fillAmount = 0;
                 Damaged.fillAmount = 1;
-                //StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId - 1] = false;  无敌时间内不允许攻击，所以不会产生魔法血条
             }
             else if (StageCtrl.gameScoreSettings.MagiaKeyDown[PlayerId - 1] && Magia.fillAmount < Health.fillAmount)
             {
