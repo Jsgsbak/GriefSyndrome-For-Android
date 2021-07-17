@@ -58,14 +58,14 @@ public class SayakaCtrl : APlayerCtrl
     public override void Magia()
     {     
         //带有攻击的magia，并且防止多次运行
-        if (MagiaDashSpeedRatio == 1f && StageCtrl.gameScoreSettings.Xattack && IsAttack[2])
+        if (MagiaDashSpeedRatio == 1f && MountGSS.gameScoreSettings.Xattack && IsAttack[2])
         {
             MagiaDashSpeedRatio = 1.5f;
             playerStatus = Variable.PlayerStatus.Magia_2;
         }
 
         //初始发动magia
-        if(!IsAttack[2] && StageCtrl.gameScoreSettings.Magia)
+        if(!IsAttack[2] && MountGSS.gameScoreSettings.Magia)
         {
             IsAttack[2] = true;
             CancelJump();
@@ -76,10 +76,10 @@ public class SayakaCtrl : APlayerCtrl
 
             playerStatus = Variable.PlayerStatus.Magia_1;
 
-            StageCtrl.gameScoreSettings.GirlsVit[MahouShoujoId] = StageCtrl.gameScoreSettings.GirlsVit[MahouShoujoId] - StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].MaigaVit;
+            MountGSS.gameScoreSettings.GirlsVit[MahouShoujoId] = MountGSS.gameScoreSettings.GirlsVit[MahouShoujoId] - MountGSS.gameScoreSettings.mahouShoujos[MahouShoujoId].MaigaVit;
 
             //用于UI中HP血条信息更新
-            StageCtrl.gameScoreSettings.MagiaKeyDown[PlayerId] = true;
+            MountGSS.gameScoreSettings.MagiaKeyDown[PlayerId] = true;
 
         }
 
@@ -102,7 +102,7 @@ public class SayakaCtrl : APlayerCtrl
 
     public override void HorizontalX()
     {
-        if (StageCtrl.gameScoreSettings.Horizontal != 0 && !IsAttack[1]  && StageCtrl.gameScoreSettings.Xattack)
+        if (MountGSS.gameScoreSettings.Horizontal != 0 && !IsAttack[1]  && MountGSS.gameScoreSettings.Xattack)
         {
 
             CancelJump();//直接中断跳跃并且不恢复
@@ -133,7 +133,7 @@ public class SayakaCtrl : APlayerCtrl
     public override void OrdinaryX()
     {
         //从通常状态进入到X攻击准备状态
-        if ( StageCtrl.gameScoreSettings.Horizontal == 0 && !IsAttack[1] && !StageCtrl.gameScoreSettings.Up && !StageCtrl.gameScoreSettings.Down  && StageCtrl.gameScoreSettings.XattackPressed  && !XordinaryDash)
+        if ( MountGSS.gameScoreSettings.Horizontal == 0 && !IsAttack[1] && !MountGSS.gameScoreSettings.Up && !MountGSS.gameScoreSettings.Down  && MountGSS.gameScoreSettings.XattackPressed  && !XordinaryDash)
         {
             playerStatus = Variable.PlayerStatus.Strong_1;
             CancelJump();//直接中断跳跃并且不恢复
@@ -147,7 +147,7 @@ public class SayakaCtrl : APlayerCtrl
             SetGravityRatio(0f);
         }
         //松开X键，但仍然处于X攻击状态，所以能往前冲
-        else if (!StageCtrl.gameScoreSettings.XattackPressed && IsAttack[1]&& playerStatus == Variable.PlayerStatus.Strong_1 && !XordinaryDash)
+        else if (!MountGSS.gameScoreSettings.XattackPressed && IsAttack[1]&& playerStatus == Variable.PlayerStatus.Strong_1 && !XordinaryDash)
         {
             playerStatus = Variable.PlayerStatus.Strong_2;
             SetGravityRatio(1f);
@@ -176,7 +176,7 @@ public class SayakaCtrl : APlayerCtrl
     }
     public override void DownX()
     {
-        if (StageCtrl.gameScoreSettings.Horizontal == 0 && !IsAttack[1] && StageCtrl.gameScoreSettings.Xattack && StageCtrl.gameScoreSettings.Down )
+        if (MountGSS.gameScoreSettings.Horizontal == 0 && !IsAttack[1] && MountGSS.gameScoreSettings.Xattack && MountGSS.gameScoreSettings.Down )
         {
             CancelJump();//直接中断跳跃并且不恢复
             IsAttack[1] = true;
@@ -240,7 +240,7 @@ public class SayakaCtrl : APlayerCtrl
     {
         if (IsGround) { UpAttackCount = 0; }
 
-        if (StageCtrl.gameScoreSettings.Horizontal == 0  && UpAttackCount < 2  && StageCtrl.gameScoreSettings.Xattack && StageCtrl.gameScoreSettings.Up)
+        if (MountGSS.gameScoreSettings.Horizontal == 0  && UpAttackCount < 2  && MountGSS.gameScoreSettings.Xattack && MountGSS.gameScoreSettings.Up)
         {
             CancelJump();//直接中断跳跃并且不恢复
             UpAttackCount++;
@@ -269,7 +269,7 @@ public class SayakaCtrl : APlayerCtrl
 
     public override void OrdinaryZ()
     { 
-        if (StageCtrl.gameScoreSettings.ZattackPressed)
+        if (MountGSS.gameScoreSettings.ZattackPressed)
         {
             if (playerStatus != Variable.PlayerStatus.Weak_1 && playerStatus != Variable.PlayerStatus.Weak_2) CancelJump();//直接中断跳跃并且不恢复
             if (playerStatus != Variable.PlayerStatus.Weak_2 )  playerStatus = Variable.PlayerStatus.Weak_1;
@@ -317,7 +317,7 @@ public class SayakaCtrl : APlayerCtrl
                 //如果还在攻击那就不能解除移动和跳跃禁止
                 StopAttacking = true;//可以中断攻击
                 BanTurnAround = false;//连接处可以转身
-                IsAttack[0] = StageCtrl.gameScoreSettings.ZattackPressed;//连接处不属于攻击阶段，可以切换到其他动画和状态
+                IsAttack[0] = MountGSS.gameScoreSettings.ZattackPressed;//连接处不属于攻击阶段，可以切换到其他动画和状态
 
                 SetGravityRatio(1f);
 
@@ -331,13 +331,13 @@ public class SayakaCtrl : APlayerCtrl
             //Z攻击打完，
             case "ZattackDone":
                 StopAttacking = true;//可以中断攻击
-                IsAttack[0] = StageCtrl.gameScoreSettings.ZattackPressed;//连接处不属于攻击阶段，可以切换到其他动画和状态
+                IsAttack[0] = MountGSS.gameScoreSettings.ZattackPressed;//连接处不属于攻击阶段，可以切换到其他动画和状态
                 BanTurnAround = false;//可以转身
 
                 //攻击完了恢复移动速度与重力
                 SetGravityRatio(1f);
 
-                if (StageCtrl.gameScoreSettings.ZattackPressed)
+                if (MountGSS.gameScoreSettings.ZattackPressed)
                 {
                     //并且按着Z，满足条件后进入Z攻击最后阶段
                     //仅在地面上能发动最后一击
@@ -490,7 +490,7 @@ public class SayakaCtrl : APlayerCtrl
     /// </summary>
     void ZattackMove()
     {
-        if (StageCtrl.gameScoreSettings.Horizontal != 0 && IsGround)
+        if (MountGSS.gameScoreSettings.Horizontal != 0 && IsGround)
         {
             if (DoLookRight)
             {

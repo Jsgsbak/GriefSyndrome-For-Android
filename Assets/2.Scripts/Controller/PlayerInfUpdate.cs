@@ -63,19 +63,19 @@ public class PlayerInfUpdate : MonoBehaviour
     [ContextMenu("更新分数")]
 public void UpdateScore()
     {
-            Score.text = string.Format("{0}p Score {1}  {2}", (PlayerId).ToString(), StageCtrl.gameScoreSettings.Score[PlayerId - 1], TitleCtrl.PlayerFaceToRichText(StageCtrl.gameScoreSettings.SelectedGirlInGame)[PlayerId - 1]);
+            Score.text = string.Format("{0}p Score {1}  {2}", (PlayerId).ToString(), MountGSS.gameScoreSettings.Score[PlayerId - 1], TitleCtrl.PlayerFaceToRichText(MountGSS.gameScoreSettings.SelectedGirlInGame)[PlayerId - 1]);
     }
 
     [ContextMenu("更新等级")]
     public void UpdateLevel()
     {
-        Level.text = string.Format("Lv. {0}", StageCtrl.gameScoreSettings.GirlsLevel[MahouShoujoId].ToString());
+        Level.text = string.Format("Lv. {0}", MountGSS.gameScoreSettings.GirlsLevel[MahouShoujoId].ToString());
     }
 
     [ContextMenu("更新灵魂值")]
     public void UpdateSoulLimit()
     {
-        SoulLimit.text = string.Format("Soul limit  <size=25>{0}</size>", Mathf.Clamp(StageCtrl.gameScoreSettings.GirlSoulLimit[MahouShoujoId], 0, StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId ].MaxSoul));
+        SoulLimit.text = string.Format("Soul limit  <size=25>{0}</size>", Mathf.Clamp(MountGSS.gameScoreSettings.GirlSoulLimit[MahouShoujoId], 0, MountGSS.gameScoreSettings.mahouShoujos[MahouShoujoId ].MaxSoul));
 
         //红黑闪烁
 
@@ -88,12 +88,12 @@ public void UpdateScore()
                 switch (RedSoulLimit)
                 {
                     case false:
-                        SoulLimit.text = string.Format("Soul limit  <color=white><size=25>{0}</size></color>", Mathf.Clamp(StageCtrl.gameScoreSettings.GirlSoulLimit[MahouShoujoId], 0, 999999));
+                        SoulLimit.text = string.Format("Soul limit  <color=white><size=25>{0}</size></color>", Mathf.Clamp(MountGSS.gameScoreSettings.GirlSoulLimit[MahouShoujoId], 0, 999999));
                         RedSoulLimit = true;
                         break;
 
                     case true:
-                        SoulLimit.text = string.Format("Soul limit  <color=red><size=25>{0}</size></color>", Mathf.Clamp(StageCtrl.gameScoreSettings.GirlSoulLimit[MahouShoujoId], 0, 999999));
+                        SoulLimit.text = string.Format("Soul limit  <color=red><size=25>{0}</size></color>", Mathf.Clamp(MountGSS.gameScoreSettings.GirlSoulLimit[MahouShoujoId], 0, 999999));
                         RedSoulLimit = false;
                         break;
                 }
@@ -102,8 +102,8 @@ public void UpdateScore()
 
     public void UpdateSoulGem()
     {
-        float now = Mathf.Clamp(StageCtrl.gameScoreSettings.GirlSoulLimit[MahouShoujoId], 0, 999999);
-        float max = StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].BasicSoulLimit + StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].SoulGrowth * (StageCtrl.gameScoreSettings.GirlsLevel[MahouShoujoId] - 1);
+        float now = Mathf.Clamp(MountGSS.gameScoreSettings.GirlSoulLimit[MahouShoujoId], 0, 999999);
+        float max = MountGSS.gameScoreSettings.mahouShoujos[MahouShoujoId].BasicSoulLimit + MountGSS.gameScoreSettings.mahouShoujos[MahouShoujoId].SoulGrowth * (MountGSS.gameScoreSettings.GirlsLevel[MahouShoujoId] - 1);
        //灵魂宝石变黑（黑色图层逐渐显示）
         SoulGemBlack.color = new Color(0f, 0f, 0f, 1 - now / max);
     }
@@ -113,26 +113,26 @@ public void UpdateScore()
     public void UpdateHPBar()
     {
 
-        if(!StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId - 1])
+        if(!MountGSS.gameScoreSettings.IsBodyDieInGame[PlayerId - 1])
         {
 
-            if (StageCtrl.gameScoreSettings.GetHurtInGame[PlayerId - 1])
+            if (MountGSS.gameScoreSettings.GetHurtInGame[PlayerId - 1])
             {
                 Magia.fillAmount = 0;
                 Damaged.fillAmount = 1;
             }
-            else if (StageCtrl.gameScoreSettings.MagiaKeyDown[PlayerId - 1] && Magia.fillAmount < Health.fillAmount)
+            else if (MountGSS.gameScoreSettings.MagiaKeyDown[PlayerId - 1] && Magia.fillAmount < Health.fillAmount)
             {
-                StageCtrl.gameScoreSettings.MagiaKeyDown[PlayerId - 1] = false;
+                MountGSS.gameScoreSettings.MagiaKeyDown[PlayerId - 1] = false;
                 Magia.fillAmount = Health.fillAmount;
             }
 
             //最后处理VIT血条
-            Health.fillAmount = (float)StageCtrl.gameScoreSettings.GirlsVit[MahouShoujoId] / (StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].BasicVit + Grow(StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].VitGrowth, StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].VitGrowthLevelLimit, true));
+            Health.fillAmount = (float)MountGSS.gameScoreSettings.GirlsVit[MahouShoujoId] / (MountGSS.gameScoreSettings.mahouShoujos[MahouShoujoId].BasicVit + Grow(MountGSS.gameScoreSettings.mahouShoujos[MahouShoujoId].VitGrowth, MountGSS.gameScoreSettings.mahouShoujos[MahouShoujoId].VitGrowthLevelLimit, true));
 
         }
         //挂了，即魔女化
-        else if(!StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId - 1] && StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId - 1])
+        else if(!MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId - 1] && MountGSS.gameScoreSettings.IsBodyDieInGame[PlayerId - 1])
         {
             Magia.fillAmount = 0;
             Damaged.fillAmount = 0;
@@ -141,9 +141,9 @@ public void UpdateScore()
 
         }
         //复活处理
-       else if (StageCtrl.gameScoreSettings.IsSoulBallInGame[PlayerId - 1] && StageCtrl.gameScoreSettings.IsBodyDieInGame[PlayerId - 1] && Time.timeScale != 0)
+       else if (MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId - 1] && MountGSS.gameScoreSettings.IsBodyDieInGame[PlayerId - 1] && Time.timeScale != 0)
         {
-            //  Rebirth.fillAmount = (float)StageCtrl.gameScoreSettings.GirlsVit[MahouShoujoId] / (float)StageCtrl.gameScoreSettings.StageCtrl.gameScoreSettings.mahouShoujos[MahouShoujoId].MaxVit;
+            //  Rebirth.fillAmount = (float)MountGSS.gameScoreSettings.GirlsVit[MahouShoujoId] / (float)MountGSS.gameScoreSettings.MountGSS.gameScoreSettings.mahouShoujos[MahouShoujoId].MaxVit;
             //一秒七次，3秒回满血，恢复21次
             Rebirth.fillAmount += 1f / 21f;
             
@@ -211,7 +211,7 @@ public void UpdateScore()
             for (int i = 0; i < LevelLimit.Length; i++)
             {
                 //如果当前角色等级低于i阶等级限制的门槛
-                if (StageCtrl.gameScoreSettings.GirlsLevel[MahouShoujoId] < LevelLimit[i])
+                if (MountGSS.gameScoreSettings.GirlsLevel[MahouShoujoId] < LevelLimit[i])
                 {
                     break;
                 }
@@ -232,7 +232,7 @@ public void UpdateScore()
             for (int i = 0; i < LevelLimit.Length; i++)
             {
                 //如果当前角色等级低于i阶等级限制的门槛
-                if (StageCtrl.gameScoreSettings.GirlsLevel[MahouShoujoId] < LevelLimit[i])
+                if (MountGSS.gameScoreSettings.GirlsLevel[MahouShoujoId] < LevelLimit[i])
                 {
                     //则返回上一阶的成长值
                     if (i != 0)

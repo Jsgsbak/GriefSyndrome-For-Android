@@ -11,7 +11,6 @@ TagManager:
   - Player2
   - Player3
   - Floor
-  - Platform
   - Wall
   - Slope
   - PlayerAttack
@@ -31,7 +30,7 @@ TagManager:
   - PlayerWeapon
   - Floor
   - Wall
-  - 
+  - Platform
   - 
   - 
   - 

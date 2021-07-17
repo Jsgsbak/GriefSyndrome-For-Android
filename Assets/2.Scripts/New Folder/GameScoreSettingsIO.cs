@@ -1,19 +1,32 @@
 ﻿using BayatGames.SaveGameFree;
 using MEC;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Text;
 using UnityEngine;
-using UnityEngine.U2D;
+using PureAmaya.General;
 
 /// <summary>
 /// 控制游戏中的分数，设置，IO (不包含图片)
 /// </summary>
 public class GameScoreSettingsIO : ScriptableObject
 {
+    #region 事件组设置
+    public Variable.IntEvent Player1Hurt = new Variable.IntEvent();
+    public Variable.IntEvent Player2Hurt = new Variable.IntEvent();
+    public Variable.IntEvent Player3Hurt = new Variable.IntEvent();
+    /// <summary>
+    /// 魔法少女被击败（所选全死）
+    /// </summary>
+    public Variable.OrdinaryEvent AllGirlsInGameDie = new Variable.OrdinaryEvent();
+    /// <summary>
+    /// 击败魔女
+    /// </summary>
+    public Variable.OrdinaryEvent MajoDefeated = new Variable.OrdinaryEvent();
+
+
+    #endregion
+
+
     #region 正式玩的变量
 
 
@@ -42,6 +55,11 @@ public class GameScoreSettingsIO : ScriptableObject
     public int Time = 0;
     [Header("历史最短时间")]
     public int BestTime = 0;
+    /// <summary>
+    /// 打这个魔女的时间
+    /// </summary>
+    [Header("打这个魔女的时间")]
+    [HideInInspector] public int ThisMajoTime = 0;
     [Header("历史最短时间头像")]
     public Variable.PlayerFaceType[] BestTimeFace = new Variable.PlayerFaceType[] { Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null };
     [Header("正在打的周目数")]
@@ -120,6 +138,15 @@ public class GameScoreSettingsIO : ScriptableObject
     /// 变成灵魂球了吗
     /// </summary>
     public bool[] IsSoulBallInGame = new bool[] { false, false, false };
+
+    /// <summary>
+    /// 登场玩家人数（不含QB）
+    /// </summary>
+    public int playerNumber = 0;
+    /// <summary>
+    /// 登场的玩家死亡人数（不含QB）
+    /// </summary>
+    public int deadPlayerNumber = 0;
 
     /// <summary>
     ///  魔女或者所选的魔法少女都死了吗
@@ -208,6 +235,75 @@ public class GameScoreSettingsIO : ScriptableObject
 
 
     [HideInInspector] public Vector2 joystick = Vector2.zero;
+
+    #endregion
+
+    #region 必要方法设置
+    /// <summary>
+    /// 统一控制玩家受伤的逻辑
+    /// </summary>
+    /// <param name="damage"></param>
+    /// <param name="PlayerId"></param>
+    public void HurtPlayer(int damage, int PlayerId)
+    {
+        if (PlayerId == 1)
+        {
+            Player1Hurt.Invoke(damage);
+        }
+        else if (PlayerId == 2)
+        {
+            Player2Hurt.Invoke(damage);
+        }
+        else
+        {
+            Player3Hurt.Invoke(damage);
+        }
+    }
+
+    /// <summary>
+    /// 场上有一个玩家宝石没了
+    /// </summary>
+    public void PlayerDie()
+    {
+        //多人游戏的话，要判断是否三个人都死了
+        GirlsInGameDie();
+
+    }
+
+
+    /// <summary>
+    /// 游戏中登场的魔法少女死了（每一位死亡之后都调用 QB除外）
+    /// </summary>
+    public void GirlsInGameDie()
+    {
+        //真惨。。。加把劲吧
+
+        deadPlayerNumber++;
+        //死亡人数达到游戏人数才继续执行
+        if (deadPlayerNumber < playerNumber)
+        {
+            return;
+        }
+        //BGM停止播放
+        EasyBGMCtrl.easyBGMCtrl.PlayBGM(-1);
+        //累计时间增加
+       Time += ThisMajoTime;
+
+        //判断是否五色扑街
+        AllDie = true;
+        for (int i = 0; i < 5; i++)
+        {
+            if (!MagicalGirlsDie[i])
+            {
+                //有活着的则修复为false
+                AllDie = false;
+                break;
+            }
+        }
+
+        //游戏中的魔法少女全死了的事件调用
+        AllGirlsInGameDie.Invoke();
+    }
 
     #endregion
 

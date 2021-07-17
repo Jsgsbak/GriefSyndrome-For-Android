@@ -1,0 +1,20 @@
+{
+    "name": "GameCtrl",
+    "rootNamespace": "",
+    "references": [
+        "GUID:8bd2221f774a6b44a83bf9041327e32c",
+        "GUID:86cbef207480f214392a8dc4ab5bf67d",
+        "GUID:b55f29d1437071f4f94888e957e772e9",
+        "GUID:0fddcab41dc5970459e8d213bf334e77",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -13,10 +13,7 @@ using UnityEngine.Events;
 //所选角色全挂掉之后，返回魔女选择界面
 //但是五色全挂掉之后，进入CAS场景
 public class StageCtrl : MonoBehaviour
-{
-    public static GameScoreSettingsIO gameScoreSettings;//尽在这里弄一个单利
-    public static StageCtrl stageCtrl;
-    
+{    
     [Header("玩家激活设置")]
     public GameObject[] Players;
     public Transform Point;
@@ -28,48 +25,20 @@ public class StageCtrl : MonoBehaviour
     public EasyBGMCtrl PerfebInAsset;
 #endif
 
-    /// <summary>
-    /// 玩家人数
-    /// </summary>
-    int playerNumber = 0;
-    /// <summary>
-    /// 所选的玩家死亡人数
-    /// </summary>
-    int deadPlayerNumber = 0;
 
-    /// <summary>
-    /// 打这个魔女的时间
-    /// </summary>
-   [HideInInspector] public  int ThisMajoTime = 0;
    
     public int BGMid = 5;//通常都为5，是道中曲
 
     #region 事件组
-    public Variable.IntEvent Player1Hurt = new Variable.IntEvent();
-    public Variable.IntEvent Player2Hurt = new Variable.IntEvent();
-    public Variable.IntEvent Player3Hurt = new Variable.IntEvent();
-
-    /// <summary>
-    /// 击败魔女
-    /// </summary>
-    public Variable.OrdinaryEvent MajoDefeated = new Variable.OrdinaryEvent();
-    /// <summary>
-    /// 魔法少女被击败（所选全死）
-    /// </summary>
-    public Variable.OrdinaryEvent AllGirlsInGameDie = new Variable.OrdinaryEvent();
 
     #endregion
-    private void Awake()
+    private void Start()
     {
-        stageCtrl = this;
+        MountGSS.gameScoreSettings.MajoDefeated.RemoveAllListeners();
+        MountGSS.gameScoreSettings.AllGirlsInGameDie.RemoveAllListeners();
 
-        MajoDefeated.RemoveAllListeners();
-        AllGirlsInGameDie.RemoveAllListeners();
-
-
-        gameScoreSettings = (GameScoreSettingsIO)Resources.Load("GameScoreAndSettings");
-      
-        
+        //重置玩家死亡数
+        MountGSS.gameScoreSettings.deadPlayerNumber = 0;//上限是MountGSS.gameScoreSettings.playerNumber，即不含QB
         //先禁用所有玩家
         foreach (var item in Players)
         {
@@ -78,16 +47,16 @@ public class StageCtrl : MonoBehaviour
         //生成玩家（现在仅用来测试）
         for (int i = 0; i < 3; i++)
         {
-            if (gameScoreSettings.SelectedGirlInGame[i] != Variable.PlayerFaceType.Null)
+            if (MountGSS.gameScoreSettings.SelectedGirlInGame[i] != Variable.PlayerFaceType.Null)
             {
-                Players[(int)gameScoreSettings.SelectedGirlInGame[i]].transform.SetPositionAndRotation(Point.position, Point.rotation);
-                Players[(int)gameScoreSettings.SelectedGirlInGame[i]].SetActive(true);
-                Players[(int)gameScoreSettings.SelectedGirlInGame[i]].transform.SetParent(Stage.transform);
+                Players[(int)MountGSS.gameScoreSettings.SelectedGirlInGame[i]].transform.SetPositionAndRotation(Point.position, Point.rotation);
+                Players[(int)MountGSS.gameScoreSettings.SelectedGirlInGame[i]].SetActive(true);
+                Players[(int)MountGSS.gameScoreSettings.SelectedGirlInGame[i]].transform.SetParent(Stage.transform);
 
 
-                if (gameScoreSettings.SelectedGirlInGame[i] != Variable.PlayerFaceType.QB)
+                if (MountGSS.gameScoreSettings.SelectedGirlInGame[i] != Variable.PlayerFaceType.QB)
                 {
-                    playerNumber++;//玩家数记录（排除QB）
+                    MountGSS.gameScoreSettings.playerNumber++;//玩家数记录（排除QB）
                 }
             }
         }
@@ -108,26 +77,28 @@ public class StageCtrl : MonoBehaviour
             easyBGMCtrl.IsClone = true;
         }
 #endif
+
+        Start2();
     }
 
     // Start is called before the first frame update
-    void Start()
+    void Start2()
     {
         //事件组注册
         UICtrl.uiCtrl.PauseGame.AddListener(PauseGameForStage);
 
         //初始化
-        gameScoreSettings.MajoInitial();
+        MountGSS.gameScoreSettings.MajoInitial();
         //音量初始化
-        EasyBGMCtrl.easyBGMCtrl.ChangeVol(gameScoreSettings.BGMVol, true);
-        EasyBGMCtrl.easyBGMCtrl.ChangeVol(gameScoreSettings.SEVol, false);
+        EasyBGMCtrl.easyBGMCtrl.ChangeVol(MountGSS.gameScoreSettings.BGMVol, true);
+        EasyBGMCtrl.easyBGMCtrl.ChangeVol(MountGSS.gameScoreSettings.SEVol, false);
 
         //播放BGM（这里用的还是旧版的BGM播放器）
-        if(gameScoreSettings.BattlingMajo != Variable.Majo.Walpurgisnacht && gameScoreSettings.BattlingMajo != Variable.Majo.Oktavia)
+        if(MountGSS.gameScoreSettings.BattlingMajo != Variable.Majo.Walpurgisnacht && MountGSS.gameScoreSettings.BattlingMajo != Variable.Majo.Oktavia)
         {
             BGMid = 5;
         }
-        else if(gameScoreSettings.BattlingMajo == Variable.Majo.Walpurgisnacht)
+        else if(MountGSS.gameScoreSettings.BattlingMajo == Variable.Majo.Walpurgisnacht)
         {
             BGMid = 6;
         }
@@ -146,7 +117,12 @@ public class StageCtrl : MonoBehaviour
 
     public void Timer()
     {
-        ThisMajoTime++;
+        if(MountGSS.gameScoreSettings.deadPlayerNumber == MountGSS.gameScoreSettings.playerNumber)
+        {
+            CancelInvoke("Timer");
+            return;
+        }
+       MountGSS.gameScoreSettings.ThisMajoTime++;
     }
 
     /// <summary>
@@ -162,38 +138,29 @@ public class StageCtrl : MonoBehaviour
     /// </summary>
     public void Update()
     {
-        if (gameScoreSettings.Succeed && !StageCtrl.gameScoreSettings.DoesMajoOrShoujoDie)
+        if (MountGSS.gameScoreSettings.Succeed && !MountGSS.gameScoreSettings.DoesMajoOrShoujoDie)
         {
-            //实际上，魔女hp=0的时候就要调用一次  StageCtrl.gameScoreSettings.DoesMajoOrShoujoDie = true;
+            //实际上，魔女hp=0的时候就要调用一次  StageCtrl.MountGSS.gameScoreSettings.DoesMajoOrShoujoDie = true;
             //然后禁用输入按钮和输入
             //之后魔女死亡动画播放
             //掉落悲叹之种
             //执行 GoodbyeMajo();
             GoodbyeMajo();
-            StageCtrl.gameScoreSettings.DoesMajoOrShoujoDie = true;
+            MountGSS.gameScoreSettings.DoesMajoOrShoujoDie = true;
             //单纯为了别多次执行
-            gameScoreSettings.Succeed = false;
+            MountGSS.gameScoreSettings.Succeed = false;
         }
 
         /*UI显示，玩家操控，切换场景测试成功，保留备用
-        else  if (gameScoreSettings.DoesMajoOrShoujoDie)
+        else  if (MountGSS.gameScoreSettings.DoesMajoOrShoujoDie)
         {
             GirlsInGameDie();
-            gameScoreSettings.CleanSoul = false;
+            MountGSS.gameScoreSettings.CleanSoul = false;
             enabled = false;
         }*/
 
     }
 
-    /// <summary>
-    /// 场上有一个玩家宝石没了
-    /// </summary>
-    public void PlayerDie()
-    {
-        //多人游戏的话，要判断是否三个人都死了
-        GirlsInGameDie();
-
-    }
 
     /// <summary>
     /// 顺利打完魔女之后的结算逻辑
@@ -209,88 +176,34 @@ public class StageCtrl : MonoBehaviour
         //BGM停止播放
         EasyBGMCtrl.easyBGMCtrl.PlayBGM(-1);
         //累计时间增加
-        gameScoreSettings.Time += ThisMajoTime;
+        MountGSS.gameScoreSettings.Time += MountGSS.gameScoreSettings.ThisMajoTime;
 
         //击败的是影之魔女之前的魔女，则开放下一个魔女（不包括人鱼）
-        if ((int)gameScoreSettings.BattlingMajo <= 3)
+        if ((int)MountGSS.gameScoreSettings.BattlingMajo <= 3)
         {
-            gameScoreSettings.NewestMajo = (Variable.Majo)((int)gameScoreSettings.NewestMajo + 1);
+            MountGSS.gameScoreSettings.NewestMajo = (Variable.Majo)((int)MountGSS.gameScoreSettings.NewestMajo + 1);
         }
 
 
         //瓦夜逻辑
-        if (gameScoreSettings.BattlingMajo == Variable.Majo.Walpurgisnacht)
+        if (MountGSS.gameScoreSettings.BattlingMajo == Variable.Majo.Walpurgisnacht)
         {
             //通知gss刷新最高分数，最短时间，最高连击，当前玩的lap
-            gameScoreSettings.RefreshBestScoreAndSoOn();
+            MountGSS.gameScoreSettings.RefreshBestScoreAndSoOn();
             //存档（放在这里存档是为了防止有的人staff还没出现就关游戏）
-            Timing.RunCoroutine(gameScoreSettings.SaveAll());
+            Timing.RunCoroutine(MountGSS.gameScoreSettings.SaveAll());
 
         }
 
 
         //调用击败魔女的事件
-        MajoDefeated.Invoke();
+        MountGSS.gameScoreSettings.MajoDefeated.Invoke();
 
     }
 
-    /// <summary>
-    /// 游戏中登场的魔法少女死了（每一位死亡之后都调用 QB除外）
-    /// </summary>
-    public void GirlsInGameDie()
-    {
-        //真惨。。。加把劲吧
-
-        deadPlayerNumber++;
-        //死亡人数达到游戏人数才继续执行
-        if (deadPlayerNumber < playerNumber)
-        {
-            return;
-        }
-
-        //停止计时器
-        CancelInvoke("Timer");
-        //BGM停止播放
-        EasyBGMCtrl.easyBGMCtrl.PlayBGM(-1);
-        //累计时间增加
-        gameScoreSettings.Time += ThisMajoTime;
-
-        //判断是否五色扑街
-        gameScoreSettings.AllDie = true;
-        for (int i = 0; i < 5; i++)
-        {
-            if (!gameScoreSettings.MagicalGirlsDie[i])
-            {
-                //有活着的则修复为false
-                gameScoreSettings.AllDie = false;
-                break;
-            }
-        }
-
-        //游戏中的魔法少女全死了的事件调用
-            AllGirlsInGameDie.Invoke();
-    }
+   
 
 
-    /// <summary>
-    /// 统一控制玩家受伤的逻辑
-    /// </summary>
-    /// <param name="damage"></param>
-    /// <param name="PlayerId"></param>
-    public  void HurtPlayer(int damage, int PlayerId)
-    {
-        if (PlayerId == 1)
-        {
-            Player1Hurt.Invoke(damage);
-        }
-        else if (PlayerId == 2)
-        {
-            Player2Hurt.Invoke(damage);
-        }
-        else
-        {
-            Player3Hurt.Invoke(damage);
-        }
-    }
+   
 
 }

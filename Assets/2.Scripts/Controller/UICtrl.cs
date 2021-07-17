@@ -62,6 +62,9 @@ public class UICtrl : MonoBehaviour
 #if UNITY_EDITOR
     [Header("调试用")]
     public Text ShowRandomBGM;
+    [Header("检查视图中的预设")]
+    public EasyBGMCtrl PerfebInAsset;
+
 #endif
 
 
@@ -88,6 +91,16 @@ public class UICtrl : MonoBehaviour
 
     private void Start()
     {
+#if UNITY_EDITOR
+
+        //检查是否存在BGMCtrl
+        if (GameObject.FindObjectOfType<EasyBGMCtrl>() == null)
+        {
+            EasyBGMCtrl easyBGMCtrl = Instantiate(PerfebInAsset).GetComponent<EasyBGMCtrl>();
+            easyBGMCtrl.IsClone = true;
+        }
+#endif
+
 
         UpdateManager.updateManager.SlowUpdate.AddListener(SlowUpdate);
         UpdateManager.updateManager.FastUpdate.AddListener(FastUpdate);
@@ -96,13 +109,13 @@ public class UICtrl : MonoBehaviour
         //音量事件注册与设置
         BGMVol.onValueChanged.AddListener(BGMVolChange);
         SEVol.onValueChanged.AddListener(SEVolChange);
-        BGMVol.value =StageCtrl. gameScoreSettings.BGMVol;
-        SEVol.value = StageCtrl.gameScoreSettings.SEVol;
+        BGMVol.value = MountGSS.gameScoreSettings.BGMVol;
+        SEVol.value = MountGSS.gameScoreSettings.SEVol;
 
         //魔女被击败
-        StageCtrl.stageCtrl.MajoDefeated.AddListener(delegate() {/*修改状态，防止游戏暂停*/StageCtrl.gameScoreSettings. DoesMajoOrShoujoDie = true; /*启用结算界面*/Timing.RunCoroutine(Conclusion());});
+        MountGSS.gameScoreSettings.MajoDefeated.AddListener(delegate() {/*修改状态，防止游戏暂停*/MountGSS.gameScoreSettings. DoesMajoOrShoujoDie = true; /*启用结算界面*/Timing.RunCoroutine(Conclusion());});
         //魔法少女被击败（所选全死）
-        StageCtrl.stageCtrl.AllGirlsInGameDie.AddListener(delegate() {/*修改状态，防止游戏暂停*/StageCtrl.gameScoreSettings.DoesMajoOrShoujoDie = true; /*启用结算界面*/Timing.RunCoroutine(ShoujoDie()); });
+        MountGSS.gameScoreSettings.AllGirlsInGameDie.AddListener(delegate() {/*修改状态，防止游戏暂停*/MountGSS.gameScoreSettings.DoesMajoOrShoujoDie = true; /*启用结算界面*/Timing.RunCoroutine(ShoujoDie()); });
         #endregion
 
         #region 场景UI初始化
@@ -117,7 +130,7 @@ public class UICtrl : MonoBehaviour
 
         
         //设置好虚拟按键是否启用
-        if(StageCtrl.gameScoreSettings.UseScreenInput != 2)
+        if(MountGSS.gameScoreSettings.UseScreenInput != 2)
         {
             Destroy(VirtualInput);
         }
@@ -125,7 +138,7 @@ public class UICtrl : MonoBehaviour
         //先记录下玩家人数（当然现在是单机，不过还是为多人留点东西）
         for (int i = 0; i < 3; i++)
         {
-            if (StageCtrl.gameScoreSettings.SelectedGirlInGame[i] != Variable.PlayerFaceType.Null && StageCtrl.gameScoreSettings.SelectedGirlInGame[i] != Variable.PlayerFaceType.QB)
+            if (MountGSS.gameScoreSettings.SelectedGirlInGame[i] != Variable.PlayerFaceType.Null && MountGSS.gameScoreSettings.SelectedGirlInGame[i] != Variable.PlayerFaceType.QB)
             {
                 PlayerCount++;
             }
@@ -143,14 +156,14 @@ public class UICtrl : MonoBehaviour
             PlayerInfInGame[i].PlayerId = i +1;
             PlayerInfInGame[i].transform.SetParent(PIUParent);//设置父对象，排版
             PlayerInfInGame[i].transform.localScale = 0.8f * Vector2.one;//修正规模
-            PlayerInfInGame[i].SetNameAndSG(StageCtrl.gameScoreSettings.SelectedGirlInGame[i].ToString());
+            PlayerInfInGame[i].SetNameAndSG(MountGSS.gameScoreSettings.SelectedGirlInGame[i].ToString());
             PlayerInfInGame[i].RegEvent();
            
             //暂停界面的
             pausePlayerInfInGame[i] = Instantiate(pausePlayerInf);
             pausePlayerInfInGame[i].transform.SetParent(PPIParent);
             pausePlayerInfInGame[i].transform.localScale = 1.1f * Vector2.one;//修正规模
-            pausePlayerInfInGame[i].SetNameAndImage(StageCtrl.gameScoreSettings.SelectedGirlInGame[i].ToString(), PauseAtlas); ;
+            pausePlayerInfInGame[i].SetNameAndImage(MountGSS.gameScoreSettings.SelectedGirlInGame[i].ToString(), PauseAtlas); ;
 
         }
 
@@ -174,11 +187,11 @@ public class UICtrl : MonoBehaviour
         //响应安卓返回按键（游戏界面暂停）
         if(Application.platform == RuntimePlatform.Android && Input.GetKeyDown(KeyCode.Escape))
         {
-            StageCtrl.gameScoreSettings.Pause = true;
+            MountGSS.gameScoreSettings.Pause = true;
         }
 
         ///触发暂停
-        if (StageCtrl.gameScoreSettings.Pause && Time.timeScale != 0)
+        if (MountGSS.gameScoreSettings.Pause && Time.timeScale != 0)
         {
             GamePauseSwitch();
         }
@@ -189,12 +202,12 @@ public class UICtrl : MonoBehaviour
     #region 音量滑块
     public void BGMVolChange(float vol)
     {
-        StageCtrl.gameScoreSettings.BGMVol = vol;
+        MountGSS.gameScoreSettings.BGMVol = vol;
         EasyBGMCtrl.easyBGMCtrl.ChangeVol(vol, true);
     }
     public void SEVolChange(float vol)
     {
-        StageCtrl.gameScoreSettings.SEVol = vol;
+        MountGSS.gameScoreSettings.SEVol = vol;
         EasyBGMCtrl.easyBGMCtrl.ChangeVol(vol, false);
 
     }
@@ -211,7 +224,7 @@ public class UICtrl : MonoBehaviour
         PauseGame.Invoke(Time.timeScale != 0);
 
         //游戏暂停
-        if (Time.timeScale != 0 && !StageCtrl.gameScoreSettings.DoesMajoOrShoujoDie)
+        if (Time.timeScale != 0 && !MountGSS.gameScoreSettings.DoesMajoOrShoujoDie)
         {
             DebugUI.SetActive(false);
             //暂停音效
@@ -226,7 +239,7 @@ public class UICtrl : MonoBehaviour
         else if(Time.timeScale == 0)
         {
             DebugUI.SetActive(true);
-            StageCtrl.gameScoreSettings.Pause = false;
+            MountGSS.gameScoreSettings.Pause = false;
             Time.timeScale = 1;
             //确认音效
             EasyBGMCtrl.easyBGMCtrl.PlaySE(0);
@@ -245,7 +258,7 @@ public class UICtrl : MonoBehaviour
         GamePauseSwitch();
 
         //设置为false，使回到主标题part
-        StageCtrl.gameScoreSettings.MajoSceneToTitle = false;
+        MountGSS.gameScoreSettings.MajoSceneToTitle = false;
 
 
         //返回音效
@@ -271,7 +284,7 @@ public class UICtrl : MonoBehaviour
     {
 
         //判断是否五色扑街
-        if (StageCtrl.gameScoreSettings.AllDie)
+        if (MountGSS.gameScoreSettings.AllDie)
         {
             //借助结算界面的文本框通知玩家你成功打出了be
             MajoDieText.text = "    Sekai saraba...";
@@ -284,9 +297,9 @@ public class UICtrl : MonoBehaviour
         }
 
         //存活时间
-        ThisMajoTimeText.text = string.Format("Surivial Time:{0}", TitleCtrl.IntTimeFormat(StageCtrl.stageCtrl.ThisMajoTime));
+        ThisMajoTimeText.text = string.Format("Surivial Time:{0}", TitleCtrl.IntTimeFormat(MountGSS.gameScoreSettings.ThisMajoTime));
         //总用时                                
-        TotalTimeText.text = string.Format("Total Time:{0}", TitleCtrl.IntTimeFormat(StageCtrl.gameScoreSettings.Time));
+        TotalTimeText.text = string.Format("Total Time:{0}", TitleCtrl.IntTimeFormat(MountGSS.gameScoreSettings.Time));
 
 
         //展开结算界面
@@ -317,19 +330,19 @@ public class UICtrl : MonoBehaviour
         //此处仅执行顺利打完魔女的结算
 
         //击败提示
-        if (StageCtrl.gameScoreSettings.BattlingMajo != Variable.Majo.Walpurgisnacht)
+        if (MountGSS.gameScoreSettings.BattlingMajo != Variable.Majo.Walpurgisnacht)
         {
-            MajoDieText.text = string.Format("{0} was defeated\n                                   and left griefseed.", StageCtrl.gameScoreSettings.BattlingMajo.ToString());
+            MajoDieText.text = string.Format("{0} was defeated\n                                   and left griefseed.", MountGSS.gameScoreSettings.BattlingMajo.ToString());
         }
         else
         {
-            MajoDieText.text = string.Format("     {0} was over.", StageCtrl.gameScoreSettings.BattlingMajo.ToString());
+            MajoDieText.text = string.Format("     {0} was over.", MountGSS.gameScoreSettings.BattlingMajo.ToString());
         }
 
         //这个魔女被击败的用时
-        ThisMajoTimeText.text = string.Format("Clear Time:{0}", TitleCtrl.IntTimeFormat(StageCtrl.stageCtrl.ThisMajoTime));
+        ThisMajoTimeText.text = string.Format("Clear Time:{0}", TitleCtrl.IntTimeFormat(MountGSS.gameScoreSettings.ThisMajoTime));
         //总用时
-        TotalTimeText.text = string.Format("Total Time:{0}", TitleCtrl.IntTimeFormat(StageCtrl.gameScoreSettings.Time));
+        TotalTimeText.text = string.Format("Total Time:{0}", TitleCtrl.IntTimeFormat(MountGSS.gameScoreSettings.Time));
 
         //展开结算界面
         ConcInMajo.gameObject.SetActive(true);
@@ -351,19 +364,19 @@ public class UICtrl : MonoBehaviour
     void ReturnToMajoOrStaff()
     {
         //瓦夜打完，结算界面结束后进入staff / 或者五色全挂，进入staff
-        if(StageCtrl.gameScoreSettings.BattlingMajo == Variable.Majo.Walpurgisnacht || StageCtrl.gameScoreSettings.AllDie)
+        if(MountGSS.gameScoreSettings.BattlingMajo == Variable.Majo.Walpurgisnacht || MountGSS.gameScoreSettings.AllDie)
         {
             //预先修改一些变量，防止出现Bug
-            StageCtrl.gameScoreSettings.MajoSceneToTitle = false;
-            if(StageCtrl.gameScoreSettings.BattlingMajo == Variable.Majo.Walpurgisnacht)
+            MountGSS.gameScoreSettings.MajoSceneToTitle = false;
+            if(MountGSS.gameScoreSettings.BattlingMajo == Variable.Majo.Walpurgisnacht)
             {
                 //通关设置
-                StageCtrl.gameScoreSettings.Success = true;
+                MountGSS.gameScoreSettings.Success = true;
             }
             LoadingCtrl.LoadScene(4, false);
         }
         //其他魔女打完，结算界面结束后进入魔女选择part
-        else if(StageCtrl.gameScoreSettings.BattlingMajo != Variable.Majo.Walpurgisnacht)
+        else if(MountGSS.gameScoreSettings.BattlingMajo != Variable.Majo.Walpurgisnacht)
         {
             LoadingCtrl.LoadScene(1, false);
         }
@@ -373,43 +386,43 @@ public class UICtrl : MonoBehaviour
     #region 调试模式
     public void CleanSoulUp()
     {
-        StageCtrl.gameScoreSettings.CleanSoul = false;
+        MountGSS.gameScoreSettings.CleanSoul = false;
     }
 
     public void cleanvitUp()
     {
-        StageCtrl.gameScoreSettings.CleanVit = false;
+        MountGSS.gameScoreSettings.CleanVit = false;
     }
 
     public void HurtMeUp()
     {
-        StageCtrl.gameScoreSettings.HurtMyself = false;
+        MountGSS.gameScoreSettings.HurtMyself = false;
     }
     public void SucceedUp()
     {
-        StageCtrl.gameScoreSettings.Succeed = false;
+        MountGSS.gameScoreSettings.Succeed = false;
     }
     public void JumpDown()
     {
-        StageCtrl.gameScoreSettings.Jump = true;
+        MountGSS.gameScoreSettings.Jump = true;
     }
     public void CleanSoulDOwn()
     {
-        StageCtrl.gameScoreSettings.CleanSoul = true;
+        MountGSS.gameScoreSettings.CleanSoul = true;
     }
 
     public void cleanvitDown()
     {
-        StageCtrl.gameScoreSettings.CleanVit = true;
+        MountGSS.gameScoreSettings.CleanVit = true;
     }
 
     public void HurtMeDown()
     {
-        StageCtrl.gameScoreSettings.HurtMyself = true;
+        MountGSS.gameScoreSettings.HurtMyself = true;
     }
     public void SucceedDOwn()
     {
-        StageCtrl.gameScoreSettings.Succeed = true;
+        MountGSS.gameScoreSettings.Succeed = true;
     }
     #endregion
 }

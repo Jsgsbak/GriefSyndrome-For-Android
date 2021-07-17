@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 using UnityEngine.UI;
 using MEC;
-using UnityEngine.SceneManagement;
-using UnityEngine.EventSystems;
+using TMPro;
+using PureAmaya.General;
 /// <summary>
 /// n标题管理
 /// </summary>

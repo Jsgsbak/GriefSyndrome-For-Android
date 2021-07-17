@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using MEC;
+using PureAmaya.General;
 using System.Collections.Generic;
 
 /// <summary>

@@ -30,7 +30,7 @@ public class KyokoCtrl : APlayerCtrl
 
     public override void HorizontalX()
     {
-        if(StageCtrl.gameScoreSettings.Horizontal != 0 && StageCtrl.gameScoreSettings.Xattack && !IsAttack[1])
+        if(MountGSS.gameScoreSettings.Horizontal != 0 && MountGSS.gameScoreSettings.Xattack && !IsAttack[1])
         {
             Debug.Log("???");
 
@@ -118,7 +118,7 @@ public class KyokoCtrl : APlayerCtrl
     {
 
         //蓄力阶段
-        if (StageCtrl.gameScoreSettings.Horizontal == 0 && StageCtrl.gameScoreSettings.XattackPressed && !StrongDash && !StageCtrl.gameScoreSettings.Up && !StageCtrl.gameScoreSettings.Down)
+        if (MountGSS.gameScoreSettings.Horizontal == 0 && MountGSS.gameScoreSettings.XattackPressed && !StrongDash && !MountGSS.gameScoreSettings.Up && !MountGSS.gameScoreSettings.Down)
         {
             BanTurnAround = true;
             BanWalk = true;
@@ -136,7 +136,7 @@ public class KyokoCtrl : APlayerCtrl
 
         }
         //松开X
-        else if(!StageCtrl.gameScoreSettings.XattackPressed && !StrongDash && IsAttack[1] && playerStatus == Variable.PlayerStatus.Strong_1)
+        else if(!MountGSS.gameScoreSettings.XattackPressed && !StrongDash && IsAttack[1] && playerStatus == Variable.PlayerStatus.Strong_1)
         {
             playerStatus = Variable.PlayerStatus.Strong_2;
             StrongDash = true;
@@ -164,7 +164,7 @@ public class KyokoCtrl : APlayerCtrl
 
     public override void OrdinaryZ()
     {
-        if(StageCtrl.gameScoreSettings.ZattackPressed)
+        if(MountGSS.gameScoreSettings.ZattackPressed)
         {
             //杏子只有一段攻击动画
             if (playerStatus != Variable.PlayerStatus.Weak_1) CancelJump();
@@ -180,7 +180,7 @@ public class KyokoCtrl : APlayerCtrl
     {
         if (IsGround) { UpAttackCount = 0; }
 
-        if (StageCtrl.gameScoreSettings.Horizontal == 0 && UpAttackCount < 1 && StageCtrl.gameScoreSettings.Xattack && StageCtrl.gameScoreSettings.Up)
+        if (MountGSS.gameScoreSettings.Horizontal == 0 && UpAttackCount < 1 && MountGSS.gameScoreSettings.Xattack && MountGSS.gameScoreSettings.Up)
         {
             UpAttackCount++;
             CancelJump();//直接中断跳跃并且不恢复
@@ -240,7 +240,7 @@ public class KyokoCtrl : APlayerCtrl
         {
             case "CouldStop":
                 //停止攻击
-                if (!StageCtrl.gameScoreSettings.ZattackPressed)
+                if (!MountGSS.gameScoreSettings.ZattackPressed)
                 {
                     BanJump = false;
                     BanWalk = false;
@@ -251,7 +251,7 @@ public class KyokoCtrl : APlayerCtrl
         }
 
         //水平移动
-        if (StageCtrl.gameScoreSettings.Horizontal != 0)
+        if (MountGSS.gameScoreSettings.Horizontal != 0)
         {
             if (DoLookRight)
             {

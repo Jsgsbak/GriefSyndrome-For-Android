@@ -59,8 +59,8 @@ public class ETCedition : MonoBehaviour
             ETCButton = GetComponent<ETCButton>();
 
             //更新按钮图片（摇杆不支持）
-            ETCButton.normalSprite = ActionLogos[StageCtrl.gameScoreSettings.PlayerSelectedGirlId];
-            ETCButton.pressedSprite = ActionLogos[StageCtrl.gameScoreSettings.PlayerSelectedGirlId];
+            ETCButton.normalSprite = ActionLogos[MountGSS.gameScoreSettings.PlayerSelectedGirlId];
+            ETCButton.pressedSprite = ActionLogos[MountGSS.gameScoreSettings.PlayerSelectedGirlId];
 
 
         }
@@ -108,7 +108,7 @@ public class ETCedition : MonoBehaviour
         //游戏模式
         else
         {
-            gss = StageCtrl.gameScoreSettings;
+            gss = MountGSS.gameScoreSettings;
         }
 
         tr.anchoredPosition = new Vector2(gss.KeyPosScale[(int)buttonActions].EditPosition.x, gss.KeyPosScale[(int)buttonActions].EditPosition.y);
@@ -126,29 +126,29 @@ public class ETCedition : MonoBehaviour
         //这个是为了得到速度的方向以及兼容其他的输入方式
         if (vector2.x > 0.3f)
         {
-            StageCtrl.gameScoreSettings.Horizontal = 1;
+            MountGSS.gameScoreSettings.Horizontal = 1;
         }
         else if (vector2.x < -0.3f)
         {
-            StageCtrl.gameScoreSettings.Horizontal = -1;
+            MountGSS.gameScoreSettings.Horizontal = -1;
         }
         else if (vector2.x <= 0.3f || vector2.x >= -0.3f)
         {
-            StageCtrl.gameScoreSettings.Horizontal = 0;
+            MountGSS.gameScoreSettings.Horizontal = 0;
         }
-        StageCtrl.gameScoreSettings.Up = vector2.y >= 0.7f;
-        StageCtrl.gameScoreSettings.Down = vector2.y <= -0.7f;
+        MountGSS.gameScoreSettings.Up = vector2.y >= 0.7f;
+        MountGSS.gameScoreSettings.Down = vector2.y <= -0.7f;
 
-        StageCtrl.gameScoreSettings.joystick = vector2;
+        MountGSS.gameScoreSettings.joystick = vector2;
 
     }
 
     public void MoveEnd()
     {
-        StageCtrl.gameScoreSettings.Up = false;
-        StageCtrl.gameScoreSettings.Down = false;
-        StageCtrl.gameScoreSettings.Horizontal = 0;
-        StageCtrl.gameScoreSettings.joystick = Vector2.zero; ;
+        MountGSS.gameScoreSettings.Up = false;
+        MountGSS.gameScoreSettings.Down = false;
+        MountGSS.gameScoreSettings.Horizontal = 0;
+        MountGSS.gameScoreSettings.joystick = Vector2.zero; ;
     }
 
 
@@ -157,11 +157,11 @@ public class ETCedition : MonoBehaviour
     {
         if (buttonActions == ETCActions.Pause)
         {
-            StageCtrl.gameScoreSettings.Pause = true;
+            MountGSS.gameScoreSettings.Pause = true;
         }
 
         //僵直状态仅允许暂停游戏
-        if (StageCtrl.gameScoreSettings.LocalIsStiff)
+        if (MountGSS.gameScoreSettings.LocalIsStiff)
         {
             return;
         }
@@ -175,16 +175,16 @@ public class ETCedition : MonoBehaviour
             switch (buttonActions)
             {
                 case ETCActions.Jump:
-                    StageCtrl.gameScoreSettings.Jump = true;
+                    MountGSS.gameScoreSettings.Jump = true;
                     break;
                 case ETCActions.Weak:
-                    StageCtrl.gameScoreSettings.Zattack = true;
+                    MountGSS.gameScoreSettings.Zattack = true;
                     break;
                 case ETCActions.Strong:
-                    StageCtrl.gameScoreSettings.Xattack = true;
+                    MountGSS.gameScoreSettings.Xattack = true;
                     break;
                 case ETCActions.Magia:
-                    StageCtrl.gameScoreSettings.Magia = true;
+                    MountGSS.gameScoreSettings.Magia = true;
                     break;
             }
         }
@@ -193,13 +193,13 @@ public class ETCedition : MonoBehaviour
         switch (buttonActions)
         {
             case ETCActions.Weak:
-                StageCtrl.gameScoreSettings.ZattackPressed = true;
+                MountGSS.gameScoreSettings.ZattackPressed = true;
                 break;
             case ETCActions.Strong:
-                StageCtrl.gameScoreSettings.XattackPressed = true;
+                MountGSS.gameScoreSettings.XattackPressed = true;
                 break;
             case ETCActions.Magia:
-                StageCtrl.gameScoreSettings.MagiaPressed = true;
+                MountGSS.gameScoreSettings.MagiaPressed = true;
                 break;
         }
 
@@ -212,19 +212,19 @@ public class ETCedition : MonoBehaviour
         switch (buttonActions)
         {
             case ETCActions.Jump:
-                StageCtrl.gameScoreSettings.Jump = false;
+                MountGSS.gameScoreSettings.Jump = false;
                 break;
             case ETCActions.Weak:
-                StageCtrl.gameScoreSettings.Zattack = false;
+                MountGSS.gameScoreSettings.Zattack = false;
                 break;
             case ETCActions.Strong:
-                StageCtrl.gameScoreSettings.Xattack = false;
+                MountGSS.gameScoreSettings.Xattack = false;
                 break;
             case ETCActions.Magia:
-                StageCtrl.gameScoreSettings.Magia = false;
+                MountGSS.gameScoreSettings.Magia = false;
                 break;
             case ETCActions.Pause:
-                StageCtrl.gameScoreSettings.Pause = false;
+                MountGSS.gameScoreSettings.Pause = false;
                 break;
         }
     }
@@ -235,13 +235,13 @@ public class ETCedition : MonoBehaviour
         switch (buttonActions)
         {
             case ETCActions.Weak:
-                StageCtrl.gameScoreSettings.ZattackPressed = false;
+                MountGSS.gameScoreSettings.ZattackPressed = false;
                 break;
             case ETCActions.Strong:
-                StageCtrl.gameScoreSettings.XattackPressed = false;
+                MountGSS.gameScoreSettings.XattackPressed = false;
                 break;
             case ETCActions.Magia:
-                StageCtrl.gameScoreSettings.MagiaPressed = false;
+                MountGSS.gameScoreSettings.MagiaPressed = false;
                 break;
 
         }

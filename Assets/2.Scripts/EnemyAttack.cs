@@ -19,15 +19,15 @@ public class EnemyAttack : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player1"))
         {
-            StageCtrl.stageCtrl.Player1Hurt.Invoke(Damage);
+            MountGSS.gameScoreSettings.Player1Hurt.Invoke(Damage);
         }
         else if (collision.gameObject.CompareTag("Player2"))
         {
-            StageCtrl.stageCtrl.Player2Hurt.Invoke(Damage);
+            MountGSS.gameScoreSettings.Player2Hurt.Invoke(Damage);
         }
         else if (collision.gameObject.CompareTag("Player3"))
         {
-            StageCtrl.stageCtrl.Player3Hurt.Invoke(Damage);
+            MountGSS.gameScoreSettings.Player3Hurt.Invoke(Damage);
         }
 
 

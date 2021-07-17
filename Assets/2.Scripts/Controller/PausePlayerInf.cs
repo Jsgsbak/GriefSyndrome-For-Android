@@ -17,8 +17,8 @@ public class PausePlayerInf : MonoBehaviour
         if(MahouShoujoId != -1)
         {
             text.text = string.Format("{0}\n\n\nLevel:{1}\n\n\nVit:{2}\n\n\nSoul:{3}\n\n\nPow:{4}\n",
-                                        name,StageCtrl.gameScoreSettings.GirlsLevel[MahouShoujoId].ToString(),
-                                       StageCtrl.gameScoreSettings.GirlsVit[MahouShoujoId].ToString(),StageCtrl.gameScoreSettings.GirlSoulLimit[MahouShoujoId].ToString(),StageCtrl.gameScoreSettings.GirlsPow[MahouShoujoId].ToString() );
+                                        name,MountGSS.gameScoreSettings.GirlsLevel[MahouShoujoId].ToString(),
+                                       MountGSS.gameScoreSettings.GirlsVit[MahouShoujoId].ToString(),MountGSS.gameScoreSettings.GirlSoulLimit[MahouShoujoId].ToString(),MountGSS.gameScoreSettings.GirlsPow[MahouShoujoId].ToString() );
         }
     }
 
