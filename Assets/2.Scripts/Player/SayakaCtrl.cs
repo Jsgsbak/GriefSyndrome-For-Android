@@ -150,7 +150,6 @@ public class SayakaCtrl : APlayerCtrl
         else if (!MountGSS.gameScoreSettings.XattackPressed && IsAttack[1]&& playerStatus == Variable.PlayerStatus.Strong_1 && !XordinaryDash)
         {
             playerStatus = Variable.PlayerStatus.Strong_2;
-            SetGravityRatio(1f);
             XordinaryDash = true;
         }
 
@@ -166,11 +165,11 @@ public class SayakaCtrl : APlayerCtrl
 
             if (DoLookRight)
             {
-                Move(6F - OrdinaryXTimer, true, Vector2.right);
+                Move(6F - OrdinaryXTimer * 2F, true, Vector2.right);
             }
             else
             {
-                Move(6F - OrdinaryXTimer, true, Vector2.left);
+                Move(6F - OrdinaryXTimer * 2F, true, Vector2.left);
             }
         }
     }
@@ -191,12 +190,11 @@ public class SayakaCtrl : APlayerCtrl
         {
             if (IsGround)
             {
-                Debug.Log("2");
-                Move(100f, true, Vector2.up);
+                Move(10f, true, Vector2.up);
             }
             else
             {
-                Move(4f, true, Vector2.up);
+                Move(5f, true, Vector2.up);
             }
         }
         //下降
@@ -395,7 +393,6 @@ public class SayakaCtrl : APlayerCtrl
     public override void XattackAnimationEvent(string AnimationName)
     {        
                 //结束
-                SetGravityRatio(1f);
                 BanTurnAround = false;
                 BanInput = false;
                 XordinaryDash = false;

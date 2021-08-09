@@ -4,7 +4,7 @@ using UnityEngine;
 using PureAmaya.General;
 using MEC;
 using System;
-
+//真 屎山代码 警告
 //多人游戏玩家需要同步的信息：PlayerStatus， 输入，
 [DisallowMultipleComponent]
 public abstract class APlayerCtrl : MonoBehaviour, IMove
@@ -102,19 +102,19 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             //此时重置掉落间隔计时器，以实现正常的加速掉落（仅限第一次从重力禁用状态恢复到重力启用状态）
             FallInteralTimer = Time.timeSinceLevelLoad;
         }
-
-
-
         GravityRatio = number;
-
     }
 
     [HideInInspector] public float MoveSpeedRatio = 1f;
 
     /// <summary>
-    /// 禁止左右移动（-1左 1右）
+    ///  仅限空气墙和平台左右两端禁止左右移动（-1左 1右）
     /// </summary>
     public int BanLeftOrRight = 0;
+    /// <summary>
+    /// 碰到空气墙（墙壁）了
+    /// </summary>
+    private bool ZhuangBi = false;
 
     /// <summary>
     /// 向右看吗
@@ -432,8 +432,8 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// </summary>
     public void JumpAndFall()
     {
-        //除了禁用跳跃的情况，攻击的时候也不能跳（单独写出来，不然太麻烦了）
-        if (BanJump || MountGSS.gameScoreSettings.Zattack || MountGSS.gameScoreSettings.Xattack || MountGSS.gameScoreSettings.Magia) return;
+        //除了禁用跳跃的情况，攻击的时候也不能跳（单独写出来，不然太麻烦了）   // ZhuangBi：阻止空气墙那里进行跳跃
+        if (BanJump || MountGSS.gameScoreSettings.Zattack || MountGSS.gameScoreSettings.Xattack || MountGSS.gameScoreSettings.Magia || ZhuangBi) return;
 
         //跳跃触发
         if (!MountGSS.gameScoreSettings.Down && MountGSS.gameScoreSettings.Jump && JumpCount != 2)
@@ -522,19 +522,20 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     {
         rays[0] = new Ray2D(GavityRayPos[0].position, Vector2.down);
 
+        //斜坡修改位置
         if (PlayerSlope.y < 0)
         {
             //往右走的下坡射线长一点
             if (DoLookRight)
             {
                 //右
-                infoRight = Physics2D.Raycast(rays[0].origin, rays[0].direction, 0.15f);
+                infoRight = Physics2D.Raycast(rays[0].origin, rays[0].direction, 0.25f);
             }
             //往左走的上坡射线短一点
             else
             {
                 //右
-                infoRight = Physics2D.Raycast(rays[0].origin, rays[0].direction, 0.08f);
+                infoRight = Physics2D.Raycast(rays[0].origin, rays[0].direction, 0.18f);
             }
         }
         else
@@ -543,13 +544,13 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             if (!DoLookRight)
             {
                 //右
-                infoRight = Physics2D.Raycast(rays[0].origin, rays[0].direction, 0.15f);
+                infoRight = Physics2D.Raycast(rays[0].origin, rays[0].direction, 0.25f);
             }
             //往右走的上坡射线短一点
             else
             {
                 //右
-                infoRight = Physics2D.Raycast(rays[0].origin, rays[0].direction, 0.08f);
+                infoRight = Physics2D.Raycast(rays[0].origin, rays[0].direction, 0.18f);
             }
 
         }
@@ -564,7 +565,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
                 StandOnFloor = infoRight.collider.CompareTag("Floor") || infoRight.collider.CompareTag("Slope");
 
                 //斜坡
-                if (infoRight.collider.CompareTag("Slope") && SlopeInstanceId != infoRight.collider.GetInstanceID())
+                if ( infoRight.collider.CompareTag("Slope"))
                 {
                     string[] vec = infoRight.collider.name.Split(',');
                     if (tr.position.x >= float.Parse(vec[2]) && tr.position.x <= float.Parse(vec[3]))
@@ -591,7 +592,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             //啥也没才上，腾空
             else if (!IsJumping)//去除跳跃的情况
             {
-                // SetGravityRatio(1f); 后面有114514标记的代码托管了这个修改
+                // SetGravityRatio(1f); 后面有114514标记的代码托管了对重力的修改
                 StandOnPlatform = false;
                 StandOnFloor = false;
                 SlopeInstanceId = 0;
@@ -626,26 +627,24 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         //水平移动防止穿墙射线
         if (DoLookRight)
         {
-            rays[2] = new Ray2D(GavityRayPos[0].position + Vector3.up * 0.2f, Vector2.right * 0.8f);
-            //  rays[1] = new Ray2D(GavityRayPos[1].position + Vector3.up * 0.5f, Vector2.left * 10f);
+            rays[2] = new Ray2D(GavityRayPos[0].position + Vector3.up * 0.2f, Vector2.right);
         }
         else//
         {
-            rays[2] = new Ray2D(GavityRayPos[0].position + Vector3.up * 0.2f, -Vector2.right * 0.8f);
-            //   rays[1] = new Ray2D(GavityRayPos[1].position + Vector3.up * 0.5f, -Vector2.left * 10f);
+            rays[2] = new Ray2D(GavityRayPos[0].position + Vector3.up * 0.2f, -Vector2.right);
         }
-        //  infoLeft = Physics2D.Raycast(rays[1].origin, rays[1].direction,10f);
-        infoHor = Physics2D.Raycast(rays[2].origin, rays[2].direction, 0.1f);
-        // Debug.DrawRay(rays[1].origin, rays[1].direction * 1f, Color.red);
+        infoHor = Physics2D.Raycast(rays[2].origin, rays[2].direction, 0.2f);
 
         //撞墙限制移动
         BanLeftOrRight = 0;
 
-        if (infoHor.collider != null)// || infoRight.collider != null)
+        if (infoHor.collider != null)
         {
-            //撞墙限制移动
-            if (infoHor.collider.CompareTag("Wall"))
+            //撞墙限制移动（墙都是指空气墙）
+            if (infoHor.collider.CompareTag("Wall") || infoHor.collider.CompareTag("Floor"))
             {
+                ZhuangBi = infoHor.collider.CompareTag("Wall");
+
                 if (DoLookRight)
                 {
                     BanLeftOrRight = 1;
@@ -657,8 +656,11 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
                 }
             }
 
+          
+
         }
 
+        /*
         //脚插地修复
         if (infoRight.collider != null && infoHor.collider != null && IsGround && !MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId] && PlayerSlope == Vector2.right)
         {
@@ -669,7 +671,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
                 tr.Translate(Vector3.up * 0.1f, Space.World);
             }
-        }
+        }*/
 
     }
 
