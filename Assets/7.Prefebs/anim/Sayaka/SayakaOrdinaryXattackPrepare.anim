@@ -7,7 +7,7 @@ AnimationClip:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: SayakaOrdinaryXattackPrepare
-  serializedVersion: 6
+  serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
   m_UseHighQualityCurve: 1
@@ -168,14 +168,6 @@ AnimationClip:
       value: {fileID: 21300000, guid: 333fbfa388faa9440a087d7219746bd8, type: 3}
     - time: 0.6666667
       value: {fileID: 21300000, guid: 46b820cc672b0f948a9e5b3b086daf55, type: 3}
-    - time: 0.8333333
-      value: {fileID: 21300000, guid: 70e710d974c25f845ba210bf03fbd1ae, type: 3}
-    - time: 0.9166667
-      value: {fileID: 21300000, guid: aedf3ae77090c3c44b477a72ba20d7f7, type: 3}
-    - time: 1
-      value: {fileID: 21300000, guid: dbc43153c29b85c429473f731e786619, type: 3}
-    - time: 1.0833334
-      value: {fileID: 21300000, guid: 1fd105b025da4c04b973afc6dba10f66, type: 3}
     - time: 1.1666666
       value: {fileID: 21300000, guid: 0098a4a467c428047b00202b8f006ec0, type: 3}
     - time: 1.25
@@ -472,10 +464,6 @@ AnimationClip:
     - {fileID: 0}
     - {fileID: 21300000, guid: 333fbfa388faa9440a087d7219746bd8, type: 3}
     - {fileID: 21300000, guid: 46b820cc672b0f948a9e5b3b086daf55, type: 3}
-    - {fileID: 21300000, guid: 70e710d974c25f845ba210bf03fbd1ae, type: 3}
-    - {fileID: 21300000, guid: aedf3ae77090c3c44b477a72ba20d7f7, type: 3}
-    - {fileID: 21300000, guid: dbc43153c29b85c429473f731e786619, type: 3}
-    - {fileID: 21300000, guid: 1fd105b025da4c04b973afc6dba10f66, type: 3}
     - {fileID: 21300000, guid: 0098a4a467c428047b00202b8f006ec0, type: 3}
     - {fileID: 21300000, guid: 70e710d974c25f845ba210bf03fbd1ae, type: 3}
     - {fileID: 21300000, guid: aedf3ae77090c3c44b477a72ba20d7f7, type: 3}
@@ -932,4 +920,11 @@ AnimationClip:
     script: {fileID: 0}
   m_HasGenericRootTransform: 1
   m_HasMotionFloatCurves: 0
-  m_Events: []
+  m_Events:
+  - time: 0.41666666
+    functionName: PlayerSE
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 10
+    messageOptions: 0

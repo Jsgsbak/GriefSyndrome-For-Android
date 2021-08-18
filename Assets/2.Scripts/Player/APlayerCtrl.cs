@@ -35,6 +35,10 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     public bool BanWalk = false;
     public bool IsGround = true;
     /// <summary>
+    /// 重力射线那里：辅助判断上一帧碰没碰地
+    /// </summary>
+    bool IsPreviousFrame = true;
+    /// <summary>
     /// 站在地板上
     /// </summary>
     public bool StandOnFloor = false;
@@ -320,8 +324,6 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
         if (MountGSS.gameScoreSettings.LocalIsStiff)
         {
-            Debug.Log("石更了");
-
             return;
         }
 
@@ -365,6 +367,15 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
 
     #region  基础控制器
+    /// <summary>
+    /// 仅仅是给动画机提供的一个动画播放的函数（方便点）
+    /// </summary>
+    /// <param name="se"></param>
+    public void PlayerSE(Variable.SoundEffect se)
+    {
+        EasyBGMCtrl.easyBGMCtrl.PlaySE(se);
+    }
+
     /// <summary>
     /// 设置玩家状态
     /// </summary>
@@ -466,8 +477,10 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             SetGravityRatio(0f);
             BanGravityRay = true;
             PlayerSlope = Vector2.right; //消除起跳上升阶段仍然保留斜坡属性的Bug
-
+            IsPreviousFrame = true;//用于触发落地音效（详见RayCtrl)
             IsJumpingForward = MountGSS.gameScoreSettings.Horizontal != 0;
+
+            EasyBGMCtrl.easyBGMCtrl.PlaySE(Variable.SoundEffect.PlayerJump);
         }
         //跳跃状态
         if (IsJumping)
@@ -624,13 +637,21 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             //根据是否在地板/平台上得到着地状态
             IsGround = StandOnPlatform || StandOnFloor;
 
+            //站在地上
             if (!IsAttack[0] && !IsAttack[1] && !IsAttack[2] && IsGround)
             {
                 SetGravityRatio(0f);
             }
+            //悬空并且能够下落
             else if (!IsAttack[0] && !IsAttack[1] && !IsAttack[2] && !IsGround && !IsJumping)
             {
                 SetGravityRatio(1f);//114514
+            }
+            //即将落地
+            else if(IsGround && !IsAttack[0] && !IsAttack[1] && !IsAttack[2] && IsPreviousFrame && !IsJumping)
+            {
+                EasyBGMCtrl.easyBGMCtrl.PlaySE(Variable.SoundEffect.PlayerLand);
+                IsPreviousFrame = false;
             }
 
 
@@ -970,6 +991,8 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
     void LevelUp()
     {
+        EasyBGMCtrl.easyBGMCtrl.PlaySE(Variable.SoundEffect.LevelUp);
+
         MountGSS.gameScoreSettings.GirlsLevel[MahouShoujoId]++;
         UpdateInf(false);
     }
@@ -1253,13 +1276,16 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         //宝石黑掉了
         if (MountGSS.gameScoreSettings.GirlSoulLimit[MahouShoujoId] <= 0)
         {
+            EasyBGMCtrl.easyBGMCtrl.PlaySE(Variable.SoundEffect.GemBreak);
+
             PlayPlayerDie2 = true;
         }
-        //复活
+        //变成光球以便复活
         else
         {
             MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId] = true;
 
+            EasyBGMCtrl.easyBGMCtrl.PlaySE(Variable.SoundEffect.PlayerToBall);
 
             //光球效果
             MoveSpeedRatio = 1.2f;
@@ -1311,7 +1337,11 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         //这里是公用的，私用的重写
         MountGSS.gameScoreSettings.BanInput = false;
         BanWalk = false;
-        MoveSpeedRatio = 1F;
+        //防止把卡其脱离太模式的加速消除
+        if(MoveSpeedRatio != 2f)
+        {
+            MoveSpeedRatio = 1F;
+        }
         BanJump = false;
         if (IsGround)
         {
@@ -1334,6 +1364,9 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// </summary>
     public void RebirthDone()
     {
+        EasyBGMCtrl.easyBGMCtrl.PlaySE(Variable.SoundEffect.PlayerRebirth);
+
+
         MoveSpeedRatio = 1f;
         // BanGravity = false;
         StartCoroutine("Invincible");
@@ -1353,6 +1386,8 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// <returns></returns>
     public void GemBroken()
     {
+        EasyBGMCtrl.easyBGMCtrl.PlaySE(Variable.SoundEffect.GemBreakFadeOut);
+
         //应用影子魔女的效果，尝试修复移动设备下不产生fade效果的bug
         Material.EnableKeyword("OUTBASE_ON");
 

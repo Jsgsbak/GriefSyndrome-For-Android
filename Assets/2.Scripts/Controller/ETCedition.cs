@@ -39,7 +39,6 @@ public class ETCedition : MonoBehaviour
 
     float ClickTime = 0f;
 
-
     // Start is called before the first frame update
     void Start()
     {

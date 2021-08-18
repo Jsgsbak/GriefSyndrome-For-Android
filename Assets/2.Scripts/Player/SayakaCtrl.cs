@@ -72,7 +72,7 @@ public class SayakaCtrl : APlayerCtrl
             BanWalk = true;
             BanTurnAround = true;
             SetGravityRatio(0f);
-          //  BanGravityRay = true;
+            //  BanGravityRay = true;
 
             playerStatus = Variable.PlayerStatus.Magia_1;
 
@@ -104,7 +104,7 @@ public class SayakaCtrl : APlayerCtrl
     {
         if (MountGSS.gameScoreSettings.Horizontal != 0 && !IsAttack[1]  && MountGSS.gameScoreSettings.Xattack)
         {
-
+          
             CancelJump();//直接中断跳跃并且不恢复
             SetGravityRatio(0f);
             MountGSS.gameScoreSettings.BanInput = true;
@@ -143,7 +143,6 @@ public class SayakaCtrl : APlayerCtrl
 
             //保存一下时间，用于得到蓄力的效果
             OrdinaryXTimer = Time.timeSinceLevelLoad;
-
             SetGravityRatio(0f);
         }
         //松开X键，但仍然处于X攻击状态，所以能往前冲
@@ -177,6 +176,7 @@ public class SayakaCtrl : APlayerCtrl
     {
         if (MountGSS.gameScoreSettings.Horizontal == 0 && !IsAttack[1] && MountGSS.gameScoreSettings.Xattack && MountGSS.gameScoreSettings.Down )
         {
+
             CancelJump();//直接中断跳跃并且不恢复
             IsAttack[1] = true;
             playerStatus = Variable.PlayerStatus.DownStrong_1;//上升动作
@@ -236,6 +236,8 @@ public class SayakaCtrl : APlayerCtrl
 
     public override void UpX()
     {
+
+
         if (IsGround) { UpAttackCount = 0; }
 
         if (MountGSS.gameScoreSettings.Horizontal == 0  && UpAttackCount < 2  && MountGSS.gameScoreSettings.Xattack && MountGSS.gameScoreSettings.Up)
@@ -272,6 +274,7 @@ public class SayakaCtrl : APlayerCtrl
             if (playerStatus != Variable.PlayerStatus.Weak_1 && playerStatus != Variable.PlayerStatus.Weak_2) CancelJump();//直接中断跳跃并且不恢复
             if (playerStatus != Variable.PlayerStatus.Weak_2 )  playerStatus = Variable.PlayerStatus.Weak_1;
             IsAttack[0] = true;
+
 
             //修复奇怪的bug
             if (IsGround)
@@ -541,4 +544,79 @@ public class SayakaCtrl : APlayerCtrl
 
 
 
+//WWWWWW$E#RRKKKKKKKKKKKKK&K&&&&&&&&&&&&&&&&&&&FFFFFFFFFFFFXI*IIIIIIIIIIIIIIIIIIIIIIIYXXFXI1"';''''''!+]*ll**YFXFFXYI*IIIIIIIIIIIIII*IIIIIIIIIIIIIIII
+//WWW$E##RRRRRRKRKKKKKKKKKKKKKK&&&&&&&&&&&&&&&&&&&FFFFFFFFXIIIIIIYYYYYYYYYYIIIIIIIIIIIIIYXFFXli';''''''~+]***YFFFFFFFYIIIIIIIIIIIIIIIIII***lllll**lll
+//E##RRRRRRRRRRRRRKKKKKKKKKKKKKKKK&&&&&&&&&&&&&&&&&FFFFFFXIIIIIIYYYYYYYYYYYYYYYYYIIIIIIIIIIYX&&I+~;;''';;!/l*IFFFFFFFXIIYIIIIIIIIYIl}//+iiiiiiiiiiiii
+//RRRRRRRRRRRRRRRRRRRKKKKKKKKKKKKKKKK &&&&&&&&&&&&&&&&&&&FYYYYYYYXXXXXXXXXXXYYYYYYYYYIYIIIIIIIYYF&Y1!;;'''''!/*FFFFFFFFYYYYIIIIII*1>!~!">>iii+iiiiiiii
+//##RRRRRRRRRRRRRRRRRRKKRKKKKKKKKKKKKKK&&&&&&&&&&&&XIl]1+iiiiiiii++//1}]l**IYYXXXXYYYYYYYIIIIIIIYX&X}";;''';'ilF&FFFFFYYYYIIYYl/!;;'~~!">i+++++++++++
+//###R##RRRRRRRRRRRRRRRRRRRRRRKKKKKKKKKKKKK&&&&&&&]~';;;;;;''''''''';''''~~!">i/1]lIYXF&&&&FFXXYYIIYFF]!;'''~""+*&&F&FYYYYYY*/
+//##RRRRRRKKKKKK&&&&&&&&&&&&&&&&&&&&&&&&&KK&&&&&&&}'''''''''''''''';;''''''''''''''~!">+/}lIYF&&KKK&FF&F}!;;~>>""/Y&&FYYYYI1"~';;;;''~~">+/111111111/
+//FXXXXYYYYYIIIIIIIIIII* *II * ****IIIIIIIIIIIYYYYYYYY * *lllll * **ll]}1 / +ii"!~''';;;;;'''''''';'''~!>+/}*YXFKR&*"'">>>">1XKXXI1>!!!~''''''~!"i+1111111//1}
+//FFFFF && FFFFFFFFFXXXXXYYYYYYYYYYIIIIIIIIIIIIIYYYYXXXFFFF &&&&&&&&&&&& KK && FXY *]1 / i > "!~'';;''''''';;;''~!>/]IY]+>>>>>" > *X}> !!""!~''''''~!> +/ 11}]**IIYYX
+//RRKKKKKKKKKKKKKKKKKKKKK &&&& FFFFXXXXXXXXXXXXXXXXFFFFFFFFFFFFFFFFFF &&&& &KKRRR#####RK&XY*]1+>"~''';;''''';;;~+/i>>>>>"">"""""!'''''';''!"i1]*IYXXXXXXX
+//F && &KKKRRRRRRRRRKKKKKRRRRRRRRRRRRKK && &FFFFFFFFFFF &&&&&&&&&&&&&&&&&&&&&&&& FFF &&&& &KKR######RKFX*]1i"!'';;;;!>iiiii>>>>>>"""';;;;''!>+}lIYXXXXXXXXXXX
+//****IIYYYXF && KKRRR##RRRRRRRRRRRRRRRRRRRRRRKK&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&FF&&&KKR##EEEE#KFY*}/ii+>>>>>>>>>>>+}}11}]l*IIYXXXXXXXXXXXXXXXX
+//III********** IIYYXF&KRRR####RRRRRRRRRRRRR#####RRRKKKKKKKKKKKKKKKKKKKKKKKKKKK&&&&&&&&&&&&&&&&&&&&&KR##E$$EE#R&Y*]1+i""""+XFFFFFFXXXXXXXXXXXXXFFFXXXX
+//IIIIIIIIIIIIII*****IIIYXF&KRR###########RR###########RRRKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK&&&&&&&&&&&&&&&&&&KRR#EE$$E#RFYl1}&&FFXXXXXFFFFFFFFFXXXYII**l
+//YYYYYIIIIIIIIIIIIIIIII**IIYYXF&KR##################EWWW$EE#RRRRRRRRRRRRKRKKKKKKKKKKKKKKKKKKKKK&&&&&&&&&&&&&&&&&KKR#EEEEEEE##K&FXYYYYXXXYYI*********
+//XXXXYYYYYYYYYYXXXXFF &&&&KKKRRRRR##################EW%%%%%%WW$EE#RRRRRRRRRRRRRRRKRKKKKKKKKKKKKKKKKKKK&&&&&&&&&&&&&FFFF&KKR######R&YIIIIIIIIIIIIIIIYY
+//FFFF &&&&KKRRR##EEEEEEEEEEEEEEEEEEEEEEEEEE##EEEEEE$%%%%%%%%%%%%%%W$E##RRRRRRRRRRRRRRRRRRRRRRKKKKKKKKKKKKKKK&&&&&&&&&&FFFFFFFFFFXXXYYYYYYYYYYYYXXXXXX
+//##EE$$$$$$$$$$$$$$$EEEEEEEEEEEEEEEEEEEEEEEEEEEEE$%%%%%%%%%%%%%%%%%%%W$$E##RRRRRRRRRRRRRRRRRRRRRRRRKKKKKKKKKKKKKK&&&&&&&&FFFFFFFXXXXXXXXXXXXFFFFFFFF
+//WWWWWWW$$$$$$$$$$$$$$$$$$$$$EEEEEEEEEEEEEEEEEEEW %%%%%%%%%%%%%%%%%%%%%%%%WW$EE###RRRRRRRRRRRRRRRRRRRRRRRRRRKKKKKKKKKKK&&&&&&&&&FFFFFFFFFFFFFFFFFFF&&
+//WWWWWWWWWWWWWWWWWW$$$$$$$$$$$$$$$$$$$$EEEEEE$$WN%%%N%%%%%%%%N%%%%%%%N%%%%%%%%W$$E###RRRRRRRRRRRRRRRRRRRRRRRRRRRRKKKKKKKKKKKKK&&&&&&&&&&&&&&&&&&&&&&
+//WWWWWWWWWWWWWWWWWWWWWWWWWW$$$$$$$$$$$$$$$$$$$W %NNNNNN%NNN%%%N%%%%%%NK$%%%%%%%%%%%W$$E####RRRRR#RRRRRRRRRRRRRRRRRRRRRRRRKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+//%%%%%%WWWWWWWWWWWWWWWWWWWWWWWWWWWW$$$$$$$$$$$W$$W%%%NNNNNNNNN%%%%%NK/EN$%%%%%%%%%%%%%%W$E#E###R####R#RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
+//%%%%%%%%%%%%%%%WWWWWWWWWWWWWWWWWWWWWWWW$W$$$W$$$$W$$$WW%%%NNNN%%%N#/+&@K$%%%%%%%%%%%%N%NX]IXK##################RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
+//%%%%%%%%%%%%%%%%%%%%W%WWWWWWWWWWWWWWWWW%WW$W$$WWW$$$$$$$$$WWW%%%NE1++l@&&N%%%%%%%%%%N$$%}> i +/ l#%$$$EEE#############################################
+//E$W %%%%%%%%%%%%%%%%%%%%%%%% WWWWWWW %%% NN % WWW$$W % W$$W$$$$$$$W$EEEWE1++iiR#]%%%%%%%%%%%NX#W]*Il]1/FNN%%%%WW$$$EE######################################
+//R##E$W%%%%%%%%%%%%%%%%%WW%%%%%%%NNN@@@%WWWWEW%%$$WW$$$$$$$%$$EW#**Il}*FNlKN%N%%%%%%%%I$#I*}///++*$N%%NNNNN%%%WW$$EEEE##################EEEEEEEEEEEE
+//RRRRR#E$W%%%%%%%%%%%%%%%%NNN@@@@N@@@N%%%W%E$%%%$$%WW$$$$$W%$$$&/+i!!i/l&K1E$WWW%%%NNX1$l++++////+/F%NN%N%%NNNNNNN%%%%WW$$$EEEEEEEEEEEEEEEEEEE$$WW%%
+//W$EE####EE$W%%NNNNNN@@@@@@@N%$E$%@@N%%%%%WE%%%%E$%WWWW$$$WNW$I/1+!!!~''~]]}E&K$EE##&//l]lIFKKRKK#K}1F%@NNNNNNNNNNNNNNNNNNN%%%%WWW$$$$$$$$WWW%%%NNNN
+//NN %%%%%%%%%%%N@@@@NN%W$E#RK&K#%@@N%%%%%%%$$%%%%EW%WWWWW$$%N&}}&RF$$E#RR&}i!1Fl&I}/+i>~/F#%#RWWE}1IRR*}&WNNNNNNNNNNNNN%%%%%NNNNNNNNNN%%%%NNNNNNNN%NN
+//&KRRR########RRRRKK&&&FFFFR$NM@N%%%%%%%%%$%%%%%#W%WWWWW$$$l/Y#*+i]X&#$W#l";'i>""!~'''~>!!"]&#KWI;!>YNFi&@%NNNNNNNNNNN%$$$WWW%%%NNNNNNNNNN%%%%%%%%%%
+//FFFFFFFFFFFFFFFFFFFFFF & KE%@M@N%%%%%%%%%%%$N%%%%EW%WWWWW$WK/$W1>!+i+RWKK#!;'''''''''''';;1}1&I]I],';1&}INNNNNNNNNNNNNN%W$$$$$$$WWWW%%%%%%%NNNNN%%%%%
+//FFFFFFFFFF & FFFFFFFF&&REWW%%WWW%%%%%%%%%%WWN%%%%EW%%%WWWWW#X$K+~,i$X]l/+*!;''''''''''''';+K"'!1*~'~'"!>F*RNNNNNNNNNNNN%W$$$$$$$$$$E$$W%NNN$&FK#$W%NN
+//FFFFFFFFFFFFFFFFFFF#WWW$W$E###E$$WW%%%%%W%N%%N%$WN%%%WWW$%]'>i'';>X+;']1;'''''';'''''''';>"!"//~!!~''~>i&%%%NNNNNNNNN%$$$$EE$$$W%%%%$#F*/!';;'!i1]*
+//FFFFFFFFFFFFFFFFFFFF & KRE$WWWWWW$$$WWWW%%WNN%%N%%$@%N%%WWWWF!'~~!"~"i!!~'''''''~"'''''''''''~~~~!!~~~'i11&W$$WW%%NNNNN%WW%%%%%$#KX*1i!';;''~'';,,;,,
+//XFXXFXXFFFFFFFXXXXXXXXXXFF & KR#E$$WWWWW%NWNNNN@%NW@NN%%%WW%K]!!!"!"!~~'''''''''!>'''''''''~~~~!!!!~~~!i//&W$$$$$W%W%%%%ER&X*1i"~;,,,,;'~~~~~''';;';;
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXFFFF &&#W%R&&EN%%%@NN%%%WW$Y1~!!!!~~~''''''''''''''''''''''~~~~~~~!/1/+"YW$$$$WWW$WW#+!';,,,,,;;;''~~~~~~~~~';;;;;;
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXYYYY &$%&YYF%%N%@@@@%%%W%&}i ~~~~~''''''''''''''''''''''''''''';'~~''! + RW$$$W$W %$WWY ''''''';;;;;'~~~~!!~~~''; ; ;,; ;
+//YYYXYXYXXXXYXXXYXYYYYXXYXXYYXYXXXYXXXXXXE$$XYYRN % NN@@@@%%% WWl / !''''''''''''''''''''''''''''~~~~'1R*}lF$@N$WWWW$%%W$$1~!~~~'';;;;'''~~~!!!~~''; ;,,; ;
+//YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY & EW$&FYENNN@@@@@N %%%$FIi!!!"""~'''''''''''~''''''''"""!i* RE$%NNN%WWWW$WN@F&#"!!!!~~'''~~~~~~!!!!!~~~~'';;;;
+//YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYIFRE$RYY#NW%@@M@NWE#RR&Y}/""""~''''''''''''''''''';'">*K&RRKK&&&&&R#$WN@K>KI">"""!!!!!!""""""""!!!!!!~~''''
+//YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYIIYYIIYIRE#E##RRR##EE$$$E*>ii;,;''''''''''''''';'"**1E$$$$WWW$E#R&XXXFK11Fi>>>>>>>>"""">>>>>>""""""!~~~~~'
+//IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIYIIIIYYYX & KRE$W%%%%%%WW$WE1*WKli~; ''''''''''''!i &% @E}K$$$$$$$$$WWW$ER & YIl}/ +iii >>>>>>>>>>>>>>>>> """!~~''''
+//IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIYXFK#$W%%%%%%%W%WWWWW$WXR@@@%$l"!~''''''~"i+l@@NNFR$$$$$$$$$$$$$$$$$ERFI]1>iiiiiii>>>>>>>>>>>>>"!~''';;
+//IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII* IIIIEW%%%%%%%%%%%%%%%WWWWW#%@NNN%&//+i>"">i///+l#$NNK#$$$$$$$$$$$$$$$EEEEE##I>iiiiiiiii>>>>>>>>>>>"~'''';;
+//*********************************************K%W%%%%%%%%%%%%%%WWWW%#%@@@EKY////////////+]X&E@&KW$$$$$$$$$$$$$$$EEE###/>iiiiiiii>>>>>>>>>>""~';;;;;;
+//********************************************lX%W%%%%%%%%%%%%%%WWWW%#%@@WK&&1+////////++/*&FX#FKW$$$$$$$$$$$$$$$EEE#$*i++++++iii>>>>>>>>>"!';;;;;;;'
+//**********************************************$%%%%%%%%%%%%%%%%WWW%R$@%RFXFYl1/////+/}*YXYYXFXRW$WWW$$$$$$$$$$EEE#EX///++++++iiii>>iiii>!'';;;'''''
+//lllll* llllllllllllllllllllllllllllllllllllll*l&%W%%%%%%%%%%%%%%W%W%K#WKFXXXXFFX1///lFFXXXYXYFY#W$WWWW%%NNN%%%%WW$$K111//////++iiiiii++i>!''''~~~~~~
+//llllllllllllllllllllllllllllllllllllllllllllll* EN%%%%%%%%%%%%NNN%W%K&KXXXXXFKF&]+/1XFKFXXXYX&XEWWWW%N@@@@@@@NN%W$WRl]}1 / 111/////111////i>!~'~~~!!!"
+//]l]lll]llllllllllllllll]llllllllllllll]ll]l]ll]lFEW %%%% NN@@@@@@@NW %#X#&FXXFKRXFl//1XX&&XXXXK&F$WWW%@@NNN%%%WW$$$$EE#RKXl11}1111lYIl]}}11/i"!!!!"">>
+//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]}]*I &$NNNN@@@@@@@@@@%% EXKRFFF &&&& XY//}XXX&&XF&&XKWWWW%%WWNNN%W$$$$EE####R#R&l}]]}]**]]]]]]]}}/+iiiii++
+//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]}]X#$%%%%%%%%%%%%NNN@N%W$F&EKK&FFFKXFl>]FXXX&&KF&XEWWWWW$WW%%WW$$$$EEEE###RRRRRI}]]]l]]]]]]]]]}}1///////
+//]]]]]]]]]]]]]]]]]]]]]]]]]]]]}]}}]]]]]]]]]}}XEWWWWWWWW %% WWWWWWWWWWWWW & X$R & XXXX && XX/*XXXXXFXFFFWWWWWWWWW$$$$$$$$$EEEE###RRRRRY}]]}]]]]]]]]}11111/////
+//}}}}}}}}}}}}}}}}}}}}}}}}}}}}1 /11}}}}1}}]1*#W$$$WWWWWW%WWWWWWWWWWWWW%#Y#$FFXXXXK&F&&XXXXXXX&FRWWWWWWWWW$$$$$$$$$$EEEEE###RRR#Y}]]]]}}}}}}}111111////
+//}}}}}}}}}}}}}}}}}}}}}}1}}}}1+i++111/i+1/Y$$$$WWWWWWWWWWWWWWWWWWWWWWWWFF%RFXXXXFKFX&&XXXXXX&XEWWWWWWWWW$$$$$$$$$$$$EEEE###RRR#*}]}}}}}}}}}1111111///
+//}}}}}}}1}}}}}}}}}}}}1+ii+11/iii+++>!~~!Y$$$$WWWWWWWWWWWWWWWWWWWWWWWWW#YE%&FXXXX&&F&&XXXXXFFFWWWWWW$WWWW$$$$$$$$$$$$EEEEE###RRRl}}}}}}}}}}}111111///
+//111111111111111111111 />"">i+i>>>>!''';l$E$$$WWWWWWWWWWWWWWWWWWWWWWWW$$FF%EFXXXX&&FKFXXXXX&XRWWWWWW$WWWWW$$$$$$$$$$$$$EEEE###R#K}111}}1}1}}1111111//
+/////1/11111111111111111/i"!~~~~~'';;',/EE$$WWWWWWWWWWWWWWWWWWWWWWWWW$$WKXRNKFXXX&&FKFFXXXXFF#WWWWWW$$W$W$$$$$$$$$$$$$$$EEEE##RR#X11111111111111///++
+//">i+///////////////////+i!'''';'~';;!REE$%N%WWWWWWWWWWWWWWWWWWWWWW$$W%EX&%W&XF&KFFXIYXXXKKFEWWWWWWWWW$$$$$$$$$$$WW$$$$$EEE###RR#l/111111/////+++i>>
+//~!"">i+++++///////////+i"~';;;~1}~;;IEEWN@%WWWWWWWWWWWWWWWWWWWWWWW$EWW$KF$@EF*++]F}!~+XRN$FWWWWW$$WWWW$$$$$$$$WWW%NNN%$$EEE##RRR&////+i>"!!!!""""!~
+//''~''~!!!!">ii+++++++i"!~';;;'!1/!;"#EWNNWWWWWWWWWWWWWWWWWWWWWWWWW$EWW%#X$@%*;;"lX*/',F@@$&$WWWW$$WWWWW$$$$$$W##RKR#$N@NW$EE##RKR*ii>!~'''''''''';;
+//''''; ; ; ''~~!">ii+++i>!~'';;;;;'''',/E$%WWWWWWWWWWWWWWWWWWWWWWWWWWWEEWWWWFR@%&]~>lXY}"XEN @W&$WWWW$$WWWWWWW$$$$#E$EIl*RKW@@N%W$#RRRF"~~''''''''';;;;;
+//; ; ;;;;;;'''~~!>>iii>!~';;;;;;;;;;,`l$$$$$WW%%WWWWWWWWWWWWWWWWWWWWWEEWWWW&KNN%#Fl*l]*#%$%@%&E%WWWW$WWWWWWWWWW$IR##YlIK*Y%%N@@N%$#KK+'''';;;;;;;;;;;;
+//; ; ;;;;;;;;''''~~!"""~'';;;;;;;;;,"*#EE$WW%NN%%WWWWWWWWWWWWWWWWWWWWEEWWW%K&N@WW$RKYRWW$W%@NKR%WWWW$WWWWWWWWW$W&lIIFFXI*#$$$WNNNN%$E];';;;;;;;;;;;;;;
+//; ; ;;;;;;;;;;;;;'''~~'';;;;;;;;;']REE$W%N@@N%%%WWWWWWWWWWWWWWWWWWWW$EWWW%R&N@%WWE#%W$WWW%NNE&WWWWW$$WWWWWWWWW$WEKK&&KR$$$$$$$$W%%%%&~',;;;;;;;;;;;,,
+//; ; ;;;;;;;;;;;;;;;;;;;';;;;;;;;;YEE$W%N@@N%WWWWWWWWWWWWWWWWWWWWWWWWE$WWW%KK%%NN%%%WWWW$WN%NWF#%WWWW$WWWWWWWW%WW%%WWWWW$$$$$$$EE####RF*/';;;;;;,;;;;,
+//; ; ;;;;;;;;;;;;;;;;;;;;;;;;;;;,>E$%NNN@N%WW%WWWWWWWWWWWWWWWWWWWWWWWE$WW%$F#N%%NNNWW$E##WW%%NK&WWWWW$WWWWWWWERFYl*YFK#W$$$$$$$EE##RK&&FF",;;;;;;;;;;;
+//; ; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;!E%%NNN%WWWWWWWWWWWWWWWWWWWWWWWWWWW$#$WW%RFWNW$$WNWRFXXREEW%NEFE%WWW$WWWWWEX]}}1Yl/}/1I#$$$$$$$EE##RKK&K>,;;;;;;;;;;;
+//; ; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;FN%NN%WWWWWWWW%%%WWWWWWWWWWWWWWWWWE#$WW$FKN%$E#E$&YIIY#EE$%NWFK%WWW$$WW%#}1Il}IFXI1**i1R$$$$$$$WWW$$$$E",;;;;;;;;;;;
+//; ; ;;;;;;;;;;;;;;;;;;;;;;'''''',>%%WWWWWWW%%%%%%%%%WWWWWWWWWWWWWWWE#$W%RX$NWEE#E&YIIIX##EE%N%KF$WWW$$WWW*]Y**RW$WWKl]X}]E$$$$$$$W%%%%WR~;;;;;;;;;;;;
+//; ; ;;;;;'''';;;;;;';;;''''''~';>Y$$$WWWW%W%%%%%%%%%WWWWWWWWWWWWWWW$#$%$FKN%$E#ERYI*IYRE#EEW%N#X#%WWW$WW$]]X}l#%WW%&}]*//E$$$$$$EEEE$$%R',;;;;;;;;;;;
+//; ; ;;'''''''';;;;''''''~~~~~~~*E$$$WWWWW%%%%%%%%%%%%WWWWWWWWWWWWWWWWW%RF$NWEEE#XYIIXRE#EEE$%NWF&WWWWWWW%F++YI1*XXl1*I/1XW$$$$$$$EE####RY]";'';;;;;;;
+//; ''''''''''''';;;'~~~~~~~~!'*$E$$WWWWW%%%%%%%%%%%%%%%WWWWWWWWWWWWWW%$F&N%$E#E&YIYXRE#EEEE$%NN&XE%WWWWWWW##EE$*l*l$$$EK%WWW$$$$$EE###RKK&F";;;;;;;;;
 
+//来自https://github.com/Rainbow-Dreamer/ascii-converter（图片视频转ASCII字符）
+//另一个魔女（不过毫不相干

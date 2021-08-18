@@ -140,6 +140,28 @@ public class Variable
         /// </summary>
         SelectGirl,
         KaQiTuoLiTai,
+        Sayaka_Z1,
+        Sayaka_Z2,
+        Sayaka_Z3,
+        Sayaka_XPressed_Dash,
+        Sayaka_XPressed,
+        Sayaka_X,
+        Sayaka_UpX,
+        Sayaka_Magia,
+        Sayaka_HorizonalX,
+        Sayaka_DownX,
+        GemBreak,
+        /// <summary>
+        /// 宝石碎掉 玩家淡出
+        /// </summary>
+        GemBreakFadeOut,
+        GetGriefSeed,
+        GSLand,
+        LevelUp,
+        PlayerJump,
+        PlayerLand,
+        PlayerToBall,
+        PlayerRebirth,
 
 
     }
