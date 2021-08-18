@@ -1,0 +1,17 @@
+{
+    "name": "EnemyCtrl",
+    "rootNamespace": "",
+    "references": [
+        "GUID:384eb2cfbc20106489db18d8ab4f457a",
+        "GUID:b55f29d1437071f4f94888e957e772e9"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

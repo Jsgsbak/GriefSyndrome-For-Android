@@ -118,8 +118,30 @@ public class Variable
 
     public enum SoundEffect
     {
-        text1 = 0,
-        text2
+        /// <summary>
+        /// 停止音效播放
+        /// </summary>
+        StopPlaying = -1,
+        /// <summary>
+        /// 确认音效
+        /// </summary>
+        Enter = 0,
+        /// <summary>
+        /// 进入魔女结界音效
+        /// </summary>
+        MajoKeikai,
+        Pause,
+        /// <summary>
+        /// 返回音效
+        /// </summary>
+        Return,
+        /// <summary>
+        /// 开始选魔法少女（从魔女结界里出来）
+        /// </summary>
+        SelectGirl,
+        KaQiTuoLiTai,
+
+
     }
 
     /// <summary>
@@ -204,6 +226,8 @@ public class Variable
     public  class OrdinaryEvent : UnityEvent { }
     public class BoolEvent : UnityEvent<bool> { }
     public class IntEvent : UnityEvent<int> { }
+
+    public class Vec2Event : UnityEvent<Vector2> { }
 
 
 

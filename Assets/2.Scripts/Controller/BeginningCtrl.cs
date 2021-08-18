@@ -30,7 +30,8 @@ public class BeginningCtrl : MonoBehaviour
             ii++;
         }
 
-         LoadingCtrl.LoadScene(1, true);
+        LoadingCtrl.LoadScene(1, true);
+    }
 /*
         StartCoroutine(CheckUpdate());
     }

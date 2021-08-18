@@ -181,7 +181,7 @@ public class StaffCtrl : MonoBehaviour
         if (Input.touchCount >= 1 || Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1) || Input.GetMouseButtonDown(2))
         {
             //返回音效
-            EasyBGMCtrl.easyBGMCtrl.PlaySE(1);
+            EasyBGMCtrl.easyBGMCtrl.PlaySE(Variable.SoundEffect.Return);
             UnityEngine.SceneManagement.SceneManager.LoadScene(1, UnityEngine.SceneManagement.LoadSceneMode.Single);
         }
     }

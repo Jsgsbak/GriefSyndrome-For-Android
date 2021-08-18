@@ -1,0 +1,27 @@
+﻿0.1.0.1
+2021/8/17 20:06:11
+===========================================
+
+[Exception Message]
+-------------------------------------------
+索引超出了数组界限。
+   在 SharpDX.Direct3D11.Buffer.Create[T](Device device, BindFlags bindFlags, T[] data, Int32 sizeInBytes, ResourceUsage usage, CpuAccessFlags accessFlags, ResourceOptionFlags optionFlags, Int32 structureByteStride)
+   在 ..ctor(Device device,  physics,  _modelfile)
+   在 .AddCharacterObject( modelfile, Int32 id)
+   在 .OpenModelFileFromSaveFile(String filename, Int32 id)
+   在 .GetCommonFromXmlStream(Stream stream,  controller, String directory, & commondata)
+   在 .Load(String filename,  controller)
+   在 .LoadProjectFile(String filename)
+   在 .Load(Control parent, String folder)
+   在 MikuMikuMoving.TopForm.openButton_Click(Object sender, EventArgs e)
+   在 System.Windows.Forms.Control.OnClick(EventArgs e)
+   在 DevExpress.XtraEditors.BaseButton.OnMouseUp(MouseEventArgs e)
+   在 System.Windows.Forms.Control.WmMouseUp(Message& m, MouseButtons button, Int32 clicks)
+   在 System.Windows.Forms.Control.WndProc(Message& m)
+   在 DevExpress.Utils.Controls.ControlBase.WndProc(Message& m)
+   在 DevExpress.XtraEditors.BaseControl.WndProc(Message& msg)
+   在 System.Windows.Forms.NativeWindow.Callback(IntPtr hWnd, Int32 msg, IntPtr wparam, IntPtr lparam)
+
+[Process Information]
+-------------------------------------------
+

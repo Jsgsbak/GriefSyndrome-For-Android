@@ -6,10 +6,9 @@ using UnityEngine;
 using UnityEngine.Events;
 
 /// <summary>
-/// ！不负责敌人的控制，游戏里敌人是固定生成的
+/// 总体的场景控制
 /// </summary>
 /// 
-
 //所选角色全挂掉之后，返回魔女选择界面
 //但是五色全挂掉之后，进入CAS场景
 public class StageCtrl : MonoBehaviour
@@ -20,30 +19,49 @@ public class StageCtrl : MonoBehaviour
 
     public GameObject Stage;
 
+    public GameObject[] MajoScenes;
+
+    /// <summary>
+    /// 这个片段（停止点算一个片段）有多少怪
+    /// </summary>
+    public int ThisFragmentEnemyNumber = 0;
+
 #if UNITY_EDITOR
     [Header("检查视图中的预设")]
     public EasyBGMCtrl PerfebInAsset;
 #endif
-
-
    
     public int BGMid = 5;//通常都为5，是道中曲
 
     #region 事件组
 
     #endregion
+
+
     private void Start()
     {
-        MountGSS.gameScoreSettings.MajoDefeated.RemoveAllListeners();
-        MountGSS.gameScoreSettings.AllGirlsInGameDie.RemoveAllListeners();
-
-        //重置玩家死亡数
-        MountGSS.gameScoreSettings.deadPlayerNumber = 0;//上限是MountGSS.gameScoreSettings.playerNumber，即不含QB
         //先禁用所有玩家
         foreach (var item in Players)
         {
             item.SetActive(false);
         }
+
+        //激活地图
+        for (int i = 0; i < 6; i++)
+        {
+            //如果是正在打的魔女
+            if ((int)MountGSS.gameScoreSettings.BattlingMajo == i)
+            {
+                MajoScenes[i].SetActive(true);
+            }
+            else
+            {
+                //如果不是，则销毁场景
+                DestroyImmediate(MajoScenes[i]);
+            }
+
+        }
+
         //生成玩家（现在仅用来测试）
         for (int i = 0; i < 3; i++)
         {
@@ -53,6 +71,9 @@ public class StageCtrl : MonoBehaviour
                 Players[(int)MountGSS.gameScoreSettings.SelectedGirlInGame[i]].SetActive(true);
                 Players[(int)MountGSS.gameScoreSettings.SelectedGirlInGame[i]].transform.SetParent(Stage.transform);
 
+                //多人游戏需要重新写一下这一段代码
+                //将相机上绑定好玩家
+                CameraCtrl.cameraCtrl.Player = Players[(int)MountGSS.gameScoreSettings.SelectedGirlInGame[i]].transform;
 
                 if (MountGSS.gameScoreSettings.SelectedGirlInGame[i] != Variable.PlayerFaceType.QB)
                 {
@@ -68,6 +89,19 @@ public class StageCtrl : MonoBehaviour
                 Destroy(item);
             }
         }
+
+
+        Start1();
+    }
+
+    private void Start1()
+    {
+       // MountGSS.gameScoreSettings.MajoDefeated.RemoveAllListeners();
+        //MountGSS.gameScoreSettings.AllGirlsInGameDie.RemoveAllListeners();
+
+        //重置玩家死亡数
+        MountGSS.gameScoreSettings.deadPlayerNumber = 0;//上限是MountGSS.gameScoreSettings.playerNumber，即不含QB
+        
 #if UNITY_EDITOR
 
         //检查是否存在BGMCtrl
@@ -84,9 +118,6 @@ public class StageCtrl : MonoBehaviour
     // Start is called before the first frame update
     void Start2()
     {
-        //事件组注册
-        UICtrl.uiCtrl.PauseGame.AddListener(PauseGameForStage);
-
         //初始化
         MountGSS.gameScoreSettings.MajoInitial();
         //音量初始化
@@ -126,19 +157,11 @@ public class StageCtrl : MonoBehaviour
     }
 
     /// <summary>
-    /// 为Stage写的暂停游戏或否的方法
-    /// </summary>
-    public void PauseGameForStage(bool IsPaused)
-    {
-        //Stage.SetActive(!IsPaused);
-    }
-
-    /// <summary>
     /// 0.0.7测试用按钮才用的函数，啥时候去掉了那几个按钮才把这个方法去掉
     /// </summary>
     public void Update()
     {
-        if (MountGSS.gameScoreSettings.Succeed && !MountGSS.gameScoreSettings.DoesMajoOrShoujoDie)
+        if (MountGSS.gameScoreSettings.Succeed)
         {
             //实际上，魔女hp=0的时候就要调用一次  StageCtrl.MountGSS.gameScoreSettings.DoesMajoOrShoujoDie = true;
             //然后禁用输入按钮和输入
@@ -151,19 +174,18 @@ public class StageCtrl : MonoBehaviour
             MountGSS.gameScoreSettings.Succeed = false;
         }
 
-        /*UI显示，玩家操控，切换场景测试成功，保留备用
-        else  if (MountGSS.gameScoreSettings.DoesMajoOrShoujoDie)
+        else  if (!MountGSS.gameScoreSettings.Succeed &&  MountGSS.gameScoreSettings.DoesMajoOrShoujoDie)
         {
             GirlsInGameDie();
             MountGSS.gameScoreSettings.CleanSoul = false;
             enabled = false;
-        }*/
+        }
 
     }
 
 
     /// <summary>
-    /// 顺利打完魔女之后的结算逻辑
+    /// 顺利打完魔女之后,悲叹之种精华之后才有的结算逻辑9现在暂时放在了答应魔女之后了）
     /// </summary>
     [ContextMenu("顺利结算")]
     public void GoodbyeMajo()
@@ -196,14 +218,33 @@ public class StageCtrl : MonoBehaviour
         }
 
 
-        //调用击败魔女的事件
+        //调用击败魔女的事件（为了UI显示结算）
         MountGSS.gameScoreSettings.MajoDefeated.Invoke();
 
     }
 
-   
+    /// <summary>
+    /// 没打过魔女
+    /// </summary>
+    [ContextMenu("没打过魔女")]
+    public void GirlsInGameDie()
+    {
+        //清除场景
+        Stage.SetActive(false);
+
+        //停止计时器
+        CancelInvoke("Timer");
+        //BGM停止播放
+        EasyBGMCtrl.easyBGMCtrl.PlayBGM(-1);
+        //累计时间增加
+        MountGSS.gameScoreSettings.Time += MountGSS.gameScoreSettings.ThisMajoTime;
+
+        //调用被打败的事件（为了UI显示结算）
+        MountGSS.gameScoreSettings.AllGirlsInGameDie.Invoke();
+
+    }
 
 
-   
+
 
 }

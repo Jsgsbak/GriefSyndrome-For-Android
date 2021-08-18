@@ -1,1 +1,0 @@
-MajoStage(include player)与各种UI的位置不要再动了

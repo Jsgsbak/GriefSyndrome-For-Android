@@ -107,7 +107,7 @@ public class SayakaCtrl : APlayerCtrl
 
             CancelJump();//直接中断跳跃并且不恢复
             SetGravityRatio(0f);
-            BanInput = true;
+            MountGSS.gameScoreSettings.BanInput = true;
             IsAttack[1] = true;
             StopAttacking = false;
             playerStatus = Variable.PlayerStatus.HorizontalStrong_1;//移动
@@ -115,7 +115,7 @@ public class SayakaCtrl : APlayerCtrl
 
         if (playerStatus == Variable.PlayerStatus.HorizontalStrong_1)
         {
-             BanInput = true; //BUG修复
+             MountGSS.gameScoreSettings.BanInput = true; //BUG修复
 
             //移动
             if (DoLookRight)
@@ -180,7 +180,7 @@ public class SayakaCtrl : APlayerCtrl
             CancelJump();//直接中断跳跃并且不恢复
             IsAttack[1] = true;
             playerStatus = Variable.PlayerStatus.DownStrong_1;//上升动作
-            BanInput = true;//在这一套攻击里，就靠取消僵直来把这个设置为false了
+            MountGSS.gameScoreSettings.BanInput = true;//在这一套攻击里，就靠取消僵直来把这个设置为false了
             SetGravityRatio(0f);
             DownAttackMovingUpward = 1;
         }
@@ -351,7 +351,7 @@ public class SayakaCtrl : APlayerCtrl
 
             //Z攻击最后一阶段向前跳
             case "ZattackFinJump":
-                BanInput = true;
+                MountGSS.gameScoreSettings.BanInput = true;
                 BanTurnAround = true;//向前跳的时候不能转身
                 StopAttacking = false;//不可以中断攻击
                 SetGravityRatio(0.7f);
@@ -370,7 +370,7 @@ public class SayakaCtrl : APlayerCtrl
             //Z攻击最后阶段结束
             case "ZattackFinDone":
                 StopAttacking = true;
-                BanInput = true;
+                MountGSS.gameScoreSettings.BanInput = true;
                 //修改计数器重新循环动画
                 ZattackCount = 0;
                 IsAttack[0] = false;//连接处不属于攻击阶段，可以切换到其他动画和状态
@@ -394,7 +394,7 @@ public class SayakaCtrl : APlayerCtrl
     {        
                 //结束
                 BanTurnAround = false;
-                BanInput = false;
+                MountGSS.gameScoreSettings.BanInput = false;
                 XordinaryDash = false;
                 IsAttack[1] = false;
 
@@ -409,7 +409,7 @@ public class SayakaCtrl : APlayerCtrl
     public override void HorizontalXattackAnimationEvent(string AnimationName)
     {
         //结束
-        BanInput = true;
+        MountGSS.gameScoreSettings.BanInput = true;
         StopAttacking = true;
         IsAttack[1] = false;
         //尝试用回复变量的方法来解决bug
@@ -518,7 +518,7 @@ public class SayakaCtrl : APlayerCtrl
         //   Stiff(0.1f); 自带僵直效果了
         //  IsStiff = false;
         SetGravityRatio(1f);
-        BanInput = false;
+        MountGSS.gameScoreSettings.BanInput = false;
        IsAttack[1] = false;
 
         //尝试用回复变量的方法来解决bug

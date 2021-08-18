@@ -15,6 +15,18 @@ public class GameScoreSettingsIO : ScriptableObject
     public Variable.IntEvent Player2Hurt = new Variable.IntEvent();
     public Variable.IntEvent Player3Hurt = new Variable.IntEvent();
     /// <summary>
+    /// 玩家1跳到哪个点
+    /// </summary>
+    public Variable.Vec2Event Player1JumpTo = new Variable.Vec2Event();
+    /// <summary>
+    /// 玩家1跳到哪个点
+    /// </summary>
+    public Variable.Vec2Event Player3JumpTo = new Variable.Vec2Event();   
+    /// <summary>
+    /// 玩家1跳到哪个点
+    /// </summary>
+    public Variable.Vec2Event Player2JumpTo = new Variable.Vec2Event();
+    /// <summary>
     /// 魔法少女被击败（所选全死）
     /// </summary>
     public Variable.OrdinaryEvent AllGirlsInGameDie = new Variable.OrdinaryEvent();
@@ -188,15 +200,20 @@ public class GameScoreSettingsIO : ScriptableObject
     /// 是从魔女场景中返回标题界面吗（不包括返回到主标题按钮）
     /// </summary>
     public bool MajoSceneToTitle = false;
-
+    /// <summary>
+    /// 玩家的位置
+    /// </summary>
+    [HideInInspector] public Vector2[] PlayersPosition = { Vector2.zero , Vector2.zero , Vector2.zero };
     #endregion
+
+
 
 
     #region  主标题 设置  
     [Header("音量")]
     public float BGMVol = 0.6f;
     public float SEVol = 0.7f;
-    public int MaxFps = 60;
+    public bool EnableDebugMode = true;
     #endregion
 
     #region 玩家设置
@@ -284,8 +301,6 @@ public class GameScoreSettingsIO : ScriptableObject
         {
             return;
         }
-        //BGM停止播放
-        EasyBGMCtrl.easyBGMCtrl.PlayBGM(-1);
         //累计时间增加
        Time += ThisMajoTime;
 
@@ -307,7 +322,7 @@ public class GameScoreSettingsIO : ScriptableObject
 
     #endregion
 
-    #region 输入变量管理（所有的按键/屏幕输入的变量都在这里）
+    #region 输入变量管理（所有的按键/屏幕输入的变量都在这里 输入代理在APlayerCtrl）
     /// <summary>
     /// 水平输入
     /// </summary>
@@ -315,6 +330,7 @@ public class GameScoreSettingsIO : ScriptableObject
     /// <summary>
     /// 穿墙（地板）的时候，按↓的时候用的
     /// </summary>
+    [HideInInspector] public bool BanInput = false;
     [HideInInspector] public bool Down = false;
     [HideInInspector] public bool Up = false;
     [HideInInspector] public bool Jump = false;
@@ -324,8 +340,15 @@ public class GameScoreSettingsIO : ScriptableObject
     [HideInInspector] public bool XattackPressed = false;
     [HideInInspector] public bool Magia = false;
     [HideInInspector] public bool MagiaPressed = false;
+    /// <summary>
+    /// 暂停键按下了吗
+    /// </summary>
     [HideInInspector] public bool Pause = false;
-    //一下为本测试版临时添加的
+    /// <summary>
+    /// 玩家移动的方向与距离
+    /// </summary>
+    [HideInInspector] public Vector2 PlayerMove = Vector2.right;
+    //Debug模式
     [HideInInspector] public bool CleanSoul = false;
     [HideInInspector] public bool CleanVit = false;
     [HideInInspector] public bool HurtMyself = false;
@@ -333,6 +356,7 @@ public class GameScoreSettingsIO : ScriptableObject
     [HideInInspector] public bool LevelUp = false;
 
     #endregion
+
 
 
 #if UNITY_EDITOR
@@ -344,7 +368,6 @@ public class GameScoreSettingsIO : ScriptableObject
     {
         TitleInitial();
         MajoInitial();
-        MaxFps = 60;
         BGMVol = 0.6f;
         SEVol = 0.7f;
         UseScreenInput = 2;
@@ -479,7 +502,6 @@ public class GameScoreSettingsIO : ScriptableObject
         //设置
         SaveGame.Save("BGMVol", BGMVol);
         SaveGame.Save("SEVol", SEVol);
-        SaveGame.Save("MaxFps", MaxFps);
         SaveInput();
 
         yield return 0f;
@@ -494,7 +516,6 @@ public class GameScoreSettingsIO : ScriptableObject
         //设置
         SaveGame.Save("BGMVol", BGMVol);
         SaveGame.Save("SEVol", SEVol);
-        SaveGame.Save("MaxFps", MaxFps);
         SaveInput();
 
         yield return 0f;
@@ -537,7 +558,6 @@ public class GameScoreSettingsIO : ScriptableObject
         //设置
         BGMVol = SaveGame.Load("BGMVol", 0.6f);
         SEVol = SaveGame.Load("SEVol", 0.7f);
-        MaxFps = SaveGame.Load("MaxFps", 60);
         LoadInput();
 
     }

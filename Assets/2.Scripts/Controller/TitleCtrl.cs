@@ -98,10 +98,6 @@ public class TitleCtrl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //限制帧率
-        Application.targetFrameRate = gameScoreSettingsIO.MaxFps;
-
-
 #if UNITY_EDITOR
         //检查是否存在BGMCtrl（仅供调试）
         if (GameObject.FindObjectOfType<EasyBGMCtrl>() == null)
@@ -145,8 +141,6 @@ public class TitleCtrl : MonoBehaviour
         EasyBGMCtrl.easyBGMCtrl.PlayBGM(0);
         EasyBGMCtrl.easyBGMCtrl.ChangeVol(gameScoreSettingsIO.BGMVol, true);
         EasyBGMCtrl.easyBGMCtrl.ChangeVol(gameScoreSettingsIO.SEVol, false);
-        //最大帧率从GSS中获取，并同步显示在界面中
-        MaxFpsField.text = gameScoreSettingsIO.MaxFps.ToString();
         //输入的话有自己的脚本
 
         #region  注册组件
@@ -175,20 +169,19 @@ public class TitleCtrl : MonoBehaviour
             MaxFpsField.text = d.ToString();
 
         });
-        MaxFpsField.onEndEdit.AddListener(delegate (string s) { int.TryParse(s, out gameScoreSettingsIO.MaxFps); Application.targetFrameRate = gameScoreSettingsIO.MaxFps; });
 
         //进入魔女选择part的音效放在了ChangePartMethod中
-        StartGameButton.onClick.AddListener(delegate () { EasyBGMCtrl.easyBGMCtrl.PlaySE(0); Timing.RunCoroutine(ChangePartMethod(0, 1)); });//进入魔女选择part
+        StartGameButton.onClick.AddListener(delegate () { EasyBGMCtrl.easyBGMCtrl.PlaySE(Variable.SoundEffect.Enter); Timing.RunCoroutine(ChangePartMethod(0, 1)); });//进入魔女选择part
         ExitButton.onClick.AddListener(delegate () { Timing.RunCoroutine(gameScoreSettingsIO.SaveSettings());/*这里保存一下*/   Application.Quit(0); });//关闭游戏
-        RandomStaff.onClick.AddListener(delegate () { EasyBGMCtrl.easyBGMCtrl.PlaySE(0); RandomKillGirl(); });
-        Settings.onClick.AddListener(delegate () { EasyBGMCtrl.easyBGMCtrl.PlaySE(0); Timing.RunCoroutine(ChangePartMethod(0, 3)); });
-        SettingsReturnToTitle[0].onClick.AddListener(delegate () { EasyBGMCtrl.easyBGMCtrl.PlaySE(0); Timing.RunCoroutine(gameScoreSettingsIO.SaveSettings()); Timing.RunCoroutine(ChangePartMethod(3, 0)); });
-        SettingsReturnToTitle[1].onClick.AddListener(delegate () { EasyBGMCtrl.easyBGMCtrl.PlaySE(0); Timing.RunCoroutine(gameScoreSettingsIO.SaveSettings()); Timing.RunCoroutine(ChangePartMethod(3, 0)); });
+        RandomStaff.onClick.AddListener(delegate () { EasyBGMCtrl.easyBGMCtrl.PlaySE(Variable.SoundEffect.Enter); RandomKillGirl(); });
+        Settings.onClick.AddListener(delegate () { EasyBGMCtrl.easyBGMCtrl.PlaySE(Variable.SoundEffect.Enter); Timing.RunCoroutine(ChangePartMethod(0, 3)); });
+        SettingsReturnToTitle[0].onClick.AddListener(delegate () { EasyBGMCtrl.easyBGMCtrl.PlaySE(Variable.SoundEffect.Enter); Timing.RunCoroutine(gameScoreSettingsIO.SaveSettings()); Timing.RunCoroutine(ChangePartMethod(3, 0)); });
+        SettingsReturnToTitle[1].onClick.AddListener(delegate () { EasyBGMCtrl.easyBGMCtrl.PlaySE(Variable.SoundEffect.Enter); Timing.RunCoroutine(gameScoreSettingsIO.SaveSettings()); Timing.RunCoroutine(ChangePartMethod(3, 0)); });
         //魔女选择part
-        ExitMajo.onClick.AddListener(delegate () { EasyBGMCtrl.easyBGMCtrl.PlaySE(1); Timing.RunCoroutine(ChangePartMethod(1, 0)); });//返回到主标题part
+        ExitMajo.onClick.AddListener(delegate () { EasyBGMCtrl.easyBGMCtrl.PlaySE(Variable.SoundEffect.Return); Timing.RunCoroutine(ChangePartMethod(1, 0)); });//返回到主标题part
 
         //魔法少女选择part
-        ExitMagicalGirls.onClick.AddListener(delegate () { EasyBGMCtrl.easyBGMCtrl.PlaySE(1); Timing.RunCoroutine(ChangePartMethod(2, -1)); });//范围到魔女选择part
+        ExitMagicalGirls.onClick.AddListener(delegate () { EasyBGMCtrl.easyBGMCtrl.PlaySE(Variable.SoundEffect.Return); Timing.RunCoroutine(ChangePartMethod(2, -1)); });//范围到魔女选择part
 
 
 
@@ -278,8 +271,8 @@ public class TitleCtrl : MonoBehaviour
     public void SelectedMajo(int MajoId)
     {
         //储存要打的魔女&切换到选择魔法少女part
-        if (MajoId <= (int)gameScoreSettingsIO.NewestMajo && MajoId != 5) { EasyBGMCtrl.easyBGMCtrl.PlaySE(0); gameScoreSettingsIO.BattlingMajo = (Variable.Majo)MajoId; Timing.RunCoroutine(ChangePartMethod(-1, 2)); }
-        else if (MajoId == 5 && gameScoreSettingsIO.MagicalGirlsDie[4]) { EasyBGMCtrl.easyBGMCtrl.PlaySE(0); gameScoreSettingsIO.BattlingMajo = (Variable.Majo)MajoId; Timing.RunCoroutine(ChangePartMethod(-1, 2)); }
+        if (MajoId <= (int)gameScoreSettingsIO.NewestMajo && MajoId != 5) { EasyBGMCtrl.easyBGMCtrl.PlaySE(Variable.SoundEffect.Enter); gameScoreSettingsIO.BattlingMajo = (Variable.Majo)MajoId; Timing.RunCoroutine(ChangePartMethod(-1, 2)); }
+        else if (MajoId == 5 && gameScoreSettingsIO.MagicalGirlsDie[4]) { EasyBGMCtrl.easyBGMCtrl.PlaySE(Variable.SoundEffect.Enter); gameScoreSettingsIO.BattlingMajo = (Variable.Majo)MajoId; Timing.RunCoroutine(ChangePartMethod(-1, 2)); }
 
     }
 
@@ -347,7 +340,7 @@ public class TitleCtrl : MonoBehaviour
         //确认音效 多人游戏的时候前2个玩家选择后播放。
         //  EasyBGMCtrl.easyBGMCtrl.PlaySE(0);
         //最后一个玩家，播放进入魔女结界的音效
-        EasyBGMCtrl.easyBGMCtrl.PlaySE(4);
+        EasyBGMCtrl.easyBGMCtrl.PlaySE(Variable.SoundEffect.MajoKeikai);
     }
 
 
@@ -537,7 +530,7 @@ public class TitleCtrl : MonoBehaviour
                 //如果来的是SelectMajo，则检查一下马酒
                 CheckMajo();
                 //音频
-                EasyBGMCtrl.easyBGMCtrl.PlaySE(3);
+                EasyBGMCtrl.easyBGMCtrl.PlaySE(Variable.SoundEffect.SelectGirl);
                 break;
 
             case 2:

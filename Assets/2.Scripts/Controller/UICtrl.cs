@@ -16,7 +16,6 @@ using MEC;
 public class UICtrl : MonoBehaviour
 {
     public static UICtrl uiCtrl;
-
     /// <summary>
     /// 虚拟输入
     /// </summary>
@@ -32,8 +31,6 @@ public class UICtrl : MonoBehaviour
     
     public GameObject Pause;
 
-    public GameObject DebugUI;
-
     [Header("音量滑条")]
     public Slider BGMVol;
     public Slider SEVol;
@@ -48,6 +45,22 @@ public class UICtrl : MonoBehaviour
     public TMP_Text TotalTimeText;
 
     /// <summary>
+    /// 调试模式面板
+    /// </summary>
+    [Header("调试界面")]
+    public RectTransform DebugMode;
+    /// <summary>
+    /// 展示的那个按钮
+    /// </summary>
+    public RectTransform ShowButton;
+    /// <summary>
+    /// 调试面板里所有的按钮
+    /// </summary>
+    public Button[] DebugButtons;
+
+    [Header("下一分段黑色转场")]
+    public Image NextFragment;
+    /// <summary>
     /// 真正起到更新作用的在这里
     /// </summary>
     PlayerInfUpdate[] PlayerInfInGame;
@@ -60,11 +73,8 @@ public class UICtrl : MonoBehaviour
 
 
 #if UNITY_EDITOR
-    [Header("调试用")]
-    public Text ShowRandomBGM;
     [Header("检查视图中的预设")]
     public EasyBGMCtrl PerfebInAsset;
-
 #endif
 
 
@@ -85,7 +95,9 @@ public class UICtrl : MonoBehaviour
 
         UpdateInf.RemoveAllListeners();
 
-
+        //奇怪的BUG解决：每次开游戏只显示FPS，然后要微调大Plane Distance才能正常显示
+        GetComponent<Canvas>().planeDistance = 10.1f;
+        VirtualInput.GetComponent<Canvas>().planeDistance = 11.1f;
 
     }
 
@@ -113,7 +125,10 @@ public class UICtrl : MonoBehaviour
         SEVol.value = MountGSS.gameScoreSettings.SEVol;
 
         //魔女被击败
-        MountGSS.gameScoreSettings.MajoDefeated.AddListener(delegate() {/*修改状态，防止游戏暂停*/MountGSS.gameScoreSettings. DoesMajoOrShoujoDie = true; /*启用结算界面*/Timing.RunCoroutine(Conclusion());});
+        MountGSS.gameScoreSettings.MajoDefeated.AddListener(delegate() {
+            Debug.Log("?");
+            /*修改状态，防止游戏暂停*/
+            MountGSS.gameScoreSettings. DoesMajoOrShoujoDie = true; /*启用结算界面*/Timing.RunCoroutine(Conclusion());});
         //魔法少女被击败（所选全死）
         MountGSS.gameScoreSettings.AllGirlsInGameDie.AddListener(delegate() {/*修改状态，防止游戏暂停*/MountGSS.gameScoreSettings.DoesMajoOrShoujoDie = true; /*启用结算界面*/Timing.RunCoroutine(ShoujoDie()); });
         #endregion
@@ -124,13 +139,16 @@ public class UICtrl : MonoBehaviour
         ConcInMajo.alpha = 0f;
         //禁用暂停界面
         Pause.SetActive(false);
+        //暂停使用切换界面
+        NextFragment.gameObject.SetActive(false);
         #endregion
 
         #region 初始化UI界面
+        //初始化调试模式
+        initializeDebugMode();
 
-        
         //设置好虚拟按键是否启用
-        if(MountGSS.gameScoreSettings.UseScreenInput != 2)
+        if (MountGSS.gameScoreSettings.UseScreenInput != 2)
         {
             Destroy(VirtualInput);
         }
@@ -226,9 +244,9 @@ public class UICtrl : MonoBehaviour
         //游戏暂停
         if (Time.timeScale != 0 && !MountGSS.gameScoreSettings.DoesMajoOrShoujoDie)
         {
-            DebugUI.SetActive(false);
+            DebugMode.gameObject.SetActive(false);
             //暂停音效
-            EasyBGMCtrl.easyBGMCtrl.PlaySE(2);
+            EasyBGMCtrl.easyBGMCtrl.PlaySE(Variable.SoundEffect.Pause);
             Time.timeScale = 0;
             EasyBGMCtrl.easyBGMCtrl.BGMPlayer.Pause();
             Pause.SetActive(true);
@@ -238,7 +256,7 @@ public class UICtrl : MonoBehaviour
         //暂停恢复
         else if(Time.timeScale == 0)
         {
-            DebugUI.SetActive(true);
+            DebugMode.gameObject.SetActive(true);
             MountGSS.gameScoreSettings.Pause = false;
             Time.timeScale = 1;
             //确认音效
@@ -262,19 +280,9 @@ public class UICtrl : MonoBehaviour
 
 
         //返回音效
-        EasyBGMCtrl.easyBGMCtrl.PlaySE(1);
+        EasyBGMCtrl.easyBGMCtrl.PlaySE(Variable.SoundEffect.Return);
         Time.timeScale = 1;//回复时间
         UnityEngine.SceneManagement.SceneManager.LoadScene(1,UnityEngine.SceneManagement.LoadSceneMode.Single);
-    }
-
-    /// <summary>
-    /// 随机播放bgm（按钮检查面板注入）
-    /// </summary>
-    public void RandomPlayBGM()
-    {
-        //确认音效
-        EasyBGMCtrl.easyBGMCtrl.PlaySE(0);
-        EasyBGMCtrl.easyBGMCtrl.PlayBGM(Random.Range(0, EasyBGMCtrl.easyBGMCtrl.BGM.Length));
     }
 
     /// <summary>
@@ -327,8 +335,6 @@ public class UICtrl : MonoBehaviour
  * 游戏中的魔法少女死亡后说明一下然后退出到魔女选择part
  * 全员死亡后说一下凉透了就跳转到staff
  */
-        //此处仅执行顺利打完魔女的结算
-
         //击败提示
         if (MountGSS.gameScoreSettings.BattlingMajo != Variable.Majo.Walpurgisnacht)
         {
@@ -382,47 +388,122 @@ public class UICtrl : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 场景的下一个分段切换效果
+    /// </summary>
+    /// <returns></returns>
+   public IEnumerator NextFragmentFadeOut()
+    {
+        MountGSS.gameScoreSettings.BanInput = true;
+        //初始化黑色遮罩层
+        NextFragment.color = new Color(0f, 0f, 0f, 0f);
+        NextFragment.gameObject.SetActive(true);
+
+        for (int i = 0; i < 50; i++)
+        {
+            NextFragment.color = new Color(0f, 0f, 0f, NextFragment.color.a + 0.02f);
+            yield return new WaitForSeconds(0.02f);
+        }
+    }
+    /// <summary>
+    /// 场景的下一个分段切换效果
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator NextFragmentFadeIn()
+    {
+       
+        //消除遮罩，恢复移动
+        for (int i = 0; i < 50; i++)
+        {
+            NextFragment.color = new Color(0f, 0f, 0f, NextFragment.color.a - 0.02f);
+            yield return new WaitForSeconds(0.02f);
+        }
+        NextFragment.gameObject.SetActive(false);
+
+    }
 
     #region 调试模式
-    public void CleanSoulUp()
+    /// <summary>
+    /// 初始化调试模式
+    /// </summary>
+    void initializeDebugMode()
     {
-        MountGSS.gameScoreSettings.CleanSoul = false;
+        if (!MountGSS.gameScoreSettings.EnableDebugMode)
+        {
+            DestroyImmediate(DebugMode);
+            return;
+        }
+       
+        //启用调试模式之后，将调试模式面板移动到屏幕外缘
+         DebugMode.localPosition = new Vector3(DebugMode.localPosition.x - 239f, DebugMode.localPosition.y, DebugMode.localPosition.z);
     }
 
-    public void cleanvitUp()
+    /// <summary>
+    /// 调试按钮按下打开/关闭面板
+    /// </summary>
+    public void DebugShowButton()
     {
-        MountGSS.gameScoreSettings.CleanVit = false;
+        //根据旋转角度决定调用那个函数
+        if(ShowButton.localRotation.eulerAngles.z == 0)
+        {
+            Timing.RunCoroutine(ShowDebugMenu());
+        }
+        else
+        {
+            Timing.RunCoroutine(HideDebugMenu());
+        }
     }
 
-    public void HurtMeUp()
+   IEnumerator<float> ShowDebugMenu()
     {
-        MountGSS.gameScoreSettings.HurtMyself = false;
-    }
-    public void SucceedUp()
-    {
-        MountGSS.gameScoreSettings.Succeed = false;
-    }
-    public void JumpDown()
-    {
-        MountGSS.gameScoreSettings.Jump = true;
-    }
-    public void CleanSoulDOwn()
-    {
-        MountGSS.gameScoreSettings.CleanSoul = true;
+        //面板移动过程中不能点击按钮
+        for (int i = 0; i < DebugButtons.Length; i++)
+        {
+            DebugButtons[i].interactable = false;
+        }
+
+        for (int i = 0; i < 20; i++)
+        {
+            //把调试面板移动过来
+            DebugMode.localPosition = new Vector3(DebugMode.localPosition.x + 11.95f, DebugMode.localPosition.y, 0f);
+            //按钮转一下
+            ShowButton.localRotation = Quaternion.Euler(0f, 0f, ShowButton.localRotation.eulerAngles.z + 9f);
+            yield return Timing.WaitForSeconds(0.025f);
+        }
+        ShowButton.localRotation = Quaternion.Euler(0f, 0f, 180f);
+       
+        //面板移动终了能点击按钮
+        for (int i = 0; i < DebugButtons.Length; i++)
+        {
+            DebugButtons[i].interactable = true;
+        }
     }
 
-    public void cleanvitDown()
-    {
-        MountGSS.gameScoreSettings.CleanVit = true;
+    IEnumerator<float> HideDebugMenu()
+    {        
+        //面板移动过程中不能点击按钮
+        for (int i = 0; i < DebugButtons.Length; i++)
+        {
+            DebugButtons[i].interactable = false;
+        }
+
+        for (int i = 0; i < 20; i++)
+        {
+            //把调试面板移动过来
+            DebugMode.localPosition = new Vector3(DebugMode.localPosition.x - 11.95f, DebugMode.localPosition.y, 0f);
+            //按钮转一下
+            ShowButton.localRotation = Quaternion.Euler(0f, 0f, ShowButton.localRotation.eulerAngles.z - 9f);
+            yield return Timing.WaitForSeconds(0.025f);
+        }
+
+        ShowButton.localRotation = Quaternion.Euler(0f, 0f, 0f);
+      
+        //面板移动终了能点击按钮
+        for (int i = 0; i < DebugButtons.Length; i++)
+        {
+            DebugButtons[i].interactable = true;
+        }
     }
 
-    public void HurtMeDown()
-    {
-        MountGSS.gameScoreSettings.HurtMyself = true;
-    }
-    public void SucceedDOwn()
-    {
-        MountGSS.gameScoreSettings.Succeed = true;
-    }
     #endregion
 }

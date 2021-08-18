@@ -12,6 +12,9 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     public GameScoreSettingsIO gameScoreSettings;//尽在这里弄一个单利
 
     #region  基础属性
+    /// <summary>
+    /// 123玩家是哪一个
+    /// </summary>
     [Header("基础属性")]
     public int PlayerId = 1;
     public Variable.PlayerFaceType MahouShoujoType;
@@ -40,10 +43,6 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// </summary>
     public bool BanTurnAround = false;
     /// <summary>
-    /// 禁止输入，仅适用于按一下按键动画执行到底且确实不需要外部输入的攻击
-    /// </summary>
-    public bool BanInput = false;
-    /// <summary>
     /// 无敌状态
     /// </summary>
     public bool IsInvincible = false;
@@ -57,7 +56,6 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// <summary>
     /// 玩家死亡。注意：联机的时候只有自己控制的角色才调用
     /// </summary>
-
     public static Variable.OrdinaryEvent PlayerGemBroken = new Variable.OrdinaryEvent();
 
 
@@ -112,7 +110,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// </summary>
     public int BanLeftOrRight = 0;
     /// <summary>
-    /// 碰到空气墙（墙壁）了
+    /// 碰到空气墙（墙壁）了 用来禁用跳跃
     /// </summary>
     private bool ZhuangBi = false;
 
@@ -183,6 +181,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     {
         #region 注册事件
         UpdateManager.updateManager.FastUpdate.AddListener(FastUpdate);
+    //    UICtrl.uiCtrl.PauseGame.AddListener(delegate (bool paused) { MountGSS.gameScoreSettings.BanInput = paused; });  这样子可能会用暂停来强制取消一些禁止输入的状态
         #endregion
 
 
@@ -218,7 +217,10 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
                 break;
             }
         }
-        //注册受伤事件
+        //记录玩家初始化的位置
+        MountGSS.gameScoreSettings.PlayersPosition[PlayerId] = tr.position;
+       
+            //注册受伤事件
         switch (PlayerId)
         {
             case 0:
@@ -229,6 +231,19 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
                 break;
             case 2:
                 MountGSS.gameScoreSettings.Player3Hurt.AddListener(GetHurt);
+                break;
+        } 
+        //注册瞬移
+        switch (PlayerId)
+        {
+            case 0:
+                MountGSS.gameScoreSettings.Player1JumpTo.AddListener(JumpTo);
+                break;
+            case 1:
+                MountGSS.gameScoreSettings.Player2JumpTo.AddListener(JumpTo);
+                break;
+            case 2:
+                MountGSS.gameScoreSettings.Player3JumpTo.AddListener(JumpTo);
                 break;
         }
         //设置tag
@@ -281,22 +296,23 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
         }
 
-        //如果禁用了输入
-        if (BanInput)
+        //如果禁用了输入/时间挺停止
+        if (MountGSS.gameScoreSettings.BanInput | Time.timeScale == 0)
         {
             MountGSS.gameScoreSettings.Horizontal = 0;
             MountGSS.gameScoreSettings.Jump = false;
             MountGSS.gameScoreSettings.Down = false;
-            //这个的话只要按下了攻击键/按住攻击键就算
             MountGSS.gameScoreSettings.Zattack = false;
             MountGSS.gameScoreSettings.Xattack = false;
-
+            MountGSS.gameScoreSettings.Magia = false;
         }
     }
 
 
     void FastUpdate()
     {
+
+
         Gravity();
 
 
@@ -304,11 +320,14 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
         if (MountGSS.gameScoreSettings.LocalIsStiff)
         {
+            Debug.Log("石更了");
+
             return;
         }
 
         //还是以最高优先级执行输入代理
         InputAgent();
+
 
         #region  基础控制器
         JumpAndFall();
@@ -346,7 +365,6 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
 
     #region  基础控制器
-
     /// <summary>
     /// 设置玩家状态
     /// </summary>
@@ -410,7 +428,10 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// </summary>
     public void AnimationCtrl()
     {
-        //未停止攻击/受伤动画正在播放的时候不能切换到其他任何形态
+        //动画根据时间流逝速度播放（暂停游戏时暂停动画）
+        animator.speed = Time.timeScale;
+
+        //未停止攻击/受伤（含死亡）动画正在播放的时候不能切换到其他任何形态
         if (!StopAttacking && playerStatus == Variable.PlayerStatus.GetHurt)
         {
             return;
@@ -637,7 +658,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
         //撞墙限制移动
         BanLeftOrRight = 0;
-
+        ZhuangBi = false;
         if (infoHor.collider != null)
         {
             //撞墙限制移动（墙都是指空气墙）
@@ -679,22 +700,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// 普通的行走用
     /// </summary>
     void Walk()
-    {
-        /*
-        if (MountGSS.gameScoreSettings.UseScreenInput == 2)
-        {
-            switch (MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId])
-            {
-                //是那个球，直接无视平台
-                case true:
-                    Move(GameScoreSettingsIO.MoveSpeed, true, MountGSS.gameScoreSettings.joystick);
-                    break;
-                //还没死呢
-                case false:
-                    Move(GameScoreSettingsIO.MoveSpeed, true, Vector2.right * MountGSS.gameScoreSettings.Horizontal);
-                    break;
-            }
-        }*/
+    {     
         switch (MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId])
         {
             //是那个球，直接无视平台
@@ -760,13 +766,6 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             Border = true;
         }
 
-        //到天花板了，剔除向上移动方向（仅适用于灵魂球）
-        else if (tr.localPosition.y >= 4.1f && Direction.y > 0 && MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId])
-        {
-            y = 0f;
-            Border = true;
-        }
-
         //左右碰到平台（找个时间和上面的额合并一下）
         if (BanLeftOrRight == -1 && Direction.x < 0)
         {
@@ -787,12 +786,30 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
         if (UseTimeDelta)
         {
-            tr.Translate(Direction * Speed * MoveSpeedRatio * Time.deltaTime, Space.World);
+            MountGSS.gameScoreSettings.PlayerMove = Direction * Speed * MoveSpeedRatio * Time.deltaTime;
         }
         else
         {
-            tr.Translate(Direction * Speed * MoveSpeedRatio, Space.World);
+            MountGSS.gameScoreSettings.PlayerMove = Direction * Speed * MoveSpeedRatio;
         }
+
+        tr.Translate(MountGSS.gameScoreSettings.PlayerMove, Space.World);
+
+        //玩家移动的时候同时更新相机（耦合性提高了）
+        CameraCtrl.cameraCtrl.UpdateCamera();
+
+        //更新玩家位置
+        MountGSS.gameScoreSettings.PlayersPosition[PlayerId] = tr.position;
+
+    }
+
+    /// <summary>
+    /// 玩家跳到哪个点（未适配多人游戏）
+    /// </summary>
+    /// <param name="point"></param>
+    public void JumpTo(Vector2 point)
+    {
+        tr.position = point;
     }
 
     /// <summary>
@@ -800,6 +817,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// </summary>
     public void Gravity()
     {
+
         //当没有重力的时候，强制将间隔时间设置为游戏时间，防止悬空结束掉落时速度太快
         if(GravityRatio == 0F)
         {
@@ -837,7 +855,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         MoveSpeedRatio = 1F;
         BanGravityRay = false;
         animator.enabled = !true;
-        BanInput = !false;//这一个就够了
+        MountGSS.gameScoreSettings.BanInput = !false;//这一个就够了
         MountGSS.gameScoreSettings.LocalIsStiff = !false;
 
         //启用新的僵直
@@ -874,7 +892,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         MountGSS.gameScoreSettings.LocalIsStiff = false;
         //第二帧才解除禁用
         yield return Timing.WaitForOneFrame;
-        BanInput = false;
+        MountGSS.gameScoreSettings.BanInput = false;
 
 
     }
@@ -1049,9 +1067,9 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
     #region 受伤，死亡与无敌
 
-#if UNITY_EDITOR
+    #region 调试模式（玩家层面）
     /// <summary>
-    /// 调试模式按钮：对当前玩家造成20的伤害
+    /// 调试模式按钮：对当前玩家造成20的伤害 仅沙耶加的时候可用
     /// </summary>
     [ContextMenu("Hurt")]
     public void HurtMyself()
@@ -1060,7 +1078,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     }
 
     /// <summary>
-    /// 调试模式按钮：清除当前灵魂值
+    /// 调试模式按钮：清除当前灵魂值 仅沙耶加的时候可用
     /// </summary>
     [ContextMenu("CleanSoul")]
     public void CleanSoul()
@@ -1072,7 +1090,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
     }
     /// <summary>
-    /// 调试模式按钮：清除当前血量
+    /// 调试模式按钮：清除当前血量 仅沙耶加的时候可用
     /// </summary>
     [ContextMenu("CleanVit")]
     public void CleanVit()
@@ -1082,14 +1100,73 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     }
 
     /// <summary>
-    /// 调式模式按钮：直接打赢魔女
+    /// 调式模式按钮：直接打赢魔女  这个其实不应该放在玩家脚本里
     /// </summary>
     [ContextMenu("Succeed")]
     public void Succeed()
     {
         MountGSS.gameScoreSettings.Succeed = true;
     }
-#endif
+    /// <summary>
+    /// 调式模式按钮：允许相机继续移动
+    /// </summary>
+    [ContextMenu("AllowCameraMoving")]
+    public void AllowCameraMoving()
+    {
+        CameraCtrl.cameraCtrl.RecoverMoving();
+    }
+
+    /// <summary>
+    /// 调式模式按钮：升级 仅沙耶加的时候可用
+    /// </summary>
+    [ContextMenu("AllowCameraMoving")]
+    public void LevelUpDebug()
+    {
+        LevelUp();
+    }
+
+    /// <summary>
+    /// 调式模式按钮：修改移动速率 仅沙耶加的时候可用
+    /// </summary>
+    bool KaQiTuoLiTai = false;
+    public void SpeedSet()
+    {
+        KaQiTuoLiTai = !KaQiTuoLiTai;
+
+        ///通常移动速度
+        float Common = 1f;
+        ///球的移动速度
+        float Ball = 1.2f;
+
+        if (MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId])
+        {
+            if (KaQiTuoLiTai)
+            {
+                EasyBGMCtrl.easyBGMCtrl.PlaySE(Variable.SoundEffect.KaQiTuoLiTai);
+                MoveSpeedRatio = Ball * 4f;
+            }
+            else
+            {
+                MoveSpeedRatio = Ball;
+            }
+        }
+        else
+        {
+            if (KaQiTuoLiTai)
+            {
+                EasyBGMCtrl.easyBGMCtrl.PlaySE(Variable.SoundEffect.KaQiTuoLiTai);
+                MoveSpeedRatio = Common * 4f;
+            }
+            else
+            {
+                MoveSpeedRatio = Common;
+            }
+        }
+    }
+
+
+
+    #endregion
 
 
     /// <summary>
@@ -1106,7 +1183,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
         //清除状态
         VariableInitialization();
-        BanInput = true;
+        MountGSS.gameScoreSettings.BanInput = true;
 
         IsAttack[0] = false;
         IsAttack[1] = false;
@@ -1163,7 +1240,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
         MountGSS.gameScoreSettings.IsBodyDieInGame[PlayerId] = true;
 
-        BanInput = true;
+        MountGSS.gameScoreSettings.BanInput = true;
 
     }
 
@@ -1187,7 +1264,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             //光球效果
             MoveSpeedRatio = 1.2f;
 
-            BanInput = false;
+            MountGSS.gameScoreSettings.BanInput = false;
             SetGravityRatio(0f); ;
             // BanGravityRay = true;
 
@@ -1199,7 +1276,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// </summary>
     public void HurtAnimationEndEvent()
     {
-        BanInput = false;
+        MountGSS.gameScoreSettings.BanInput = false;
         MountGSS.gameScoreSettings.GetHurtInGame[PlayerId] = false;
     }
 
@@ -1232,7 +1309,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     {
         //攻击状态+动画参数消除需要重写
         //这里是公用的，私用的重写
-        BanInput = false;
+        MountGSS.gameScoreSettings.BanInput = false;
         BanWalk = false;
         MoveSpeedRatio = 1F;
         BanJump = false;
@@ -1291,11 +1368,13 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         //设置死亡状态
         MountGSS.gameScoreSettings.MagicalGirlsDie[MahouShoujoId] = true;
 
-        PlayerGemBroken.Invoke();
+        // PlayerGemBroken.Invoke();多人游戏才需要这个
+        MountGSS.gameScoreSettings.DoesMajoOrShoujoDie = true;//单人游戏直接设置这个就可以了
 
         //MountGSS.gameScoreSettings.IsBodyDieInGame[PlayerId] = false 不能设置，因为宝石碎了的前提就是身子挂了
     }
 
+    /* 多人游戏才用这个
     /// <summary>
     /// Fade效果结束，已经看不见玩家了（动画调用），判断是否三个魔法少女都死了
     /// </summary>
@@ -1306,6 +1385,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         //删除物体
         Destroy(gameObject);
     }
+    */
     #endregion
 }
 

@@ -185,7 +185,7 @@ public class KyokoCtrl : APlayerCtrl
             UpAttackCount++;
             CancelJump();//直接中断跳跃并且不恢复
             IsAttack[1] = true;
-            BanInput = true;
+            MountGSS.gameScoreSettings.BanInput = true;
             SetGravityRatio(1f);
 
             playerStatus = Variable.PlayerStatus.UpStrong_1;

@@ -81,8 +81,15 @@
       },
       "url": "https://packages-v2.unity.cn"
     },
+    "com.unity.cinemachine": {
+      "version": "2.6.5",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages-v2.unity.cn"
+    },
     "com.unity.collab-proxy": {
-      "version": "1.5.7",
+      "version": "1.7.1",
       "depth": 0,
       "source": "registry",
       "dependencies": {

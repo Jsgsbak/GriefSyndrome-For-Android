@@ -14,6 +14,7 @@ TagManager:
   - Wall
   - Slope
   - PlayerAttack
+  - Platform
   layers:
   - Default
   - TransparentFX

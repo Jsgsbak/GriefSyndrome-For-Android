@@ -18,9 +18,9 @@ MonoBehaviour:
   Hits: 0
   MaxHits: 0
   MaxHitsFace: 070000000700000007000000
-  Time: 0
+  Time: 6479
   BestTime: 0
-  ThisMajoTime: 17
+  ThisMajoTime: 783
   BestTimeFace: 070000000700000007000000
   lap: 1
   PlayerSelectedGirlId: 4
@@ -28,18 +28,18 @@ MonoBehaviour:
   Success: 0
   LastLap: 1
   SelectedGirlInGame: 040000000700000007000000
-  GirlsLevel: 0100000001000000010000000100000001000000
-  GirlSoulLimit: 00430000a05c00000000000000000000db4d0000
-  GirlsVit: 580000005f000000000000000000000058000000
-  GirlsPow: 0a0000000a00000000000000000000000a000000
-  MagiaKeyDown: 000000
+  GirlsLevel: 0100000001000000010000000100000009000000
+  GirlSoulLimit: 00430000a05c0000000000000000000033500000
+  GirlsVit: 580000005f00000000000000000000005f000000
+  GirlsPow: 0a0000000a000000000000000000000012000000
+  MagiaKeyDown: 010000
   GetHurtInGame: 000000
   IsBodyDieInGame: 000000
   IsSoulBallInGame: 000000
-  playerNumber: 2
+  playerNumber: 43
   deadPlayerNumber: 0
   DoesMajoOrShoujoDie: 0
-  MagicalGirlsDie: 0100010100
+  MagicalGirlsDie: 0100010101
   PlayerDieImage:
   - {fileID: 0}
   - {fileID: 0}
@@ -53,9 +53,14 @@ MonoBehaviour:
   BattlingMajo: 0
   NewestMajo: 0
   MajoSceneToTitle: 1
+  PlayersPosition:
+  - {x: 40.661736, y: 6.8452687}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
   BGMVol: 0.6
   SEVol: 0.7
   MaxFps: 60
+  EnableDebugMode: 1
   mahouShoujos:
   - name: Homura
     BasicPow: 10
@@ -229,6 +234,7 @@ MonoBehaviour:
   UseScreenInput: 0
   joystick: {x: 0, y: 0}
   Horizontal: 0
+  BanInput: 0
   Down: 0
   Up: 0
   Jump: 0
@@ -239,6 +245,7 @@ MonoBehaviour:
   Magia: 0
   MagiaPressed: 0
   Pause: 0
+  PlayerMove: {x: 0, y: 0}
   CleanSoul: 0
   CleanVit: 0
   HurtMyself: 0

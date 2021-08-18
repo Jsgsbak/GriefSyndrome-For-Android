@@ -36,7 +36,8 @@ public class GSPreprocessBuild : Editor, IPreprocessBuildWithReport, IPostproces
         Debug.Log("初始化完成");
         //自动增加内部版本号，防止遗忘
         PlayerSettings.Android.bundleVersionCode++;
-
-
+        //不分什么测试版了。。。
+        PlayerSettings.bundleVersion = string.Format("{0}_Build {1}", PlayerSettings.bundleVersion, PlayerSettings.Android.bundleVersionCode.ToString());
+        //A.B.C  A:大换血 B:功能更新 C:功能调整数值调整各种调整 Build之后的内部版本号是修复bug的
     }
 }
