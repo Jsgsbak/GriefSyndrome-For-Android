@@ -48,10 +48,11 @@ public class Portal : MonoBehaviour
         yield return StartCoroutine(UICtrl.uiCtrl.NextFragmentFadeOut());
         //瞬移
        CameraCtrl.cameraCtrl.cameraRestraints[(int)MountGSS.gameScoreSettings.BattlingMajo].JumpToPoint(CameraPointInRestraint);
-        MountGSS.gameScoreSettings.Player1JumpTo.Invoke(new Vector3(PlayerTo.x, PlayerTo.y,1f));
+        //所有玩家瞬移
+        PlayerRootCtrl.playerRootCtrl.JumpToPoint(PlayerTo);
+
         //淡入
         yield return StartCoroutine(UICtrl.uiCtrl.NextFragmentFadeIn());
-
         Destroy(this.gameObject);
     }
 

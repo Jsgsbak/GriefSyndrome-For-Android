@@ -15,18 +15,6 @@ public class GameScoreSettingsIO : ScriptableObject
     public Variable.IntEvent Player2Hurt = new Variable.IntEvent();
     public Variable.IntEvent Player3Hurt = new Variable.IntEvent();
     /// <summary>
-    /// 玩家1跳到哪个点
-    /// </summary>
-    public Variable.Vec2Event Player1JumpTo = new Variable.Vec2Event();
-    /// <summary>
-    /// 玩家1跳到哪个点
-    /// </summary>
-    public Variable.Vec2Event Player3JumpTo = new Variable.Vec2Event();   
-    /// <summary>
-    /// 玩家1跳到哪个点
-    /// </summary>
-    public Variable.Vec2Event Player2JumpTo = new Variable.Vec2Event();
-    /// <summary>
     /// 魔法少女被击败（所选全死）
     /// </summary>
     public Variable.OrdinaryEvent AllGirlsInGameDie = new Variable.OrdinaryEvent();
