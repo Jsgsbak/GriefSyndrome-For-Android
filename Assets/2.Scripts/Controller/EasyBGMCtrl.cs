@@ -100,8 +100,6 @@ public class EasyBGMCtrl : MonoBehaviour
         }
         else
         {
-            Debug.Log("?");
-
             SEPlayer.PlayOneShot(SE[(int)soundEffectName]);
 
         }

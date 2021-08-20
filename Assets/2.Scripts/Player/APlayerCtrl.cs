@@ -33,11 +33,10 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// </summary>
     public bool BanJump = false;
     public bool BanWalk = false;
-    public bool IsGround = true;
     /// <summary>
-    /// 重力射线那里：辅助判断上一帧碰没碰地
+    /// 是否在地面（仅限APlayerCtrl使用SetIsOnGround函数进行修改）
     /// </summary>
-    bool IsPreviousFrame = true;
+    public bool IsGround = true;
     /// <summary>
     /// 站在地板上
     /// </summary>
@@ -79,6 +78,9 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// 重力射线
     /// </summary>
     readonly Ray2D[] rays = new Ray2D[3];
+    /// <summary>
+    /// 前脚射线
+    /// </summary>
     public RaycastHit2D infoRight;
     public RaycastHit2D infoHor;//水平射线，检测撞墙
 
@@ -105,6 +107,20 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             FallInteralTimer = Time.timeSinceLevelLoad;
         }
         GravityRatio = number;
+    }
+
+    /// <summary>
+    /// 设置是否在地面
+    /// </summary>
+    /// <param name="value"></param>
+    public void SetIsOnGround(bool value)
+    {
+        //如果现在的状态是没落地，但是射线之类的说要落地了，发动落地音效
+        if(!IsGround && value)
+        {
+            EasyBGMCtrl.easyBGMCtrl.PlaySE(Variable.SoundEffect.PlayerLand);
+        }
+        IsGround = value;
     }
 
     [HideInInspector] public float MoveSpeedRatio = 1f;
@@ -171,6 +187,10 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     public bool PlayPlayerDie2 = false;
 
     #endregion
+
+#if UNITY_EDITOR
+    public bool BanRay = false;
+#endif
 
     private void Awake()
     {
@@ -316,31 +336,35 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     void FastUpdate()
     {
 
-
         Gravity();
 
 
-        RayCtrl();
-
-        if (MountGSS.gameScoreSettings.LocalIsStiff)
+#if UNITY_EDITOR
+        if (!BanRay)
         {
-            return;
+            RayCtrl();
         }
+#endif
 
-        //还是以最高优先级执行输入代理
-        InputAgent();
-
-
-        #region  基础控制器
-        JumpAndFall();
-
-        if (!BanWalk) Walk();
-        SetStatus();
-        if (!MountGSS.gameScoreSettings.LocalIsStiff) AnimationCtrl();
-        #endregion
+#if !UNITY_EDITOR
+            RayCtrl();
+#endif
 
 
-        #region 攻击方法
+        if (!MountGSS.gameScoreSettings.LocalIsStiff)
+        {
+            //还是以最高优先级执行输入代理
+            InputAgent();
+
+
+#region  基础控制器
+            JumpAndFall();
+
+            if (!BanWalk) Walk();
+            SetStatus();
+            if (!MountGSS.gameScoreSettings.LocalIsStiff) AnimationCtrl();
+
+#region 攻击方法
         //防止死亡状态、按下跳跃的瞬间发动攻击
         if (MountGSS.gameScoreSettings.Jump || MountGSS.gameScoreSettings.IsBodyDieInGame[PlayerId] || IsInvincible)
         {
@@ -360,13 +384,18 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         BanWalk = IsAttack[0] || IsAttack[1] || IsAttack[2] || MountGSS.gameScoreSettings.Zattack || MountGSS.gameScoreSettings.Magia || MountGSS.gameScoreSettings.Xattack;//在这里统一弄一个，直接在这里禁用移动，不再在各种攻击方法和动画事件中禁用了
         BanJump = IsAttack[0] || IsAttack[1] || IsAttack[2] || MountGSS.gameScoreSettings.Zattack || MountGSS.gameScoreSettings.Magia || MountGSS.gameScoreSettings.Xattack;//在这里统一弄一个，直接在这里禁用移动，不再在各种攻击方法和动画事件中禁用了
 
-        #endregion
+#endregion
+
+        }
+
+#endregion
+
+
 
 
     }
 
-
-    #region  基础控制器
+#region  基础控制器
     /// <summary>
     /// 仅仅是给动画机提供的一个动画播放的函数（方便点）
     /// </summary>
@@ -477,7 +506,6 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             SetGravityRatio(0f);
             BanGravityRay = true;
             PlayerSlope = Vector2.right; //消除起跳上升阶段仍然保留斜坡属性的Bug
-            IsPreviousFrame = true;//用于触发落地音效（详见RayCtrl)
             IsJumpingForward = MountGSS.gameScoreSettings.Horizontal != 0;
 
             EasyBGMCtrl.easyBGMCtrl.PlaySE(Variable.SoundEffect.PlayerJump);
@@ -489,7 +517,8 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             if (Time.timeSinceLevelLoad - JumpInteralTimer <= 0.35f)
             {
                 //解决一个很奇怪的BUG
-                IsGround = false;
+                SetIsOnGround(false);
+                
                 Move((GameScoreSettingsIO.JumpSpeed - (Time.timeSinceLevelLoad - JumpInteralTimer) * GameScoreSettingsIO.JumpSpeed / 0.3F), true, Vector3.up);
             }
             //下降（其实就是取消跳跃状态）
@@ -519,7 +548,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             StandOnFloor = false;
             GoThroughPlatform = true;
             StandOnPlatform = false;//取消，防止多次执行
-            IsGround = false;//因为禁用了重力射线，所以后续的IsGround =  StandOnFloor|| StandOnPlatform不能生效了
+            SetIsOnGround(false);//因为禁用了重力射线，所以后续的IsGround =  StandOnFloor|| StandOnPlatform不能生效了
             SetGravityRatio(1f);//此函数受 IsGround影响， IsGround为true的时候改不成1
             PlatformTime = Time.timeSinceLevelLoad;
         }
@@ -543,7 +572,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         //既然要取消，那肯定是跳起来了
         SetGravityRatio(0f);
         BanGravityRay = false;//有向上移动的攻击时，才能禁用这个
-        IsGround = false;
+        SetIsOnGround(false);
         IsJumping = false;
         IsJumpingForward = false;
 
@@ -556,19 +585,20 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     {
         rays[0] = new Ray2D(GavityRayPos[0].position, Vector2.down);
 
+        float FixedLength = Mathf.Abs(PlayerSlope.y) / Mathf.Abs(PlayerSlope.x) * 1.815f + 0.18f;
+
         //斜坡修改位置
         if (PlayerSlope.y < 0)
         {
             //往右走的下坡射线长一点
             if (DoLookRight)
             {
-                //右
-                infoRight = Physics2D.Raycast(rays[0].origin, rays[0].direction, 0.25f);
+                //飞机准
+                infoRight = Physics2D.Raycast(rays[0].origin, rays[0].direction, FixedLength);
             }
             //往左走的上坡射线短一点
             else
             {
-                //右
                 infoRight = Physics2D.Raycast(rays[0].origin, rays[0].direction, 0.18f);
             }
         }
@@ -577,13 +607,12 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             //往左走的下坡射线长一点
             if (!DoLookRight)
             {
-                //右
-                infoRight = Physics2D.Raycast(rays[0].origin, rays[0].direction, 0.25f);
+                //飞机准
+                infoRight = Physics2D.Raycast(rays[0].origin, rays[0].direction, FixedLength);
             }
             //往右走的上坡射线短一点
             else
             {
-                //右
                 infoRight = Physics2D.Raycast(rays[0].origin, rays[0].direction, 0.18f);
             }
 
@@ -624,18 +653,17 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
             }
             //啥也没才上，腾空
-            else if (!IsJumping)//去除跳跃的情况
+            else if (!IsJumping )//去除跳跃的情况
             {
                 // SetGravityRatio(1f); 后面有114514标记的代码托管了对重力的修改
                 StandOnPlatform = false;
                 StandOnFloor = false;
                 SlopeInstanceId = 0;
-                PlayerSlope = Vector2.right;
 
             }
 
             //根据是否在地板/平台上得到着地状态
-            IsGround = StandOnPlatform || StandOnFloor;
+            SetIsOnGround(StandOnPlatform || StandOnFloor);
 
             //站在地上
             if (!IsAttack[0] && !IsAttack[1] && !IsAttack[2] && IsGround)
@@ -647,19 +675,12 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             {
                 SetGravityRatio(1f);//114514
             }
-            //即将落地
-            else if(IsGround && !IsAttack[0] && !IsAttack[1] && !IsAttack[2] && IsPreviousFrame && !IsJumping)
-            {
-                EasyBGMCtrl.easyBGMCtrl.PlaySE(Variable.SoundEffect.PlayerLand);
-                IsPreviousFrame = false;
-            }
-
 
 
             //直接在这里强制转化成true好了）
             if (MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId])
             {
-                IsGround = false;
+                SetIsOnGround(false);
                 SetGravityRatio(0f);
             }
 
@@ -701,10 +722,9 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
           
 
         }
-
         /*
         //脚插地修复
-        if (infoRight.collider != null && infoHor.collider != null && IsGround && !MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId] && PlayerSlope == Vector2.right)
+        if (infoRight.collider != null && infoHor.collider != null && IsGround && !MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId])
         {
             //如果水平射线与脚底射线得到的东西一致，那么说明脚插在地里（不对地板进行处理）
             if (infoRight.collider.GetInstanceID().Equals(infoHor.collider.GetInstanceID()))
@@ -713,8 +733,9 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
                 tr.Translate(Vector3.up * 0.1f, Space.World);
             }
-        }*/
+        }
 
+        */
     }
 
     /// <summary>
@@ -814,8 +835,9 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
             MountGSS.gameScoreSettings.PlayerMove = Direction * Speed * MoveSpeedRatio;
         }
 
-        tr.Translate(MountGSS.gameScoreSettings.PlayerMove, Space.World);
 
+            tr.Translate(MountGSS.gameScoreSettings.PlayerMove, Space.World);
+      
         //玩家移动的时候同时更新相机（耦合性提高了）
         CameraCtrl.cameraCtrl.UpdateCamera();
 
@@ -830,7 +852,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     /// <param name="point"></param>
     public void JumpTo(Vector2 point)
     {
-        tr.position = point;
+        tr.localPosition= point;
     }
 
     /// <summary>
@@ -854,9 +876,9 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
 
 
-    #endregion
+#endregion
 
-    #region 僵直
+#region 僵直
     /// <summary>
     /// 设置僵直
     /// </summary>
@@ -917,10 +939,10 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
 
     }
-    #endregion
+#endregion
 
 
-    #region 攻击方法
+#region 攻击方法
     /// <summary>
     /// 普通Z攻击，又名Zattack
     /// </summary>
@@ -960,10 +982,10 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
     public abstract void DownXattackAnimationEvent(string AnimationName);
 
     public abstract void MagiaAnimationEvent(string AnimationName);
-    #endregion
+#endregion
 
 
-    #region 时间变化 信息更新与升级
+#region 时间变化 信息更新与升级
 
     /// <summary>
     /// 随着时间流逝，灵魂宝石变黑
@@ -1086,11 +1108,11 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         return j;
 
     }
-    #endregion
+#endregion
 
-    #region 受伤，死亡与无敌
+#region 受伤，死亡与无敌
 
-    #region 调试模式（玩家层面）
+#region 调试模式（玩家层面）
     /// <summary>
     /// 调试模式按钮：对当前玩家造成20的伤害 仅沙耶加的时候可用
     /// </summary>
@@ -1189,7 +1211,7 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
 
 
 
-    #endregion
+#endregion
 
 
     /// <summary>
@@ -1421,6 +1443,6 @@ public abstract class APlayerCtrl : MonoBehaviour, IMove
         Destroy(gameObject);
     }
     */
-    #endregion
+#endregion
 }
 

@@ -15265,7 +15265,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.11587503}
+  m_Offset: {x: -0.0026592016, y: -0.115875036}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -15276,7 +15276,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 4.6, y: 0.6482499}
+  m_Size: {x: 4.594681, y: 0.6482499}
   m_EdgeRadius: 0
 --- !u!1 &1153257584
 GameObject:
@@ -22433,7 +22433,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 1
-  m_Offset: {x: 0, y: -0.12330052}
+  m_Offset: {x: 0.07193613, y: -0.100281715}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -22444,7 +22444,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 4.6, y: 0.63339895}
+  m_Size: {x: 4.456128, y: 0.5183039}
   m_EdgeRadius: 0
 --- !u!212 &1728113443
 SpriteRenderer:
@@ -25579,7 +25579,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 1
-  m_Offset: {x: 0, y: -0.101540335}
+  m_Offset: {x: 0.02603376, y: -0.07501009}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -25590,7 +25590,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 4.6, y: 0.67691934}
+  m_Size: {x: 4.4885693, y: 0.5299997}
   m_EdgeRadius: 0
 --- !u!212 &1999955520
 SpriteRenderer:
@@ -25754,7 +25754,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 1
-  m_Offset: {x: -0.038424015, y: -0.10046694}
+  m_Offset: {x: 0.033512115, y: -0.11485383}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -25765,7 +25765,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 4.5231524, y: 0.6790661}
+  m_Size: {x: 4.37928, y: 0.65029234}
   m_EdgeRadius: 0
 --- !u!212 &2005673199
 SpriteRenderer:
@@ -28868,32 +28868,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sayaka
       objectReference: {fileID: 0}
-    - target: {fileID: 2915628801893386442, guid: 55e1d1a7bfaf8b24fa2321a9210dcdfb,
-        type: 3}
-      propertyPath: m_Size.x
-      value: 3.84
-      objectReference: {fileID: 0}
-    - target: {fileID: 2915628801893386442, guid: 55e1d1a7bfaf8b24fa2321a9210dcdfb,
-        type: 3}
-      propertyPath: m_Size.y
-      value: 1.92
-      objectReference: {fileID: 0}
-    - target: {fileID: 2915628801893386442, guid: 55e1d1a7bfaf8b24fa2321a9210dcdfb,
-        type: 3}
-      propertyPath: m_WasSpriteAssigned
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2915628801936285317, guid: 55e1d1a7bfaf8b24fa2321a9210dcdfb,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 766366049}
-    - target: {fileID: 2915628803206793792, guid: 55e1d1a7bfaf8b24fa2321a9210dcdfb,
+    - target: {fileID: 5207729557080118937, guid: 55e1d1a7bfaf8b24fa2321a9210dcdfb,
         type: 3}
-      propertyPath: m_WasSpriteAssigned
-      value: 0
+      propertyPath: m_Constraints
+      value: 4
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5207729557080118937, guid: 55e1d1a7bfaf8b24fa2321a9210dcdfb, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 55e1d1a7bfaf8b24fa2321a9210dcdfb, type: 3}
 --- !u!1001 &3359713449375438147
 PrefabInstance:

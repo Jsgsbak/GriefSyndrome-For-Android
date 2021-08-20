@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2915628801685981364}
   - component: {fileID: 2915628801685981365}
+  - component: {fileID: 5207729557080118937}
   m_Layer: 8
   m_Name: Sayaka
   m_TagString: Player
@@ -59,6 +60,27 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.9525372, y: 1.4624906}
   m_EdgeRadius: 0
+--- !u!50 &5207729557080118937
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2915628801685985099}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 6
 --- !u!1 &2915628801893386444
 GameObject:
   m_ObjectHideFlags: 0
@@ -135,7 +157,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 3.84, y: 2.56}
+  m_Size: {x: 3.84, y: 1.92}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
@@ -283,13 +305,13 @@ MonoBehaviour:
   IsGround: 1
   StandOnFloor: 0
   BanTurnAround: 0
-  BanInput: 0
   IsInvincible: 0
   GavityRayPos:
   - {fileID: 2915628802146110010}
   tr: {fileID: 2915628801685981364}
   animator: {fileID: 0}
   spriteRenderer: {fileID: 0}
+  rb: {fileID: 5207729557080118937}
   playerStatus: 0
   GravityRatio: 1
   MoveSpeedRatio: 1
@@ -304,6 +326,7 @@ MonoBehaviour:
   IsAttack: 000000
   StopAttacking: 1
   PlayPlayerDie2: 0
+  BanRay: 0
   XordinaryDash: 0
   UpAttackCount: 0
   MagiaDashSpeedRatio: 1
