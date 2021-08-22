@@ -13,8 +13,6 @@ public class CameraRestraint : MonoBehaviour
     /// </summary>
     [Header("相机线性移动限制区域的锚点")]
     public LinarPoint[] CameraPoints;//下面的数组都是指这个
-    [Header("Gizmos颜色")]
-    public Color color = Color.green;
 
     public int InitialPosition;
     /// <summary>
@@ -36,7 +34,7 @@ public class CameraRestraint : MonoBehaviour
     /// <summary>
     /// 下一个点在左面吗
     /// </summary>
-    bool NextPointRight = false;
+  public  bool NextPointRight = false;
     /// <summary>
     /// 初始化相机位置
     /// </summary>
@@ -58,7 +56,6 @@ public class CameraRestraint : MonoBehaviour
                 }
                 CameraPoints[item].ConnectPointIndex.Add(i);
             }
-
         }
        
     }
@@ -69,6 +66,8 @@ public class CameraRestraint : MonoBehaviour
     public void JumpToPoint(int index)
     {
         tr.SetPositionAndRotation(CameraPoints[index].Point, Quaternion.identity);
+        PassedIndex = index;
+        NextPointDrawingLine = index + 1;
     }
 
     /// <summary>
@@ -81,50 +80,61 @@ public class CameraRestraint : MonoBehaviour
 
         //更新上一次经过的点的序号
         //在上一次经过的点的前后还有他自己各取1个点
+        vector2 = tr.position;
         for (int i = -1; i < 2; i++)
         {
-            vector2 = tr.position;
 
             //某个点和相机的位置离得足够近，则认为这个点是新的“刚经过的点”
             if ((vector2 - CameraPoints[Mathf.Clamp( PassedIndex+i,0,CameraPoints.Length - 1)].Point).sqrMagnitude <= 0.1f)
             {
                 PassedIndex = Mathf.Clamp(PassedIndex + i, 0, CameraPoints.Length - 1);
+                break;
             }
         }
 
-        //仅保留数组更靠后的点，让摄像机不能往回走
-        //如果刚路过的点在相机的右面
-        if (tr.position.x - CameraPoints[PassedIndex].Point.x < 0)
+        //确定刚经过的点之后，根据是否允许往较小的一个点走，获取下一个点
+        if (!CameraPoints[PassedIndex].AllowGoBack)
         {
-            /*
-            //找一个在刚路过的点左面的点，并且找到的这个点与刚经过的点之间由连线
-            if (CameraPoints[Mathf.Clamp(PassedIndex - 1, 0, CameraPoints.Length - 1)].Point.x - CameraPoints[PassedIndex].Point.x < 0 && CameraPoints[Mathf.Clamp(PassedIndex - 1, 0, CameraPoints.Length - 1)].ConnectPointIndex.Contains(PassedIndex))
-            {
-                NextPointDrawingLine = Mathf.Clamp(PassedIndex - 1, 0, CameraPoints.Length - 1);
-            }
-            else*/ if (CameraPoints[Mathf.Clamp(PassedIndex + 1, 0, CameraPoints.Length - 1)].Point.x - CameraPoints[PassedIndex].Point.x < 0 && CameraPoints[Mathf.Clamp(PassedIndex + 1, 0, CameraPoints.Length - 1)].ConnectPointIndex.Contains(PassedIndex))
-            {
-                NextPointRight = false;
-                NextPointDrawingLine = Mathf.Clamp(PassedIndex + 1, 0, CameraPoints.Length - 1);
-            }
-
+            //如果不允许玩家向序数较小的点（往回）走的话，直接取大一个
+            NextPointDrawingLine = Mathf.Clamp(PassedIndex + 1, 0, CameraPoints.Length - 1);
+            //确定序号大一个的点在左面还是右面
+            NextPointRight = CameraPoints[NextPointDrawingLine].Point.x - CameraPoints[PassedIndex].Point.x > 0f;
         }
-        //如果刚路过的点在相机的左面
+        //如果允许玩家向序数较小的点（往回）走的话，判断
         else
-        {             //找一个在刚路过的点右面的点，并且找到的这个点与刚经过的点之间由连线
+        {
+            //仅保留数组更靠后的点，让摄像机不能往回走
+            //如果刚路过的点在相机的右面
+            if (tr.position.x - CameraPoints[PassedIndex].Point.x < 0)
+            {
+                //找一个在刚路过的点左面的点作为下一个点，并且找到的这个点与刚经过的点之间由连线
+                for (int i = -1; i < 2; i += 2)
+                {
+                    if (CameraPoints[Mathf.Clamp(PassedIndex + i, 0, CameraPoints.Length - 1)].Point.x - CameraPoints[PassedIndex].Point.x < 0 && CameraPoints[Mathf.Clamp(PassedIndex + i, 0, CameraPoints.Length - 1)].ConnectPointIndex.Contains(PassedIndex))
+                    {
+                        NextPointRight = false;
+                        NextPointDrawingLine = Mathf.Clamp(PassedIndex + i, 0, CameraPoints.Length - 1);
+                    }
+                }
 
-            /*
-            if (CameraPoints[Mathf.Clamp(PassedIndex - 1, 0, CameraPoints.Length - 1)].Point.x - CameraPoints[PassedIndex].Point.x > 0 && CameraPoints[Mathf.Clamp(PassedIndex - 1, 0, CameraPoints.Length - 1)].ConnectPointIndex.Contains(PassedIndex))
-            {
-                NextPointDrawingLine = Mathf.Clamp(PassedIndex - 1, 0, CameraPoints.Length - 1);
+
             }
-            else */
-            if (CameraPoints[Mathf.Clamp(PassedIndex + 1, 0, CameraPoints.Length - 1)].Point.x > CameraPoints[PassedIndex].Point.x  && CameraPoints[Mathf.Clamp(PassedIndex + 1, 0, CameraPoints.Length - 1)].ConnectPointIndex.Contains(PassedIndex))
-            {
-                NextPointRight = true;
-                NextPointDrawingLine = Mathf.Clamp(PassedIndex + 1, 0, CameraPoints.Length - 1);
+            //如果刚路过的点在相机的左面
+            else
+            {             
+                //找一个在刚路过的点右面的点作为下一个点，并且找到的这个点与刚经过的点之间由连线
+                for (int i = -1; i < 2; i += 2)
+                {
+                    if (CameraPoints[Mathf.Clamp(PassedIndex + i, 0, CameraPoints.Length - 1)].Point.x - CameraPoints[PassedIndex].Point.x > 0 && CameraPoints[Mathf.Clamp(PassedIndex + i, 0, CameraPoints.Length - 1)].ConnectPointIndex.Contains(PassedIndex))
+                    {
+                        NextPointRight = false;
+                        NextPointDrawingLine = Mathf.Clamp(PassedIndex + i, 0, CameraPoints.Length - 1);
+                    }
+                }
             }
         }
+
+        
 
 
         //相机在某个点上了
@@ -171,12 +181,12 @@ public class CameraRestraint : MonoBehaviour
                 //下一个点在刚经过的点的左面
                 case false:
                     //玩家向左走，并且玩家在屏幕中间
-                    if (Raw.x > 0 && Mathf.Abs(Player.x - tr.position.x) <= 0.1f)
+                    if (Raw.x < 0 && Mathf.Abs(Player.x - tr.position.x) <= 0.1f)
                     {
                         return MoveCamera(Raw);
                     }                    
                     //玩家向左走，并且玩家在屏幕左侧
-                    else if (Raw.x > 0 && Player.x - tr.position.x < 0.1f)
+                    else if (Raw.x < 0 && Player.x - tr.position.x < 0.1f)
                     {
                         //相机多移动一点，为了跟上玩家
                         return MoveCamera(Raw * 1.2f);
@@ -194,7 +204,7 @@ public class CameraRestraint : MonoBehaviour
     /// <summary>
     /// 移动相机（这个能执行，说明相机在线上跑）
     /// </summary>
-    /// <param name="Raw"></param>
+    /// <param name="Raw">玩家原始输入（一点也不原始，被AplayerCtrl加工过了）</param>
     /// <returns></returns>
     Vector2 MoveCamera(Vector2 Raw)
     {
@@ -209,14 +219,12 @@ public class CameraRestraint : MonoBehaviour
 #if UNITY_EDITOR
     public void OnDrawGizmos()
     {
-        Gizmos.color = color;
-
+        Gizmos.color = Color.green;
 
         for (int i = 0; i < CameraPoints.Length; i++)
         {
-            //点那里画个球
-            Gizmos.DrawSphere(CameraPoints[i].Point, 0.6f);
-            Gizmos.DrawIcon(CameraPoints[i].Point, (i - 1).ToString(),true);
+            //点那里画个球 不这样子写位置TM不显示
+            Gizmos.DrawSphere(new Vector3(CameraPoints[i].Point.x, CameraPoints[i].Point.y,1f), 0.6f);
 
             //找到所有可以与这个点连接的点，然后划线
             foreach (var item in CameraPoints[i].ConnectPointIndex)
@@ -243,7 +251,10 @@ public class CameraRestraint : MonoBehaviour
         /// </summary>
         public bool[] BanLeftRight = { false, false };
 
-     
+        /// <summary>
+        /// 是否允许玩家往回走（必须是前往排序序号比较小的地方）
+        /// </summary>
+        public bool AllowGoBack = false;
     }
 
 

@@ -44,15 +44,20 @@ public class Portal : MonoBehaviour
 
     private IEnumerator TP()
     {
+        //禁止玩家输入
+        MountGSS.gameScoreSettings.BanInput = true;
         //淡出相机
         yield return StartCoroutine(UICtrl.uiCtrl.NextFragmentFadeOut());
         //瞬移
        CameraCtrl.cameraCtrl.cameraRestraints[(int)MountGSS.gameScoreSettings.BattlingMajo].JumpToPoint(CameraPointInRestraint);
+        //解除瞬移之后相机可能不移动的现象
+        CameraCtrl.cameraCtrl.RecoverMoving();
         //所有玩家瞬移
         PlayerRootCtrl.playerRootCtrl.JumpToPoint(PlayerTo);
 
         //淡入
         yield return StartCoroutine(UICtrl.uiCtrl.NextFragmentFadeIn());
+        MountGSS.gameScoreSettings.BanInput = false;
         Destroy(this.gameObject);
     }
 

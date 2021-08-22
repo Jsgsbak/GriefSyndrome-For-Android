@@ -21,23 +21,30 @@ public class StopPoint : MonoBehaviour
     /// <summary>
     /// 刚刚用过的停止点
     /// </summary>
-   public int UsedPointIndex = -1;
+    public int UsedPointIndex = -1;
 
     /// <summary>
     /// 停止相机移动
     /// </summary>
     public bool StopCamera = false;
 
+
     /// <summary>
-    ///  检查停止点
+    ///  检查停止点(世界坐标）
     /// </summary>
     /// <param name="Camera"></param>
     /// <returns>true：在停止点上，停止移动相机</returns>
     public void CheckStopPoint(Vector2 Camera)
     {
+        //最后一个停止点激活后，不再检查停止点
+        if(UsedPointIndex + 1 >= PointsEditor.Count)
+        {
+            return;
+        }
+
 
         //靠近下一个停止点，停下相机
-        if((PointsEditor[UsedPointIndex +1 ] - Camera).sqrMagnitude <= 0.1f)
+        if ((PointsEditor[UsedPointIndex +1] - Camera).sqrMagnitude <= 0.1f)
         {
             UsedPointIndex++;
             StopCamera = true;
@@ -62,40 +69,16 @@ public class StopPoint : MonoBehaviour
         for (int i = 0; i < PointsEditor.Count; i++)
         {
             //点那里画个球
-            Gizmos.DrawSphere(PointsEditor[i], 0.8f);
+            Gizmos.DrawSphere(new Vector3(PointsEditor[i].x, PointsEditor[i].y,1f), 0.8f);
 
 
         }
 
     }
 
-    /// <summary>
-    /// 要试试的停止点的序号
-    /// </summary>
-    public int TextedPointIndex;
-
-
-    public void Add()
-    {
-        PointsEditor.Add(Camera.main.transform.position);
-    }
-    public void Tryyyyyyyyyyyyyyyyy()
-    {
-        Camera.main.transform.position = PointsEditor[TextedPointIndex];
-    }
 
 
 
-    public void RemoveEditorPoint(bool all)
-    {
-        if (all)
-        {
-            PointsEditor.Clear();
-        }
-        else
-        {
-            PointsEditor.Remove(PointsEditor[TextedPointIndex]);
-        }
-    }
+
 #endif
 }

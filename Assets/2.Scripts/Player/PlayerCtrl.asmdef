@@ -1,0 +1,20 @@
+{
+    "name": "PlayerCtrl",
+    "rootNamespace": "",
+    "references": [
+        "GUID:384eb2cfbc20106489db18d8ab4f457a",
+        "GUID:86cbef207480f214392a8dc4ab5bf67d",
+        "GUID:b55f29d1437071f4f94888e957e772e9",
+        "GUID:8bd2221f774a6b44a83bf9041327e32c",
+        "GUID:fc9739b4e0ecfa04b98cfb0bc423aa92"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

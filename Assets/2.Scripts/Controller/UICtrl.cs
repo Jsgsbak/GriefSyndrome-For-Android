@@ -398,6 +398,8 @@ public class UICtrl : MonoBehaviour
         //初始化黑色遮罩层
         NextFragment.color = new Color(0f, 0f, 0f, 0f);
         NextFragment.gameObject.SetActive(true);
+        //禁用虚拟输入
+        VirtualInput.SetActive(false);
 
         for (int i = 0; i < 50; i++)
         {
@@ -419,6 +421,8 @@ public class UICtrl : MonoBehaviour
             yield return new WaitForSeconds(0.02f);
         }
         NextFragment.gameObject.SetActive(false);
+        //激活虚拟输入
+        VirtualInput.SetActive(true);
 
     }
 

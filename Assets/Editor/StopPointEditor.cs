@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+/*
 [CustomEditor(typeof( StopPoint))]
 public class StopPointEditor : Editor
 {
@@ -36,3 +37,4 @@ public class StopPointEditor : Editor
         }
     }
 }
+*/

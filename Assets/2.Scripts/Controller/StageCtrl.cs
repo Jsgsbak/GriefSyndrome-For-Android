@@ -72,9 +72,6 @@ public class StageCtrl : MonoBehaviour
                 Players[(int)MountGSS.gameScoreSettings.SelectedGirlInGame[i]].transform.SetParent(Stage.transform);
 
                 //多人游戏需要重新写一下这一段代码
-                //将相机上绑定好玩家
-                CameraCtrl.cameraCtrl.Player = Players[(int)MountGSS.gameScoreSettings.SelectedGirlInGame[i]].transform;
-
                 if (MountGSS.gameScoreSettings.SelectedGirlInGame[i] != Variable.PlayerFaceType.QB)
                 {
                     MountGSS.gameScoreSettings.playerNumber++;//玩家数记录（排除QB）

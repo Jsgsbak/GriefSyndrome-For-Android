@@ -38,7 +38,6 @@ public class PlayerRootCtrl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log(PlayersId.Length);
         //获取选中的玩家的脚本
         for (int i = 0; i < 3; i++)
         {

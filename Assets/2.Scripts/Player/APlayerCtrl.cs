@@ -134,7 +134,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// </summary>
     public int BanLeftOrRight = 0;
     /// <summary>
-    /// 碰到空气墙（墙壁）了 用来禁用跳跃
+    /// 碰到空气墙（墙壁）了 用来解决贴着墙跳会掉入虚空的BUG
     /// </summary>
     private bool ZhuangBi = false;
 
@@ -488,7 +488,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     public void JumpAndFall()
     {
         //除了禁用跳跃的情况，攻击的时候也不能跳（单独写出来，不然太麻烦了）   // ZhuangBi：阻止空气墙那里进行跳跃
-        if (BanJump || MountGSS.gameScoreSettings.Zattack || MountGSS.gameScoreSettings.Xattack || MountGSS.gameScoreSettings.Magia || ZhuangBi) return;
+        if (BanJump || MountGSS.gameScoreSettings.Zattack || MountGSS.gameScoreSettings.Xattack || MountGSS.gameScoreSettings.Magia) return;
 
         //跳跃触发
         if (!MountGSS.gameScoreSettings.Down && MountGSS.gameScoreSettings.Jump && JumpCount != 2)
@@ -621,8 +621,9 @@ public abstract class APlayerCtrl : MonoBehaviour
         //重力射线
         if (!BanGravityRay)
         {
-            
-            if (infoRight.collider != null)
+
+            //!ZhuangBi:贴着墙的时候，就禁用前脚的射线，防止脚贴到墙上掉入虚空
+            if (infoRight.collider != null && !ZhuangBi)
             {
                 //15层：平台
                 StandOnPlatform = infoRight.collider.gameObject.layer.Equals(15);//没有刚体infoRight.collider.IsTouchingLayers(15)一直为false?
@@ -875,9 +876,6 @@ public abstract class APlayerCtrl : MonoBehaviour
 
             tr.Translate(MountGSS.gameScoreSettings.PlayerMove, Space.World);
       
-        //玩家移动的时候同时更新相机（耦合性提高了）
-        CameraCtrl.cameraCtrl.UpdateCamera();
-
         //更新玩家位置
         MountGSS.gameScoreSettings.PlayersPosition[PlayerId] = tr.position;
 
@@ -1190,14 +1188,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     {
         MountGSS.gameScoreSettings.Succeed = true;
     }
-    /// <summary>
-    /// 调式模式按钮：允许相机继续移动
-    /// </summary>
-    [ContextMenu("AllowCameraMoving")]
-    public void AllowCameraMoving()
-    {
-        CameraCtrl.cameraCtrl.RecoverMoving();
-    }
+
 
     /// <summary>
     /// 调式模式按钮：升级 仅沙耶加的时候可用
@@ -1209,7 +1200,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     }
 
     /// <summary>
-    /// 调式模式按钮：修改移动速率 仅沙耶加的时候可用
+    /// 调式模式按钮：修改移动速率 仅沙耶加的时候可用（因为按钮附加在
     /// </summary>
     bool KaQiTuoLiTai = false;
     public void SpeedSet()
