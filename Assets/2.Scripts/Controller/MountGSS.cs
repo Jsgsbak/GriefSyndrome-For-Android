@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// 专门提供一个GSS来让大家用
+/// 专门提供一个GSS来让大家用（顺便初始化GSS）
 /// </summary>
 public class MountGSS : MonoBehaviour
 {
@@ -13,5 +13,8 @@ public class MountGSS : MonoBehaviour
     void Awake()
     {
         gameScoreSettings = (GameScoreSettingsIO)Resources.Load("GameScoreAndSettings");
+        //初始化
+        gameScoreSettings.MajoInitial();
+
     }
 }

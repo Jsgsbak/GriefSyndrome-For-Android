@@ -1,0 +1,13 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Red Door
+  m_Controller: {fileID: 9100000, guid: 963548e4f18ddbf4eb1d745c67c941b8, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: a0000ecc8d6c64b4da0eb18f38cfa013, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 7ad91b7464dc6524384dd2a4377717fc, type: 2}

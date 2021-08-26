@@ -4,7 +4,7 @@
 QualitySettings:
   m_ObjectHideFlags: 0
   serializedVersion: 5
-  m_CurrentQuality: 0
+  m_CurrentQuality: 5
   m_QualitySettings:
   - serializedVersion: 2
     name: Very Low
@@ -26,7 +26,7 @@ QualitySettings:
     softVegetation: 0
     realtimeReflectionProbes: 0
     billboardsFaceCameraPosition: 0
-    vSyncCount: 0
+    vSyncCount: 1
     lodBias: 0.3
     maximumLODLevel: 0
     streamingMipmapsActive: 0
@@ -41,7 +41,9 @@ QualitySettings:
     asyncUploadPersistentBuffer: 1
     resolutionScalingFixedDPIFactor: 1
     customRenderPipeline: {fileID: 0}
-    excludedTargetPlatforms: []
+    excludedTargetPlatforms:
+    - Android
+    - Standalone
   - serializedVersion: 2
     name: Low
     pixelLightCount: 0
@@ -79,6 +81,7 @@ QualitySettings:
     customRenderPipeline: {fileID: 0}
     excludedTargetPlatforms:
     - Android
+    - Standalone
   - serializedVersion: 2
     name: Medium
     pixelLightCount: 1
@@ -116,6 +119,7 @@ QualitySettings:
     customRenderPipeline: {fileID: 0}
     excludedTargetPlatforms:
     - Android
+    - Standalone
   - serializedVersion: 2
     name: High
     pixelLightCount: 2
@@ -153,6 +157,7 @@ QualitySettings:
     customRenderPipeline: {fileID: 0}
     excludedTargetPlatforms:
     - Android
+    - Standalone
   - serializedVersion: 2
     name: Very High
     pixelLightCount: 3
@@ -190,6 +195,7 @@ QualitySettings:
     customRenderPipeline: {fileID: 0}
     excludedTargetPlatforms:
     - Android
+    - Standalone
   - serializedVersion: 2
     name: Ultra
     pixelLightCount: 4
@@ -201,7 +207,7 @@ QualitySettings:
     shadowNearPlaneOffset: 3
     shadowCascade2Split: 0.33333334
     shadowCascade4Split: {x: 0.06666667, y: 0.2, z: 0.46666667}
-    shadowmaskMode: 1
+    shadowmaskMode: 0
     skinWeights: 4
     textureQuality: 0
     anisotropicTextures: 0
@@ -225,10 +231,9 @@ QualitySettings:
     asyncUploadPersistentBuffer: 1
     resolutionScalingFixedDPIFactor: 1
     customRenderPipeline: {fileID: 0}
-    excludedTargetPlatforms:
-    - Android
+    excludedTargetPlatforms: []
   m_PerPlatformDefaultQuality:
-    Android: 0
+    Android: 5
     Nintendo 3DS: 5
     Nintendo Switch: 5
     PS4: 5

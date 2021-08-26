@@ -20,6 +20,8 @@ public class AdjustInputBox : MonoBehaviour
 
     public void OnClick()
     {
+        Debug.Log(inputField.text);
+
         if (Plus)
         {
             inputField.text = (int.Parse(inputField.text) + 1).ToString();

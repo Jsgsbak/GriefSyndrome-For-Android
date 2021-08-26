@@ -44,6 +44,8 @@ public class UICtrl : MonoBehaviour
     public TMP_Text ThisMajoTimeText;
     public TMP_Text TotalTimeText;
 
+    public GameObject NextStopPointLogo;
+
     /// <summary>
     /// 调试模式面板
     /// </summary>
@@ -71,22 +73,11 @@ public class UICtrl : MonoBehaviour
     int PlayerCount = 0;
 
 
-
-#if UNITY_EDITOR
-    [Header("检查视图中的预设")]
-    public EasyBGMCtrl PerfebInAsset;
-#endif
-
-
     #region 事件组
     /// <summary>
     /// 更新玩家信息
     /// </summary>
     public Variable.OrdinaryEvent UpdateInf = new Variable.OrdinaryEvent();
-    /// <summary>
-    /// 是否暂停游戏
-    /// </summary>
-    public Variable.BoolEvent PauseGame = new Variable.BoolEvent();
     #endregion
 
     private void Awake()
@@ -103,17 +94,6 @@ public class UICtrl : MonoBehaviour
 
     private void Start()
     {
-#if UNITY_EDITOR
-
-        //检查是否存在BGMCtrl
-        if (GameObject.FindObjectOfType<EasyBGMCtrl>() == null)
-        {
-            EasyBGMCtrl easyBGMCtrl = Instantiate(PerfebInAsset).GetComponent<EasyBGMCtrl>();
-            easyBGMCtrl.IsClone = true;
-        }
-#endif
-
-
         UpdateManager.updateManager.SlowUpdate.AddListener(SlowUpdate);
         UpdateManager.updateManager.FastUpdate.AddListener(FastUpdate);
 
@@ -126,7 +106,6 @@ public class UICtrl : MonoBehaviour
 
         //魔女被击败
         MountGSS.gameScoreSettings.MajoDefeated.AddListener(delegate() {
-            Debug.Log("?");
             /*修改状态，防止游戏暂停*/
             MountGSS.gameScoreSettings. DoesMajoOrShoujoDie = true; /*启用结算界面*/Timing.RunCoroutine(Conclusion());});
         //魔法少女被击败（所选全死）
@@ -141,6 +120,8 @@ public class UICtrl : MonoBehaviour
         Pause.SetActive(false);
         //暂停使用切换界面
         NextFragment.gameObject.SetActive(false);
+        //暂停下一个停止点LOGO的使用
+     //   NextStopPointLogo.SetActive(false);
         #endregion
 
         #region 初始化UI界面
@@ -221,13 +202,10 @@ public class UICtrl : MonoBehaviour
     public void BGMVolChange(float vol)
     {
         MountGSS.gameScoreSettings.BGMVol = vol;
-        EasyBGMCtrl.easyBGMCtrl.ChangeVol(vol, true);
     }
     public void SEVolChange(float vol)
     {
         MountGSS.gameScoreSettings.SEVol = vol;
-        EasyBGMCtrl.easyBGMCtrl.ChangeVol(vol, false);
-
     }
 
     #endregion
@@ -238,31 +216,30 @@ public class UICtrl : MonoBehaviour
     [ContextMenu("游戏暂停切换")]
     public void GamePauseSwitch()
     {
-        
-        PauseGame.Invoke(Time.timeScale != 0);
+
+        MountGSS.gameScoreSettings.PauseGame.Invoke(Time.timeScale != 0);
+        DebugMode.gameObject.SetActive(Time.timeScale == 0);
+        Pause.SetActive(Time.timeScale != 0);
+
 
         //游戏暂停
         if (Time.timeScale != 0 && !MountGSS.gameScoreSettings.DoesMajoOrShoujoDie)
         {
-            DebugMode.gameObject.SetActive(false);
             //暂停音效
-            EasyBGMCtrl.easyBGMCtrl.PlaySE(Variable.SoundEffect.Pause);
+           SoundEffectCtrl.soundEffectCtrl.PlaySE(Variable.SoundEffect.Pause);
             Time.timeScale = 0;
-            EasyBGMCtrl.easyBGMCtrl.BGMPlayer.Pause();
-            Pause.SetActive(true);
+            //无限夸大MEC携程之间的调用间隔
             MEC.Timing.TimeBetweenSlowUpdateCalls = 999999999999999f;
 
         }
         //暂停恢复
         else if(Time.timeScale == 0)
-        {
-            DebugMode.gameObject.SetActive(true);
+        {          
+            //用返回音效作为接触暂停的音效
+           SoundEffectCtrl.soundEffectCtrl.PlaySE(Variable.SoundEffect.Return);
             MountGSS.gameScoreSettings.Pause = false;
             Time.timeScale = 1;
-            //确认音效
-            EasyBGMCtrl.easyBGMCtrl.PlaySE(0);
-            EasyBGMCtrl.easyBGMCtrl.BGMPlayer.UnPause();
-            Pause.SetActive(false);
+            //恢复MEC携程之间的调用间隔
             MEC.Timing.TimeBetweenSlowUpdateCalls = 1f / 7f;
         }
     }
@@ -280,9 +257,9 @@ public class UICtrl : MonoBehaviour
 
 
         //返回音效
-        EasyBGMCtrl.easyBGMCtrl.PlaySE(Variable.SoundEffect.Return);
+        SoundEffectCtrl.soundEffectCtrl.PlaySE(Variable.SoundEffect.Return);
         Time.timeScale = 1;//回复时间
-        UnityEngine.SceneManagement.SceneManager.LoadScene(1,UnityEngine.SceneManagement.LoadSceneMode.Single);
+        UnityEngine.SceneManagement.SceneManager.LoadScene(1, UnityEngine.SceneManagement.LoadSceneMode.Single);
     }
 
     /// <summary>
@@ -290,17 +267,19 @@ public class UICtrl : MonoBehaviour
     /// </summary>
     public IEnumerator<float> ShoujoDie()
     {
+        //禁用虚拟输入
+        if (VirtualInput != null) VirtualInput.SetActive(false);
 
         //判断是否五色扑街
         if (MountGSS.gameScoreSettings.AllDie)
         {
             //借助结算界面的文本框通知玩家你成功打出了be
-            MajoDieText.text = "    Sekai saraba...";
+            MajoDieText.text = "Sekai saraba...";
         }
         else
         {
             //借助结算界面的文本框通知玩家你成功打出了be
-            MajoDieText.text = "  Select another mahoshoujo to continue...";
+            MajoDieText.text = "Select another mahoshoujo to continue...";
 
         }
 
@@ -331,6 +310,10 @@ public class UICtrl : MonoBehaviour
     /// <returns></returns>
     IEnumerator<float> Conclusion()
     {
+        //禁用虚拟输入
+        if (VirtualInput != null) VirtualInput.SetActive(false);
+        
+
         /*这里说明一下，所有魔女打完之后都会先展示结算界面，最后展示staff（仅瓦夜击败后有staff）
  * 游戏中的魔法少女死亡后说明一下然后退出到魔女选择part
  * 全员死亡后说一下凉透了就跳转到staff
@@ -338,11 +321,11 @@ public class UICtrl : MonoBehaviour
         //击败提示
         if (MountGSS.gameScoreSettings.BattlingMajo != Variable.Majo.Walpurgisnacht)
         {
-            MajoDieText.text = string.Format("{0} was defeated\n                                   and left griefseed.", MountGSS.gameScoreSettings.BattlingMajo.ToString());
+            MajoDieText.text = string.Format("{0} was defeated\nand left griefseed.", MountGSS.gameScoreSettings.BattlingMajo.ToString());
         }
         else
         {
-            MajoDieText.text = string.Format("     {0} was over.", MountGSS.gameScoreSettings.BattlingMajo.ToString());
+            MajoDieText.text = string.Format("{0} was over.", MountGSS.gameScoreSettings.BattlingMajo.ToString());
         }
 
         //这个魔女被击败的用时
@@ -388,18 +371,19 @@ public class UICtrl : MonoBehaviour
         }
     }
 
+    #region 场景下一个分段
     /// <summary>
     /// 场景的下一个分段切换效果
     /// </summary>
     /// <returns></returns>
-   public IEnumerator NextFragmentFadeOut()
+    public IEnumerator NextFragmentFadeOut()
     {
         MountGSS.gameScoreSettings.BanInput = true;
         //初始化黑色遮罩层
         NextFragment.color = new Color(0f, 0f, 0f, 0f);
         NextFragment.gameObject.SetActive(true);
         //禁用虚拟输入
-        VirtualInput.SetActive(false);
+       if(VirtualInput != null)  VirtualInput.SetActive(false);
 
         for (int i = 0; i < 50; i++)
         {
@@ -422,7 +406,17 @@ public class UICtrl : MonoBehaviour
         }
         NextFragment.gameObject.SetActive(false);
         //激活虚拟输入
-        VirtualInput.SetActive(true);
+        if (VirtualInput != null) VirtualInput.SetActive(true);
+
+    }
+
+    #endregion
+
+    public IEnumerator<float> ShowNextStopPointLogo()
+    {
+        NextStopPointLogo.SetActive(true);
+        yield return Timing.WaitForSeconds(1.5F);
+        NextStopPointLogo.SetActive(false);
 
     }
 

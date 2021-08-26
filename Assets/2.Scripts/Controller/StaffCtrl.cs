@@ -23,11 +23,6 @@ public class StaffCtrl : MonoBehaviour
     public Image image;
     public Sprite[] images;
 
-
-    [Header("检查视图中的预设")]
-    public EasyBGMCtrl PerfebInAsset;
-
-
     GameScoreSettingsIO gameScoreSettings;
 
     /// <summary>
@@ -38,16 +33,6 @@ public class StaffCtrl : MonoBehaviour
 
     private void Awake()
     {
-#if UNITY_EDITOR
-        //检查是否存在BGMCtrl
-        if (GameObject.FindObjectOfType<EasyBGMCtrl>() == null)
-        {
-            EasyBGMCtrl easyBGMCtrl = Instantiate(PerfebInAsset).GetComponent<EasyBGMCtrl>();
-            easyBGMCtrl.IsClone = true;
-        }
-#endif
-
-
         //获取组件
         StaffRectTr[0] = staff[0].rectTransform;
         StaffRectTr[1] = staff[1].rectTransform;
@@ -181,7 +166,7 @@ public class StaffCtrl : MonoBehaviour
         if (Input.touchCount >= 1 || Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1) || Input.GetMouseButtonDown(2))
         {
             //返回音效
-            EasyBGMCtrl.easyBGMCtrl.PlaySE(Variable.SoundEffect.Return);
+            SoundEffectCtrl.soundEffectCtrl.PlaySE(Variable.SoundEffect.Return);
             UnityEngine.SceneManagement.SceneManager.LoadScene(1, UnityEngine.SceneManagement.LoadSceneMode.Single);
         }
     }
@@ -207,8 +192,6 @@ public class StaffCtrl : MonoBehaviour
         //全员死亡
         if (gameScoreSettings.AllDie)
         {
-            //BE BGM
-            EasyBGMCtrl.easyBGMCtrl.PlayBGM(3);
             //BE图片
             image.sprite = images[10];
             //深红色文字
@@ -216,11 +199,6 @@ public class StaffCtrl : MonoBehaviour
             staff[1].color = new Color(0.6132076f, 0.130162f, 0.130162f);
             return;
           
-        }
-        else
-        {
-            //GE BGM
-            EasyBGMCtrl.easyBGMCtrl.PlayBGM(4);
         }
 
         //全员幸存

@@ -56,8 +56,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2766159369792800503}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.12, y: 0.73, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0.898, y: 0.3024, z: 0}
+  m_LocalScale: {x: 2.0019956, y: 2.0019956, z: 2.0019956}
   m_Children: []
   m_Father: {fileID: 2766159369771475933}
   m_RootOrder: 0
@@ -102,7 +102,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -78
-  m_Sprite: {fileID: 21300000, guid: 8e708b8cec58e8c438daef37a216cc00, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0216db54c7029f248aa09d3b1be4525e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -124,6 +124,7 @@ GameObject:
   - component: {fileID: 2766159370341055721}
   - component: {fileID: 2766159370341055722}
   - component: {fileID: 2766159370341055723}
+  - component: {fileID: 6335507820949023466}
   m_Layer: 0
   m_Name: Red Door
   m_TagString: Untagged
@@ -144,6 +145,7 @@ Transform:
   m_Children:
   - {fileID: 2766159371467068081}
   - {fileID: 2766159369771475933}
+  - {fileID: 6189448248232914552}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -208,7 +210,7 @@ Animator:
   m_GameObject: {fileID: 2766159370341055720}
   m_Enabled: 0
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 963548e4f18ddbf4eb1d745c67c941b8, type: 2}
+  m_Controller: {fileID: 22100000, guid: 63f97cc85e723094ba28e0c8a709ddc7, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -217,6 +219,21 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &6335507820949023466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2766159370341055720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03ae0176b49b9e04aa051c7b40e93792, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BelongToWhichStopPoint: -1
+  animator: {fileID: 2766159370341055723}
+  Portal: {fileID: 3613650397836328065}
 --- !u!1 &2766159371467068080
 GameObject:
   m_ObjectHideFlags: 0
@@ -299,3 +316,52 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &3613650397836328065
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6189448248232914552}
+  - component: {fileID: 6330260375481415433}
+  m_Layer: 0
+  m_Name: portal
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &6189448248232914552
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3613650397836328065}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -4, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2766159370341055721}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6330260375481415433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3613650397836328065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c8a06c5b726f054e92d751c4347e6ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NeedToDestroy: []
+  NeedToEnable: []
+  NeedPressW: 1
+  AllowY: 0
+  CameraPointInRestraint: -1
+  PlayerTo: {x: 0, y: 0}

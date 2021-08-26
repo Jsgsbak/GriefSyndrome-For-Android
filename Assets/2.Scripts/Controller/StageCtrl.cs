@@ -28,11 +28,9 @@ public class StageCtrl : MonoBehaviour
 
 #if UNITY_EDITOR
     [Header("检查视图中的预设")]
-    public EasyBGMCtrl PerfebInAsset;
+    public SoundEffectCtrl PerfebInAsset;
 #endif
    
-    public int BGMid = 5;//通常都为5，是道中曲
-
     #region 事件组
 
     #endregion
@@ -40,6 +38,7 @@ public class StageCtrl : MonoBehaviour
 
     private void Start()
     {
+
         //先禁用所有玩家
         foreach (var item in Players)
         {
@@ -102,10 +101,10 @@ public class StageCtrl : MonoBehaviour
 #if UNITY_EDITOR
 
         //检查是否存在BGMCtrl
-        if (GameObject.FindObjectOfType<EasyBGMCtrl>() == null)
+        if (GameObject.FindObjectOfType<SoundEffectCtrl>() == null)
         {
-            EasyBGMCtrl easyBGMCtrl = Instantiate(PerfebInAsset).GetComponent<EasyBGMCtrl>();
-            easyBGMCtrl.IsClone = true;
+            SoundEffectCtrl SoundEffectCtrl = Instantiate(PerfebInAsset).GetComponent<SoundEffectCtrl>();
+            SoundEffectCtrl.IsClone = true;
         }
 #endif
 
@@ -115,31 +114,32 @@ public class StageCtrl : MonoBehaviour
     // Start is called before the first frame update
     void Start2()
     {
-        //初始化
-        MountGSS.gameScoreSettings.MajoInitial();
         //音量初始化
-        EasyBGMCtrl.easyBGMCtrl.ChangeVol(MountGSS.gameScoreSettings.BGMVol, true);
-        EasyBGMCtrl.easyBGMCtrl.ChangeVol(MountGSS.gameScoreSettings.SEVol, false);
-
-        //播放BGM（这里用的还是旧版的BGM播放器）
-        if(MountGSS.gameScoreSettings.BattlingMajo != Variable.Majo.Walpurgisnacht && MountGSS.gameScoreSettings.BattlingMajo != Variable.Majo.Oktavia)
-        {
-            BGMid = 5;
-        }
-        else if(MountGSS.gameScoreSettings.BattlingMajo == Variable.Majo.Walpurgisnacht)
-        {
-            BGMid = 6;
-        }
-        else
-        {
-            BGMid = 2;
-        }
-        EasyBGMCtrl.easyBGMCtrl.PlayBGM(BGMid);
-
-       
+        SoundEffectCtrl.soundEffectCtrl.ChangeVol(MountGSS.gameScoreSettings.SEVol);       
 
         //初始化计时器
         InvokeRepeating("Timer", 1f, 1f);
+
+        //注册事件
+        MountGSS.gameScoreSettings.MajoDefeated.AddListener(delegate ()
+        {
+            //实际上，魔女hp=0的时候就要调用一次  StageCtrl.MountGSS.gameScoreSettings.DoesMajoOrShoujoDie = true;
+            
+            //之后魔女死亡动画播放
+            //掉落悲叹之种
+            //执行 GoodbyeMajo();
+            GoodbyeMajo();
+            MountGSS.gameScoreSettings.DoesMajoOrShoujoDie = true;
+            MountGSS.gameScoreSettings.BanInput = true;
+
+        });
+
+        MountGSS.gameScoreSettings.AllGirlsInGameDie.AddListener(delegate ()
+        {
+            MountGSS.gameScoreSettings.DoesMajoOrShoujoDie = true;
+            MountGSS.gameScoreSettings.BanInput = true;
+            GirlsInGameDie();
+        });
     }
 
 
@@ -154,46 +154,21 @@ public class StageCtrl : MonoBehaviour
     }
 
     /// <summary>
-    /// 0.0.7测试用按钮才用的函数，啥时候去掉了那几个按钮才把这个方法去掉
-    /// </summary>
-    public void Update()
-    {
-        if (MountGSS.gameScoreSettings.Succeed)
-        {
-            //实际上，魔女hp=0的时候就要调用一次  StageCtrl.MountGSS.gameScoreSettings.DoesMajoOrShoujoDie = true;
-            //然后禁用输入按钮和输入
-            //之后魔女死亡动画播放
-            //掉落悲叹之种
-            //执行 GoodbyeMajo();
-            GoodbyeMajo();
-            MountGSS.gameScoreSettings.DoesMajoOrShoujoDie = true;
-            //单纯为了别多次执行
-            MountGSS.gameScoreSettings.Succeed = false;
-        }
-
-        else  if (!MountGSS.gameScoreSettings.Succeed &&  MountGSS.gameScoreSettings.DoesMajoOrShoujoDie)
-        {
-            GirlsInGameDie();
-            MountGSS.gameScoreSettings.CleanSoul = false;
-            enabled = false;
-        }
-
-    }
-
-
-    /// <summary>
     /// 顺利打完魔女之后,悲叹之种精华之后才有的结算逻辑9现在暂时放在了答应魔女之后了）
     /// </summary>
     [ContextMenu("顺利结算")]
     public void GoodbyeMajo()
     {
+        if (!Stage.activeInHierarchy)
+        {
+            return;//不知道为什么这个事件会执行很多次emmmm用这个来防止多次调用，原因不明
+        }
+
         //清除场景
         Stage.SetActive(false);
 
         //停止计时器
         CancelInvoke("Timer");
-        //BGM停止播放
-        EasyBGMCtrl.easyBGMCtrl.PlayBGM(-1);
         //累计时间增加
         MountGSS.gameScoreSettings.Time += MountGSS.gameScoreSettings.ThisMajoTime;
 
@@ -226,13 +201,16 @@ public class StageCtrl : MonoBehaviour
     [ContextMenu("没打过魔女")]
     public void GirlsInGameDie()
     {
+        if (!Stage.activeInHierarchy)
+        {
+            return;//不知道为什么这个事件会执行很多次emmmm用这个来防止多次调用，原因不明
+        }
+
         //清除场景
         Stage.SetActive(false);
 
         //停止计时器
         CancelInvoke("Timer");
-        //BGM停止播放
-        EasyBGMCtrl.easyBGMCtrl.PlayBGM(-1);
         //累计时间增加
         MountGSS.gameScoreSettings.Time += MountGSS.gameScoreSettings.ThisMajoTime;
 

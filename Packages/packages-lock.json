@@ -2,7 +2,7 @@
   "dependencies": {
     "com.unity.2d.animation": {
       "version": "5.0.6",
-      "depth": 0,
+      "depth": 1,
       "source": "registry",
       "dependencies": {
         "com.unity.2d.common": "4.0.3",
@@ -73,19 +73,12 @@
       "dependencies": {}
     },
     "com.unity.burst": {
-      "version": "1.4.8",
+      "version": "1.4.11",
       "depth": 0,
       "source": "registry",
       "dependencies": {
         "com.unity.mathematics": "1.2.1"
       },
-      "url": "https://packages-v2.unity.cn"
-    },
-    "com.unity.cinemachine": {
-      "version": "2.6.5",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {},
       "url": "https://packages-v2.unity.cn"
     },
     "com.unity.collab-proxy": {

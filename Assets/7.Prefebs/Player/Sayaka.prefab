@@ -335,6 +335,7 @@ MonoBehaviour:
   IsAttack: 000000
   StopAttacking: 1
   PlayPlayerDie2: 0
+  PlayPlayerDie3: 0
   BanRay: 0
   XordinaryDash: 0
   UpAttackCount: 0

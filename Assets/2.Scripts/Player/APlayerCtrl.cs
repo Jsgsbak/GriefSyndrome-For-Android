@@ -59,11 +59,6 @@ public abstract class APlayerCtrl : MonoBehaviour
     public Transform[] GavityRayPos = new Transform[2];
     #endregion
 
-    /// <summary>
-    /// 玩家死亡。注意：联机的时候只有自己控制的角色才调用
-    /// </summary>
-    public static Variable.OrdinaryEvent PlayerGemBroken = new Variable.OrdinaryEvent();
-
 
     #region 组件
     public Transform tr;
@@ -120,14 +115,14 @@ public abstract class APlayerCtrl : MonoBehaviour
     public void SetIsOnGround(bool value)
     {
         //如果现在的状态是没落地，但是射线之类的说要落地了，发动落地音效
-        if(!IsGround && value)
+        if(!IsGround && value && !MountGSS.gameScoreSettings.IsBodyDieInGame[PlayerId] && !MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId])
         {
-            EasyBGMCtrl.easyBGMCtrl.PlaySE(Variable.SoundEffect.PlayerLand);
+            SoundEffectCtrl.soundEffectCtrl.PlaySE(Variable.SoundEffect.PlayerLand);
         }
         IsGround = value;
     }
 
-    [HideInInspector] public float MoveSpeedRatio = 1f;
+     public float MoveSpeedRatio = 1f;
 
     /// <summary>
     ///  仅限空气墙和平台左右两端禁止左右移动（-1左 1右）
@@ -189,6 +184,10 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// 播放玩家死亡第二阶段动画
     /// </summary>
     public bool PlayPlayerDie2 = false;
+    /// <summary>
+    /// 播放玩家死亡第三阶段动画
+    /// </summary>
+    public bool PlayPlayerDie3 = false;
 
     #endregion
 
@@ -248,20 +247,6 @@ public abstract class APlayerCtrl : MonoBehaviour
         //记录玩家初始化的位置
         MountGSS.gameScoreSettings.PlayersPosition[PlayerId] = tr.position;
        
-        //这一大堆以后都要移动到PlayerRoot中
-            //注册受伤事件
-        switch (PlayerId)
-        {
-            case 0:
-                MountGSS.gameScoreSettings.Player1Hurt.AddListener(GetHurt);
-                break;
-            case 1:
-                MountGSS.gameScoreSettings.Player2Hurt.AddListener(GetHurt);
-                break;
-            case 2:
-                MountGSS.gameScoreSettings.Player3Hurt.AddListener(GetHurt);
-                break;
-        } 
         //设置tag
         tag = string.Format("Player{0}", (PlayerId + 1).ToString());
         //修正玩家层
@@ -396,7 +381,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// <param name="se"></param>
     public void PlayerSE(Variable.SoundEffect se)
     {
-        EasyBGMCtrl.easyBGMCtrl.PlaySE(se);
+        SoundEffectCtrl.soundEffectCtrl.PlaySE(se);
     }
 
     /// <summary>
@@ -443,15 +428,19 @@ public abstract class APlayerCtrl : MonoBehaviour
         {
             playerStatus = Variable.PlayerStatus.PlayerSoul;
         }
-        else if (MountGSS.gameScoreSettings.IsBodyDieInGame[PlayerId] && !MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId] && !PlayPlayerDie2)
+        else if (MountGSS.gameScoreSettings.IsBodyDieInGame[PlayerId] && !MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId] && !PlayPlayerDie2 && !PlayPlayerDie3)
         {
             playerStatus = Variable.PlayerStatus.PlayerDie_1;
         }
-        else if (PlayPlayerDie2)
+        else if (PlayPlayerDie2 && !PlayPlayerDie3)
         {
             playerStatus = Variable.PlayerStatus.PlayerDie_2;
         }
-
+        //消失状态
+        else if (PlayPlayerDie3)
+        {
+            playerStatus = Variable.PlayerStatus.PlayerDie_3;
+        }
 
     }
 
@@ -499,10 +488,10 @@ public abstract class APlayerCtrl : MonoBehaviour
             JumpCount++;
             SetGravityRatio(0f);
             BanGravityRay = true;
-            PlayerSlope = Vector2.right; 
+            PlayerSlope = Vector2.right;
             IsJumpingForward = MountGSS.gameScoreSettings.Horizontal != 0;
 
-            EasyBGMCtrl.easyBGMCtrl.PlaySE(Variable.SoundEffect.PlayerJump);
+            SoundEffectCtrl.soundEffectCtrl.PlaySE(Variable.SoundEffect.PlayerJump);
         }
         //跳跃状态
         if (IsJumping)
@@ -836,7 +825,7 @@ public abstract class APlayerCtrl : MonoBehaviour
 
 
         float x = Direction.x; float y = Direction.y;
-        bool Border = false;
+        bool Border = false;//出现对XY的修改之后，把它改为TRUE，为了减少不必要的MEW
 
         //站在地板上，剔除向下移动方向（为球球做的）
         if (StandOnFloor && MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId] && Direction.y < 0)
@@ -846,7 +835,7 @@ public abstract class APlayerCtrl : MonoBehaviour
             Border = true;
         }
 
-        //左右碰到平台（找个时间和上面的额合并一下）
+        //左右碰到墙或者地板（找个时间和上面的额合并一下）
         if (BanLeftOrRight == -1 && Direction.x < 0)
         {
             x = 0f;
@@ -857,6 +846,22 @@ public abstract class APlayerCtrl : MonoBehaviour
             x = 0f;
             Border = true;
         }
+
+
+        //不能向左走，面向左，除了跳和攻击之外，不允许往上走
+        if(BanLeftOrRight == -1 && Direction.y > 0 && !DoLookRight && !IsJumping && !IsJumpingForward && !IsAttack[0] && !IsAttack[1] && !IsAttack[2])
+        {
+            y = 0f;
+            Border = true;
+        }
+        //不能向右走，面向右，除了跳和攻击之外，不允许往上走
+        else if (BanLeftOrRight == 1 && DoLookRight && Direction.y > 0 && !IsJumping && !IsJumpingForward && !IsAttack[0] && !IsAttack[1] && !IsAttack[2])
+        {
+            y = 0f;
+            Border = true;
+
+        }
+
         if (Border)
         {
             //减少一个new
@@ -866,11 +871,11 @@ public abstract class APlayerCtrl : MonoBehaviour
 
         if (UseTimeDelta)
         {
-            MountGSS.gameScoreSettings.PlayerMove = Direction * Speed * MoveSpeedRatio * Time.deltaTime;
+            MountGSS.gameScoreSettings.PlayerMove = Speed * MoveSpeedRatio * Time.deltaTime * Direction;
         }
         else
         {
-            MountGSS.gameScoreSettings.PlayerMove = Direction * Speed * MoveSpeedRatio;
+            MountGSS.gameScoreSettings.PlayerMove = Speed * MoveSpeedRatio * Direction;
         }
 
 
@@ -1047,9 +1052,9 @@ public abstract class APlayerCtrl : MonoBehaviour
     }
 
 
-    void LevelUp()
+    public void LevelUp()
     {
-        EasyBGMCtrl.easyBGMCtrl.PlaySE(Variable.SoundEffect.LevelUp);
+        SoundEffectCtrl.soundEffectCtrl.PlaySE(Variable.SoundEffect.LevelUp);
 
         MountGSS.gameScoreSettings.GirlsLevel[MahouShoujoId]++;
         UpdateInf(false);
@@ -1150,16 +1155,7 @@ public abstract class APlayerCtrl : MonoBehaviour
 
 #region 调试模式（玩家层面）
     /// <summary>
-    /// 调试模式按钮：对当前玩家造成20的伤害 仅沙耶加的时候可用
-    /// </summary>
-    [ContextMenu("Hurt")]
-    public void HurtMyself()
-    {
-        GetHurt(20);
-    }
-
-    /// <summary>
-    /// 调试模式按钮：清除当前灵魂值 仅沙耶加的时候可用
+    /// 调试模式按钮：清除当前灵魂值
     /// </summary>
     [ContextMenu("CleanSoul")]
     public void CleanSoul()
@@ -1171,9 +1167,8 @@ public abstract class APlayerCtrl : MonoBehaviour
 
     }
     /// <summary>
-    /// 调试模式按钮：清除当前血量 仅沙耶加的时候可用
+    /// 调试模式按钮：清除当前血量
     /// </summary>
-    [ContextMenu("CleanVit")]
     public void CleanVit()
     {
         GetHurt(MountGSS.gameScoreSettings.GirlsVit[MahouShoujoId]);
@@ -1181,28 +1176,12 @@ public abstract class APlayerCtrl : MonoBehaviour
     }
 
     /// <summary>
-    /// 调式模式按钮：直接打赢魔女  这个其实不应该放在玩家脚本里
+    /// 调式模式按钮：修改移动速率 仅沙耶加的时候可用（因为按钮附加在 以后再适配其他角色吧。。。 
     /// </summary>
-    [ContextMenu("Succeed")]
-    public void Succeed()
-    {
-        MountGSS.gameScoreSettings.Succeed = true;
-    }
-
-
+   bool KaQiTuoLiTai = false;
     /// <summary>
-    /// 调式模式按钮：升级 仅沙耶加的时候可用
+    /// 适用于卡其脱离太的速度设置
     /// </summary>
-    [ContextMenu("AllowCameraMoving")]
-    public void LevelUpDebug()
-    {
-        LevelUp();
-    }
-
-    /// <summary>
-    /// 调式模式按钮：修改移动速率 仅沙耶加的时候可用（因为按钮附加在
-    /// </summary>
-    bool KaQiTuoLiTai = false;
     public void SpeedSet()
     {
         KaQiTuoLiTai = !KaQiTuoLiTai;
@@ -1216,7 +1195,7 @@ public abstract class APlayerCtrl : MonoBehaviour
         {
             if (KaQiTuoLiTai)
             {
-                EasyBGMCtrl.easyBGMCtrl.PlaySE(Variable.SoundEffect.KaQiTuoLiTai);
+                SoundEffectCtrl.soundEffectCtrl.PlaySE(Variable.SoundEffect.KaQiTuoLiTai);
                 MoveSpeedRatio = Ball * 4f;
             }
             else
@@ -1228,7 +1207,7 @@ public abstract class APlayerCtrl : MonoBehaviour
         {
             if (KaQiTuoLiTai)
             {
-                EasyBGMCtrl.easyBGMCtrl.PlaySE(Variable.SoundEffect.KaQiTuoLiTai);
+                SoundEffectCtrl.soundEffectCtrl.PlaySE(Variable.SoundEffect.KaQiTuoLiTai);
                 MoveSpeedRatio = Common * 4f;
             }
             else
@@ -1327,7 +1306,7 @@ public abstract class APlayerCtrl : MonoBehaviour
         //宝石黑掉了
         if (MountGSS.gameScoreSettings.GirlSoulLimit[MahouShoujoId] <= 0)
         {
-            EasyBGMCtrl.easyBGMCtrl.PlaySE(Variable.SoundEffect.GemBreak);
+            SoundEffectCtrl.soundEffectCtrl.PlaySE(Variable.SoundEffect.GemBreak);
 
             PlayPlayerDie2 = true;
         }
@@ -1336,7 +1315,7 @@ public abstract class APlayerCtrl : MonoBehaviour
         {
             MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId] = true;
 
-            EasyBGMCtrl.easyBGMCtrl.PlaySE(Variable.SoundEffect.PlayerToBall);
+            SoundEffectCtrl.soundEffectCtrl.PlaySE(Variable.SoundEffect.PlayerToBall);
 
             //光球效果
             MoveSpeedRatio = 1.2f;
@@ -1388,11 +1367,6 @@ public abstract class APlayerCtrl : MonoBehaviour
         //这里是公用的，私用的重写
         MountGSS.gameScoreSettings.BanInput = false;
         BanWalk = false;
-        //防止把卡其脱离太模式的加速消除
-        if(MoveSpeedRatio != 2f)
-        {
-            MoveSpeedRatio = 1F;
-        }
         BanJump = false;
         if (IsGround)
         {
@@ -1415,7 +1389,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// </summary>
     public void RebirthDone()
     {
-        EasyBGMCtrl.easyBGMCtrl.PlaySE(Variable.SoundEffect.PlayerRebirth);
+        SoundEffectCtrl.soundEffectCtrl.PlaySE(Variable.SoundEffect.PlayerRebirth);
 
 
         MoveSpeedRatio = 1f;
@@ -1432,13 +1406,14 @@ public abstract class APlayerCtrl : MonoBehaviour
     }
 
     /// <summary>
-    /// 宝石碎了，玩家倒地，变成便服的动画调用
+    /// 宝石碎了，玩家倒地，变成便服   动画调用
     /// </summary>
     /// <returns></returns>
     public void GemBroken()
     {
-        EasyBGMCtrl.easyBGMCtrl.PlaySE(Variable.SoundEffect.GemBreakFadeOut);
+       // SoundEffectCtrl.soundEffectCtrl.PlaySE(Variable.SoundEffect.GemBreakFadeOut); 不要这个音效了，有点乱
 
+        /*
         //应用影子魔女的效果，尝试修复移动设备下不产生fade效果的bug
         Material.EnableKeyword("OUTBASE_ON");
 
@@ -1446,32 +1421,27 @@ public abstract class APlayerCtrl : MonoBehaviour
         Material.EnableKeyword("GREYSCALE_ON");//变黑
         //消失准备
         Material.EnableKeyword("FADE_ON");//开始消失的shader特征
-
-        //更换动画机，表演消失动画
-        animator.runtimeAnimatorController = MountGSS.gameScoreSettings.GemBrokenFadeAnimator;
-        spriteRenderer.sprite = MountGSS.gameScoreSettings.PlayerDieImage[MahouShoujoId];
-
+        */
         //设置死亡状态
         MountGSS.gameScoreSettings.MagicalGirlsDie[MahouShoujoId] = true;
 
-        // PlayerGemBroken.Invoke();多人游戏才需要这个
-        MountGSS.gameScoreSettings.DoesMajoOrShoujoDie = true;//单人游戏直接设置这个就可以了
+        //切换为消失动画和状态
+        PlayPlayerDie3 = true;
+        PlayPlayerDie2 = false;
 
         //MountGSS.gameScoreSettings.IsBodyDieInGame[PlayerId] = false 不能设置，因为宝石碎了的前提就是身子挂了
     }
 
-    /* 多人游戏才用这个
     /// <summary>
     /// Fade效果结束，已经看不见玩家了（动画调用），判断是否三个魔法少女都死了
     /// </summary>
     public void DestroyPoorGirl()
     {
         //场上有一个玩家死了
-        MountGSS.gameScoreSettings.PlayerDie();
+         MountGSS.gameScoreSettings.PlayerDie();
         //删除物体
         Destroy(gameObject);
     }
-    */
 #endregion
 }
 

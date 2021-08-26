@@ -43,7 +43,7 @@ public class ETCedition : MonoBehaviour
     void Start()
     {
         tr = GetComponent<RectTransform>();
-        //更新自身的Rect
+        //正式游戏中更新自身的Rect
         UpdateRect();
 
         //费标题编辑模式，是游戏模式
@@ -120,6 +120,10 @@ public class ETCedition : MonoBehaviour
     /// <param name="vector2"></param>
     public void OnMove(Vector2 vector2)
     {
+        if (MountGSS.gameScoreSettings.BanInput)
+        {
+            return;
+        }
 
 
         //这个是为了得到速度的方向以及兼容其他的输入方式
@@ -144,6 +148,7 @@ public class ETCedition : MonoBehaviour
 
     public void MoveEnd()
     {
+
         MountGSS.gameScoreSettings.Up = false;
         MountGSS.gameScoreSettings.Down = false;
         MountGSS.gameScoreSettings.Horizontal = 0;
@@ -154,6 +159,11 @@ public class ETCedition : MonoBehaviour
     //无论是否支持长按，都在这里设置为true
     public void OnDown()
     {
+        if (MountGSS.gameScoreSettings.BanInput)
+        {
+            return;
+        }
+
         if (buttonActions == ETCActions.Pause)
         {
             MountGSS.gameScoreSettings.Pause = true;
@@ -208,6 +218,11 @@ public class ETCedition : MonoBehaviour
     //不支持长按的按钮在这里设置为false
     public void OnPress()
     {
+        if (MountGSS.gameScoreSettings.BanInput)
+        {
+            return;
+        }
+
         switch (buttonActions)
         {
             case ETCActions.Jump:

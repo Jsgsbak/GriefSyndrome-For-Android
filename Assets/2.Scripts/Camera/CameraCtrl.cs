@@ -42,11 +42,16 @@ public class CameraCtrl : MonoBehaviour
 
     public void Start()
     {
+        //单人游戏先用这个把相机上绑定好玩家
+        TargetedPlayer = Players[(int)MountGSS.gameScoreSettings.SelectedGirlInGame[0]].transform;
         tr = transform;
+
         //初始化相机约束
-        cameraRestraints[(int)MountGSS.gameScoreSettings.BattlingMajo].Initialize(tr);
+        cameraRestraints[(int)MountGSS.gameScoreSettings.BattlingMajo].Initialize(tr,TargetedPlayer);
 
         UpdateManager.updateManager.FastUpdate.AddListener(UpdateCamera);
+        
+       /*
         //将相机上绑定好玩家
         for (int i = 0; i < 3; i++)
         {
@@ -55,8 +60,7 @@ public class CameraCtrl : MonoBehaviour
             {
                 break;
             }
-            TargetedPlayer = Players[(int)MountGSS.gameScoreSettings.SelectedGirlInGame[i]].transform;
-        }
+        }*/
     }
 
     /// <summary>
@@ -69,6 +73,8 @@ public class CameraCtrl : MonoBehaviour
 
     public void UpdateCamera()
     {
+        //更新限制点
+       cameraRestraints[(int)MountGSS.gameScoreSettings.BattlingMajo]. UpdatePoint();
         //检查停止点
         StopPoints[(int)MountGSS.gameScoreSettings.BattlingMajo].CheckStopPoint(tr.position);
         //到停止点，停下

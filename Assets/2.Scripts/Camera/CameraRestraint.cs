@@ -35,11 +35,14 @@ public class CameraRestraint : MonoBehaviour
     /// 下一个点在左面吗
     /// </summary>
   public  bool NextPointRight = false;
+
+    public Transform Target;
     /// <summary>
     /// 初始化相机位置
     /// </summary>
-    public void Initialize(Transform Camera)
+    public void Initialize(Transform Camera, Transform target)
     {
+        Target = target;
         tr = Camera;
         //初始化位置
         tr.SetPositionAndRotation(CameraPoints[InitialPosition].Point,Quaternion.identity);
@@ -70,26 +73,38 @@ public class CameraRestraint : MonoBehaviour
         NextPointDrawingLine = index + 1;
     }
 
-    /// <summary>
-    /// 修正相机移动方向
-    /// </summary>
-    /// <param name="Raw">玩家输入的移动方向</param>
-    /// <param name="Player">玩家的位置（全局）</param>
-    public Vector2 RepairCameraMoveDirection(Vector2 Raw,Vector2 Player)
+    public void UpdatePoint()
     {
-
-        //更新上一次经过的点的序号
-        //在上一次经过的点的前后还有他自己各取1个点
+        //更新上一次经过的点的序号            
         vector2 = tr.position;
-        for (int i = -1; i < 2; i++)
+       
+        //不允许往回走
+        if (!CameraPoints[PassedIndex].AllowGoBack)
         {
-
             //某个点和相机的位置离得足够近，则认为这个点是新的“刚经过的点”
-            if ((vector2 - CameraPoints[Mathf.Clamp( PassedIndex+i,0,CameraPoints.Length - 1)].Point).sqrMagnitude <= 0.1f)
+            if ((vector2 - CameraPoints[Mathf.Clamp(PassedIndex + 1, 0, CameraPoints.Length - 1)].Point).sqrMagnitude <= 0.1f)
             {
-                PassedIndex = Mathf.Clamp(PassedIndex + i, 0, CameraPoints.Length - 1);
-                break;
+                PassedIndex = Mathf.Clamp(PassedIndex + 1, 0, CameraPoints.Length - 1);
             }
+
+        }
+        //允许往回走
+        else
+        {
+            //在上一次经过的点的前后还有他自己各取1个点
+            for (int i = -1; i < 2; i++)
+            {
+
+                //某个点和相机的位置离得足够近，则认为这个点是新的“刚经过的点”
+                if ((vector2 - CameraPoints[Mathf.Clamp(PassedIndex + i, 0, CameraPoints.Length - 1)].Point).sqrMagnitude <= 0.1f)
+                {
+                    PassedIndex = Mathf.Clamp(PassedIndex + i, 0, CameraPoints.Length - 1);
+                }
+
+
+            }
+
+
         }
 
         //确定刚经过的点之后，根据是否允许往较小的一个点走，获取下一个点
@@ -112,7 +127,7 @@ public class CameraRestraint : MonoBehaviour
                 {
                     if (CameraPoints[Mathf.Clamp(PassedIndex + i, 0, CameraPoints.Length - 1)].Point.x - CameraPoints[PassedIndex].Point.x < 0 && CameraPoints[Mathf.Clamp(PassedIndex + i, 0, CameraPoints.Length - 1)].ConnectPointIndex.Contains(PassedIndex))
                     {
-                        NextPointRight = false;
+                        NextPointRight = true;
                         NextPointDrawingLine = Mathf.Clamp(PassedIndex + i, 0, CameraPoints.Length - 1);
                     }
                 }
@@ -121,7 +136,7 @@ public class CameraRestraint : MonoBehaviour
             }
             //如果刚路过的点在相机的左面
             else
-            {             
+            {
                 //找一个在刚路过的点右面的点作为下一个点，并且找到的这个点与刚经过的点之间由连线
                 for (int i = -1; i < 2; i += 2)
                 {
@@ -134,9 +149,16 @@ public class CameraRestraint : MonoBehaviour
             }
         }
 
-        
+    }
 
 
+    /// <summary>
+    /// 修正相机移动方向
+    /// </summary>
+    /// <param name="Raw">玩家输入的移动方向</param>
+    /// <param name="Player">玩家的位置（全局）</param>
+    public Vector2 RepairCameraMoveDirection(Vector2 Raw,Vector2 Player)
+    {
         //相机在某个点上了
         if ((vector2 - CameraPoints[PassedIndex].Point).sqrMagnitude <= 0.1f)
         {
@@ -145,7 +167,7 @@ public class CameraRestraint : MonoBehaviour
             {
                 return MoveCamera(Raw);
             }
-            else if(Raw.x < 0 && !CameraPoints[PassedIndex].BanLeftRight[0])
+            else if (Raw.x < 0 && !CameraPoints[PassedIndex].BanLeftRight[0])
             {
                 return MoveCamera(Raw);
             }
@@ -158,47 +180,68 @@ public class CameraRestraint : MonoBehaviour
         //相机在线上，按着线随便动
         else
         {
-            switch (NextPointRight)
+            //那些允许往回走的线，直接按照玩家输入的方向走好了
+            if (CameraPoints[PassedIndex].AllowGoBack)
             {
-                //下一个点在刚经过的点的右面
-                case true:
-                    //玩家向右走，并且玩家在屏幕中间
-                    if (Raw.x > 0 && Mathf.Abs(Player.x - tr.position.x) <= 0.1f)
-                    {
-                        //相机顺着移动过去
-                        return MoveCamera(Raw);
-                    }
-                    //玩家向右走，并且玩家在屏幕右侧
-                    else if (Raw.x > 0 && Player.x - tr.position.x > 0.1f)
-                    {
-                        //相机多移动一点，为了跟上玩家
-                        return MoveCamera(Raw * 1.2f);
-                    }
-                    else
-                    {
-                        return Vector2.zero;
-                    }
-                //下一个点在刚经过的点的左面
-                case false:
-                    //玩家向左走，并且玩家在屏幕中间
-                    if (Raw.x < 0 && Mathf.Abs(Player.x - tr.position.x) <= 0.1f)
-                    {
-                        return MoveCamera(Raw);
-                    }                    
-                    //玩家向左走，并且玩家在屏幕左侧
-                    else if (Raw.x < 0 && Player.x - tr.position.x < 0.1f)
-                    {
-                        //相机多移动一点，为了跟上玩家
-                        return MoveCamera(Raw * 1.2f);
-                    }
-                    else
-                    {
-                        return Vector2.zero;
-                    }
+
+                if(Raw.x != 0)
+                {
+                    //相机顺着移动过去
+                    return MoveCamera(Raw);
+                }
+                else
+                {
+                    return Vector2.zero;
+
+                }
+
             }
+            else
+            {
+                switch (NextPointRight)
+                {
+                    //下一个点在刚经过的点的右面
+                    case true:
+                        //玩家向右走，并且玩家在屏幕中间
+                        if (Raw.x > 0 && Mathf.Abs(Player.x - tr.position.x) <= 0.1f)
+                        {
+                            //相机顺着移动过去
+                            return MoveCamera(Raw);
+                        }
+                        //玩家向右走，并且玩家在屏幕右侧
+                        else if (Raw.x >= 0 && Player.x - tr.position.x > 0.1f)
+                        {
+                            //相机多移动一点，为了跟上玩家
+                            return MoveCamera(Raw * 1.2F);
+                        }
+                        {
+                            return Vector2.zero;
+                        }
+                    //下一个点在刚经过的点的左面
+                    case false:
+                        //玩家向左走，并且玩家在屏幕中间
+                        if (Raw.x < 0 && Mathf.Abs(Player.x - tr.position.x) <= 0.1f)
+                        {
+                            return MoveCamera(Raw);
+                        }
+                        //玩家向左走，并且玩家在屏幕左侧
+                        else if (Raw.x <= 0 && Player.x - tr.position.x < -0.1f)
+                        {
+                            //相机多移动一点，为了跟上玩家
+                            return MoveCamera(Raw * 1.2F);
+                        }
+                        else
+                        {
+                            return Vector2.zero;
+                        }
+                }
+            }
+
+
+           
         }
 
-      
+
     }
 
     /// <summary>

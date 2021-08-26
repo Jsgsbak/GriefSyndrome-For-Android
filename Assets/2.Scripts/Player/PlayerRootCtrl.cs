@@ -63,4 +63,73 @@ public void JumpToPoint(Vector2 vector2)
             PlayerRoots[(int)PlayersId[i]].position = new Vector3(vector2.x + 1.7F * i, vector2.y, 2F);
         }
     }
+
+    /// <summary>
+    /// 对全体玩家造成伤害
+    /// </summary>
+    /// <param name="Damage"></param>
+    public void HurtAllPlayers(int Damage)
+    {
+        if (sayakaCtrl != null) 
+        {
+            sayakaCtrl.GetHurt(Damage);
+        }
+        if(kyokoCtrl != null)
+        {
+            kyokoCtrl.GetHurt(Damage);
+        }
+        /*
+        if (mamiCtrl != null)
+        {
+            mamiCtrl.GetHurt(Damage);
+        }
+        if (kyokoCtrl != null)
+        {
+            kyokoCtrl.GetHurt(Damage);
+        }
+        if (sayakaCtrl != null)
+        {
+            sayakaCtrl.GetHurt(Damage);
+        }
+        if (kyokoCtrl != null)
+        {
+            kyokoCtrl.GetHurt(Damage);
+        }*/
+
+
+    }
+
+    /// <summary>
+    /// 清除所有玩家的血量
+    /// </summary>
+    public void CleanAllPlayersVit()
+    {
+        if (sayakaCtrl != null)
+        {
+            sayakaCtrl.CleanVit();
+        }
+    }
+
+    /// <summary>
+    /// 清除所有玩家的灵魂值
+    /// </summary>
+    public void CleanAllPlayersSoul()
+    {
+        if (sayakaCtrl != null)
+        {
+            sayakaCtrl.CleanSoul();
+        }
+    }
+
+    /// <summary>
+    /// 场上所有人升级
+    /// </summary>
+    /// <param name="level">升几级</param>
+    public void AllPlayersLevelUp()
+    {
+        if (sayakaCtrl != null)
+        {
+            sayakaCtrl.LevelUp();
+        }
+    }
 }

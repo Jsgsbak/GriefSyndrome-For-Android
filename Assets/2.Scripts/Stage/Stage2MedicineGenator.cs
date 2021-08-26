@@ -28,7 +28,7 @@ public class Stage2MedicineGenator : MonoBehaviour
             Transform tr = Medicine.transform;
             SpriteRenderer sp = Medicine.GetComponent<SpriteRenderer>();
             //随机位置（在两个锚点的范围内）
-            tr.position = new Vector2(Random.Range(AnchorPoint[0].position.x, AnchorPoint[1].position.x), Random.Range(AnchorPoint[1].position.y, AnchorPoint[0].position.y));
+            tr.position = new Vector3(Random.Range(AnchorPoint[0].position.x, AnchorPoint[1].position.x), Random.Range(AnchorPoint[1].position.y, AnchorPoint[0].position.y),4f);
             tr.SetParent(this.transform);
             //随机药瓶大小
             float scale = Random.Range(1f, 2f);

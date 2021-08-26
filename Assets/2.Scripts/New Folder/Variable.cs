@@ -85,7 +85,11 @@ public class Variable
         //倒下
         PlayerDie_1,
         //换成校服
-        PlayerDie_2,
+        PlayerDie_2, 
+        /// <summary>
+        /// 消失
+        /// </summary>
+        PlayerDie_3,
         /// <summary>
         /// 指最后，变黑消失的特效，此时需要切换animator
         /// </summary>

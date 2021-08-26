@@ -11,9 +11,6 @@ using PureAmaya.General;
 public class GameScoreSettingsIO : ScriptableObject
 {
     #region 事件组设置
-    public Variable.IntEvent Player1Hurt = new Variable.IntEvent();
-    public Variable.IntEvent Player2Hurt = new Variable.IntEvent();
-    public Variable.IntEvent Player3Hurt = new Variable.IntEvent();
     /// <summary>
     /// 魔法少女被击败（所选全死）
     /// </summary>
@@ -22,7 +19,14 @@ public class GameScoreSettingsIO : ScriptableObject
     /// 击败魔女
     /// </summary>
     public Variable.OrdinaryEvent MajoDefeated = new Variable.OrdinaryEvent();
-
+    /// <summary>
+    /// 某个停止点处的怪清理干净了
+    /// </summary>
+    public Variable.IntEvent StopPointsClear = new Variable.IntEvent();
+    /// <summary>
+    /// 是否暂停游戏
+    /// </summary>
+    public Variable.BoolEvent PauseGame = new Variable.BoolEvent();
 
     #endregion
 
@@ -59,7 +63,7 @@ public class GameScoreSettingsIO : ScriptableObject
     /// 打这个魔女的时间
     /// </summary>
     [Header("打这个魔女的时间")]
-    [HideInInspector] public int ThisMajoTime = 0;
+     public int ThisMajoTime = 0;
     [Header("历史最短时间头像")]
     public Variable.PlayerFaceType[] BestTimeFace = new Variable.PlayerFaceType[] { Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null };
     [Header("正在打的周目数")]
@@ -160,12 +164,6 @@ public class GameScoreSettingsIO : ScriptableObject
     [Header("魔法少女是否挂掉")]
     public bool[] MagicalGirlsDie = new bool[] { false,false,false,false,false };
 
-    public Sprite[] PlayerDieImage = new Sprite[6];
-
-    [Header("宝石坏了之后，玩家消失的动画")]
-    public RuntimeAnimatorController GemBrokenFadeAnimator;
-
-
     /// <summary>
     /// 五色全挂了吗
     /// </summary>
@@ -224,7 +222,7 @@ public class GameScoreSettingsIO : ScriptableObject
     /// <summary>
     /// 动画hash值
     /// </summary>
-    public static readonly int[] AnimationHash = new int[30];
+    public static readonly int[] AnimationHash = new int[31];
 
 
     /// <summary>
@@ -236,7 +234,7 @@ public class GameScoreSettingsIO : ScriptableObject
     /// <summary>
     /// 使用屏幕模拟键盘输入，0时禁用键盘输入 1按钮移动 2圆盘移动
     /// </summary>
-    public int UseScreenInput = 0;
+    public int UseScreenInput = 2;
 
 
     [HideInInspector] public Vector2 joystick = Vector2.zero;
@@ -244,27 +242,6 @@ public class GameScoreSettingsIO : ScriptableObject
     #endregion
 
     #region 必要方法设置
-    /// <summary>
-    /// 统一控制玩家受伤的逻辑
-    /// </summary>
-    /// <param name="damage"></param>
-    /// <param name="PlayerId"></param>
-    public void HurtPlayer(int damage, int PlayerId)
-    {
-        if (PlayerId == 1)
-        {
-            Player1Hurt.Invoke(damage);
-        }
-        else if (PlayerId == 2)
-        {
-            Player2Hurt.Invoke(damage);
-        }
-        else
-        {
-            Player3Hurt.Invoke(damage);
-        }
-    }
-
     /// <summary>
     /// 场上有一个玩家宝石没了
     /// </summary>
@@ -281,6 +258,8 @@ public class GameScoreSettingsIO : ScriptableObject
     /// </summary>
     public void GirlsInGameDie()
     {
+        Debug.Log("ss");
+
         //真惨。。。加把劲吧
 
         deadPlayerNumber++;
@@ -336,12 +315,6 @@ public class GameScoreSettingsIO : ScriptableObject
     /// 玩家移动的方向与距离
     /// </summary>
     [HideInInspector] public Vector2 PlayerMove = Vector2.right;
-    //Debug模式
-    [HideInInspector] public bool CleanSoul = false;
-    [HideInInspector] public bool CleanVit = false;
-    [HideInInspector] public bool HurtMyself = false;
-    [HideInInspector] public bool Succeed = false;
-    [HideInInspector] public bool LevelUp = false;
 
     #endregion
 
@@ -356,18 +329,12 @@ public class GameScoreSettingsIO : ScriptableObject
     {
         TitleInitial();
         MajoInitial();
-        BGMVol = 0.6f;
-        SEVol = 0.7f;
+        SaveGame.DeleteAll();//删除存档与设置
+
         UseScreenInput = 2;
-        Load();
         //做啥角色就换成啥
-        SelectedGirlInGame[0] = Variable.PlayerFaceType.Kyoko;
         MajoSceneToTitle = false;//一定要放到魔女初始化后面
                                  
-        SaveGame.DeleteAll();//删除存档
-
-        Debug.Log("全部初始化成功");
-
     }
 
     /// <summary>
@@ -382,6 +349,14 @@ public class GameScoreSettingsIO : ScriptableObject
         }
     }
 #endif
+
+    /// <summary>
+    /// 打赢了魔女
+    /// </summary>
+    public void DefeatMajo()
+    {
+        MajoDefeated.Invoke();
+    }
 
     /// <summary>
     /// GSS初始化（主标题part使用）
@@ -403,11 +378,11 @@ public class GameScoreSettingsIO : ScriptableObject
         GirlsLevel = new int[] { 1, 1, 1 ,1,1};
         AllDie = false;
         LocalIsStiff = false;
-        //0.1.X
-        Succeed = false;
         Pause = false;
-        //0.2.X
-        MagicalGirlsDie = new bool[] { true, false, true, true, false }; //这个版本临时改成这样
+
+        //做完5色之前，在这里修改这个代码
+        //即默认仅有沙耶加可用
+        MagicalGirlsDie = new bool[] { true, true, true, true, false }; //这个版本临时改成这样
     }
 
     /// <summary>
@@ -427,24 +402,32 @@ public class GameScoreSettingsIO : ScriptableObject
         Up = false;
         Down = false;
         Pause = false;
-
+        BanInput = false;
+        playerNumber = 0;//玩家数清零
         MajoSceneToTitle = true;
         Hits = 0;
         //HurtVitInGame = new int[] { 0, 0, 0 };
         DoesMajoOrShoujoDie = false;
-        Succeed = false;
         GetHurtInGame = new bool[] { false, false, false };
         MagiaKeyDown = new bool[] { false, false, false };
         IsBodyDieInGame = new bool[] { false, false, false };
         IsSoulBallInGame = new bool[] { false, false, false };
         LastLap = lap;
-
-        Succeed = false;
-        //0.1.X
-        CleanSoul = false;
-        CleanVit = false;
         Pause = false;
+        //清除注册的所有事件
+        CleanAllEvents();
 
+    }
+
+    /// <summary>
+    /// 清除注册的所有事件
+    /// </summary>
+    public void CleanAllEvents()
+    {
+        AllGirlsInGameDie.RemoveAllListeners();
+        MajoDefeated.RemoveAllListeners();
+        StopPointsClear.RemoveAllListeners();
+        PauseGame.RemoveAllListeners();
     }
 
     [ContextMenu("使输入方式返回到最初的大小与位置")]
@@ -555,11 +538,11 @@ public class GameScoreSettingsIO : ScriptableObject
     /// </summary>
     public void LoadInput()
     {
-        SaveGame.Load("UseScreenInput", 2);
+        UseScreenInput = SaveGame.Load("UseScreenInput", 2);
 
         for (int i = 0; i < KeyPosScale.Length; i++)
         {
-            SaveGame.Load(string.Format("KeyPosScale_{0}_Rect", i.ToString()), KeyPosScale[i].RawPosition);
+            KeyPosScale[i].EditPosition = SaveGame.Load(string.Format("KeyPosScale_{0}_Rect", i.ToString()), KeyPosScale[i].RawPosition);
         }
 
     }

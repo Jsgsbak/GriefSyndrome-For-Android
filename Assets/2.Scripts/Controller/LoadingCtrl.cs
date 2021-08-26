@@ -3,8 +3,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using MEC;
-using PureAmaya.General;
-using System.Collections.Generic;
+using UnityEngine.U2D;
+
 
 /// <summary>
 /// 场景加载控制
@@ -21,6 +21,8 @@ public class LoadingCtrl : MonoBehaviour
 
 	public GameScoreSettingsIO gameScoreSettings;//尽在这里弄一个单利
 
+	public Image QB;
+	public SpriteAtlas spriteAtlas;
 
 	public Text loadingText;
 	public Text StatusText;
@@ -42,6 +44,28 @@ public class LoadingCtrl : MonoBehaviour
 			//启动协程
 			StartCoroutine(AsyncLoading());
 		}
+
+		InvokeRepeating("QBAnimation", 0f, 0.1f);
+	}
+
+	int qbImage = 0;
+	public void QBAnimation()
+    {
+		//重置动画
+		if(qbImage == 10)
+        {
+			QB.sprite = spriteAtlas.GetSprite(string.Format("emotionA00{0}.cv2", qbImage.ToString()));
+			qbImage = 0;
+
+		}
+        else
+        {
+			QB.sprite = spriteAtlas.GetSprite(string.Format("emotionA000{0}.cv2", qbImage.ToString()));
+			qbImage++;
+
+		}
+
+
 	}
 
 	/// <summary>
@@ -53,19 +77,6 @@ public class LoadingCtrl : MonoBehaviour
     {
 		//设置好目标场景
 		Target = id;
-
-#if UNITY_EDITOR
-
-		//检查是否存在BGMCtrl
-		if (GameObject.FindObjectOfType<EasyBGMCtrl>() != null)
-		{
-			//停止bgm
-			EasyBGMCtrl.easyBGMCtrl.PlayBGM(-1);
-		}
-#else
-			//停止bgm
-			EasyBGMCtrl.easyBGMCtrl.PlayBGM(-1);
-#endif
 
 		if (AsyncLoadScene)
         {
