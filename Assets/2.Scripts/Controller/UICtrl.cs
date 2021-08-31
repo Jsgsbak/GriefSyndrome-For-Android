@@ -45,7 +45,8 @@ public class UICtrl : MonoBehaviour
     public TMP_Text TotalTimeText;
 
     public GameObject NextStopPointLogo;
-
+    [Space]
+    public Text PlayerPos;
     /// <summary>
     /// 调试模式面板
     /// </summary>
@@ -59,6 +60,7 @@ public class UICtrl : MonoBehaviour
     /// 调试面板里所有的按钮
     /// </summary>
     public Button[] DebugButtons;
+    
 
     [Header("下一分段黑色转场")]
     public Image NextFragment;
@@ -71,6 +73,8 @@ public class UICtrl : MonoBehaviour
     /// 非QB玩家计数
     /// </summary>
     int PlayerCount = 0;
+
+    public GameObject[] Players;
 
 
     #region 事件组
@@ -101,8 +105,8 @@ public class UICtrl : MonoBehaviour
         //音量事件注册与设置
         BGMVol.onValueChanged.AddListener(BGMVolChange);
         SEVol.onValueChanged.AddListener(SEVolChange);
-        BGMVol.value = MountGSS.gameScoreSettings.BGMVol;
-        SEVol.value = MountGSS.gameScoreSettings.SEVol;
+        BGMVol.value = GameScoreSettingsIO.BGMVol;
+        SEVol.value = GameScoreSettingsIO.SEVol;
 
         //魔女被击败
         MountGSS.gameScoreSettings.MajoDefeated.AddListener(delegate() {
@@ -182,7 +186,10 @@ public class UICtrl : MonoBehaviour
     }
 
     void FastUpdate()
-    { 
+    {
+        //更新玩家位置
+        PlayerPos.text = MountGSS.gameScoreSettings.PlayersPosition[0].ToString();//仅适用于单人游戏
+
         //响应安卓返回按键（游戏界面暂停）
         if(Application.platform == RuntimePlatform.Android && Input.GetKeyDown(KeyCode.Escape))
         {
@@ -201,11 +208,11 @@ public class UICtrl : MonoBehaviour
     #region 音量滑块
     public void BGMVolChange(float vol)
     {
-        MountGSS.gameScoreSettings.BGMVol = vol;
+        GameScoreSettingsIO.BGMVol = vol;
     }
     public void SEVolChange(float vol)
     {
-        MountGSS.gameScoreSettings.SEVol = vol;
+        GameScoreSettingsIO.SEVol = vol;
     }
 
     #endregion
@@ -271,7 +278,7 @@ public class UICtrl : MonoBehaviour
         if (VirtualInput != null) VirtualInput.SetActive(false);
 
         //判断是否五色扑街
-        if (MountGSS.gameScoreSettings.AllDie)
+        if (GameScoreSettingsIO.AllDie)
         {
             //借助结算界面的文本框通知玩家你成功打出了be
             MajoDieText.text = "Sekai saraba...";
@@ -291,6 +298,17 @@ public class UICtrl : MonoBehaviour
 
         //展开结算界面
         ConcInMajo.gameObject.SetActive(true);
+        //删掉玩家
+        for (int i = 0; i < 7; i++)
+        {
+            if (Players[i] != null)
+            {
+                Destroy(Players[i]);
+            }
+        }
+        //删掉调试模式
+        if(DebugMode != null) { Destroy(DebugMode.gameObject); }
+
         //淡入
         for (int i = 0; i < 50; i++)
         {
@@ -335,6 +353,17 @@ public class UICtrl : MonoBehaviour
 
         //展开结算界面
         ConcInMajo.gameObject.SetActive(true);
+        //删掉玩家
+        for (int i = 0; i < 7; i++)
+        {
+            if(Players[i] != null)
+            {
+                Destroy(Players[i]);
+            }
+        }
+        //删掉调试模式
+        if(DebugMode != null) { Destroy(DebugMode.gameObject); }
+
         //淡入
         for (int i = 0; i < 50; i++)
         {
@@ -353,7 +382,7 @@ public class UICtrl : MonoBehaviour
     void ReturnToMajoOrStaff()
     {
         //瓦夜打完，结算界面结束后进入staff / 或者五色全挂，进入staff
-        if(MountGSS.gameScoreSettings.BattlingMajo == Variable.Majo.Walpurgisnacht || MountGSS.gameScoreSettings.AllDie)
+        if(MountGSS.gameScoreSettings.BattlingMajo == Variable.Majo.Walpurgisnacht || GameScoreSettingsIO.AllDie)
         {
             //预先修改一些变量，防止出现Bug
             MountGSS.gameScoreSettings.MajoSceneToTitle = false;
@@ -428,7 +457,7 @@ public class UICtrl : MonoBehaviour
     {
         if (!MountGSS.gameScoreSettings.EnableDebugMode)
         {
-            DestroyImmediate(DebugMode);
+            Destroy(DebugMode.gameObject);
             return;
         }
        
@@ -501,6 +530,65 @@ public class UICtrl : MonoBehaviour
         {
             DebugButtons[i].interactable = true;
         }
+    }
+
+
+    public void RandomStaff()
+    {
+        //结局随机数
+        int i = Random.Range(0, 11);
+
+        switch (i)
+        {
+            //全员死亡
+            case 0:
+                GameScoreSettingsIO.AllDie = true;
+                break;
+            //全员幸存
+            case 1:
+                MountGSS.gameScoreSettings.MagicalGirlsDie =  new bool[] { false, false, false, false, false };
+                break;
+            //只有鹿目圆死亡
+            case 2:
+                MountGSS.gameScoreSettings.MagicalGirlsDie = new bool[] { false, false, true, false, false };
+                break;
+            //只有沙耶加死亡
+            case 3:
+                MountGSS.gameScoreSettings.MagicalGirlsDie = new bool[] { false, false,false, false, true};
+                break;
+            //只有杏子死亡
+            case 4:
+                MountGSS.gameScoreSettings.MagicalGirlsDie = new bool[] { false, true, false, false, false };
+                break;
+            //只有学姐死亡
+            case 5:
+                MountGSS.gameScoreSettings.MagicalGirlsDie = new bool[] { false, false, false, true, false };
+                break;
+            //除了红蓝都死亡
+            case 6:
+                MountGSS.gameScoreSettings.MagicalGirlsDie = new bool[] { true, false, true, true, false };
+                break;
+            //除了学姐都死亡
+            case 7:
+                MountGSS.gameScoreSettings.MagicalGirlsDie = new bool[] { !false, !false, !false, !true, !false };
+                break;
+            //只有鹿目圆和沙耶加死亡
+            case 8:
+                MountGSS.gameScoreSettings.MagicalGirlsDie = new bool[] { false, false, !false, !true, !false };
+                break;
+            //除了鹿目圆全死亡
+            case 9:
+                MountGSS.gameScoreSettings.MagicalGirlsDie = new bool[] { !false, !false, !true, !false, !false };
+                break;
+                //黑长直轮回
+            case 10:
+                MountGSS.gameScoreSettings.MagicalGirlsDie = new bool[] { true, true, true, true, false };
+                break;
+        }
+
+        LoadingCtrl.LoadScene(4, false);
+
+ 
     }
 
     #endregion

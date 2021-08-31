@@ -168,7 +168,7 @@ public class GameScoreSettingsIO : ScriptableObject
     /// 五色全挂了吗
     /// </summary>
     [Header("五色全挂了吗")]
-    public bool AllDie = false;
+    public static bool AllDie = false;
 
     /// <summary>
     /// 正在打的魔女
@@ -197,8 +197,8 @@ public class GameScoreSettingsIO : ScriptableObject
 
     #region  主标题 设置  
     [Header("音量")]
-    public float BGMVol = 0.6f;
-    public float SEVol = 0.7f;
+    public static float BGMVol = 0.6f;
+    public static float SEVol = 0.7f;
     public bool EnableDebugMode = true;
     #endregion
 
@@ -391,6 +391,7 @@ public class GameScoreSettingsIO : ScriptableObject
     public void MajoInitial()
     {
         //输入初始化
+        ThisMajoTime = 0;
         Jump = false;
         Zattack = false;
         ZattackPressed = false;
@@ -482,15 +483,12 @@ public class GameScoreSettingsIO : ScriptableObject
     /// 保存设置
     /// </summary>
     /// <returns></returns>
-    public IEnumerator<float> SaveSettings()
+    public void SaveSettings()
     {
         //设置
         SaveGame.Save("BGMVol", BGMVol);
         SaveGame.Save("SEVol", SEVol);
         SaveInput();
-
-        yield return 0f;
-
     }
 
 
@@ -503,7 +501,11 @@ public class GameScoreSettingsIO : ScriptableObject
       
         for (int i = 0; i < KeyPosScale.Length; i++)
         {
-            SaveGame.Save(string.Format("KeyPosScale_{0}_Rect", i.ToString()), KeyPosScale[i].EditPosition);
+            SaveGame.Save(string.Format("KeyPosScale_{0}_Rect_X", i.ToString()), KeyPosScale[i].EditPosition.x);
+            SaveGame.Save(string.Format("KeyPosScale_{0}_Rect_Y", i.ToString()), KeyPosScale[i].EditPosition.y);
+            SaveGame.Save(string.Format("KeyPosScale_{0}_Rect_W", i.ToString()), KeyPosScale[i].EditPosition.width);
+            SaveGame.Save(string.Format("KeyPosScale_{0}_Rect_H", i.ToString()), KeyPosScale[i].EditPosition.height);
+
         }
 
 
@@ -542,7 +544,11 @@ public class GameScoreSettingsIO : ScriptableObject
 
         for (int i = 0; i < KeyPosScale.Length; i++)
         {
-            KeyPosScale[i].EditPosition = SaveGame.Load(string.Format("KeyPosScale_{0}_Rect", i.ToString()), KeyPosScale[i].RawPosition);
+            KeyPosScale[i].EditPosition.x = SaveGame.Load(string.Format("KeyPosScale_{0}_Rect_X", i.ToString()), KeyPosScale[i].RawPosition.x);
+            KeyPosScale[i].EditPosition.y = SaveGame.Load(string.Format("KeyPosScale_{0}_Rect_Y", i.ToString()), KeyPosScale[i].RawPosition.y);
+            KeyPosScale[i].EditPosition.width = SaveGame.Load(string.Format("KeyPosScale_{0}_Rect_W", i.ToString()), KeyPosScale[i].RawPosition.width);
+            KeyPosScale[i].EditPosition.height = SaveGame.Load(string.Format("KeyPosScale_{0}_Rect_H", i.ToString()), KeyPosScale[i].RawPosition.height);
+
         }
 
     }

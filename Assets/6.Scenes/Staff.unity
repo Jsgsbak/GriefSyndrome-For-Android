@@ -330,7 +330,7 @@ MonoBehaviour:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 15
     m_FontStyle: 0
-    m_BestFit: 1
+    m_BestFit: 0
     m_MinSize: 15
     m_MaxSize: 300
     m_Alignment: 1
@@ -340,7 +340,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "<size=19>\u5236\u4F5C\u4EBA\u5458\u540D\u5355</size>\n(\u66F4\u65B0\u4E8E
-    ver.0.0.7)\n\n\u539F\u4F5C\uFF1A\n\u30B0\u30EA\u30FC\u30D5\u30B7\u30F3\u30C9\u30ED\u30FC\u30E0\n\n\u539F\u5236\u4F5C\u793E\u56E2\uFF1A\n\u9EC4\u660F\u30D5\u30ED\u30F3\u30C6\u30A3\u30A2\n\n\u9879\u76EE\u53D1\u8D77\u4EBA\uFF1A\nPureAmaya\n\n\u6D4B\u8BD5\uFF1A\nPureAmaya\nWalkonbothsides\r\nPink\nSTAR\u2191BEAT\u2193\n\n\u6E38\u620F\u7CFB\u7EDF\u79FB\u690D\uFF1A\nPureAmaya\n\n\u4EBA\u7269\u89D2\u8272\u79FB\u690D\uFF1A\nPureAmaya\n\n\u6E38\u620F\u6570\u503C\u4F18\u5316\uFF1A\n\n\n\u7279\u522B\u611F\u8C22\uFF1A\n\u8F6E\u56DE\u7684\u6551\u8D4E\nWalkonbothsides\r\n\u7FA4\u53CB\u7684\u5927\u529B\u5E2E\u52A9\n\n\n\n\nAnd
+    Ver.0.2.0_Build 55)\n\n\u539F\u4F5C\uFF1A\n\u30B0\u30EA\u30FC\u30D5\u30B7\u30F3\u30C9\u30ED\u30FC\u30E0\n\n\u539F\u5236\u4F5C\u793E\u56E2\uFF1A\n\u9EC4\u660F\u30D5\u30ED\u30F3\u30C6\u30A3\u30A2\n\n\u9879\u76EE\u53D1\u8D77\u4EBA\uFF1A\nPureAmaya\n\n\u6D4B\u8BD5\uFF1A\nWalkonbothsides\r\nPink\nSTAR\u2191BEAT\u2193\nRose\n\u82E5\u7237\n\u5343\u673A\u5F55\n\u67D0\u4E2A\u4E0D\u613F\u610F\u900F\u9732\u59D3\u540D\u7684\u7FA4\u53CB\n\n\n\u6E38\u620F\u79FB\u690D\uFF1A\nPureAmaya\n\n\u7279\u522B\u611F\u8C22\uFF1A\n\u8F6E\u56DE\u7684\u6551\u8D4E\nWalkonbothsides\r\n\u7FA4\u53CB\u7684\u5927\u529B\u5E2E\u52A9\n\n\n\n\nAnd
     you...\n\n\n\n\n\u611F\u8C22\u6E38\u73A9\uFF01\n\u8F7B\u89E6\u4EE5\u8FD4\u56DE\u6807\u9898\u754C\u9762"
 --- !u!222 &497306181
 CanvasRenderer:
@@ -625,7 +625,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 426b6a33655f1164fa3bc91cbb999ccb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GSS: {fileID: 11400000, guid: 2aea516dfe76cac49894aa19961aeaa6, type: 2}
+  IsStaff: 1
+  BedEnding: {fileID: 8300000, guid: 81e9f45f87550fa499ead4242dc24bef, type: 3}
 --- !u!1 &1484608048
 GameObject:
   m_ObjectHideFlags: 0
@@ -659,9 +660,9 @@ RectTransform:
   m_Father: {fileID: 864554490}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -399.8, y: 0}
+  m_AnchorMin: {x: 0.93724304, y: 0.9111112}
+  m_AnchorMax: {x: 0.93724304, y: 0.9111112}
+  m_AnchoredPosition: {x: -404, y: -222}
   m_SizeDelta: {x: 800, y: 450}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1484608050
@@ -809,7 +810,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 137.49951, y: -437.9994}
+  m_AnchoredPosition: {x: 215, y: -438.14}
   m_SizeDelta: {x: -506.43945, y: 0.00012207031}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1922303698
@@ -836,7 +837,7 @@ MonoBehaviour:
     m_Font: {fileID: 12800000, guid: 42f0e0d9b6e9e274fb35770b115a2057, type: 3}
     m_FontSize: 15
     m_FontStyle: 0
-    m_BestFit: 1
+    m_BestFit: 0
     m_MinSize: 15
     m_MaxSize: 300
     m_Alignment: 1
@@ -845,10 +846,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "<size=19>Staff</size>\n(Ver.0.0.7 Updated)\n\nOriginal\uFF1A\ngriefsyndrome\n\nOriginal
-    Maker\uFF1A\nTwilight Frontier\n\nAuthor\uFF1A\nPureAmaya\n\nTest\uFF1A\nPureAmaya\nWalkonbothsides\r\nPureAmaya\nWalkonbothsides\r\nPink\nSTAR\u2191BEAT\u2193\n\nGame
-    System Transplantation\uFF1A\nPureAmaya\n\nCharacter Transplantation\uFF1A\nPureAmaya\n\nGame
-    Figure Improvation\uFF1A\n\n\nSpecial Thanks\uFF1A\nLHDJS\nWalkonbothsides\r\nQQ
+  m_Text: "<size=19>Staff</size>\n(Ver.0.2.0_Build 55 Updated)\n\nOriginal\uFF1A\ngriefsyndrome\n\nOriginal
+    Maker\uFF1A\nTwilight Frontier\n\nAuthor\uFF1A\nPureAmaya\n\nTest\uFF1A\nWalkonbothsides\r\nPink\nSTAR\u2191BEAT\u2193\nRose\nRay\nQian
+    Jilu\nAnonymous\n\n\nGame Transplantation\uFF1A\nPureAmaya\n\nSpecial Thanks\uFF1A\nLHDJS\nWalkonbothsides\r\nQQ
     Group's significant helps\n\n  \n\n\nAnd you...\n\n\n\n\nThanks for playing!!\nTouch
     the screen to return to title"
 --- !u!222 &1922303699

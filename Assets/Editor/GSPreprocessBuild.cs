@@ -11,10 +11,6 @@ using UnityEngine;
 /// </summary>
 public class GSPreprocessBuild : Editor, IPreprocessBuildWithReport, IPostprocessBuildWithReport
 {
-    /// <summary>
-    /// 简化的版本号 格式ver.x.x.x
-    /// </summary>
-    string version;
     public int callbackOrder { get { return 0; } }
 
     /// <summary>
@@ -26,7 +22,7 @@ public class GSPreprocessBuild : Editor, IPreprocessBuildWithReport, IPostproces
         Debug.Log(report.files);
 
         //把完整的版本号改回来原来的简易版本号
-        PlayerSettings.bundleVersion = version;
+        PlayerSettings.bundleVersion = PlayerSettings.bundleVersion.Split('_')[0];
     }
 
     public void OnPostprocessFailed(BuildReport report)
@@ -34,7 +30,7 @@ public class GSPreprocessBuild : Editor, IPreprocessBuildWithReport, IPostproces
         Debug.Log(report.files);
 
         //把完整的版本号改回来原来的简易版本号
-        PlayerSettings.bundleVersion = version;
+        PlayerSettings.bundleVersion = PlayerSettings.bundleVersion.Split('_')[0];
 
     }
 
@@ -50,8 +46,6 @@ public class GSPreprocessBuild : Editor, IPreprocessBuildWithReport, IPostproces
         gss.AllInitial();
         //自动增加内部版本号，防止遗忘
         PlayerSettings.Android.bundleVersionCode++;
-        //存储原来的版本号
-       version = PlayerSettings.bundleVersion;
         //修改成完整的版本号
         PlayerSettings.bundleVersion = string.Format("{0}_Build {1}", PlayerSettings.bundleVersion, PlayerSettings.Android.bundleVersionCode.ToString());
         //A.B.C  A:大换血 B:功能更新 C:功能调整数值调整各种调整 Build之后的内部版本号是修复bug的

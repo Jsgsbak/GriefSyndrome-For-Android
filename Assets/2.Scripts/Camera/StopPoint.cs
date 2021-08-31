@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MEC;
+using UnityEngine.Events;
 
 /// <summary>
 /// 控制打怪相机停止点，不含地图两端空气墙那里的停止点
@@ -29,6 +30,7 @@ public class StopPoint : MonoBehaviour
     /// </summary>
     public bool StopCamera = false;
 
+    public UnityEvent<int> CancelStopPoint;
 
     /// <summary>
     ///  检查停止点(世界坐标）
@@ -58,7 +60,7 @@ public class StopPoint : MonoBehaviour
     public void CancelStop()
     {
         StopCamera = false;
-
+        CancelStopPoint.Invoke(UsedPointIndex);
     }
 
 #if UNITY_EDITOR

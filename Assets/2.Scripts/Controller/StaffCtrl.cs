@@ -151,15 +151,15 @@ public class StaffCtrl : MonoBehaviour
     {
 
         //staff被激活，开始滚动 
-        if ( Mathf.Abs(StaffRectTr[0].localPosition.y - StaffRectTr[0].sizeDelta.y) > 0.1f)
+        if ( StaffRectTr[0].anchoredPosition.y - 445f < 0.1f)
         {
-            StaffRectTr[0].Translate(Vector2.up * 0.22f * Time.deltaTime);
+            StaffRectTr[0].Translate(0.5f * Time.deltaTime * Vector2.up);
         }
 
         //staff被激活，开始滚动
-        if (Mathf.Abs(StaffRectTr[1].localPosition.y - StaffRectTr[1].sizeDelta.y) > 0.1f)
+        if (StaffRectTr[1].anchoredPosition.y - 445f < 0.1f)
         {
-            StaffRectTr[1].transform.Translate(Vector2.up * 0.22f * Time.deltaTime);
+            StaffRectTr[1].transform.Translate(0.5f * Time.deltaTime * Vector2.up);
         }
 
         //轻触屏幕，返回标题界面
@@ -190,7 +190,7 @@ public class StaffCtrl : MonoBehaviour
             }
         }
         //全员死亡
-        if (gameScoreSettings.AllDie)
+        if (GameScoreSettingsIO.AllDie)
         {
             //BE图片
             image.sprite = images[10];

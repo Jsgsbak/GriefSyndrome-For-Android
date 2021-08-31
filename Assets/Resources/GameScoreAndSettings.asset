@@ -20,7 +20,7 @@ MonoBehaviour:
   MaxHitsFace: 070000000700000007000000
   Time: 0
   BestTime: 0
-  ThisMajoTime: 2012
+  ThisMajoTime: 36
   BestTimeFace: 070000000700000007000000
   lap: 1
   PlayerSelectedGirlId: 4
@@ -29,10 +29,10 @@ MonoBehaviour:
   LastLap: 1
   SelectedGirlInGame: 040000000700000007000000
   GirlsLevel: 0100000001000000010000000100000001000000
-  GirlSoulLimit: 00430000a05c00000000000000000000b54d0000
-  GirlsVit: 580000005f000000000000000000000058000000
+  GirlSoulLimit: 00430000a05c00000000000000000000bb4d0000
+  GirlsVit: 580000005f000000000000000000000059000000
   GirlsPow: 0a0000000a00000000000000000000000a000000
-  MagiaKeyDown: 000000
+  MagiaKeyDown: 010000
   GetHurtInGame: 000000
   IsBodyDieInGame: 000000
   IsSoulBallInGame: 000000
@@ -40,16 +40,13 @@ MonoBehaviour:
   deadPlayerNumber: 0
   DoesMajoOrShoujoDie: 0
   MagicalGirlsDie: 0101010100
-  AllDie: 0
   BattlingMajo: 0
   NewestMajo: 0
   MajoSceneToTitle: 1
   PlayersPosition:
-  - {x: 200.73, y: 55.28603}
+  - {x: 32.595093, y: -10.981628}
   - {x: 0, y: 0}
   - {x: 0, y: 0}
-  BGMVol: 0.6
-  SEVol: 0.7
   EnableDebugMode: 1
   mahouShoujos:
   - name: Homura
@@ -146,86 +143,86 @@ MonoBehaviour:
   - name: joy stick
     EditPosition:
       serializedVersion: 2
-      x: 73
-      y: 71
-      width: 145
-      height: 145
+      x: 97
+      y: 89
+      width: 188
+      height: 188
     RawPosition:
       serializedVersion: 2
-      x: 73
-      y: 71
-      width: 145
-      height: 145
+      x: 97
+      y: 89
+      width: 188
+      height: 188
   - name: Pause
     EditPosition:
       serializedVersion: 2
-      x: -28
-      y: -26
+      x: -42
+      y: -40
       width: 55
       height: 55
     RawPosition:
       serializedVersion: 2
-      x: -28
-      y: -26
+      x: -42
+      y: -40
       width: 55
       height: 55
   - name: Jump
     EditPosition:
       serializedVersion: 2
-      x: -27
-      y: 27
+      x: -44
+      y: 44
       width: 55
       height: 55
     RawPosition:
       serializedVersion: 2
-      x: -27
-      y: 27
+      x: -44
+      y: 44
       width: 55
       height: 55
   - name: Weak
     EditPosition:
       serializedVersion: 2
-      x: -28
-      y: 28
+      x: -41
+      y: 43
       width: 55
       height: 55
     RawPosition:
       serializedVersion: 2
-      x: -28
-      y: 28
+      x: -41
+      y: 43
       width: 55
       height: 55
   - name: Strong
     EditPosition:
       serializedVersion: 2
-      x: -28
-      y: 28
+      x: -45
+      y: 45
       width: 55
       height: 55
     RawPosition:
       serializedVersion: 2
-      x: -28
-      y: 28
+      x: -45
+      y: 45
       width: 55
       height: 55
   - name: Magia
     EditPosition:
       serializedVersion: 2
-      x: -31
-      y: 33
+      x: -57
+      y: 58
       width: 60
       height: 60
     RawPosition:
       serializedVersion: 2
-      x: -31
-      y: 33
+      x: -57
+      y: 58
       width: 60
       height: 60
   UseScreenInput: 0
   joystick: {x: 0, y: 0}
-  Horizontal: 0
+  Horizontal: -1
   BanInput: 0
-  Down: 0
+  Down: 1
   Up: 0
   Jump: 0
   Zattack: 0
@@ -235,4 +232,4 @@ MonoBehaviour:
   Magia: 0
   MagiaPressed: 0
   Pause: 0
-  PlayerMove: {x: 0, y: 0}
+  PlayerMove: {x: 0, y: -0.016534071}

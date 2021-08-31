@@ -12,7 +12,7 @@ public class SayakaCtrl : APlayerCtrl
     [Space]
  //   public Animator MagicRing;
     int ZattackCount = 0;
-   public  bool XordinaryDash = false;
+     bool XordinaryDash = false;
     /// <summary>
     /// 普通X攻击计时器，用于记录普通X准备用时与设定普通X攻击冲刺速度还有普通X冲刺完之后间隔0.3s才能再充一次
     /// </summary>
@@ -26,12 +26,24 @@ public class SayakaCtrl : APlayerCtrl
     /// Up X攻击移动
     /// </summary>
     bool UpAttackMove = false;
-   public int UpAttackCount = 0;
+    
+    /// <summary>
+    /// 已经飞着发动了X攻击
+    /// </summary>
+    bool HasXattackFlying = false;
+
+    int UpAttackCount = 0;
     bool MagiaDash = false;
     /// <summary>
     /// 魔法按了X键
     /// </summary>
-   public float MagiaDashSpeedRatio = 1f;
+    float MagiaDashSpeedRatio = 1f;
+
+    /// <summary>
+    /// 按下Z但没有长时间按住 的时间
+    /// </summary>
+    float  DownZ = -0.2f;
+    float UpZ;
 
     public override void VariableInitialization()
     {
@@ -132,24 +144,35 @@ public class SayakaCtrl : APlayerCtrl
 
     public override void OrdinaryX()
     {
+        if (IsGround)
+        {
+            HasXattackFlying = false;
+        }
+
         //从通常状态进入到X攻击准备状态
-        if ( MountGSS.gameScoreSettings.Horizontal == 0 && !IsAttack[1] && !MountGSS.gameScoreSettings.Up && !MountGSS.gameScoreSettings.Down  && MountGSS.gameScoreSettings.XattackPressed  && !XordinaryDash)
+        if (!HasXattackFlying && MountGSS.gameScoreSettings.Horizontal == 0 && !IsAttack[1] && !MountGSS.gameScoreSettings.Up && !MountGSS.gameScoreSettings.Down  && MountGSS.gameScoreSettings.XattackPressed  && !XordinaryDash)
         {
             playerStatus = Variable.PlayerStatus.Strong_1;
             CancelJump();//直接中断跳跃并且不恢复
             IsAttack[1] = true;
             BanWalk = true;
             BanTurnAround = true;
-
+            //只允许在空中发动一次
+            if (!IsGround)
+            {
+                HasXattackFlying = true;
+            }
             //保存一下时间，用于得到蓄力的效果
             OrdinaryXTimer = Time.timeSinceLevelLoad;
-            SetGravityRatio(0f);
+            SetGravityRatio(0.1f);
         }
         //松开X键，但仍然处于X攻击状态，所以能往前冲
         else if (!MountGSS.gameScoreSettings.XattackPressed && IsAttack[1]&& playerStatus == Variable.PlayerStatus.Strong_1 && !XordinaryDash)
         {
             playerStatus = Variable.PlayerStatus.Strong_2;
             XordinaryDash = true;
+            //冲刺时不受重力影响
+            SetGravityRatio(0f);
         }
 
         //冲刺移动（放在这里是为了移动流畅）
@@ -164,11 +187,11 @@ public class SayakaCtrl : APlayerCtrl
 
             if (DoLookRight)
             {
-                Move(6F - OrdinaryXTimer * 2F, true, Vector2.right);
+                Move(6F - OrdinaryXTimer * 4F, true, Vector2.right);
             }
             else
             {
-                Move(6F - OrdinaryXTimer * 2F, true, Vector2.left);
+                Move(6F - OrdinaryXTimer * 4F, true, Vector2.left);
             }
         }
     }
@@ -268,23 +291,31 @@ public class SayakaCtrl : APlayerCtrl
     }
 
     public override void OrdinaryZ()
-    { 
+    {
+        
+
         if (MountGSS.gameScoreSettings.ZattackPressed)
         {
+            attack();
+        }
+
+        //攻击
+        void attack()
+        {
             if (playerStatus != Variable.PlayerStatus.Weak_1 && playerStatus != Variable.PlayerStatus.Weak_2) CancelJump();//直接中断跳跃并且不恢复
-            if (playerStatus != Variable.PlayerStatus.Weak_2 )  playerStatus = Variable.PlayerStatus.Weak_1;
+            if (playerStatus != Variable.PlayerStatus.Weak_2) playerStatus = Variable.PlayerStatus.Weak_1;
             IsAttack[0] = true;
 
 
-            //修复奇怪的bug
             if (IsGround)
             {
                 SetGravityRatio(0f);
             }
             else
             {
-                SetGravityRatio(1f);
+                SetGravityRatio(0.5f);
             }
+
         }
 
     }
@@ -401,9 +432,11 @@ public class SayakaCtrl : APlayerCtrl
                 XordinaryDash = false;
                 IsAttack[1] = false;
 
+        SetGravityRatio(1f);
+
                 VariableInitialization();
                 //僵直
-                Stiff(0.08f);
+                Stiff(0.2f);
               
 
 

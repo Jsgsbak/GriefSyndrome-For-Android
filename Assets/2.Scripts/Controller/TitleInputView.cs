@@ -20,6 +20,8 @@ public class TitleInputView : MonoBehaviour
 
     public GameObject Input;
 
+    public Button RevokeButton;
+
     private void Start()
     {
         //注册事件，按钮一旦修改就保存到GSS中
@@ -71,6 +73,9 @@ public class TitleInputView : MonoBehaviour
         //禁用高度输入之后，是高度与宽度保持同步
         Rect[3].text = Rect[2].text;
 
+        //只有选定了按钮才能恢复到初始状态
+        RevokeButton.interactable = EditingButton != -1;
+
     }
     /// <summary>
     /// 编辑框显示数据
@@ -81,6 +86,7 @@ public class TitleInputView : MonoBehaviour
         Rect[1].text = TitleCtrl.gameScoreSettingsIO.KeyPosScale[index].EditPosition.y.ToString();
         Rect[2].text = TitleCtrl.gameScoreSettingsIO.KeyPosScale[index].EditPosition.width.ToString();
         Rect[3].text = TitleCtrl.gameScoreSettingsIO.KeyPosScale[index].EditPosition.height.ToString();
+
     }
 
 

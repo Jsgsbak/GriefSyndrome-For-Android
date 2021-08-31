@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using PureAmaya.General;
+using UnityEngine.Events;
 
 /// <summary>
 /// 场景里用的传送门（多人模式未适配）
@@ -30,6 +31,8 @@ public class Portal : MonoBehaviour
     /// 把玩家传送到哪个点
     /// </summary>
     public Vector2 PlayerTo = Vector2.zero;
+
+    public UnityEvent OnEnable;
 
     private void Awake()
     {
@@ -67,6 +70,7 @@ public class Portal : MonoBehaviour
                 {
             tr = null;
             StartCoroutine(TP());
+            OnEnable.Invoke();
                 }
     }
 

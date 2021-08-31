@@ -36,7 +36,10 @@ public class ETCedition : MonoBehaviour
 
     //一下为标题用
     public TMP_InputField[] Rect;
-
+   
+    /// <summary>
+    /// 按下的时间
+    /// </summary>
     float ClickTime = 0f;
 
     // Start is called before the first frame update
@@ -175,12 +178,6 @@ public class ETCedition : MonoBehaviour
             return;
         }
 
-        //单点的按键有时间间隔
-        if (Time.timeSinceLevelLoad - ClickTime >= 0.1f)
-        {
-
-            ClickTime = Time.timeSinceLevelLoad;
-
             switch (buttonActions)
             {
                 case ETCActions.Jump:
@@ -196,7 +193,7 @@ public class ETCedition : MonoBehaviour
                     MountGSS.gameScoreSettings.Magia = true;
                     break;
             }
-        }
+    
 
 
         switch (buttonActions)
@@ -214,8 +211,9 @@ public class ETCedition : MonoBehaviour
 
 
     }
-
-    //不支持长按的按钮在这里设置为false
+    /// <summary>
+    /// 长按，仅用于取消按了一下的状态
+    /// </summary>
     public void OnPress()
     {
         if (MountGSS.gameScoreSettings.BanInput)
@@ -223,6 +221,7 @@ public class ETCedition : MonoBehaviour
             return;
         }
 
+        
         switch (buttonActions)
         {
             case ETCActions.Jump:
@@ -243,14 +242,16 @@ public class ETCedition : MonoBehaviour
         }
     }
 
-    //支持长按的按钮在这里设置为false
+    /// <summary>
+    /// 抬起
+    /// </summary>
     public void OnUp()
     {
         switch (buttonActions)
         {
             case ETCActions.Weak:
                 MountGSS.gameScoreSettings.ZattackPressed = false;
-                break;
+                 break;
             case ETCActions.Strong:
                 MountGSS.gameScoreSettings.XattackPressed = false;
                 break;

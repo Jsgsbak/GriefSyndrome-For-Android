@@ -49,7 +49,7 @@ public class CameraCtrl : MonoBehaviour
         //初始化相机约束
         cameraRestraints[(int)MountGSS.gameScoreSettings.BattlingMajo].Initialize(tr,TargetedPlayer);
 
-        UpdateManager.updateManager.FastUpdate.AddListener(UpdateCamera);
+        UpdateManager.updateManager.FakeLateUpdate.AddListener(UpdateCamera);
         
        /*
         //将相机上绑定好玩家

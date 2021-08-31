@@ -5,13 +5,29 @@ using PureAmaya.General;
 
 public class BGMCtrl : MonoBehaviour
 {
+    public bool IsStaff = false;
+
+    public AudioClip BedEnding;
+
     AudioSource audioSource;
-  public  GameScoreSettingsIO GSS;
     // Start is called before the first frame update
-    void Start()
+
+    private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
-        UpdateManager.updateManager.SlowUpdate.AddListener(UpdateVol);
+
+        if (GameScoreSettingsIO.AllDie)
+        {
+            audioSource.clip = BedEnding;
+        }
+
+        UpdateVol();
+
+    }
+
+    void Start()
+    {
+        UpdateManager.updateManager.FastUpdate.AddListener(UpdateVol);
     }
 
     /// <summary>
@@ -20,13 +36,8 @@ public class BGMCtrl : MonoBehaviour
     // Update is called once per frame
     void UpdateVol()
     {
-        if (GSS != null)
-        {
-            audioSource.volume = GSS.BGMVol;
-        }
-        else
-        {
-            audioSource.volume = MountGSS.gameScoreSettings.BGMVol;
-        }
+
+audioSource.volume = GameScoreSettingsIO.BGMVol;
+        
     }
 }

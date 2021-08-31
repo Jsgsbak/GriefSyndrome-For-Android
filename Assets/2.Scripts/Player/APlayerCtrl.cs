@@ -31,6 +31,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// 禁用重力射线。用于穿透地板（仅AplayerCtrl可以修改）
     /// </summary>
     [SerializeField] bool BanGravityRay = false;
+    bool BanJiaoChaDi = false;
     /// <summary>
     /// 禁用跳跃
     /// </summary>
@@ -40,6 +41,21 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// 是否在地面（仅限APlayerCtrl使用SetIsOnGround函数进行修改）
     /// </summary>
     public bool IsGround = true;
+
+    /// <summary>
+    /// 脚下是啥
+    /// </summary>
+     public int WhatUnderFoot;
+    /// <summary>
+    /// 用以给降落是否触底判断的脚底物ID
+    /// </summary>
+   public int UnderFootForFalling = -1;
+
+    /// <summary>
+    /// 从平台上跳下的时间
+    /// </summary>
+    float FallFromPlatformTime = 0f;
+
     /// <summary>
     /// 站在地板上
     /// </summary>
@@ -57,6 +73,13 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// </summary>
     [Header("重力射线位置")]
     public Transform[] GavityRayPos = new Transform[2];
+
+    /// <summary>
+    /// 相机的变换组件（用于解决掉入虚空的BUG）
+    /// </summary>
+    public Transform Camera;
+
+    public Transform Roof;
     #endregion
 
 
@@ -104,6 +127,8 @@ public abstract class APlayerCtrl : MonoBehaviour
         {
             //此时重置掉落间隔计时器，以实现正常的加速掉落（仅限第一次从重力禁用状态恢复到重力启用状态）
             FallInteralTimer = Time.timeSinceLevelLoad;
+            //恢复射线
+            BanGravityRay = false;
         }
         GravityRatio = number;
     }
@@ -112,17 +137,26 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// 设置是否在地面
     /// </summary>
     /// <param name="value"></param>
+   float  SetIsOnGroundTime = -1;
     public void SetIsOnGround(bool value)
     {
+
         //如果现在的状态是没落地，但是射线之类的说要落地了，发动落地音效
-        if(!IsGround && value && !MountGSS.gameScoreSettings.IsBodyDieInGame[PlayerId] && !MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId])
+        if (!IsGround && value && !MountGSS.gameScoreSettings.IsBodyDieInGame[PlayerId] && !MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId] && !IsJumping && !IsJumpingForward && playerStatus == Variable.PlayerStatus.Fall)
         {
-            SoundEffectCtrl.soundEffectCtrl.PlaySE(Variable.SoundEffect.PlayerLand);
+
+            //代码执行的间隔足够长，才发出着陆的声音
+            if (Time.timeSinceLevelLoad - SetIsOnGroundTime >= 0.5f)
+            {
+                SetIsOnGroundTime = Time.timeSinceLevelLoad;
+                SoundEffectCtrl.soundEffectCtrl.PlaySE(Variable.SoundEffect.PlayerLand);
+
+            }
         }
         IsGround = value;
     }
 
-     public float MoveSpeedRatio = 1f;
+    public float MoveSpeedRatio = 1f;
 
     /// <summary>
     ///  仅限空气墙和平台左右两端禁止左右移动（-1左 1右）
@@ -164,14 +198,6 @@ public abstract class APlayerCtrl : MonoBehaviour
     [HideInInspector] public int SlopeInstanceId = 0;
 
     /// <summary>
-    /// 正在穿过平台
-    /// </summary>
-    [HideInInspector] public bool GoThroughPlatform = false;
-    /// <summary>
-    /// 穿墙瞬间的游戏时间，用于防止穿墙途中停止落体
-    /// </summary>
-    float PlatformTime = 0f;
-    /// <summary>
     /// 正在攻击，防止意外切换到其他攻击状态 0 z 1 x 2 Magia
     /// </summary>
     public bool[] IsAttack = new bool[3];
@@ -208,6 +234,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     {
         #region 注册事件
         UpdateManager.updateManager.FastUpdate.AddListener(FastUpdate);
+        UpdateManager.updateManager.SlowUpdate.AddListener(CheckInVoid);
     //    UICtrl.uiCtrl.PauseGame.AddListener(delegate (bool paused) { MountGSS.gameScoreSettings.BanInput = paused; });  这样子可能会用暂停来强制取消一些禁止输入的状态
         #endregion
 
@@ -311,6 +338,14 @@ public abstract class APlayerCtrl : MonoBehaviour
         }
     }
 
+
+    void CheckInVoid()
+    {
+        if(tr.position.y <= -80f)
+        {
+            tr.position = new Vector3(Camera.position.x, Camera.position.y, tr.position.z);
+        }
+    }
 
     void FastUpdate()
     {
@@ -477,7 +512,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     public void JumpAndFall()
     {
         //除了禁用跳跃的情况，攻击的时候也不能跳（单独写出来，不然太麻烦了）   // ZhuangBi：阻止空气墙那里进行跳跃
-        if (BanJump || MountGSS.gameScoreSettings.Zattack || MountGSS.gameScoreSettings.Xattack || MountGSS.gameScoreSettings.Magia) return;
+        if (BanJump || MountGSS.gameScoreSettings.Zattack || MountGSS.gameScoreSettings.Xattack || MountGSS.gameScoreSettings.Magia || MountGSS.gameScoreSettings.LocalIsStiff) return;
 
         //跳跃触发
         if (!MountGSS.gameScoreSettings.Down && MountGSS.gameScoreSettings.Jump && JumpCount != 2)
@@ -488,6 +523,8 @@ public abstract class APlayerCtrl : MonoBehaviour
             JumpCount++;
             SetGravityRatio(0f);
             BanGravityRay = true;
+            StandOnFloor = false;
+            StandOnPlatform = false;
             PlayerSlope = Vector2.right;
             IsJumpingForward = MountGSS.gameScoreSettings.Horizontal != 0;
 
@@ -522,26 +559,44 @@ public abstract class APlayerCtrl : MonoBehaviour
 
 
 
-        //穿过平台
-        if (MountGSS.gameScoreSettings.Down && StandOnPlatform && MountGSS.gameScoreSettings.Jump)
+        //穿过平台，激活之后一直往下掉，直到碰到地板才停止
+        //激活  UnderFootForFalling == -1：防止多次执行
+        if (MountGSS.gameScoreSettings.Down && StandOnPlatform && MountGSS.gameScoreSettings.Jump && UnderFootForFalling == -1)
         {
-            //禁用重力射线，防止中途停止落体
-            BanGravityRay = true;
+            UnderFootForFalling = WhatUnderFoot;//临时保存一个，用于判断穿过平台是否碰地了
             IsJumping = false;
-            StandOnFloor = false;
-            GoThroughPlatform = true;
-            StandOnPlatform = false;//取消，防止多次执行
-            SetIsOnGround(false);//因为禁用了重力射线，所以后续的IsGround =  StandOnFloor|| StandOnPlatform不能生效了
-            SetGravityRatio(1f);//此函数受 IsGround影响， IsGround为true的时候改不成1
-            PlatformTime = Time.timeSinceLevelLoad;
+            BanGravityRay = true;
+            BanJiaoChaDi = true;
             PlayerSlope = Vector2.right;
+            FallFromPlatformTime = Time.timeSinceLevelLoad;
+            SetGravityRatio(1f);
+
         }
-        if (GoThroughPlatform && Time.timeSinceLevelLoad - PlatformTime >= 0.2f)//0.2s大约射线能穿过平台
+        //穿过平台的那一段时间
+        else if(UnderFootForFalling == WhatUnderFoot)
         {
-            //一定时间之后启用重力射线判定，防止穿墙途中停止落体
-            GoThroughPlatform = false;
+            //临时允许重力射线用于更新WhatUnderFoot，并改回原来的下降状态
             BanGravityRay = false;
+            RayCtrl();
+            BanGravityRay = true;
+            //设置状态（因为上面会改变状态）
+            IsGround = false;
+            StandOnFloor = false;
+            StandOnPlatform = false;
+            //独立的向下移动
+            Move(((Time.timeSinceLevelLoad - FallFromPlatformTime) * GameScoreSettingsIO.JumpSpeed / 0.4F), true, Vector3.down);
         }
+        else if(UnderFootForFalling != WhatUnderFoot && UnderFootForFalling != -1)
+        {
+            //成功穿过平台，在空气中，就变成了正常的下落
+            BanGravityRay = false;
+            SetGravityRatio(1f);
+            UnderFootForFalling = -1;
+            BanJiaoChaDi = false;
+            //更新下落时间使下落更平滑
+            FallInteralTimer = FallFromPlatformTime;
+        }
+        
     }
 
     /// <summary>
@@ -614,83 +669,71 @@ public abstract class APlayerCtrl : MonoBehaviour
             //!ZhuangBi:贴着墙的时候，就禁用前脚的射线，防止脚贴到墙上掉入虚空
             if (infoRight.collider != null && !ZhuangBi)
             {
-                //15层：平台
-                StandOnPlatform = infoRight.collider.gameObject.layer.Equals(15);//没有刚体infoRight.collider.IsTouchingLayers(15)一直为false?
-                StandOnFloor = infoRight.collider.CompareTag("Floor") || infoRight.collider.CompareTag("Slope");
 
-                //斜坡
-                if ( infoRight.collider.CompareTag("Slope"))
-                {
-                    string[] vec = infoRight.collider.name.Split(',');
-                    if (tr.position.x >= float.Parse(vec[2]) && tr.position.x <= float.Parse(vec[3]))
-                    {
-                        PlayerSlope = new Vector2(float.Parse(vec[0]), float.Parse(vec[1]));
-                    }
-                    else
-                    {
-                        PlayerSlope = Vector2.right;
-                    }
-                    //这串代码感觉效率挺低的，所以加了一个ID判断
-                    SlopeInstanceId = infoRight.collider.GetInstanceID();
-                }
-
-                //取消斜坡
-                else if (infoRight.collider.CompareTag("Floor"))
-                {
-                    PlayerSlope = Vector2.right;
-                    SlopeInstanceId = 0;
-
-                }
-
+                CheckVerticalLine(infoRight);
             }
 
             else if (infoLeft.collider != null)
             {
-                //15层：平台
-                StandOnPlatform = infoLeft.collider.gameObject.layer.Equals(15);//没有刚体infoRight.collider.IsTouchingLayers(15)一直为false?
-                StandOnFloor = infoLeft.collider.CompareTag("Floor") || infoLeft.collider.CompareTag("Slope");
-
-                //斜坡
-                if (infoLeft.collider.CompareTag("Slope"))
-                {
-                    string[] vec = infoLeft.collider.name.Split(',');
-                    if (tr.position.x >= float.Parse(vec[2]) && tr.position.x <= float.Parse(vec[3]))
-                    {
-                        PlayerSlope = new Vector2(float.Parse(vec[0]), float.Parse(vec[1]));
-                    }
-                    else
-                    {
-                        PlayerSlope = Vector2.right;
-                    }
-                    //这串代码感觉效率挺低的，所以加了一个ID判断
-                    SlopeInstanceId = infoLeft.collider.GetInstanceID();
-                }
-
-
-
-                //取消斜坡
-                else if (infoLeft.collider.CompareTag("Floor"))
-                {
-                    PlayerSlope = Vector2.right;
-                    SlopeInstanceId = 0;
-
-                }
-
-
+                CheckVerticalLine(infoLeft);
 
             }
+
+
+
             //啥也没才上，腾空
-            else if (!IsJumping )//去除跳跃的情况
+            else if (!IsJumping)//去除跳跃的情况
             {
                 // SetGravityRatio(1f); 后面有114514标记的代码托管了对重力的修改
                 StandOnPlatform = false;
                 StandOnFloor = false;
                 SlopeInstanceId = 0;
+                WhatUnderFoot = 0;
+
+
+            }
+
+
+            //检查垂直射线
+            void CheckVerticalLine(RaycastHit2D raycastHit2D)
+            {
+                //15层：平台
+                StandOnPlatform = raycastHit2D.collider.gameObject.layer.Equals(15);
+                StandOnFloor = raycastHit2D.collider.CompareTag("Floor") || raycastHit2D.collider.CompareTag("Slope");
+                WhatUnderFoot = raycastHit2D.collider.GetInstanceID();
+
+                //斜坡
+                if (raycastHit2D.collider.CompareTag("Slope") && IsGround && WhatUnderFoot != SlopeInstanceId)
+                {
+                    string[] vec = raycastHit2D.collider.name.Split(',');
+                    if (tr.position.x >= float.Parse(vec[2]) && tr.position.x <= float.Parse(vec[3]))
+                    {
+                        PlayerSlope = new Vector2(float.Parse(vec[0]), float.Parse(vec[1]));
+                    }
+                    else
+                    {
+                        PlayerSlope = Vector2.right;
+                    }
+                    //这串代码感觉效率挺低的，所以加了一个ID判断
+                    SlopeInstanceId = raycastHit2D.collider.GetInstanceID();
+                }
+
+
+
+                //取消斜坡
+                else if (raycastHit2D.collider.CompareTag("Floor"))
+                {
+                    PlayerSlope = Vector2.right;
+                    SlopeInstanceId = 0;
+
+                }
+
 
             }
 
             //根据是否在地板/平台上得到着地状态
             SetIsOnGround(StandOnPlatform || StandOnFloor);
+
 
             //站在地上
             if (!IsAttack[0] && !IsAttack[1] && !IsAttack[2] && IsGround)
@@ -698,19 +741,10 @@ public abstract class APlayerCtrl : MonoBehaviour
                 SetGravityRatio(0f);
             }
             //悬空并且能够下落
-            else if (!IsAttack[0] && !IsAttack[1] && !IsAttack[2] && !IsGround && !IsJumping)
+            else if (!IsAttack[0] && !IsAttack[1] && !IsAttack[2] && !IsGround && !IsJumping && !MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId])
             {
                 SetGravityRatio(1f);//114514
             }
-
-
-            //直接在这里强制转化成true好了）
-            if (MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId])
-            {
-                SetIsOnGround(false);
-                SetGravityRatio(0f);
-            }
-
         }
 
 
@@ -734,27 +768,36 @@ public abstract class APlayerCtrl : MonoBehaviour
             if (infoHor.collider.CompareTag("Wall") || infoHor.collider.CompareTag("Floor"))
             {
                 ZhuangBi = infoHor.collider.CompareTag("Wall");
+                //消除斜坡
+                PlayerSlope = Vector2.right;
 
-                if (DoLookRight)
+                //允许玩家穿过平台
+                if (!infoHor.collider.gameObject.layer.Equals(15))
                 {
-                    BanLeftOrRight = 1;
-                }
-                else
-                {
-                    BanLeftOrRight = -1;
+                    if (DoLookRight)
+                    {
+                        BanLeftOrRight = 1;
+                    }
+                    else
+                    {
+                        BanLeftOrRight = -1;
 
+                    }
                 }
+
+               
             }
 
           
 
         }
-        /*
-        //脚插地修复
-        if (infoRight.collider != null && infoHor.collider != null && IsGround && !MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId])
+
+
+        //脚插地修复（留着吧以后）
+        if (!BanJiaoChaDi&& infoLeft.collider != null && infoHor.collider != null && IsGround && !MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId] && !ZhuangBi )
         {
             //如果水平射线与脚底射线得到的东西一致，那么说明脚插在地里（不对地板进行处理）
-            if (infoRight.collider.GetInstanceID().Equals(infoHor.collider.GetInstanceID()))
+            if (infoLeft.collider.GetInstanceID().Equals(infoHor.collider.GetInstanceID()))
             {
                 Debug.Log("YUKI.N> 紧急修正程序已启动");
 
@@ -762,7 +805,7 @@ public abstract class APlayerCtrl : MonoBehaviour
             }
         }
 
-        */
+        
     }
 
     /// <summary>
@@ -770,6 +813,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// </summary>
     void Walk()
     {     
+        //灵魂球的上下移动
         switch (MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId])
         {
             //是那个球，直接无视平台
@@ -821,16 +865,23 @@ public abstract class APlayerCtrl : MonoBehaviour
 
         }
 
-
-
-
         float x = Direction.x; float y = Direction.y;
         bool Border = false;//出现对XY的修改之后，把它改为TRUE，为了减少不必要的MEW
 
         //站在地板上，剔除向下移动方向（为球球做的）
-        if (StandOnFloor && MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId] && Direction.y < 0)
+        if (!StandOnPlatform && StandOnFloor && MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId] && Direction.y < 0)
         {
             //  Direction = new Vector2(Direction.x, 0f);
+            y = 0f;
+            Border = true;
+        }
+        else if(StandOnPlatform && MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId])
+        {
+
+        }
+        //移动上限
+        else if(Direction.y > 0 && Mathf.Abs(tr.position.y - Roof.position.y) <= 0.1f && MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId])
+        {
             y = 0f;
             Border = true;
         }
@@ -849,13 +900,13 @@ public abstract class APlayerCtrl : MonoBehaviour
 
 
         //不能向左走，面向左，除了跳和攻击之外，不允许往上走
-        if(BanLeftOrRight == -1 && Direction.y > 0 && !DoLookRight && !IsJumping && !IsJumpingForward && !IsAttack[0] && !IsAttack[1] && !IsAttack[2])
+        if(BanLeftOrRight == -1 && Direction.y > 0 && !DoLookRight && !IsJumping && !IsJumpingForward && !IsAttack[0] && !IsAttack[1] && !IsAttack[2] && !MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId])
         {
             y = 0f;
             Border = true;
         }
         //不能向右走，面向右，除了跳和攻击之外，不允许往上走
-        else if (BanLeftOrRight == 1 && DoLookRight && Direction.y > 0 && !IsJumping && !IsJumpingForward && !IsAttack[0] && !IsAttack[1] && !IsAttack[2])
+        else if (BanLeftOrRight == 1 && DoLookRight && Direction.y > 0 && !IsJumping && !IsJumpingForward && !IsAttack[0] && !IsAttack[1] && !IsAttack[2] && !MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId])
         {
             y = 0f;
             Border = true;
@@ -880,20 +931,11 @@ public abstract class APlayerCtrl : MonoBehaviour
 
 
             tr.Translate(MountGSS.gameScoreSettings.PlayerMove, Space.World);
-      
+
+
         //更新玩家位置
         MountGSS.gameScoreSettings.PlayersPosition[PlayerId] = tr.position;
 
-    }
-
-    /// <summary>
-    /// 玩家跳到哪个点（未适配多人游戏）
-    /// </summary>
-    /// <param name="point"></param>
-    [Obsolete("",false)]
-    public void JumpTo(Vector2 point)
-    {
-        tr.position= point;
     }
 
     /// <summary>

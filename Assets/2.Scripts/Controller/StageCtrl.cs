@@ -68,7 +68,7 @@ public class StageCtrl : MonoBehaviour
             {
                 Players[(int)MountGSS.gameScoreSettings.SelectedGirlInGame[i]].transform.SetPositionAndRotation(Point.position, Point.rotation);
                 Players[(int)MountGSS.gameScoreSettings.SelectedGirlInGame[i]].SetActive(true);
-                Players[(int)MountGSS.gameScoreSettings.SelectedGirlInGame[i]].transform.SetParent(Stage.transform);
+               Players[(int)MountGSS.gameScoreSettings.SelectedGirlInGame[i]].transform.SetParent(null);
 
                 //多人游戏需要重新写一下这一段代码
                 if (MountGSS.gameScoreSettings.SelectedGirlInGame[i] != Variable.PlayerFaceType.QB)
@@ -115,7 +115,7 @@ public class StageCtrl : MonoBehaviour
     void Start2()
     {
         //音量初始化
-        SoundEffectCtrl.soundEffectCtrl.ChangeVol(MountGSS.gameScoreSettings.SEVol);       
+        SoundEffectCtrl.soundEffectCtrl.ChangeVol(GameScoreSettingsIO.SEVol);       
 
         //初始化计时器
         InvokeRepeating("Timer", 1f, 1f);
