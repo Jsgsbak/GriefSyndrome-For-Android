@@ -234,7 +234,6 @@ public abstract class APlayerCtrl : MonoBehaviour
     {
         #region 注册事件
         UpdateManager.updateManager.FastUpdate.AddListener(FastUpdate);
-        UpdateManager.updateManager.SlowUpdate.AddListener(CheckInVoid);
     //    UICtrl.uiCtrl.PauseGame.AddListener(delegate (bool paused) { MountGSS.gameScoreSettings.BanInput = paused; });  这样子可能会用暂停来强制取消一些禁止输入的状态
         #endregion
 
@@ -338,13 +337,29 @@ public abstract class APlayerCtrl : MonoBehaviour
         }
     }
 
-
+    /// <summary>
+    /// 检查是否调入虚空（改为超出相机范围）
+    /// </summary>
     void CheckInVoid()
     {
+
+
         if(tr.position.y <= -80f)
         {
             tr.position = new Vector3(Camera.position.x, Camera.position.y, tr.position.z);
         }
+    }
+
+    private void OnBecameInvisible()
+    {
+        //超出视界回到位置
+        if(playerStatus == Variable.PlayerStatus.Fall || playerStatus == Variable.PlayerStatus.Idle)
+        {
+            tr.position = new Vector3(Camera.position.x, Camera.position.y, tr.position.z);
+
+        }
+
+       // CheckInVoid();
     }
 
     void FastUpdate()
@@ -669,7 +684,6 @@ public abstract class APlayerCtrl : MonoBehaviour
             //!ZhuangBi:贴着墙的时候，就禁用前脚的射线，防止脚贴到墙上掉入虚空
             if (infoRight.collider != null && !ZhuangBi)
             {
-
                 CheckVerticalLine(infoRight);
             }
 
@@ -701,11 +715,16 @@ public abstract class APlayerCtrl : MonoBehaviour
                 StandOnPlatform = raycastHit2D.collider.gameObject.layer.Equals(15);
                 StandOnFloor = raycastHit2D.collider.CompareTag("Floor") || raycastHit2D.collider.CompareTag("Slope");
                 WhatUnderFoot = raycastHit2D.collider.GetInstanceID();
+                Debug.Log(raycastHit2D.collider.tag);
 
                 //斜坡
                 if (raycastHit2D.collider.CompareTag("Slope") && IsGround && WhatUnderFoot != SlopeInstanceId)
                 {
+
                     string[] vec = raycastHit2D.collider.name.Split(',');
+                    PlayerSlope = new Vector2(float.Parse(vec[0]), float.Parse(vec[1]));
+
+                    /*
                     if (tr.position.x >= float.Parse(vec[2]) && tr.position.x <= float.Parse(vec[3]))
                     {
                         PlayerSlope = new Vector2(float.Parse(vec[0]), float.Parse(vec[1]));
@@ -713,7 +732,7 @@ public abstract class APlayerCtrl : MonoBehaviour
                     else
                     {
                         PlayerSlope = Vector2.right;
-                    }
+                    }*/
                     //这串代码感觉效率挺低的，所以加了一个ID判断
                     SlopeInstanceId = raycastHit2D.collider.GetInstanceID();
                 }

@@ -383,6 +383,8 @@ public class GameScoreSettingsIO : ScriptableObject
         //做完5色之前，在这里修改这个代码
         //即默认仅有沙耶加可用
         MagicalGirlsDie = new bool[] { true, true, true, true, false }; //这个版本临时改成这样
+        //正式发布之前，保留此代码
+        NewestMajo = Variable.Majo.Oktavia;
     }
 
     /// <summary>

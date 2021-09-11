@@ -10,6 +10,7 @@ using UnityEngine.Events;
 public class Portal : MonoBehaviour
 {
     Transform tr;
+    Vector2 ThisPosition;
 
     public GameObject[] NeedToDestroy;
     public GameObject[] NeedToEnable;
@@ -32,6 +33,7 @@ public class Portal : MonoBehaviour
     /// </summary>
     public Vector2 PlayerTo = Vector2.zero;
 
+    [Header("被激活后")]
     public UnityEvent OnEnable;
 
     private void Awake()
@@ -41,12 +43,13 @@ public class Portal : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        UpdateManager.updateManager.SlowUpdate.AddListener(SlowUpdate);
+        UpdateManager.updateManager.FastUpdate.AddListener(SlowUpdate);
     }
 
     // Update is called once per frame
     void SlowUpdate()
     {
+        //不按W键直接不允许后续距离判断
         if (NeedPressW)
         {
             if (!MountGSS.gameScoreSettings.Up)
@@ -54,6 +57,8 @@ public class Portal : MonoBehaviour
                 return;
             }
         }
+
+        ThisPosition = tr.position;
 
         if (AllowY)
         {
@@ -66,7 +71,7 @@ public class Portal : MonoBehaviour
         }
 
         //靠的足够近 不是灵魂球 没死，传送
-        if ( tr != null && Mathf.Abs(MountGSS.gameScoreSettings.PlayersPosition[0].x - tr.position.x) <= 1f && !MountGSS.gameScoreSettings.IsBodyDieInGame[0] && !MountGSS.gameScoreSettings.IsSoulBallInGame[0])
+        if ( tr != null && (MountGSS.gameScoreSettings.PlayersPosition[0] - ThisPosition).sqrMagnitude <= 1.6f && !MountGSS.gameScoreSettings.IsBodyDieInGame[0] && !MountGSS.gameScoreSettings.IsSoulBallInGame[0])
                 {
             tr = null;
             StartCoroutine(TP());

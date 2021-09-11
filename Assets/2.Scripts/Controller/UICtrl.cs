@@ -182,13 +182,14 @@ public class UICtrl : MonoBehaviour
     void SlowUpdate()
     {
         UpdateInf.Invoke();
-
+       
+        //更新玩家位置
+        PlayerPos.text = MountGSS.gameScoreSettings.PlayersPosition[0].ToString();//仅适用于单人游戏
     }
 
     void FastUpdate()
     {
-        //更新玩家位置
-        PlayerPos.text = MountGSS.gameScoreSettings.PlayersPosition[0].ToString();//仅适用于单人游戏
+        
 
         //响应安卓返回按键（游戏界面暂停）
         if(Application.platform == RuntimePlatform.Android && Input.GetKeyDown(KeyCode.Escape))

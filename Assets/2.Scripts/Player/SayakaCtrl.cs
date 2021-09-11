@@ -144,8 +144,9 @@ public class SayakaCtrl : APlayerCtrl
 
     public override void OrdinaryX()
     {
-        if (IsGround)
+        if (IsGround && HasXattackFlying)
         {
+            SetGravityRatio(0f);
             HasXattackFlying = false;
         }
 
@@ -413,7 +414,7 @@ public class SayakaCtrl : APlayerCtrl
                 VariableInitialization();
                 
                 //僵直
-                Stiff(0.1f);
+                Stiff(0.02f);
 
                 //因为这里不会产生动画未结束松开Z导致动画结束的情况，所以不修改IsZattacking
                 break;
@@ -436,7 +437,7 @@ public class SayakaCtrl : APlayerCtrl
 
                 VariableInitialization();
                 //僵直
-                Stiff(0.2f);
+                Stiff(0.05f);
               
 
 
@@ -450,7 +451,7 @@ public class SayakaCtrl : APlayerCtrl
         IsAttack[1] = false;
         //尝试用回复变量的方法来解决bug
         VariableInitialization();
-        Stiff(0.2f);
+        Stiff(0.05f);
 
     }
 
@@ -491,7 +492,7 @@ public class SayakaCtrl : APlayerCtrl
         UpAttackMove = false;
         IsAttack[1] = false;
         SetGravityRatio(0f);//为了悬空效果，僵直结束之后重力恢复
-        Stiff(0.1f);
+        Stiff(0.02f);
 
     }
 
@@ -508,7 +509,7 @@ public class SayakaCtrl : APlayerCtrl
                 VariableInitialization();
 
                 SetGravityRatio(1f);
-                Stiff(0.1f);
+                Stiff(0.02f);
 
                 break;
 
