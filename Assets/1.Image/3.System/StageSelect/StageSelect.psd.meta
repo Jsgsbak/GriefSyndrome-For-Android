@@ -107,6 +107,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -115,9 +117,9 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: -1
-    aniso: -1
-    mipBias: -100
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -138,9 +140,12 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
   applyGammaDecoding: 0
   platformSettings:
   - serializedVersion: 3
@@ -654,6 +659,29 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      Walpurgisnacht: 997243601692206168
+      Charlotte: 8136710130675492332
+      p3_selected: 5594094411109539170
+      p1_selected: -1459217407209300922
+      Oktavia_selected: 5134221921996524213
+      Gertrud: 6168716860045255432
+      Elsa Maria_selected: 9084104736623251643
+      Oktavia: 5591921962209487030
+      Walpurgisnacht_selected: -1769510634890371425
+      Kyoko: 1743543073810817000
+      ReturnLogo: -8918268372864261744
+      Mami: -2230002818210899402
+      Gertrud_selected: 4393339232655258629
+      Elly_selected: 3985654948791652660
+      Elsa Maria: -3868090303665839443
+      Elly: 4676927256621686358
+      Sayaka: -8540504917331962801
+      Homura_m: 1501139532262753209
+      p2_selected: 856905764964590021
+      Homura: 1594096210759172400
+      Madoka: 5735238407672244771
+      Charlotte_select: 4845946918894555040
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 1
