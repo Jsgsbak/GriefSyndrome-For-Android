@@ -179,7 +179,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// <summary>
     /// 掉落间隔计时器
     /// </summary>
-    float FallInteralTimer = 0f;
+   public float FallInteralTimer = 0f;
     /// <summary>
     /// 正在跳跃（专指上升阶段）
     /// </summary>
@@ -615,7 +615,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     }
 
     /// <summary>
-    /// （千万不要多次重复执行！！！）对于正在跳跃过程中发动魔法/攻击的情况，直接取消跳跃状态  每个角色的每个攻击都要有
+    /// 对于正在跳跃过程中发动魔法/攻击的情况，直接取消跳跃状态  每个角色的每个攻击都要有
     /// </summary>
     public void CancelJump()
     {
@@ -715,7 +715,6 @@ public abstract class APlayerCtrl : MonoBehaviour
                 StandOnPlatform = raycastHit2D.collider.gameObject.layer.Equals(15);
                 StandOnFloor = raycastHit2D.collider.CompareTag("Floor") || raycastHit2D.collider.CompareTag("Slope");
                 WhatUnderFoot = raycastHit2D.collider.GetInstanceID();
-                Debug.Log(raycastHit2D.collider.tag);
 
                 //斜坡
                 if (raycastHit2D.collider.CompareTag("Slope") && IsGround && WhatUnderFoot != SlopeInstanceId)

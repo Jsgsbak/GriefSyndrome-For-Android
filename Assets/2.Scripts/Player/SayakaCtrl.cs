@@ -11,8 +11,14 @@ public class SayakaCtrl : APlayerCtrl
     /// </summary>
     [Space]
  //   public Animator MagicRing;
-    int ZattackCount = 0;
-     bool XordinaryDash = false;
+   public int ZattackCount = 0;
+    /// <summary>
+    /// z攻击这一阶段完成了
+    /// </summary>
+    bool ThisFregmentDone = false;
+    bool AllowZcontinue;
+
+    bool XordinaryDash = false;
     /// <summary>
     /// 普通X攻击计时器，用于记录普通X准备用时与设定普通X攻击冲刺速度还有普通X冲刺完之后间隔0.3s才能再充一次
     /// </summary>
@@ -39,11 +45,7 @@ public class SayakaCtrl : APlayerCtrl
     /// </summary>
     float MagiaDashSpeedRatio = 1f;
 
-    /// <summary>
-    /// 按下Z但没有长时间按住 的时间
-    /// </summary>
-    float  DownZ = -0.2f;
-    float UpZ;
+
 
     public override void VariableInitialization()
     {
@@ -293,31 +295,80 @@ public class SayakaCtrl : APlayerCtrl
 
     public override void OrdinaryZ()
     {
-        
+        Debug.Log("allow"+ AllowZcontinue.ToString());
+        Debug.Log("this"+ ThisFregmentDone.ToString());
 
-        if (MountGSS.gameScoreSettings.ZattackPressed)
+        //时间足够长，第一阶段攻击
+        if( MountGSS.gameScoreSettings.Zattack && !IsAttack[0])
         {
-            attack();
-        }
-
-        //攻击
-        void attack()
-        {
-            if (playerStatus != Variable.PlayerStatus.Weak_1 && playerStatus != Variable.PlayerStatus.Weak_2) CancelJump();//直接中断跳跃并且不恢复
-            if (playerStatus != Variable.PlayerStatus.Weak_2) playerStatus = Variable.PlayerStatus.Weak_1;
+            ZattackCount = 1;
+            playerStatus = Variable.PlayerStatus.Weak_1;
             IsAttack[0] = true;
+            AllowZcontinue = false;
+            ThisFregmentDone = false;
+        }
+        //下面用 && MountGSS.gameScoreSettings.ZattackPressed是为了能够判断那一帧的确按Z了
+        else if ( ZattackCount == 1 && ThisFregmentDone && AllowZcontinue)
+        {
+            ZattackCount = 2;
+            playerStatus = Variable.PlayerStatus.Weak_2;
+            ThisFregmentDone = false;
+            AllowZcontinue = false;
+        }
+        else if ( ZattackCount == 2 && ThisFregmentDone && AllowZcontinue)
+        {
+            ZattackCount = 3;
+            playerStatus = Variable.PlayerStatus.Weak_1;
+            ThisFregmentDone = false;
+            AllowZcontinue = false;
+        }
+        else if (ZattackCount == 3 && ThisFregmentDone && AllowZcontinue)
+        {
 
+            ZattackCount = 4;
+            playerStatus = Variable.PlayerStatus.Weak_2;
+            ThisFregmentDone = false;
+            AllowZcontinue = false;
 
+        }
+        else if ( ZattackCount == 4 && ThisFregmentDone && AllowZcontinue)
+        {
+            if (!IsGround)
+            {
+                IsAttack[0] = false;
+                return;
+            }
+            MoveSpeedRatio = 1f;
+
+            ZattackCount = 0;
+            playerStatus = Variable.PlayerStatus.Weak_3;
+
+            AllowZcontinue = false;
+            ThisFregmentDone = false;
+        }
+        
+        if(ThisFregmentDone &&  !AllowZcontinue)
+        {
+
+            AllowZcontinue = false;
+
+            ZattackCount = 0;
+            IsAttack[0] = false;
+            ThisFregmentDone = false;
             if (IsGround)
             {
                 SetGravityRatio(0f);
             }
             else
             {
-                SetGravityRatio(0.5f);
+                FallInteralTimer = Time.timeSinceLevelLoad;
+                SetGravityRatio(1f);
             }
-
+            MoveSpeedRatio = 1f;
+            VariableInitialization();
         }
+
+
 
     }
 
@@ -338,59 +389,55 @@ public class SayakaCtrl : APlayerCtrl
         {
             //Z攻击的动画正处于攻击状态，不能中断
             case "ZattackDoing":
-                SetGravityRatio(0.7f);
-                IsAttack[0] = true;
+                MoveSpeedRatio = 0.1f;
                 StopAttacking = false;
                 BanTurnAround = true;//攻击状态不能转身
-
-                break;
-
-            //Z攻击的动画处于两端攻击的连接处，可以中断，中断处允许切换到其他动画和状态
-            case "ZattackCouldStop":
-                //如果还在攻击那就不能解除移动和跳跃禁止
-                StopAttacking = true;//可以中断攻击
-                BanTurnAround = false;//连接处可以转身
-                IsAttack[0] = MountGSS.gameScoreSettings.ZattackPressed;//连接处不属于攻击阶段，可以切换到其他动画和状态
-
-                SetGravityRatio(1f);
-
-                if (!IsAttack[0])
+                CancelJump();
+                if (IsGround)
                 {
-                    VariableInitialization();
+                    SetGravityRatio(0f);
                 }
-
+                else
+                {
+                    SetGravityRatio(0.2f);
+                }
                 break;
 
-            //Z攻击打完，
-            case "ZattackDone":
-                StopAttacking = true;//可以中断攻击
-                IsAttack[0] = MountGSS.gameScoreSettings.ZattackPressed;//连接处不属于攻击阶段，可以切换到其他动画和状态
-                BanTurnAround = false;//可以转身
 
-                //攻击完了恢复移动速度与重力
-                SetGravityRatio(1f);
+            case "Check":
+                //检查要不要继续攻击
+                Debug.Log("check");
+                if (MountGSS.gameScoreSettings.ZattackPressed)
+                {
+                    AllowZcontinue = true;
+                }
+                break;
+
+             
+
+            //Z攻击某一阶段完成了
+            case "ZattackFregmentDone":
+                ThisFregmentDone = true;
+                StopAttacking = true;
+                BanTurnAround = false;//攻击完了可以
+                                      //这里再检查一下
+                Debug.Log("check");
 
                 if (MountGSS.gameScoreSettings.ZattackPressed)
                 {
-                    //并且按着Z，满足条件后进入Z攻击最后阶段
-                    //仅在地面上能发动最后一击
-                    if (IsGround) ZattackCount++;
-
-                    if (ZattackCount == 2 && IsGround)//仅在地面上并且达到要求了才能发动
-                    {
-                        playerStatus = Variable.PlayerStatus.Weak_2;
-                    }
-                    StopAttacking = true;
+                    AllowZcontinue = true;
                 }
                 break;
 
+           
+
             //Z攻击最后一阶段向前跳
             case "ZattackFinJump":
-                MountGSS.gameScoreSettings.BanInput = true;
+                MountGSS.gameScoreSettings.BanInput = true;//防止出现任何操作
                 BanTurnAround = true;//向前跳的时候不能转身
                 StopAttacking = false;//不可以中断攻击
                 SetGravityRatio(0.7f);
-
+                ThisFregmentDone = false;
                 //向前移动
                 if (DoLookRight)
                 {
@@ -409,7 +456,7 @@ public class SayakaCtrl : APlayerCtrl
                 //修改计数器重新循环动画
                 ZattackCount = 0;
                 IsAttack[0] = false;//连接处不属于攻击阶段，可以切换到其他动画和状态
-                
+                ThisFregmentDone = true;
                 //尝试用回复变量的方法来解决bug
                 VariableInitialization();
                 
