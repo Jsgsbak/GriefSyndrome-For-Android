@@ -20,7 +20,7 @@ MonoBehaviour:
   MaxHitsFace: 070000000700000007000000
   Time: 0
   BestTime: 0
-  ThisMajoTime: 79
+  ThisMajoTime: 7
   BestTimeFace: 070000000700000007000000
   lap: 1
   PlayerSelectedGirlId: 4
@@ -29,7 +29,7 @@ MonoBehaviour:
   LastLap: 1
   SelectedGirlInGame: 040000000700000007000000
   GirlsLevel: 0100000001000000010000000100000001000000
-  GirlSoulLimit: 00430000a05c00000000000000000000904d0000
+  GirlSoulLimit: 00430000a05c00000000000000000000d84d0000
   GirlsVit: 580000005f000000000000000000000058000000
   GirlsPow: 0a0000000a00000000000000000000000a000000
   MagiaKeyDown: 000000
@@ -40,11 +40,11 @@ MonoBehaviour:
   deadPlayerNumber: 0
   DoesMajoOrShoujoDie: 0
   MagicalGirlsDie: 0101010100
-  BattlingMajo: 1
+  BattlingMajo: 2
   NewestMajo: 0
   MajoSceneToTitle: 1
   PlayersPosition:
-  - {x: 513.66235, y: 2.206398}
+  - {x: 28.955967, y: -14.4119215}
   - {x: 0, y: 0}
   - {x: 0, y: 0}
   EnableDebugMode: 1

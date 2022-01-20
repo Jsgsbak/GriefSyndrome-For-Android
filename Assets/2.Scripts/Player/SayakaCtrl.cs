@@ -295,8 +295,6 @@ public class SayakaCtrl : APlayerCtrl
 
     public override void OrdinaryZ()
     {
-        Debug.Log("allow"+ AllowZcontinue.ToString());
-        Debug.Log("this"+ ThisFregmentDone.ToString());
 
         //时间足够长，第一阶段攻击
         if( MountGSS.gameScoreSettings.Zattack && !IsAttack[0])

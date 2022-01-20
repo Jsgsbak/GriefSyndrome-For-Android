@@ -48,8 +48,6 @@ public class CameraCtrl : MonoBehaviour
 
         //初始化相机约束
         cameraRestraints[(int)MountGSS.gameScoreSettings.BattlingMajo].Initialize(tr,TargetedPlayer);
-
-        UpdateManager.updateManager.FakeLateUpdate.AddListener(UpdateCamera);
         
        /*
         //将相机上绑定好玩家
@@ -71,7 +69,7 @@ public class CameraCtrl : MonoBehaviour
         StopPoints[(int)MountGSS.gameScoreSettings.BattlingMajo].CancelStop();
     }
 
-    public void UpdateCamera()
+    public void LateUpdate()
     {
         //更新限制点
        cameraRestraints[(int)MountGSS.gameScoreSettings.BattlingMajo]. UpdatePoint();
@@ -86,13 +84,13 @@ public class CameraCtrl : MonoBehaviour
     }
 
     /// <summary>
-    /// 相机约束
+    /// 相机约束后移动
     /// </summary>
     void Restraint()
     {
-      Vector2 c =  cameraRestraints[(int)MountGSS.gameScoreSettings.BattlingMajo].RepairCameraMoveDirection(MountGSS.gameScoreSettings.PlayerMove,TargetedPlayer.position);
+      Vector3 c =  cameraRestraints[(int)MountGSS.gameScoreSettings.BattlingMajo].RepairCameraMoveDirection(MountGSS.gameScoreSettings.PlayerMove,TargetedPlayer.position);
 
-        tr.Translate(c, Space.World);
+      tr.Translate(c, Space.World);
 
     }
 

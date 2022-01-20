@@ -26,6 +26,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.001, y: -1.1000001, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2915628801685981364}
   m_RootOrder: 2
@@ -57,6 +58,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: -108.45285}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2915628802146110010}
   - {fileID: 2915628801936285316}
@@ -117,6 +119,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2915628801936285316}
   m_RootOrder: 1
@@ -132,6 +135,7 @@ SpriteRenderer:
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -202,6 +206,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2915628803231062194}
   - {fileID: 2915628801893386445}
@@ -220,6 +225,7 @@ SpriteRenderer:
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 0
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -262,7 +268,7 @@ SpriteRenderer:
   m_SpriteSortPoint: 0
 --- !u!95 &2915628801936285315
 Animator:
-  serializedVersion: 3
+  serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -275,6 +281,7 @@ Animator:
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
@@ -312,12 +319,16 @@ MonoBehaviour:
   BanJump: 0
   BanWalk: 0
   IsGround: 1
+  WhatUnderFoot: 0
+  UnderFootForFalling: -1
   StandOnFloor: 0
   BanTurnAround: 0
   IsInvincible: 0
   GavityRayPos:
   - {fileID: 2915628802146110010}
   - {fileID: 785475468}
+  Camera: {fileID: 0}
+  Roof: {fileID: 0}
   tr: {fileID: 2915628801685981364}
   animator: {fileID: 0}
   spriteRenderer: {fileID: 0}
@@ -327,19 +338,17 @@ MonoBehaviour:
   BanLeftOrRight: 0
   DoLookRight: 1
   JumpCount: 0
+  FallInteralTimer: 0
   IsJumping: 0
   IsJumpingForward: 0
   StandOnPlatform: 0
   SlopeInstanceId: 0
-  GoThroughPlatform: 0
   IsAttack: 000000
   StopAttacking: 1
   PlayPlayerDie2: 0
   PlayPlayerDie3: 0
   BanRay: 0
-  XordinaryDash: 0
-  UpAttackCount: 0
-  MagiaDashSpeedRatio: 1
+  ZattackCount: 0
 --- !u!1 &2915628802146110013
 GameObject:
   m_ObjectHideFlags: 0
@@ -366,6 +375,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.716, y: -1.1000001, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2915628801685981364}
   m_RootOrder: 0
@@ -397,6 +407,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2915628801936285316}
   m_RootOrder: 2
@@ -412,6 +423,7 @@ SpriteRenderer:
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -479,6 +491,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2915628801936285316}
   m_RootOrder: 0

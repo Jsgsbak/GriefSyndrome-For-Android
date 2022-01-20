@@ -45,7 +45,7 @@ public class CameraRestraint : MonoBehaviour
         Target = target;
         tr = Camera;
         //≥ı ºªØŒª÷√
-        tr.SetPositionAndRotation(CameraPoints[InitialPosition].Point,Quaternion.identity);
+        tr.SetPositionAndRotation(new Vector3( CameraPoints[InitialPosition].Point.x, CameraPoints[InitialPosition].Point.y, -10f),Quaternion.identity);
         PassedIndex = InitialPosition;
 
         for (int i = 0; i < CameraPoints.Length; i++)
@@ -68,7 +68,7 @@ public class CameraRestraint : MonoBehaviour
     /// </summary>
     public void JumpToPoint(int index)
     {
-        tr.SetPositionAndRotation(CameraPoints[index].Point, Quaternion.identity);
+        tr.SetPositionAndRotation(new Vector3( CameraPoints[index].Point.x, CameraPoints[index].Point.y,-10f), Quaternion.identity);
         PassedIndex = index;
         NextPointDrawingLine = index + 1;
     }
