@@ -21,12 +21,12 @@ public class PlayerRootCtrl : MonoBehaviour
     public Transform[] PlayerRoots;
 
     /// <summary>
-    /// 可用玩家数（含QB）
+    /// 可用玩家数（含QB） 
     /// </summary>
     int PlayerNumber = 0;
 
     /// <summary>
-    /// 选择的角色的玩家ID
+    /// 选择的角色的玩家ID  player 1 2 3 
     /// </summary>
     [HideInInspector] Variable.PlayerFaceType[] PlayersId = { Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null };
 
@@ -53,15 +53,66 @@ public class PlayerRootCtrl : MonoBehaviour
 
 
 /// <summary>
-/// 将所有玩家传送到哪个点（世界坐标）
+/// 将全部玩家传送到哪个点（世界坐标）
 /// </summary>
 /// <param name="vector2"></param>
 public void JumpToPoint(Vector2 vector2)
     {
         for (int i = 0; i < PlayerNumber; i++)
         {
-            PlayerRoots[(int)PlayersId[i]].position = new Vector3(vector2.x + 1.7F * i, vector2.y, 2F);
+            ///不挤在一起
+            PlayerRoots[(int)PlayersId[i]].position = new Vector2(vector2.x + 1.7F * i, vector2.y);
         }
+    }
+
+    /// <summary>
+    /// 将某个玩家传送到哪个点（世界坐标）
+    /// </summary>
+    /// <param name="PlayerId"></param>
+    /// <param name="vector2"></param>
+    public void JumpToPoint(int PlayerId,Vector2 vector2)
+    {
+            ///不挤在一起
+            PlayerRoots[(int)PlayersId[PlayerId]].position = vector2;
+    }
+
+
+    public void HurtPlayer(int Damage,int PlayerId)
+    {
+        //确定玩家 1\2\3 是哪些角色
+        switch (PlayersId[PlayerId])
+        {
+            case Variable.PlayerFaceType.Sayaka:
+                if (sayakaCtrl != null)
+                {
+                    sayakaCtrl.GetHurt(Damage);
+                }
+                break;
+
+            case Variable.PlayerFaceType.Kyoko:
+                if (kyokoCtrl != null)
+                {
+                    kyokoCtrl.GetHurt(Damage);
+                }
+                break;
+
+            case Variable.PlayerFaceType.Madoka:
+                break;
+
+            case Variable.PlayerFaceType.Homura:
+                break;
+
+            case Variable.PlayerFaceType.Homura_m:
+                break;
+
+            case Variable.PlayerFaceType.Mami:
+                break;
+
+            case Variable.PlayerFaceType.QB:
+                break;
+
+        }
+       
     }
 
     /// <summary>
@@ -70,33 +121,131 @@ public void JumpToPoint(Vector2 vector2)
     /// <param name="Damage"></param>
     public void HurtAllPlayers(int Damage)
     {
-        if (sayakaCtrl != null) 
+        for (int i = 0; i < 3; i++)
         {
-            sayakaCtrl.GetHurt(Damage);
+            HurtPlayer(i, Damage);
         }
-        if(kyokoCtrl != null)
-        {
-            kyokoCtrl.GetHurt(Damage);
-        }
-        /*
-        if (mamiCtrl != null)
-        {
-            mamiCtrl.GetHurt(Damage);
-        }
-        if (kyokoCtrl != null)
-        {
-            kyokoCtrl.GetHurt(Damage);
-        }
-        if (sayakaCtrl != null)
-        {
-            sayakaCtrl.GetHurt(Damage);
-        }
-        if (kyokoCtrl != null)
-        {
-            kyokoCtrl.GetHurt(Damage);
-        }*/
+    
+    }
 
+    /// <summary>
+    /// 将玩家变成光球
+    /// </summary>
+    public void PlayerBecomeBall(int PlayerId)
+    {
+        //确定玩家 1\2\3 是哪些角色
+        switch (PlayersId[PlayerId])
+        {
+            case Variable.PlayerFaceType.Sayaka:
+                if (sayakaCtrl != null)
+                {
+                    sayakaCtrl.RebirthOrGemBroken();
+                }
+                break;
 
+            case Variable.PlayerFaceType.Kyoko:
+                if (kyokoCtrl != null)
+                {
+                    kyokoCtrl.RebirthOrGemBroken();
+                }
+                break;
+
+            case Variable.PlayerFaceType.Madoka:
+                break;
+
+            case Variable.PlayerFaceType.Homura:
+                break;
+
+            case Variable.PlayerFaceType.Homura_m:
+                break;
+
+            case Variable.PlayerFaceType.Mami:
+                break;
+
+            case Variable.PlayerFaceType.QB:
+                break;
+        }
+
+    }
+
+    /// <summary>
+    /// 见面一滴血（将玩家设置为1滴血）
+    /// </summary>
+    /// <param name="PlayerId"></param>
+    public void OneBloodNiiiiiiice(int PlayerId)
+    {
+        //确定玩家 1\2\3 是哪些角色
+        switch (PlayersId[PlayerId])
+        {
+            case Variable.PlayerFaceType.Sayaka:
+                if (sayakaCtrl != null)
+                {
+                    sayakaCtrl.OneBlood();
+                }
+                break;
+
+            case Variable.PlayerFaceType.Kyoko:
+                if (kyokoCtrl != null)
+                {
+                    kyokoCtrl.OneBlood();
+                }
+                break;
+
+            case Variable.PlayerFaceType.Madoka:
+                break;
+
+            case Variable.PlayerFaceType.Homura:
+                break;
+
+            case Variable.PlayerFaceType.Homura_m:
+                break;
+
+            case Variable.PlayerFaceType.Mami:
+                break;
+
+            case Variable.PlayerFaceType.QB:
+                break;
+        }
+
+    }
+    /// <summary>
+    /// 清除某一玩家的血量
+    /// </summary>
+    public void CleanPlayerVit(int PlayerId)
+    {
+        //确定玩家 1\2\3 是哪些角色
+        switch (PlayersId[PlayerId])
+        {
+            case Variable.PlayerFaceType.Sayaka:
+                if (sayakaCtrl != null)
+                {
+                    sayakaCtrl.CleanVit();
+                }
+                break;
+
+            case Variable.PlayerFaceType.Kyoko:
+                if (kyokoCtrl != null)
+                {
+                    kyokoCtrl.CleanVit();
+                }
+                break;
+
+            case Variable.PlayerFaceType.Madoka:
+                break;
+
+            case Variable.PlayerFaceType.Homura:
+                break;
+
+            case Variable.PlayerFaceType.Homura_m:
+                break;
+
+            case Variable.PlayerFaceType.Mami:
+                break;
+
+            case Variable.PlayerFaceType.QB:
+                break;
+
+        }
     }
 
     /// <summary>
@@ -104,9 +253,9 @@ public void JumpToPoint(Vector2 vector2)
     /// </summary>
     public void CleanAllPlayersVit()
     {
-        if (sayakaCtrl != null)
+        for (int i = 0; i < 3; i++)
         {
-            sayakaCtrl.CleanVit();
+            CleanPlayerVit(i);
         }
     }
 

@@ -65,9 +65,9 @@ namespace PureAmaya.General
 
         private IEnumerator<float> SlowUpdatea()
         {
-            while(true)
+            while (true)
             {
-                    SlowUpdate.Invoke();
+                SlowUpdate.Invoke();
                 yield return 0f;
             }
         }

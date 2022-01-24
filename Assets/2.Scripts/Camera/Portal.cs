@@ -10,7 +10,6 @@ using UnityEngine.Events;
 public class Portal : MonoBehaviour
 {
     Transform tr;
-    Vector2 ThisPosition;
 
     public GameObject[] NeedToDestroy;
     public GameObject[] NeedToEnable;
@@ -58,7 +57,6 @@ public class Portal : MonoBehaviour
             }
         }
 
-        ThisPosition = tr.position;
 
         if (AllowY)
         {
@@ -71,12 +69,12 @@ public class Portal : MonoBehaviour
         }
 
         //靠的足够近 不是灵魂球 没死，传送
-        if ( tr != null && (MountGSS.gameScoreSettings.PlayersPosition[0] - ThisPosition).sqrMagnitude <= 1.6f && !MountGSS.gameScoreSettings.IsBodyDieInGame[0] && !MountGSS.gameScoreSettings.IsSoulBallInGame[0])
-                {
+        if (tr != null && Mathf.Abs(MountGSS.gameScoreSettings.PlayersPosition[0].x - tr.position.x) <= 0.2f && !MountGSS.gameScoreSettings.IsBodyDieInGame[0] && !MountGSS.gameScoreSettings.IsSoulBallInGame[0])
+        {
             tr = null;
             StartCoroutine(TP());
             OnEnable.Invoke();
-                }
+        }
     }
 
 
@@ -90,7 +88,7 @@ public class Portal : MonoBehaviour
        CameraCtrl.cameraCtrl.cameraRestraints[(int)MountGSS.gameScoreSettings.BattlingMajo].JumpToPoint(CameraPointInRestraint);
         //解除瞬移之后相机可能不移动的现象
         CameraCtrl.cameraCtrl.RecoverMoving();
-        //所有玩家瞬移
+        //所有玩家瞬移（多人游戏的话，这里要改）
         PlayerRootCtrl.playerRootCtrl.JumpToPoint(PlayerTo);
         //激活需要激活的物体
         for (int i = 0; i < NeedToEnable.Length; i++)

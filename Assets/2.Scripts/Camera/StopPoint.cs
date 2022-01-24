@@ -23,11 +23,12 @@ public class StopPoint : MonoBehaviour
     /// <summary>
     /// 刚刚用过的停止点
     /// </summary>
-    public int UsedPointIndex = -1;
+     int UsedPointIndex = -1;
 
     /// <summary>
     /// 停止相机移动
     /// </summary>
+    [HideInInspector]
     public bool StopCamera = false;
 
     public UnityEvent<int> CancelStopPoint;

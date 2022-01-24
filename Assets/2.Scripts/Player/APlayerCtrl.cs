@@ -337,30 +337,6 @@ public abstract class APlayerCtrl : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 检查是否调入虚空（改为超出相机范围）
-    /// </summary>
-    void CheckInVoid()
-    {
-
-
-        if(tr.position.y <= -80f)
-        {
-            tr.position = new Vector3(Camera.position.x, Camera.position.y, tr.position.z);
-        }
-    }
-
-    private void OnBecameInvisible()
-    {
-        //超出视界回到位置
-        if(playerStatus == Variable.PlayerStatus.Fall || playerStatus == Variable.PlayerStatus.Idle)
-        {
-            tr.position = new Vector3(Camera.position.x, Camera.position.y, tr.position.z);
-
-        }
-
-       // CheckInVoid();
-    }
 
     void FastUpdate()
     {
@@ -1213,11 +1189,9 @@ public abstract class APlayerCtrl : MonoBehaviour
 
 #region 受伤，死亡与无敌
 
-#region 调试模式（玩家层面）
     /// <summary>
-    /// 调试模式按钮：清除当前灵魂值
+    /// 清除当前灵魂值
     /// </summary>
-    [ContextMenu("CleanSoul")]
     public void CleanSoul()
     {
         if (!MountGSS.gameScoreSettings.DoesMajoOrShoujoDie)
@@ -1227,7 +1201,7 @@ public abstract class APlayerCtrl : MonoBehaviour
 
     }
     /// <summary>
-    /// 调试模式按钮：清除当前血量
+    /// 清除当前血量
     /// </summary>
     public void CleanVit()
     {
@@ -1236,9 +1210,18 @@ public abstract class APlayerCtrl : MonoBehaviour
     }
 
     /// <summary>
+    /// 一滴血一滴血！！！！
+    /// </summary>
+    public void OneBlood()
+    {
+        GetHurt(MountGSS.gameScoreSettings.GirlsVit[MahouShoujoId] - 1);
+
+    }
+
+    /// <summary>
     /// 调式模式按钮：修改移动速率 仅沙耶加的时候可用（因为按钮附加在 以后再适配其他角色吧。。。 
     /// </summary>
-   bool KaQiTuoLiTai = false;
+    bool KaQiTuoLiTai = false;
     /// <summary>
     /// 适用于卡其脱离太的速度设置
     /// </summary>
@@ -1278,13 +1261,11 @@ public abstract class APlayerCtrl : MonoBehaviour
     }
 
 
-
-#endregion
-
-
     /// <summary>
-    /// 受伤（调试版）
+    /// 玩家受伤（调试版）
     /// </summary>
+    /// <param name="damage">伤害</param>
+    /// <param name="AllowDeathAnimation">允许播放死亡动画（false=直接变成球）</param>
     public void GetHurt(int damage)
     {
         //无敌、死亡、灵魂球不执行后续操作
@@ -1362,6 +1343,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// </summary>
     public void RebirthOrGemBroken()
     {
+        IsInvincible = true;
 
         //宝石黑掉了
         if (MountGSS.gameScoreSettings.GirlSoulLimit[MahouShoujoId] <= 0)
@@ -1397,7 +1379,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     }
 
     /// <summary>
-    /// 无敌状态调用
+    /// 无敌状态调用（1.5s版）
     /// </summary>
     /// <param name="time"></param>
     /// <returns></returns>
