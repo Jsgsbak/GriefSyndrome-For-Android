@@ -182,10 +182,10 @@ TextureImporter:
       name: Stage4_3
       rect:
         serializedVersion: 2
-        x: 1620
-        y: 604
-        width: 384
-        height: 384
+        x: 1559
+        y: 554
+        width: 489
+        height: 470
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -245,10 +245,10 @@ TextureImporter:
       name: Stage4_6
       rect:
         serializedVersion: 2
-        x: 1477
+        x: 1439
         y: 22
-        width: 527
-        height: 580
+        width: 565
+        height: 572
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -279,27 +279,6 @@ TextureImporter:
       bones: []
       spriteID: d24d42de1cce6dd45985c880e64b69ec
       internalID: -53850825
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Stage4_8
-      rect:
-        serializedVersion: 2
-        x: 1447
-        y: 22
-        width: 25
-        height: 206
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 870561b97e9101a438159ff3d65dc1db
-      internalID: -429867427
       vertices: []
       indices: 
       edges: []
