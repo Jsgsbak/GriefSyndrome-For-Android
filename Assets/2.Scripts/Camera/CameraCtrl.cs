@@ -15,7 +15,7 @@ public class CameraCtrl : MonoBehaviour
   [HideInInspector] public  Transform tr;
 
     public Transform[] Players;
-  [HideInInspector]  public Transform TargetedPlayer;
+   public Transform TargetedPlayer;
 
     public StopPoint[] StopPoints;
 

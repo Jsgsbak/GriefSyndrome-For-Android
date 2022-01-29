@@ -23,11 +23,6 @@ public abstract class APlayerCtrl : MonoBehaviour
     public Vector2 PlayerSlope = Vector2.right;
 
     /// <summary>
-    /// 身体宽度（脚底两个点的水平距离）
-    /// </summary>
-    [HideInInspector] public float BodyWidth;
-
-    /// <summary>
     /// 禁用重力射线。用于穿透地板（仅AplayerCtrl可以修改）
     /// </summary>
     [SerializeField] bool BanGravityRay = false;
@@ -96,15 +91,12 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// </summary>
     public Variable.PlayerStatus playerStatus;
     /// <summary>
-    /// 重力射线
-    /// </summary>
-    readonly Ray2D[] rays = new Ray2D[3];
-    /// <summary>
     /// 前脚射线
     /// </summary>
-    public RaycastHit2D infoRight;
-    public RaycastHit2D infoLeft;
-    public RaycastHit2D infoHor;//水平射线，检测撞墙
+    RaycastHit2D infoRight;
+    RaycastHit2D infoLeft;
+    RaycastHit2D infoHor;//水平射线，检测撞墙
+    RaycastHit2D infoAntiGround;//防止主动脚插进地理
 
     /// <summary>
     /// 重力速率（仅能通过SetGravityRatio修改）
@@ -149,7 +141,10 @@ public abstract class APlayerCtrl : MonoBehaviour
             if (Time.timeSinceLevelLoad - SetIsOnGroundTime >= 0.5f)
             {
                 SetIsOnGroundTime = Time.timeSinceLevelLoad;
-                SoundEffectCtrl.soundEffectCtrl.PlaySE(Variable.SoundEffect.PlayerLand);
+                if(ExMath.Abs(PlayerSlope.x)  == 1F || ExMath.Abs(PlayerSlope.x) == 0F)
+                {
+                    SoundEffectCtrl.soundEffectCtrl.PlaySE(Variable.SoundEffect.PlayerLand);
+                }
 
             }
         }
@@ -194,8 +189,6 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// 站在平台上
     /// </summary>
     public bool StandOnPlatform = false;
-
-    [HideInInspector] public int SlopeInstanceId = 0;
 
     /// <summary>
     /// 正在攻击，防止意外切换到其他攻击状态 0 z 1 x 2 Magia
@@ -255,7 +248,7 @@ public abstract class APlayerCtrl : MonoBehaviour
         UpdateInf(true);
 
         //玩家属性每秒的变化
-        InvokeRepeating("PerSecondChange", 1f, 1f);
+        InvokeRepeating(nameof(PerSecondChange), 1f, 1f);
 
         //保存本地玩家选择的魔法少女的魔法少女id
         MahouShoujoId = (int)MahouShoujoType;
@@ -288,9 +281,6 @@ public abstract class APlayerCtrl : MonoBehaviour
             ii++;
         }
 #endif
-
-        //获取身体宽度
-        BodyWidth = Mathf.Abs(GavityRayPos[0].position.x - GavityRayPos[1].position.x);
     }
 
 
@@ -340,6 +330,22 @@ public abstract class APlayerCtrl : MonoBehaviour
 
     void FastUpdate()
     {
+
+        //左右翻转
+        if (!BanTurnAround)
+        {
+            if (MountGSS.gameScoreSettings.Horizontal == -1 && DoLookRight)
+            {
+                tr.rotation = Quaternion.Euler(0f, 180f, 0f);
+                DoLookRight = false;
+
+            } //
+            else if (MountGSS.gameScoreSettings.Horizontal == 1 && !DoLookRight)
+            {
+                tr.rotation = Quaternion.Euler(0f, 0f, 0f);
+                DoLookRight = true;
+            }
+        }
 
         Gravity();
 
@@ -411,7 +417,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     }
 
     /// <summary>
-    /// 设置玩家状态
+    /// 设置玩家状态（状态机）
     /// </summary>
     public void SetStatus()
     {
@@ -442,7 +448,7 @@ public abstract class APlayerCtrl : MonoBehaviour
             playerStatus = Variable.PlayerStatus.JumpForward;
 
         }
-        else if (!IsGround && !IsJumping && !MountGSS.gameScoreSettings.IsBodyDieInGame[PlayerId] && !MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId] && !MountGSS.gameScoreSettings.GetHurtInGame[PlayerId])
+        else if (ExMath.Abs(PlayerSlope.x) == 1F || ExMath.Abs(PlayerSlope.x) == 0F && !IsGround && !IsJumping && !MountGSS.gameScoreSettings.IsBodyDieInGame[PlayerId] && !MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId] && !MountGSS.gameScoreSettings.GetHurtInGame[PlayerId])
         {
             playerStatus = Variable.PlayerStatus.Fall;
         }
@@ -486,13 +492,8 @@ public abstract class APlayerCtrl : MonoBehaviour
             return;
         }
 
-        //左右翻转
-        if (!BanTurnAround)
-        {
-            if (MountGSS.gameScoreSettings.Horizontal == -1) { tr.rotation = Quaternion.Euler(0f, 180f, 0f); DoLookRight = false; } //
-            else if (MountGSS.gameScoreSettings.Horizontal == 1) { tr.rotation = Quaternion.Euler(0f, 0f, 0f); DoLookRight = true; }//spriteRenderer.flipX = MountGSS.gameScoreSettings.Horizontal == -1;//
-        }
-
+       
+        //播放预设动画
         animator.Play(GameScoreSettingsIO.AnimationHash[(int)playerStatus]);
 
     }
@@ -608,121 +609,63 @@ public abstract class APlayerCtrl : MonoBehaviour
 
     }
 
+
+    #region 射线控制
     /// <summary>
     /// 射线控制器
     /// </summary>
     public void RayCtrl()
-    {
-        //前脚（right）
-        rays[0] = new Ray2D(GavityRayPos[0].position, Vector2.down);
-        //后脚（left）
-        rays[1] = new Ray2D(GavityRayPos[1].position, Vector2.down);
-
-        float FixedLength = Mathf.Abs(PlayerSlope.y) / Mathf.Abs(PlayerSlope.x) * BodyWidth + 0.18f;
-
-        //斜坡修改位置
-        if (PlayerSlope.y < 0)
-        {
-            //往右走的下坡射线长一点
-            if (DoLookRight)
-            {
-               infoLeft = Physics2D.Raycast(rays[1].origin, rays[1].direction, 0.18f);
-               infoRight = Physics2D.Raycast(rays[0].origin, rays[0].direction, FixedLength);
-            }
-            //往左走的上坡射线短一点
-            else
-            {
-                infoLeft = Physics2D.Raycast(rays[1].origin, rays[1].direction, FixedLength);
-                infoRight = Physics2D.Raycast(rays[0].origin, rays[0].direction, 0.18f);
-            }
-        }
-        else
-        {
-            //往左走的下坡射线长一点
-            if (!DoLookRight)
-            {
-                infoLeft = Physics2D.Raycast(rays[1].origin, rays[1].direction, 0.18f);
-                infoRight = Physics2D.Raycast(rays[0].origin, rays[0].direction, FixedLength);
-            }
-            //往右走的上坡射线短一点
-            else
-            {
-                infoLeft = Physics2D.Raycast(rays[1].origin, rays[1].direction, FixedLength);
-                infoRight = Physics2D.Raycast(rays[0].origin, rays[0].direction, 0.18f);
-            }
-
-        }
-
-        //重力射线
+    {       
+        //重力射线（禁止的话，不允许脚底这几个向下的射线工作）
         if (!BanGravityRay)
         {
 
-            //!ZhuangBi:贴着墙的时候，就禁用前脚的射线，防止脚贴到墙上掉入虚空
-            if (infoRight.collider != null && !ZhuangBi)
+            //获取射线击中的物体
+            //向下的
+            //左脚（被动脚
+            infoLeft = Physics2D.Raycast(GavityRayPos[1].position, Vector2.down, 0.5f);
+            //右脚（主动角）
+            infoRight = Physics2D.Raycast(GavityRayPos[0].position, Vector2.down, 0.5f);
+            //主动角右脚 发射一个向上的射线，用来防止角插进地里面，包含在斜面上转身而造成的情况
+            infoAntiGround = Physics2D.Raycast(GavityRayPos[0].position, Vector2.up, 0.1f);
+
+            //右脚向上的射线检测到东西了，说明右脚（全局方向）插进地理了
+            if (infoAntiGround.collider != null)
             {
-                CheckVerticalLine(infoRight);
+                tr.Translate(new Vector2(0F, 0.1f), Space.World);
+                Debug.Log("YUKI.N> 紧急修正程序已启动");
+               
             }
 
-            else if (infoLeft.collider != null)
-            {
-                CheckVerticalLine(infoLeft);
 
+
+            //3种着地情况
+            if (infoRight.collider != null && infoLeft.collider != null)
+            {
+                CheckVerticalLine(infoLeft,infoRight);
+                RepairFlip();
             }
 
+            else if (infoRight.collider != null && infoLeft.collider == null)
+            {
+                CheckVerticalLine(infoRight,GavityRayPos[0].position);
+                RepairFlip();
+
+            }
+            else if (infoRight.collider == null && infoLeft.collider != null)
+            {
+                CheckVerticalLine(infoLeft, GavityRayPos[1].position);
+                RepairFlip();
 
 
+            }
             //啥也没才上，腾空
-            else if (!IsJumping)//去除跳跃的情况
+            else if (!IsJumping)//去除跳跃与在斜面上移动的情况的情况
             {
-                // SetGravityRatio(1f); 后面有114514标记的代码托管了对重力的修改
                 StandOnPlatform = false;
                 StandOnFloor = false;
-                SlopeInstanceId = 0;
                 WhatUnderFoot = 0;
-
-
-            }
-
-
-            //检查垂直射线
-            void CheckVerticalLine(RaycastHit2D raycastHit2D)
-            {
-                //15层：平台
-                StandOnPlatform = raycastHit2D.collider.gameObject.layer.Equals(15);
-                StandOnFloor = raycastHit2D.collider.CompareTag("Floor") || raycastHit2D.collider.CompareTag("Slope");
-                WhatUnderFoot = raycastHit2D.collider.GetInstanceID();
-
-                //斜坡
-                if (raycastHit2D.collider.CompareTag("Slope") && IsGround && WhatUnderFoot != SlopeInstanceId)
-                {
-
-                    string[] vec = raycastHit2D.collider.name.Split(',');
-                    PlayerSlope = new Vector2(float.Parse(vec[0]), float.Parse(vec[1]));
-
-                    /*
-                    if (tr.position.x >= float.Parse(vec[2]) && tr.position.x <= float.Parse(vec[3]))
-                    {
-                        PlayerSlope = new Vector2(float.Parse(vec[0]), float.Parse(vec[1]));
-                    }
-                    else
-                    {
-                        PlayerSlope = Vector2.right;
-                    }*/
-                    //这串代码感觉效率挺低的，所以加了一个ID判断
-                    SlopeInstanceId = raycastHit2D.collider.GetInstanceID();
-                }
-
-
-
-                //取消斜坡
-                else if (raycastHit2D.collider.CompareTag("Floor"))
-                {
-                    PlayerSlope = Vector2.right;
-                    SlopeInstanceId = 0;
-
-                }
-
-
+                Debug.Log("DDD");
             }
 
             //根据是否在地板/平台上得到着地状态
@@ -745,13 +688,13 @@ public abstract class APlayerCtrl : MonoBehaviour
         //水平移动防止穿墙射线
         if (DoLookRight)
         {
-            rays[2] = new Ray2D(GavityRayPos[0].position + Vector3.up * 0.2f, Vector2.right);
+            infoHor = Physics2D.Raycast(GavityRayPos[0].position + Vector3.up * 0.2f, Vector2.right, 0.15f);
         }
         else//
         {
-            rays[2] = new Ray2D(GavityRayPos[0].position + Vector3.up * 0.2f, -Vector2.right);
+            infoHor = Physics2D.Raycast(GavityRayPos[0].position + Vector3.up * 0.2f, Vector2.left, 0.15f);
+
         }
-        infoHor = Physics2D.Raycast(rays[2].origin, rays[2].direction, 0.15f);
 
         //撞墙限制移动
         BanLeftOrRight = 0;
@@ -762,8 +705,6 @@ public abstract class APlayerCtrl : MonoBehaviour
             if (infoHor.collider.CompareTag("Wall") || infoHor.collider.CompareTag("Floor"))
             {
                 ZhuangBi = infoHor.collider.CompareTag("Wall");
-                //消除斜坡
-                PlayerSlope = Vector2.right;
 
                 //允许玩家穿过平台
                 if (!infoHor.collider.gameObject.layer.Equals(15))
@@ -786,7 +727,7 @@ public abstract class APlayerCtrl : MonoBehaviour
 
         }
 
-
+        /*
         //脚插地修复（留着吧以后）
         if (!BanJiaoChaDi&& infoLeft.collider != null && infoHor.collider != null && IsGround && !MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId] && !ZhuangBi )
         {
@@ -798,9 +739,138 @@ public abstract class APlayerCtrl : MonoBehaviour
                 tr.Translate(Vector3.up * 0.1f, Space.World);
             }
         }
-
+        */
         
     }
+
+    /// <summary>
+    /// 检查垂直射线
+    /// </summary>
+    /// <param name="raycastHit2D">射线碰撞</param>
+    /// <param name="OriginalPoint">发射射线的位置</param>
+    void CheckVerticalLine(RaycastHit2D raycastHit2D,Vector2 OriginalPoint)
+    {
+        //这种只有一个脚的射线触碰到地面的，一定是玩家在那种可以向下穿梭的平台上
+
+        //其中一个脚的射线碰到地面，并且碰的比较近，判定为着陆
+        if (OriginalPoint.y - raycastHit2D.point.y <= 0.07f)
+        {
+            //层15是平台
+            StandOnPlatform = raycastHit2D.collider.gameObject.layer.Equals(15);
+            WhatUnderFoot = raycastHit2D.collider.GetInstanceID();
+        }        
+        //其中一个脚的射线碰到地面，但是碰的比较远，判定为未着陆
+        else
+        {
+            StandOnPlatform = false;
+            StandOnFloor = false;
+            WhatUnderFoot = 0;
+
+        }
+    }
+    /// <summary>
+    /// 两只脚都踩在地上
+    /// </summary>
+    /// <param name="Left">左脚</param>
+    /// <param name="Right">右脚</param>
+    void CheckVerticalLine(RaycastHit2D Left,RaycastHit2D Right)
+    {
+
+        //射线长度0.5，多出来的一截用来判断斜坡
+
+        //两脚射线的触碰位置位于相同的高度，站在平地上
+        if (Left.point.y == Right.point.y)
+        {
+          PlayerSlope = Vector2.right;
+
+            //地面离玩家较近，判定为着陆
+            if (GavityRayPos[0].position.y - Right.point.y <= 0.12f)
+            {
+                StandOnPlatform = Left.collider.gameObject.layer.Equals(15);
+                StandOnFloor = Left.collider.CompareTag("Floor") || Left.collider.CompareTag("Slope");
+                WhatUnderFoot = Left.collider.GetInstanceID();
+            }
+            //地面离玩家较远，判定为未着陆
+            else
+            {
+                StandOnPlatform = false;
+                StandOnFloor = false;
+                WhatUnderFoot = 0;
+            }
+        }
+        //两脚射线的触碰位置位于不同的高度，站在斜坡上
+        else
+        {
+            //右脚触碰位置比左脚高，并且右脚可以判定为着陆
+            if (GavityRayPos[0].position.y - Right.point.y <= 0.12f)
+            {
+
+                if(PlayerSlope == Vector2.right)
+                {
+                   PlayerSlope = (Left.point - Right.point).normalized;
+                    //  PlayerSlope = ExMath.Abs((Left.point - Right.point).normalized);
+                }
+
+                StandOnPlatform = Right.collider.gameObject.layer.Equals(15);
+                StandOnFloor = Right.collider.CompareTag("Floor") || Right.collider.CompareTag("Slope");
+                WhatUnderFoot = Right.collider.GetInstanceID();
+
+            }
+            //左脚触碰位置比佑脚高，并且左脚可以判定为着陆
+            else
+            {
+                if (PlayerSlope == Vector2.right)
+                {
+                    PlayerSlope = (Right.point - Left.point).normalized;
+
+
+                  //  PlayerSlope = ExMath.Abs((Right.point - Left.point).normalized);
+                }
+
+
+                StandOnPlatform = Left.collider.gameObject.layer.Equals(15);
+                StandOnFloor = Left.collider.CompareTag("Floor") || Left.collider.CompareTag("Slope");
+                WhatUnderFoot = Left.collider.GetInstanceID();
+
+            }
+
+        }
+
+
+    }
+
+    /// <summary>
+    /// 修复转向引起的倒着走的问题
+    /// </summary>
+    void RepairFlip()
+    {
+        switch (DoLookRight)
+        {
+            //向右看，PlayerSlope的x一定是正直
+            case true:
+                if(PlayerSlope.x < 0f)
+                {
+                    PlayerSlope = -PlayerSlope;
+                }
+                break;
+
+            //向右看，PlayerSlope的x一定是负数
+            case false:
+                if (PlayerSlope.x > 0f)
+                {
+                    PlayerSlope = -PlayerSlope;
+                }
+                break;
+        }
+
+    }
+
+
+
+
+
+    #endregion
+
 
     /// <summary>
     /// 普通的行走用
@@ -848,7 +918,13 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// <param name="space"></param>
     public void Move(float Speed, bool UseTimeDelta, Vector2 Direction)
     {
+
         //应用斜坡
+        if (Direction != Vector2.zero && IsGround)
+        {
+            Direction = PlayerSlope;
+        }
+        /*
         if (Direction == Vector2.right && DoLookRight)
         {
             Direction = PlayerSlope;
@@ -857,7 +933,7 @@ public abstract class APlayerCtrl : MonoBehaviour
         {
             Direction = -PlayerSlope;
 
-        }
+        }*/
 
         float x = Direction.x; float y = Direction.y;
         bool Border = false;//出现对XY的修改之后，把它改为TRUE，为了减少不必要的MEW
@@ -874,7 +950,7 @@ public abstract class APlayerCtrl : MonoBehaviour
 
         }
         //移动上限
-        else if(Direction.y > 0 && Mathf.Abs(tr.position.y - Roof.position.y) <= 0.1f && MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId])
+        else if(Direction.y > 0 && ExMath.Abs(tr.position.y - Roof.position.y) <= 0.1f && MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId])
         {
             y = 0f;
             Border = true;
@@ -979,7 +1055,7 @@ public abstract class APlayerCtrl : MonoBehaviour
         MountGSS.gameScoreSettings.LocalIsStiff = !false;
 
         //启用新的僵直
-        StartCoroutine("PlayerStiff", Time);
+        StartCoroutine(nameof(PlayerStiff), Time);
         Timing.RunCoroutine(PlayerStiff(Time), "PlayerStiff");
 
     }
@@ -1310,7 +1386,7 @@ public abstract class APlayerCtrl : MonoBehaviour
 
 
             //无敌状态
-            StartCoroutine("Invincible");
+            StartCoroutine(nameof(Invincible));
         }
         //挂了，但不至于宝石碎了
         else
@@ -1436,7 +1512,7 @@ public abstract class APlayerCtrl : MonoBehaviour
 
         MoveSpeedRatio = 1f;
         // BanGravity = false;
-        StartCoroutine("Invincible");
+        StartCoroutine(nameof(Invincible));
         MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId] = false;
         MountGSS.gameScoreSettings.IsBodyDieInGame[PlayerId] = false;
 
