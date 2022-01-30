@@ -5,13 +5,12 @@ using UnityEngine.UI;
 
 public class FPSDisplay : MonoBehaviour
 {
-	float LastTime = 0.0f;
 	int fps;
 	public Text fpsText;
 
 	private void Start()
     {
-		InvokeRepeating("ShowFps", 0f, 1f);
+		InvokeRepeating(nameof(ShowFps), 0f, 1f);
 
 	}
 	void ShowFps()

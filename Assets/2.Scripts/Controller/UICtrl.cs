@@ -81,7 +81,7 @@ public class UICtrl : MonoBehaviour
     /// <summary>
     /// 更新玩家信息
     /// </summary>
-    public Variable.OrdinaryEvent UpdateInf = new Variable.OrdinaryEvent();
+    public Variable.OrdinaryEvent UpdateInf = new();
     #endregion
 
     private void Awake()
@@ -130,7 +130,7 @@ public class UICtrl : MonoBehaviour
 
         #region 初始化UI界面
         //初始化调试模式
-        initializeDebugMode();
+        InitializeDebugMode();
 
         //设置好虚拟按键是否启用
         if (MountGSS.gameScoreSettings.UseScreenInput != 2)
@@ -184,7 +184,7 @@ public class UICtrl : MonoBehaviour
         UpdateInf.Invoke();
        
         //更新玩家位置
-        PlayerPos.text = MountGSS.gameScoreSettings.PlayersPosition[0].ToString();//仅适用于单人游戏
+        PlayerPos.text =string.Format("X:{0} Y:{1}", MountGSS.gameScoreSettings.PlayersPosition[0].x.ToString("0.0"), MountGSS.gameScoreSettings.PlayersPosition[0].y.ToString("0.0")) ;//仅适用于单人游戏
     }
 
     void FastUpdate()
@@ -237,7 +237,7 @@ public class UICtrl : MonoBehaviour
            SoundEffectCtrl.soundEffectCtrl.PlaySE(Variable.SoundEffect.Pause);
             Time.timeScale = 0;
             //无限夸大MEC携程之间的调用间隔
-            MEC.Timing.TimeBetweenSlowUpdateCalls = 999999999999999f;
+            Timing.TimeBetweenSlowUpdateCalls = 999999999999999f;
 
         }
         //暂停恢复
@@ -319,7 +319,7 @@ public class UICtrl : MonoBehaviour
 
 
         //返回方法
-        Invoke("ReturnToMajoOrStaff", 3f);
+        Invoke(nameof(ReturnToMajoOrStaff), 3f);
 
     }
 
@@ -373,7 +373,7 @@ public class UICtrl : MonoBehaviour
         }
 
         //返回方法
-        Invoke("ReturnToMajoOrStaff", 3f);
+        Invoke(nameof(ReturnToMajoOrStaff), 3f);
     
     }
 
@@ -454,7 +454,7 @@ public class UICtrl : MonoBehaviour
     /// <summary>
     /// 初始化调试模式
     /// </summary>
-    void initializeDebugMode()
+    void InitializeDebugMode()
     {
         if (!MountGSS.gameScoreSettings.EnableDebugMode)
         {
@@ -490,13 +490,13 @@ public class UICtrl : MonoBehaviour
             DebugButtons[i].interactable = false;
         }
 
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < 100; i++)
         {
             //把调试面板移动过来
-            DebugMode.localPosition = new Vector3(DebugMode.localPosition.x + 11.95f, DebugMode.localPosition.y, 0f);
+            DebugMode.localPosition = new Vector3(DebugMode.localPosition.x + 2.39f, DebugMode.localPosition.y, 0f);
             //按钮转一下
-            ShowButton.localRotation = Quaternion.Euler(0f, 0f, ShowButton.localRotation.eulerAngles.z + 9f);
-            yield return Timing.WaitForSeconds(0.025f);
+            ShowButton.localRotation = Quaternion.Euler(0f, 0f, ShowButton.localRotation.eulerAngles.z + 1.8f);
+            yield return Timing.WaitForSeconds(0.005f);
         }
         ShowButton.localRotation = Quaternion.Euler(0f, 0f, 180f);
        
@@ -515,13 +515,13 @@ public class UICtrl : MonoBehaviour
             DebugButtons[i].interactable = false;
         }
 
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < 100; i++)
         {
             //把调试面板移动过来
-            DebugMode.localPosition = new Vector3(DebugMode.localPosition.x - 11.95f, DebugMode.localPosition.y, 0f);
+            DebugMode.localPosition = new Vector3(DebugMode.localPosition.x - 2.39f, DebugMode.localPosition.y, 0f);
             //按钮转一下
-            ShowButton.localRotation = Quaternion.Euler(0f, 0f, ShowButton.localRotation.eulerAngles.z - 9f);
-            yield return Timing.WaitForSeconds(0.025f);
+            ShowButton.localRotation = Quaternion.Euler(0f, 0f, ShowButton.localRotation.eulerAngles.z - 1.8f);
+            yield return Timing.WaitForSeconds(0.005f);
         }
 
         ShowButton.localRotation = Quaternion.Euler(0f, 0f, 0f);
