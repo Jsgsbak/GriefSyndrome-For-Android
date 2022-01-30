@@ -160,7 +160,8 @@ public class CameraRestraint : MonoBehaviour
                         //玩家向右走，并且玩家在屏幕右侧，离着右面的下一个点很远
                         else if (Raw.x > 0f && Player.x > tr.position.x && (CameraPoints[NextPointDrawingLine].Point - vector2).sqrMagnitude > 0.1F)
                         {
-                            return MoveCamera(Raw);
+                            //快点动，追上去
+                            return MoveCamera(Raw*1.2f);
                         }
                         else
                         {
@@ -211,15 +212,20 @@ public class CameraRestraint : MonoBehaviour
                         //玩家向右走，并且玩家在屏幕中间
                         if (Raw.x > 0f && Mathf.Abs(Player.x - tr.position.x) <= 0.1f)
                         {
+                            Debug.Log("右 不用加速");
+
                             //相机顺着移动过去
                             return MoveCamera(Raw);
                         }
                         //玩家向右走，并且玩家在屏幕右侧
                         else if (Raw.x >= 0f && Player.x - tr.position.x > 0.1f)
                         {
+                            Debug.Log("右 应当加速");
+
                             //相机多移动一点，为了跟上玩家
                             return MoveCamera(Raw * 1.2F);
                         }
+                        else
                         {
                             return Vector2.zero;
                         }
@@ -273,7 +279,21 @@ public class CameraRestraint : MonoBehaviour
         for (int i = 0; i < CameraPoints.Length; i++)
         {
             //点那里画个球 不这样子写位置TM不显示
-            Gizmos.DrawSphere(new Vector3(CameraPoints[i].Point.x, CameraPoints[i].Point.y,1f), 0.6f);
+            Gizmos.DrawSphere(new Vector3(CameraPoints[i].Point.x, CameraPoints[i].Point.y,-3f), 0.6f);
+
+            //准备19个应该够了
+            if (i <= 9)
+            {
+
+                Gizmos.DrawIcon(new Vector3(CameraPoints[i].Point.x, CameraPoints[i].Point.y + 1f, 1f), string.Format("{0}.psd", i.ToString()), true, Color.black);
+            }
+            else
+            {
+                Gizmos.DrawIcon(new Vector3(CameraPoints[i].Point.x, CameraPoints[i].Point.y + 1f, 1f),"1.psd", true, Color.black);
+                Gizmos.DrawIcon(new Vector3(CameraPoints[i].Point.x, CameraPoints[i].Point.y + 1f, 1f), string.Format("{0}.psd", i.ToString()), true, Color.black);
+            }
+
+
 
             //找到所有可以与这个点连接的点，然后划线
             foreach (var item in CameraPoints[i].ConnectPointIndex)
