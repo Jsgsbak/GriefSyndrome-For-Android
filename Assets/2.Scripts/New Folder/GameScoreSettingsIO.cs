@@ -180,7 +180,7 @@ public class GameScoreSettingsIO : ScriptableObject
     /// 本次周目最新可食用的魔女
     /// </summary>
     [Header("本次周目最新可食用的魔女")]
-    public Variable.Majo NewestMajo = Variable.Majo.Gertrud;
+    public Variable.Majo NewestMajo = Variable.Majo.Walpurgisnacht;
 
     /// <summary>
     /// 是从魔女场景中返回标题界面吗（不包括返回到主标题按钮）
@@ -373,7 +373,7 @@ public class GameScoreSettingsIO : ScriptableObject
         MajoSceneToTitle = false;
         SelectedGirlInGame = new Variable.PlayerFaceType[3] { Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null, Variable.PlayerFaceType.Null };
         BattlingMajo = Variable.Majo.Gertrud;
-        NewestMajo = Variable.Majo.Gertrud;
+     //   NewestMajo = Variable.Majo.Gertrud;  在完全做完之前，一直可以直接打所有的boss
         MagicalGirlsDie = new bool[] { false, false, false, false, false };
         GirlsLevel = new int[] { 1, 1, 1 ,1,1};
         AllDie = false;
@@ -383,8 +383,6 @@ public class GameScoreSettingsIO : ScriptableObject
         //做完5色之前，在这里修改这个代码
         //即默认仅有沙耶加可用
         MagicalGirlsDie = new bool[] { true, true, true, true, false }; //这个版本临时改成这样
-        //正式发布之前，保留此代码
-        NewestMajo = Variable.Majo.Oktavia;
     }
 
     /// <summary>
