@@ -665,7 +665,6 @@ public abstract class APlayerCtrl : MonoBehaviour
                 StandOnPlatform = false;
                 StandOnFloor = false;
                 WhatUnderFoot = 0;
-                Debug.Log("DDD");
             }
 
             //根据是否在地板/平台上得到着地状态

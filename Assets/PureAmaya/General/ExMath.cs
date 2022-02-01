@@ -7,35 +7,6 @@ namespace PureAmaya.General
     public class ExMath
     {
         /// <summary>
-        /// 返回xy均为正数的二维向量
-        /// </summary>
-        /// <param name="vector2"></param>
-        /// <returns></returns>
-        public static Vector2 Abs(Vector2 vector2)
-        {
-            float x; float y;
-            if (vector2.x < 0)
-            {
-                x = -vector2.x;
-            }
-            else
-            {
-                x = vector2.x;
-            }
-
-            if (vector2.y < 0)
-            {
-                y = -vector2.y;
-            }
-            else
-            {
-                y = vector2.y;
-            }
-
-            return new Vector2(x, y);
-        }
-
-        /// <summary>
         /// 返回整数类型的绝对值
         /// </summary>
         /// <param name="Int"></param>
@@ -70,18 +41,47 @@ namespace PureAmaya.General
         }
 
         /// <summary>
-        /// 两个属性交换值
+        /// 在给定精度范围内，判断两个浮点数是否相同
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="Value1">属性1值</param>
-        /// <param name="Value2">属性2值</param>
-        /// <param name="Receiver1">接受属性1值</param>
-        /// <param name="Receiver2">接受属性2值</param>
-        public static T[] Exchange<T>(T Value1, T Value2)
+        /// <param name="precision">判断精度</param>
+        /// <param name="AllowEqual">是否允许差值相等</param>
+        /// <param name="Valve">要比较的值</param>
+        /// <returns></returns>
+        public static bool Approximation(float precision, float Valve1,float Valve2, bool AllowEqual = true)
         {
-            T[] temp = { Value2, Value1 };
-            return temp;
+            switch (AllowEqual)
+            {
+                case true:
+                    return Abs(Valve1 - Valve2) <= precision;
+
+                case false:
+                    return Abs(Valve1 - Valve2) < precision;
+
+            }
+
         }
+
+        /// <summary>
+        /// 指数函数计算（可能性能高点）
+        /// </summary>
+        /// <param name="exponent">指数</param>
+        /// <param name="Base">底数</param>
+        /// <returns></returns>
+        public static int ExponentialFunction(int exponent,int Base = 10)
+        {
+            for (int i = 0; i < exponent; i++)
+            {
+                Base *= Base;
+            }
+
+            return Base;
+
+        }
+
+
+
+
+
 
     }
 }

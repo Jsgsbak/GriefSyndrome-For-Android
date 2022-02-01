@@ -18,7 +18,7 @@ public class CameraRestraint : MonoBehaviour
     /// <summary>
     /// 相机的变换组件
     /// </summary>
-    Transform  tr;
+    Transform tr;
     /// <summary>
     /// 储存相机的位置（防止反复NEW）
     /// </summary>
@@ -26,15 +26,15 @@ public class CameraRestraint : MonoBehaviour
     /// <summary>
     /// 刚刚路过哪一个点？
     /// </summary>
-    public int PassedIndex;
+    int PassedIndex;
     /// <summary>
     /// 确定相机可能会向着的点，并进行划线处理
     /// </summary>
-    public int NextPointDrawingLine;
+    int NextPointDrawingLine;
     /// <summary>
     /// 下一个点在左面吗
     /// </summary>
-  public  bool NextPointRight = false;
+    bool NextPointRight = false;
 
     public Transform Target;
     /// <summary>
@@ -45,7 +45,7 @@ public class CameraRestraint : MonoBehaviour
         Target = target;
         tr = Camera;
         //初始化位置
-        tr.SetPositionAndRotation(new Vector3( CameraPoints[InitialPosition].Point.x, CameraPoints[InitialPosition].Point.y, -10f),Quaternion.identity);
+        tr.SetPositionAndRotation(new Vector3(CameraPoints[InitialPosition].Point.x, CameraPoints[InitialPosition].Point.y, -10f), Quaternion.identity);
         PassedIndex = InitialPosition;
 
         for (int i = 0; i < CameraPoints.Length; i++)
@@ -60,7 +60,7 @@ public class CameraRestraint : MonoBehaviour
                 CameraPoints[item].ConnectPointIndex.Add(i);
             }
         }
-       
+
     }
 
     /// <summary>
@@ -68,7 +68,7 @@ public class CameraRestraint : MonoBehaviour
     /// </summary>
     public void JumpToPoint(int index)
     {
-        tr.SetPositionAndRotation(new Vector3( CameraPoints[index].Point.x, CameraPoints[index].Point.y,-10f), Quaternion.identity);
+        tr.SetPositionAndRotation(new Vector3(CameraPoints[index].Point.x, CameraPoints[index].Point.y, -10f), Quaternion.identity);
         PassedIndex = index;
         NextPointDrawingLine = index + 1;
     }
@@ -96,12 +96,12 @@ public class CameraRestraint : MonoBehaviour
 
         //直接取大一个作为下一个要经过的点
         NextPointDrawingLine = Mathf.Clamp(PassedIndex + 1, 0, CameraPoints.Length - 1);
-            //确定序号大一个的点在左面还是右面
-            NextPointRight = CameraPoints[NextPointDrawingLine].Point.x - CameraPoints[PassedIndex].Point.x > 0f;
-       
-       
-           
-        
+        //确定序号大一个的点在左面还是右面
+        NextPointRight = CameraPoints[NextPointDrawingLine].Point.x - CameraPoints[PassedIndex].Point.x > 0f;
+
+
+
+
 
     }
 
@@ -111,7 +111,7 @@ public class CameraRestraint : MonoBehaviour
     /// </summary>
     /// <param name="Raw">玩家输入的移动方向</param>
     /// <param name="Player">玩家的位置（全局）</param>
-    public Vector2 RepairCameraMoveDirection(Vector2 Raw,Vector2 Player)
+    public Vector2 RepairCameraMoveDirection(Vector2 Raw, Vector2 Player)
     {
         //相机在某个点上了
         if ((vector2 - CameraPoints[PassedIndex].Point).sqrMagnitude <= 0.1f)
@@ -143,7 +143,7 @@ public class CameraRestraint : MonoBehaviour
                     case true:
 
                         //玩家向右走，并且玩家在屏幕右侧，离着右面的下一个点很近
-                        if (Raw.x > 0f && Player.x > tr.position.x  && (CameraPoints[NextPointDrawingLine].Point - vector2).sqrMagnitude <= 0.1F)
+                        if (Raw.x > 0f && Player.x > tr.position.x && (CameraPoints[NextPointDrawingLine].Point - vector2).sqrMagnitude <= 0.1F)
                         {
                             return Vector2.zero;
                         }
@@ -161,7 +161,7 @@ public class CameraRestraint : MonoBehaviour
                         else if (Raw.x > 0f && Player.x > tr.position.x && (CameraPoints[NextPointDrawingLine].Point - vector2).sqrMagnitude > 0.1F)
                         {
                             //快点动，追上去
-                            return MoveCamera(Raw*1.2f);
+                            return MoveCamera(Raw * 1.2f);
                         }
                         else
                         {
@@ -250,7 +250,7 @@ public class CameraRestraint : MonoBehaviour
             }
 
 
-           
+
         }
 
 
@@ -263,7 +263,7 @@ public class CameraRestraint : MonoBehaviour
     /// <returns></returns>
     Vector2 MoveCamera(Vector2 Raw)
     {
-       //确定刚经过的点与获取的下一个点的方向（左右不定）
+        //确定刚经过的点与获取的下一个点的方向（左右不定）
         Vector2 direction = (CameraPoints[NextPointDrawingLine].Point - CameraPoints[PassedIndex].Point).normalized;
         //计算玩家输入的移动向量与向量direction的角度
         float angle = Vector2.Angle(Raw, direction);
@@ -279,7 +279,7 @@ public class CameraRestraint : MonoBehaviour
         for (int i = 0; i < CameraPoints.Length; i++)
         {
             //点那里画个球 不这样子写位置TM不显示
-            Gizmos.DrawSphere(new Vector3(CameraPoints[i].Point.x, CameraPoints[i].Point.y,-3f), 0.6f);
+            Gizmos.DrawSphere(new Vector3(CameraPoints[i].Point.x, CameraPoints[i].Point.y, -3f), 0.6f);
 
             //准备19个应该够了
             if (i <= 9)
@@ -289,7 +289,7 @@ public class CameraRestraint : MonoBehaviour
             }
             else
             {
-                Gizmos.DrawIcon(new Vector3(CameraPoints[i].Point.x, CameraPoints[i].Point.y + 1f, 1f),"1.psd", true, Color.black);
+                Gizmos.DrawIcon(new Vector3(CameraPoints[i].Point.x, CameraPoints[i].Point.y + 1f, 1f), "1.psd", true, Color.black);
                 Gizmos.DrawIcon(new Vector3(CameraPoints[i].Point.x, CameraPoints[i].Point.y + 1f, 1f), string.Format("{0}.psd", i.ToString()), true, Color.black);
             }
 
@@ -312,9 +312,9 @@ public class CameraRestraint : MonoBehaviour
     public class LinarPoint
     {
         [Header("锚点")]
-        public Vector2 Point;
+        public Vector2 Point = new();
         [Header("能连接的点的序号")]
-        public List<int> ConnectPointIndex;
+        public List<int> ConnectPointIndex = new();
         /// <summary>
         /// 点的左右能否移动 0左1右
         /// </summary>
