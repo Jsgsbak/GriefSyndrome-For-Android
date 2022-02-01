@@ -28,6 +28,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.7326671, y: -2.1862535, z: 359.4248}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -166,6 +167,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: ddf248ea65154a04a8063f7fc1c0953a, type: 3}
   - {fileID: 8300000, guid: 2bf6ffcf3c836064abb85ad387854072, type: 3}
   - {fileID: 8300000, guid: dea8e47660dd0d747880fa4c87f24070, type: 3}
+  - {fileID: 8300000, guid: 5972d6d8712b7c04fb7a1cbd28aa3f03, type: 3}
   SceneNameDontDestroyOnLoad: Beginning
   IsClone: 0
   SEPlayer: {fileID: 0}

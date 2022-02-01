@@ -62,7 +62,9 @@ public class SoundEffectCtrl : MonoBehaviour
     /// <summary>
     /// 播放音效
     /// </summary>
-    public void PlaySE(Variable.SoundEffect soundEffectName)
+    /// <param name="soundEffectName"></param>
+    /// <param name="ExtraVolume">额外的音量参数</param>
+    public void PlaySE(Variable.SoundEffect soundEffectName,float ExtraVolume =1f)
     {
         if ((int)soundEffectName < 0)
         {
@@ -70,7 +72,7 @@ public class SoundEffectCtrl : MonoBehaviour
         }
         else
         {
-            SEPlayer.PlayOneShot(SE[(int)soundEffectName]);
+            SEPlayer.PlayOneShot(SE[(int)soundEffectName],ExtraVolume * GameScoreSettingsIO.SEVol);
 
         }
     }

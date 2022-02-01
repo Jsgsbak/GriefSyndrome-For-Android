@@ -167,6 +167,11 @@ public class Variable
         PlayerToBall,
         PlayerRebirth,
 
+        /// <summary>
+        /// 人鱼魔女窗子滚动
+        /// </summary>
+        Stage6Rolling,
+
 
     }
 

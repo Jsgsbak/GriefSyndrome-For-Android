@@ -350,10 +350,10 @@ TextureImporter:
       name: Stage6_23
       rect:
         serializedVersion: 2
-        x: 1115
-        y: 240
-        width: 768
-        height: 97
+        x: 1116
+        y: 243
+        width: 766
+        height: 93
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
