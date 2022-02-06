@@ -13,15 +13,15 @@ MonoBehaviour:
   m_Name: UniversalRenderPipelineGlobalSettings
   m_EditorClassIdentifier: 
   k_AssetVersion: 2
-  lightLayerName0: Light Layer default
-  lightLayerName1: Light Layer 1
-  lightLayerName2: Light Layer 2
-  lightLayerName3: Light Layer 3
-  lightLayerName4: Light Layer 4
-  lightLayerName5: Light Layer 5
-  lightLayerName6: Light Layer 6
-  lightLayerName7: Light Layer 7
+  lightLayerName0: Editor
+  lightLayerName1: 2021.2.8f1c1
+  lightLayerName2: Editor
+  lightLayerName3: Data
+  lightLayerName4: MonoBleedingEdge
+  lightLayerName5: lib
+  lightLayerName6: mono
+  lightLayerName7: unityjit-win32
   m_StripDebugVariants: 1
-  m_StripUnusedPostProcessingVariants: 0
-  m_StripUnusedVariants: 1
+  m_StripUnusedPostProcessingVariants: 1
+  m_StripUnusedVariants: 0
   supportRuntimeDebugDisplay: 0

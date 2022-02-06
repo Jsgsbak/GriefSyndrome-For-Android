@@ -67,16 +67,12 @@ public class Stage6WindowsRecycle : MonoBehaviour
         for (int i = 0; i < WindowsGroups.Length; i++) 
         {
             //不断加快移动
-            WindowsGroups[i].Translate( Time.deltaTime * 15f * (Time.timeSinceLevelLoad - RollStartTime) * Vector2.right, Space.World);
+            WindowsGroups[i].Translate( Time.deltaTime * 20f * (Time.timeSinceLevelLoad - RollStartTime) * Vector2.right, Space.World);
         }
 
-        //时间足够长了，开始过渡
-        if(Time.timeSinceLevelLoad - RollStartTime >= 4F)
-        {
 
-        }
         //切换成第二个场景
-        if(Time.timeSinceLevelLoad - RollStartTime > 5.5F)
+        if(Time.timeSinceLevelLoad - RollStartTime > 4F)
         {
             //到时候了，可以传送了
             Portal.SetActive(true);

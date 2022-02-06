@@ -22,7 +22,7 @@ public class AdvancedCameraRestraint:Editor
 
         if (GUILayout.Button("应用相机位置"))
         {
-            cameraRestraint.CameraPoints[cameraRestraint.CameraPoints.Length - 1].Point = Camera.main.transform.position;
+            cameraRestraint.CameraPoints[^1].Point = Camera.main.transform.position;
         }
     }
 

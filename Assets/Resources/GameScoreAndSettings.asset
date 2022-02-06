@@ -40,11 +40,11 @@ MonoBehaviour:
   deadPlayerNumber: 0
   DoesMajoOrShoujoDie: 0
   MagicalGirlsDie: 0101010100
-  BattlingMajo: 5
+  BattlingMajo: 4
   NewestMajo: 5
   MajoSceneToTitle: 1
   PlayersPosition:
-  - {x: -9.400009, y: -15.206942}
+  - {x: -9.400009, y: -14.365}
   - {x: 0, y: 0}
   - {x: 0, y: 0}
   EnableDebugMode: 1

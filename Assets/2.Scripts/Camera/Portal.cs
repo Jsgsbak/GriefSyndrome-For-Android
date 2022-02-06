@@ -89,7 +89,15 @@ public class Portal : MonoBehaviour
         //解除瞬移之后相机可能不移动的现象
         CameraCtrl.cameraCtrl.RecoverMoving();
         //所有玩家瞬移（多人游戏的话，这里要改）
-        PlayerRootCtrl.playerRootCtrl.JumpToPoint(PlayerTo);
+        if(PlayerTo != Vector2.right)
+        {
+            PlayerRootCtrl.playerRootCtrl.JumpToPoint(PlayerTo);
+        }
+        else
+        {
+            //默认的话，可以直接把玩家传送到相机位置
+            PlayerRootCtrl.playerRootCtrl.JumpToPoint(CameraCtrl.cameraCtrl.tr.position);
+        }
         //激活需要激活的物体
         for (int i = 0; i < NeedToEnable.Length; i++)
         {

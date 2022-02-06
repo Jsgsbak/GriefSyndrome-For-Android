@@ -79,10 +79,32 @@ namespace PureAmaya.General
         }
 
 
+        /// <summary>
+        /// 是否在给定的范围内
+        /// </summary>
+        /// <param name="value">给定值</param>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        /// <returns></returns>
+        public static bool Range(float value,float min,float max)
+        {
+            if(min > max)
+            {
+                float S = min;
+                min = max;
+                max = S;
+            }
 
-
-
-
+            if(value >= min && value <= max)
+            {
+                return true;
+            }
+            else
+            {
+                return
+                    false;
+            }
+        }
     }
 }
 

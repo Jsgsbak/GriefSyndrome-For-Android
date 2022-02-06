@@ -38,7 +38,7 @@ public class CameraRestraint : MonoBehaviour
 
     public Transform Target;
     /// <summary>
-    /// 初始化相机位置
+    /// 初始化
     /// </summary>
     public void Initialize(Transform Camera, Transform target)
     {
@@ -48,6 +48,7 @@ public class CameraRestraint : MonoBehaviour
         tr.SetPositionAndRotation(new Vector3(CameraPoints[InitialPosition].Point.x, CameraPoints[InitialPosition].Point.y, -10f), Quaternion.identity);
         PassedIndex = InitialPosition;
 
+        
         for (int i = 0; i < CameraPoints.Length; i++)
         {
             //修复点0→1但没有1→0而引起的不能移动的问题（其实应该双向都能移动）
@@ -212,16 +213,12 @@ public class CameraRestraint : MonoBehaviour
                         //玩家向右走，并且玩家在屏幕中间
                         if (Raw.x > 0f && Mathf.Abs(Player.x - tr.position.x) <= 0.1f)
                         {
-                            Debug.Log("右 不用加速");
-
                             //相机顺着移动过去
                             return MoveCamera(Raw);
                         }
                         //玩家向右走，并且玩家在屏幕右侧
                         else if (Raw.x >= 0f && Player.x - tr.position.x > 0.1f)
                         {
-                            Debug.Log("右 应当加速");
-
                             //相机多移动一点，为了跟上玩家
                             return MoveCamera(Raw * 1.2F);
                         }
@@ -281,7 +278,7 @@ public class CameraRestraint : MonoBehaviour
             //点那里画个球 不这样子写位置TM不显示
             Gizmos.DrawSphere(new Vector3(CameraPoints[i].Point.x, CameraPoints[i].Point.y, -3f), 0.6f);
 
-            //准备19个应该够了
+            //准备19个应该够了  标号
             if (i <= 9)
             {
 
@@ -295,10 +292,27 @@ public class CameraRestraint : MonoBehaviour
 
 
 
-            //找到所有可以与这个点连接的点，然后划线
             foreach (var item in CameraPoints[i].ConnectPointIndex)
             {
-                Gizmos.DrawLine(CameraPoints[i].Point, CameraPoints[item].Point);
+                //找到所有可以与这个点连接的点，然后划线
+                if (CameraPoints[i].AllowGoBack)
+                {
+                    //允许走回去，画绿线
+                    Gizmos.color = Color.green;
+                    Gizmos.DrawLine(CameraPoints[i].Point, CameraPoints[item].Point);
+                }
+                else
+                {
+                    //允许走回去，画红线
+                    Gizmos.color = Color.red;
+                    Gizmos.DrawLine(CameraPoints[i].Point, CameraPoints[item].Point);
+                }
+                //检查：如果有两个相连的点允许玩家返回，则报错
+                if (CameraPoints[item].AllowGoBack && CameraPoints[i].AllowGoBack)
+                {
+                    Debug.LogErrorFormat("编号{0}与{1}的AllowGoBack设定冲突或不必要", item.ToString(), i.ToString());
+                }
+
             }
 
         }
