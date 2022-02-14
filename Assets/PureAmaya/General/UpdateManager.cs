@@ -20,18 +20,18 @@ namespace PureAmaya.General
         /// <summary>
         /// Start之后,Update之前运行一次
         /// </summary>
-        public UpdateEventClass LateStart = new UpdateEventClass();
+        public UpdateEventClass LateStart = new();
         bool LateStartRun = false;
 
-        public  UpdateEventClass FastUpdate = new UpdateEventClass();
+        public  UpdateEventClass FastUpdate = new();
         /// <summary>
         /// 假的LateUpdate（所有FastUpdate执行后，且LateUpdate执行前执行）
         /// </summary>
-        public  UpdateEventClass FakeLateUpdate = new UpdateEventClass();
+        public  UpdateEventClass FakeLateUpdate = new();
         /// <summary>
         /// 依赖于MEC的低速Update
         /// </summary>
-        public  UpdateEventClass SlowUpdate = new UpdateEventClass();
+        public  UpdateEventClass SlowUpdate = new();
         private void Awake()
         {
             updateManager = this;

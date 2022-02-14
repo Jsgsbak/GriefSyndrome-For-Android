@@ -106,6 +106,11 @@ public class CameraRestraint : MonoBehaviour
 
     }
 
+    /*
+    public Vector2 RepairCameraMoveDirection(Vector2 Target)
+    {
+        switch (CameraPoints[PassedIndex].BanLeftRight)
+    }*/
 
     /// <summary>
     /// 修正相机移动方向

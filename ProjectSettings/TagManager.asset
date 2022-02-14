@@ -4,7 +4,6 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Ground
   - Enemy
   - Attack
   - Player1
@@ -12,9 +11,9 @@ TagManager:
   - Player3
   - Floor
   - Wall
-  - Slope
   - PlayerAttack
   - Platform
+  - Slope
   layers:
   - Default
   - TransparentFX
@@ -23,7 +22,7 @@ TagManager:
   - Water
   - UI
   - 
-  - 
+  - PlayerNoPlatform
   - Player
   - Enemy
   - Ground

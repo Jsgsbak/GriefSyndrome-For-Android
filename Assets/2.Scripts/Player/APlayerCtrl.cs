@@ -5,7 +5,7 @@ using PureAmaya.General;
 using MEC;
 using System;
 //真 屎山代码 警告
-//多人游戏玩家需要同步的信息：PlayerStatus， 输入，
+//多人游戏玩家需要同步的信息：PlayerStatus， 输入
 [DisallowMultipleComponent]
 public abstract class APlayerCtrl : MonoBehaviour
 {
@@ -13,187 +13,201 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// <summary>
     /// 123玩家是哪一个
     /// </summary>
-    [Header("基础属性")]
-    public int PlayerId = 1;
-    public Variable.PlayerFaceType MahouShoujoType;
-    [HideInInspector] public int MahouShoujoId;
-    /// <summary>
-    /// 玩家所在斜坡的单位圆坐标（角度/三角函数那些）
-    /// </summary>
-    public Vector2 PlayerSlope = Vector2.right;
+    public int PlayerId { private set; get; }
 
     /// <summary>
-    /// 禁用重力射线。用于穿透地板（仅AplayerCtrl可以修改）
+    /// 选的哪一个角色
     /// </summary>
-    [SerializeField] bool BanGravityRay = false;
-    bool BanJiaoChaDi = false;
+    public Variable.PlayerFaceType MahouShoujoType;
+
+
+
+    bool _banJump = false;
     /// <summary>
     /// 禁用跳跃
     /// </summary>
-    public bool BanJump = false;
-    public bool BanWalk = false;
-    /// <summary>
-    /// 是否在地面（仅限APlayerCtrl使用SetIsOnGround函数进行修改）
-    /// </summary>
-    public bool IsGround = true;
+    public bool BanJump
+    {
+        set
+        {
+            //禁用输入的话，是一定禁止走动的
+            if (MountGSS.gameScoreSettings.BanInput)
+            {
+                _banJump = true;
+            }
+            else
+            {
+                _banJump = value;
+            }
+        }
+        get
+        {
+            //禁用输入的话，是一定禁止走动的
+            if (MountGSS.gameScoreSettings.BanInput)
+            {
+                return true;
+            }
+            else
+            {
+                return _banJump;
+            }
+        }
+    }
 
-    /// <summary>
-    /// 脚下是啥
-    /// </summary>
-     public int WhatUnderFoot;
-    /// <summary>
-    /// 用以给降落是否触底判断的脚底物ID
-    /// </summary>
-   public int UnderFootForFalling = -1;
 
-    /// <summary>
-    /// 从平台上跳下的时间
-    /// </summary>
-    float FallFromPlatformTime = 0f;
 
-    /// <summary>
-    /// 站在地板上
-    /// </summary>
-    public bool StandOnFloor = false;
+    bool _banWalk = false;
+    public bool BanWalk
+    {
+        set
+        {
+            //禁用输入的话，是一定禁止走动的
+            if (MountGSS.gameScoreSettings.BanInput)
+            {
+                _banWalk = true;
+            }
+            else
+            {
+                _banWalk = value;
+            }
+        }
+        get
+        {
+            //禁用输入的话，是一定禁止走动的
+            if (MountGSS.gameScoreSettings.BanInput)
+            {
+                return true;
+            }
+            else
+            {
+                return _banWalk;
+            }
+        }
+    }
+
+
+    bool _banTurnAround = false;
     /// <summary>
     /// 禁用转身
     /// </summary>
-    public bool BanTurnAround = false;
+    public bool BanTurnAround
+    {
+        set
+        {
+            //禁用输入的话，是一定禁止走动的
+            if (MountGSS.gameScoreSettings.BanInput)
+            {
+                _banTurnAround = true;
+            }
+            else
+            {
+                _banTurnAround = value;
+            }
+        }
+        get
+        {
+            //禁用输入的话，是一定禁止走动的
+            if (MountGSS.gameScoreSettings.BanInput)
+            {
+                return true;
+            }
+            else
+            {
+                return _banTurnAround;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 斜坡参数
+    /// </summary>
+    public float PlayerSlopeAngle;
+    /// <summary>
+    /// 脚底向下的射线
+    /// </summary>
+    RaycastHit2D FeetDown;
+
     /// <summary>
     /// 无敌状态
     /// </summary>
-    public bool IsInvincible = false;
-    /// <summary>
-    /// 重力射线位置
-    /// </summary>
-    [Header("重力射线位置")]
-    public Transform[] GavityRayPos = new Transform[2];
+    [HideInInspector] public bool IsInvincible = false;
+
+    [HideInInspector] public float MoveSpeedRatio = 1f;
 
     /// <summary>
-    /// 相机的变换组件（用于解决掉入虚空的BUG）
+    /// 是否在地面
     /// </summary>
-    public Transform Camera;
+    public bool IsGround { get { return StandOnFloor || StandOnPlatform; }}
+    /// <summary>
+    /// 脚下是啥
+    /// </summary>
+    public int WhatUnderFoot {  get; private set; }
 
+
+    public Transform Feet;
+
+    /// <summary>
+    /// 相机顶，防止玩家向上移动超出视野
+    /// </summary>
     public Transform Roof;
     #endregion
 
 
-    #region 组件
-    public Transform tr;
-    [HideInInspector] public Animator animator;
-    [HideInInspector] public SpriteRenderer spriteRenderer;
-    Material Material;
-    #endregion
 
     #region 私有状态机（不保存到GSS中）
+
+
     /// <summary>
     /// 玩家状态（仅应用于动画机）
     /// </summary>
-    public Variable.PlayerStatus playerStatus;
-    /// <summary>
-    /// 前脚射线
-    /// </summary>
-    RaycastHit2D infoRight;
-    RaycastHit2D infoLeft;
-    RaycastHit2D infoHor;//水平射线，检测撞墙
-    RaycastHit2D infoAntiGround;//防止主动脚插进地理
+    public Variable.PlayerStatus PlayerStatus;
 
-    /// <summary>
-    /// 重力速率（仅能通过SetGravityRatio修改）
-    /// </summary>
-    [SerializeField] float GravityRatio = 1f;
-    /// <summary>
-    /// 用这个设定重力速率
-    /// </summary>
-    /// <param name="number"></param>
-    public void SetGravityRatio(float number)
-    {
-        //在地板上想启用重力，不可
-        if(number != 0f && IsGround)
-        {
-            return;
-        }
-
-        //恢复重力(GravityRatio = 0:用于判定是不是第一次从重力禁用状态恢复到重力启用状态）
-        if (number != 0f && GravityRatio == 0F)
-        {
-            //此时重置掉落间隔计时器，以实现正常的加速掉落（仅限第一次从重力禁用状态恢复到重力启用状态）
-            FallInteralTimer = Time.timeSinceLevelLoad;
-            //恢复射线
-            BanGravityRay = false;
-        }
-        GravityRatio = number;
-    }
-
-    /// <summary>
-    /// 设置是否在地面
-    /// </summary>
-    /// <param name="value"></param>
-   float  SetIsOnGroundTime = -1;
-    public void SetIsOnGround(bool value)
-    {
-
-        //如果现在的状态是没落地，但是射线之类的说要落地了，发动落地音效
-        if (!IsGround && value && !MountGSS.gameScoreSettings.IsBodyDieInGame[PlayerId] && !MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId] && !IsJumping && !IsJumpingForward && playerStatus == Variable.PlayerStatus.Fall)
-        {
-
-            //代码执行的间隔足够长，才发出着陆的声音
-            if (Time.timeSinceLevelLoad - SetIsOnGroundTime >= 0.5f)
-            {
-                SetIsOnGroundTime = Time.timeSinceLevelLoad;
-                if(ExMath.Abs(PlayerSlope.x)  == 1F || ExMath.Abs(PlayerSlope.x) == 0F)
-                {
-                    SoundEffectCtrl.soundEffectCtrl.PlaySE(Variable.SoundEffect.PlayerLand);
-                }
-
-            }
-        }
-        IsGround = value;
-    }
-
-    public float MoveSpeedRatio = 1f;
-
-    /// <summary>
-    ///  仅限空气墙和平台左右两端禁止左右移动（-1左 1右）
-    /// </summary>
-    public int BanLeftOrRight = 0;
-    /// <summary>
-    /// 碰到空气墙（墙壁）了 用来解决贴着墙跳会掉入虚空的BUG
-    /// </summary>
-    private bool ZhuangBi = false;
-
+    bool _doLookRight = true;
     /// <summary>
     /// 向右看吗
     /// </summary>
-    [HideInInspector] public bool DoLookRight = true;
-    public int JumpCount = 0;
+    public bool DoLookRight
+    {
+        get { return _doLookRight; }
+        private set { _doLookRight = value; }
+    }
+
+
+
+
     /// <summary>
-    /// 跳跃间隔计时器
+    /// 跳跃次数
     /// </summary>
-    float JumpInteralTimer = 0f;
+    public int JumpCount { private set; get; }
     /// <summary>
-    /// 掉落间隔计时器
+    /// 正在竖直向上跳跃
     /// </summary>
-   public float FallInteralTimer = 0f;
-    /// <summary>
-    /// 正在跳跃（专指上升阶段）
-    /// </summary>
-    public bool IsJumping = false;
+    public bool IsJumping { private set; get; }
+
+    float FallFromPlatformTime;
 
     /// <summary>
     /// 正在向前跳（仅对有向前跳动画的角色有用）
     /// </summary>
-    public bool IsJumpingForward = false;
+    public bool IsJumpingForward { private set; get; }
 
+    [SerializeField] bool _standOnPlatform;
     /// <summary>
     /// 站在平台上
     /// </summary>
-    public bool StandOnPlatform = false;
+    public bool StandOnPlatform { get { return _standOnPlatform; } private set { _standOnPlatform = value; } }
+
+    [SerializeField] bool _standOnFloor;
+    /// <summary>
+    /// 站在地板上
+    /// </summary>
+    public bool StandOnFloor { get { return _standOnFloor; } private set { _standOnFloor = value; } }
 
     /// <summary>
     /// 正在攻击，防止意外切换到其他攻击状态 0 z 1 x 2 Magia
     /// </summary>
     public bool[] IsAttack = new bool[3];
+
     /// <summary>
     /// 能否可以/已经停止攻击（中断攻击）
     /// </summary>
@@ -210,26 +224,38 @@ public abstract class APlayerCtrl : MonoBehaviour
 
     #endregion
 
-#if UNITY_EDITOR
-    public bool BanRay = false;
-#endif
+    #region 组件
+    Transform tr;
+    Animator animator;
+    SpriteRenderer spriteRenderer;
+    Material Material;
+    Rigidbody2D rigidbody2D;
+    GameObject go;
+    #endregion
+
 
     private void Awake()
     {
         #region 获取组件
-        animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
         Material = spriteRenderer.material;
+        tr = transform;
+        rigidbody2D = GetComponent<Rigidbody2D>();
+        go = gameObject;
         #endregion
+
+        //初始化组件
+        rigidbody2D.drag = 0f;
+        rigidbody2D.mass = 1f;
+        SetGravityRatio(1f);
+        rigidbody2D.constraints = RigidbodyConstraints2D.FreezeRotation;
+        rigidbody2D.simulated = true;
     }
 
     private void Start()
     {
-        #region 注册事件
         UpdateManager.updateManager.FastUpdate.AddListener(FastUpdate);
-    //    UICtrl.uiCtrl.PauseGame.AddListener(delegate (bool paused) { MountGSS.gameScoreSettings.BanInput = paused; });  这样子可能会用暂停来强制取消一些禁止输入的状态
-        #endregion
-
 
         //影子魔女的话开启黑色描边效果
         if (MountGSS.gameScoreSettings.BattlingMajo == Variable.Majo.ElsaMaria)
@@ -251,13 +277,12 @@ public abstract class APlayerCtrl : MonoBehaviour
         InvokeRepeating(nameof(PerSecondChange), 1f, 1f);
 
         //保存本地玩家选择的魔法少女的魔法少女id
-        MahouShoujoId = (int)MahouShoujoType;
-        MountGSS.gameScoreSettings.PlayerSelectedGirlId = MahouShoujoId;
+        MountGSS.gameScoreSettings.PlayerSelectedGirlId = (int)MahouShoujoType;
 
-        //获取PlayerId
+        //获取PlayerId（ 1 2 3 哪一个）
         for (int i = 0; i < 3; i++)
         {
-            if (MountGSS.gameScoreSettings.SelectedGirlInGame[i].ToString().Equals(name))
+            if (MountGSS.gameScoreSettings.SelectedGirlInGame[i] == MahouShoujoType)
             {
                 PlayerId = i;
                 break;
@@ -265,10 +290,11 @@ public abstract class APlayerCtrl : MonoBehaviour
         }
         //记录玩家初始化的位置
         MountGSS.gameScoreSettings.PlayersPosition[PlayerId] = tr.position;
-       
+
         //设置tag
         tag = string.Format("Player{0}", (PlayerId + 1).ToString());
-        //修正玩家层
+
+        //修正玩家层（设置为Player，通常玩家层）
         gameObject.layer = 8;
 
 #if UNITY_EDITOR
@@ -281,6 +307,9 @@ public abstract class APlayerCtrl : MonoBehaviour
             ii++;
         }
 #endif
+
+
+
     }
 
 
@@ -310,7 +339,6 @@ public abstract class APlayerCtrl : MonoBehaviour
             MountGSS.gameScoreSettings.XattackPressed = RebindableInput.GetKey("Xattack");
             MountGSS.gameScoreSettings.Magia = RebindableInput.GetKeyDown("Magia");
             MountGSS.gameScoreSettings.MagiaPressed = RebindableInput.GetKey("Magia");
-
             MountGSS.gameScoreSettings.Pause = RebindableInput.GetKeyDown("Pause");
 
         }
@@ -331,90 +359,106 @@ public abstract class APlayerCtrl : MonoBehaviour
     void FastUpdate()
     {
 
-        //左右翻转
-        if (!BanTurnAround)
-        {
-            if (MountGSS.gameScoreSettings.Horizontal == -1 && DoLookRight)
-            {
-                tr.rotation = Quaternion.Euler(0f, 180f, 0f);
-                DoLookRight = false;
-
-            } //
-            else if (MountGSS.gameScoreSettings.Horizontal == 1 && !DoLookRight)
-            {
-                tr.rotation = Quaternion.Euler(0f, 0f, 0f);
-                DoLookRight = true;
-            }
-        }
-
-        Gravity();
-
-
-#if UNITY_EDITOR
-        if (!BanRay)
-        {
-            RayCtrl();
-        }
-#endif
-
-#if !UNITY_EDITOR
-            RayCtrl();
-#endif
-
-
+        //这里的话，多人游戏要改改，总不能所有的远程玩家都不进行处理吧
         if (!MountGSS.gameScoreSettings.LocalIsStiff)
         {
-            //还是以最高优先级执行输入代理
+            //以最高优先级执行输入代理
             InputAgent();
 
 
-#region  基础控制器
-            JumpAndFall();
+            //左右翻转
+            if (!BanTurnAround)
+            {
+                if (MountGSS.gameScoreSettings.Horizontal == -1 && DoLookRight)
+                {
+                    tr.rotation = Quaternion.Euler(0f, 180f, 0f);
+                    DoLookRight = false;
 
+                }
+                else if (MountGSS.gameScoreSettings.Horizontal == 1 && !DoLookRight)
+                {
+                    tr.rotation = Quaternion.Euler(0f, 0f, 0f);
+                    DoLookRight = true;
+                }
+            }
+
+
+
+            #region  基础控制器
+            JumpAndFall();
             if (!BanWalk) Walk();
+            if (!IsJumping && !IsJumpingForward && go.layer != 7) RayCtrl();
             SetStatus();
             if (!MountGSS.gameScoreSettings.LocalIsStiff) AnimationCtrl();
 
-#region 攻击方法
-        //防止死亡状态、按下跳跃的瞬间发动攻击
-        if (MountGSS.gameScoreSettings.Jump || MountGSS.gameScoreSettings.IsBodyDieInGame[PlayerId] || IsInvincible)
+            #region 攻击方法
+            //防止死亡状态、按下跳跃的瞬间发动攻击
+            if (MountGSS.gameScoreSettings.Jump || MountGSS.gameScoreSettings.IsBodyDieInGame[PlayerId] || IsInvincible)
+            {
+                //修复攻击过程中跳跃仍然显示攻击动画的bug
+                return;
+            }
+
+
+            //前面的!IsAttack[1]是为了防止做这个攻击的时候意外发动其他的攻击
+            //这里加限制条件/修改状态要三思，主要是在抽象的方法里更改和限制
+            //对于玩家来说，除了跳跃键，其他的都是能够接受长时间按住的
+            if (!IsAttack[1] && !IsAttack[2] && !MountGSS.gameScoreSettings.Xattack && !MountGSS.gameScoreSettings.XattackPressed) { OrdinaryZ(); HorizontalZ(); VerticalZ(); }
+            if (!IsAttack[0] && !IsAttack[2] && !MountGSS.gameScoreSettings.Zattack && !MountGSS.gameScoreSettings.ZattackPressed) { OrdinaryX(); HorizontalX(); UpX(); DownX(); }
+            //magia对VIT/血条的处理在各自的脚本里  限制vit有bug   松开魔法键之后仍然会执行魔法
+            if (!IsAttack[0] && !IsAttack[1] && /*MountGSS.gameScoreSettings.Magia &&*/ MountGSS.gameScoreSettings.GirlsVit[MountGSS.gameScoreSettings.PlayerSelectedGirlId] > MountGSS.gameScoreSettings.mahouShoujos[MountGSS.gameScoreSettings.PlayerSelectedGirlId].MaigaVit | IsAttack[2]) { Magia(); }
+
+            BanWalk = IsAttack[0] || IsAttack[1] || IsAttack[2] || MountGSS.gameScoreSettings.Zattack || MountGSS.gameScoreSettings.Magia || MountGSS.gameScoreSettings.Xattack;//在这里统一弄一个，直接在这里禁用移动，不再在各种攻击方法和动画事件中禁用了
+            BanJump = IsAttack[0] || IsAttack[1] || IsAttack[2] || MountGSS.gameScoreSettings.Zattack || MountGSS.gameScoreSettings.Magia || MountGSS.gameScoreSettings.Xattack;//在这里统一弄一个，直接在这里禁用移动，不再在各种攻击方法和动画事件中禁用了
+
+            #endregion
+
+        }
+
+        #endregion
+
+
+
+
+    }
+
+    private void RayCtrl()
+    {
+
+        //脚底向下发射一个射线
+        FeetDown = Physics2D.Raycast(Feet.position, Vector2.down,1F, (1 << 9) | (1 << 13) | (1 << 14));
+        Collider2D collider2D = FeetDown.collider;
+
+#if UNITY_EDITOR
+        Debug.DrawRay(Feet.position, Vector2.down, Color.green);
+#endif
+
+        if(collider2D == null)
         {
-            //修复攻击过程中跳跃仍然显示攻击动画的bug
+            StandOnFloor = false;
+            StandOnPlatform = false;
             return;
         }
-
-
-        //前面的!IsAttack[1]是为了防止做这个攻击的时候意外发动其他的攻击
-        //这里加限制条件/修改状态要三思，主要是在抽象的方法里更改和限制
-        //对于玩家来说，除了跳跃键，其他的都是能够接受长时间按住的
-        if (!IsAttack[1] && !IsAttack[2] && !MountGSS.gameScoreSettings.Xattack && !MountGSS.gameScoreSettings.XattackPressed) { OrdinaryZ(); HorizontalZ(); VerticalZ(); }
-        if (!IsAttack[0] && !IsAttack[2] && !MountGSS.gameScoreSettings.Zattack && !MountGSS.gameScoreSettings.ZattackPressed) { OrdinaryX(); HorizontalX(); UpX(); DownX(); }
-        //magia对VIT/血条的处理在各自的脚本里  限制vit有bug   松开魔法键之后仍然会执行魔法
-        if (!IsAttack[0] && !IsAttack[1] && /*MountGSS.gameScoreSettings.Magia &&*/ MountGSS.gameScoreSettings.GirlsVit[MahouShoujoId] > MountGSS.gameScoreSettings.mahouShoujos[MahouShoujoId].MaigaVit | IsAttack[2]) { Magia(); }
-
-        BanWalk = IsAttack[0] || IsAttack[1] || IsAttack[2] || MountGSS.gameScoreSettings.Zattack || MountGSS.gameScoreSettings.Magia || MountGSS.gameScoreSettings.Xattack;//在这里统一弄一个，直接在这里禁用移动，不再在各种攻击方法和动画事件中禁用了
-        BanJump = IsAttack[0] || IsAttack[1] || IsAttack[2] || MountGSS.gameScoreSettings.Zattack || MountGSS.gameScoreSettings.Magia || MountGSS.gameScoreSettings.Xattack;//在这里统一弄一个，直接在这里禁用移动，不再在各种攻击方法和动画事件中禁用了
-
-#endregion
-
+        //脚底踩地面
+        if (collider2D.CompareTag("Platform") || collider2D.CompareTag("Floor"))
+        {
+            StandOnFloor = collider2D.CompareTag("Floor"); 
+            StandOnPlatform = collider2D.CompareTag("Platform");
+            PlayerSlopeAngle =  ExMath.Deg2Rad(Vector2.Angle(Vector2.down, FeetDown.normal));
+        }
+        //不在地上
+        else if (collider2D.CompareTag("Platform") && collider2D.CompareTag("Floor"))
+        {
+            StandOnFloor = false;
+            StandOnPlatform = false;
         }
 
-#endregion
-
-
 
 
     }
 
-#region  基础控制器
-    /// <summary>
-    /// 仅仅是给动画机提供的一个动画播放的函数（方便点）
-    /// </summary>
-    /// <param name="se"></param>
-    public void PlayerSE(Variable.SoundEffect se)
-    {
-        SoundEffectCtrl.soundEffectCtrl.PlaySE(se);
-    }
+    #region  基础控制器
+
 
     /// <summary>
     /// 设置玩家状态（状态机）
@@ -433,45 +477,45 @@ public abstract class APlayerCtrl : MonoBehaviour
         //基础的在这里写，攻击的在各自玩家脚本中重写
         if (MountGSS.gameScoreSettings.Horizontal == 0 && IsGround && !IsJumping && !MountGSS.gameScoreSettings.IsBodyDieInGame[PlayerId] && !MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId] && !MountGSS.gameScoreSettings.GetHurtInGame[PlayerId])
         {
-            playerStatus = Variable.PlayerStatus.Idle;
+            PlayerStatus = Variable.PlayerStatus.Idle;
         }
         else if (MountGSS.gameScoreSettings.Horizontal != 0 && IsGround && !IsJumping && !MountGSS.gameScoreSettings.IsBodyDieInGame[PlayerId] && !MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId] && !MountGSS.gameScoreSettings.GetHurtInGame[PlayerId])
         {
-            playerStatus = Variable.PlayerStatus.Walk;
+            PlayerStatus = Variable.PlayerStatus.Walk;
         }
         else if (IsJumping && !IsJumpingForward && !MountGSS.gameScoreSettings.IsBodyDieInGame[PlayerId] && !MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId] && !MountGSS.gameScoreSettings.GetHurtInGame[PlayerId])
         {
-            playerStatus = Variable.PlayerStatus.Jump;
+            PlayerStatus = Variable.PlayerStatus.Jump;
         }
         else if (IsJumping && IsJumpingForward && !MountGSS.gameScoreSettings.IsBodyDieInGame[PlayerId] && !MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId] && !MountGSS.gameScoreSettings.GetHurtInGame[PlayerId])
         {
-            playerStatus = Variable.PlayerStatus.JumpForward;
+            PlayerStatus = Variable.PlayerStatus.JumpForward;
 
         }
-        else if (ExMath.Abs(PlayerSlope.x) == 1F || ExMath.Abs(PlayerSlope.x) == 0F && !IsGround && !IsJumping && !MountGSS.gameScoreSettings.IsBodyDieInGame[PlayerId] && !MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId] && !MountGSS.gameScoreSettings.GetHurtInGame[PlayerId])
+        else if (!IsGround && !IsJumping && !MountGSS.gameScoreSettings.IsBodyDieInGame[PlayerId] && !MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId] && !MountGSS.gameScoreSettings.GetHurtInGame[PlayerId])
         {
-            playerStatus = Variable.PlayerStatus.Fall;
+            PlayerStatus = Variable.PlayerStatus.Fall;
         }
-        else if (MountGSS.gameScoreSettings.GetHurtInGame[PlayerId] && MountGSS.gameScoreSettings.GirlSoulLimit[MahouShoujoId] >= 0)
+        else if (MountGSS.gameScoreSettings.GetHurtInGame[PlayerId] && MountGSS.gameScoreSettings.GirlSoulLimit[MountGSS.gameScoreSettings.PlayerSelectedGirlId] >= 0)
         {
-            playerStatus = Variable.PlayerStatus.GetHurt;
+            PlayerStatus = Variable.PlayerStatus.GetHurt;
         }
         else if (MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId])
         {
-            playerStatus = Variable.PlayerStatus.PlayerSoul;
+            PlayerStatus = Variable.PlayerStatus.PlayerSoul;
         }
         else if (MountGSS.gameScoreSettings.IsBodyDieInGame[PlayerId] && !MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId] && !PlayPlayerDie2 && !PlayPlayerDie3)
         {
-            playerStatus = Variable.PlayerStatus.PlayerDie_1;
+            PlayerStatus = Variable.PlayerStatus.PlayerDie_1;
         }
         else if (PlayPlayerDie2 && !PlayPlayerDie3)
         {
-            playerStatus = Variable.PlayerStatus.PlayerDie_2;
+            PlayerStatus = Variable.PlayerStatus.PlayerDie_2;
         }
         //消失状态
         else if (PlayPlayerDie3)
         {
-            playerStatus = Variable.PlayerStatus.PlayerDie_3;
+            PlayerStatus = Variable.PlayerStatus.PlayerDie_3;
         }
 
     }
@@ -485,16 +529,27 @@ public abstract class APlayerCtrl : MonoBehaviour
     {
         //动画根据时间流逝速度播放（暂停游戏时暂停动画）
         animator.speed = Time.timeScale;
-
+        if (KaQiTuoLiTai && PlayerStatus == Variable.PlayerStatus.Walk)
+        {
+            animator.speed = Time.timeScale * MoveSpeedRatio;//卡其脱离太的话，动画也快点
+        }
         //未停止攻击/受伤（含死亡）动画正在播放的时候不能切换到其他任何形态
-        if (!StopAttacking && playerStatus == Variable.PlayerStatus.GetHurt)
+        if (!StopAttacking && PlayerStatus == Variable.PlayerStatus.GetHurt)
         {
             return;
         }
 
-       
         //播放预设动画
-        animator.Play(GameScoreSettingsIO.AnimationHash[(int)playerStatus]);
+        animator.Play(GameScoreSettingsIO.AnimationHash[(int)PlayerStatus]);
+        //跳跃动画播放的时候，如果再次进行了一次跳跃，则重新播放该动画
+        if (PlayerStatus == Variable.PlayerStatus.Jump || PlayerStatus == Variable.PlayerStatus.JumpForward)
+        {
+            if (MountGSS.gameScoreSettings.Jump && JumpCount == 2)
+            {
+                Debug.Log("114514");
+                animator.Play(GameScoreSettingsIO.AnimationHash[(int)PlayerStatus], -1, 0f);
+            }
+        }
 
     }
 
@@ -503,92 +558,55 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// </summary>
     public void JumpAndFall()
     {
-        //除了禁用跳跃的情况，攻击的时候也不能跳（单独写出来，不然太麻烦了）   // ZhuangBi：阻止空气墙那里进行跳跃
+        //除了禁用跳跃的情况，攻击的时候也不能跳（单独写出来，不然太麻烦了）
         if (BanJump || MountGSS.gameScoreSettings.Zattack || MountGSS.gameScoreSettings.Xattack || MountGSS.gameScoreSettings.Magia || MountGSS.gameScoreSettings.LocalIsStiff) return;
 
         //跳跃触发
         if (!MountGSS.gameScoreSettings.Down && MountGSS.gameScoreSettings.Jump && JumpCount != 2)
         {
-            MoveSpeedRatio = 1f;
-            JumpInteralTimer = Time.timeSinceLevelLoad;
             IsJumping = true;
             JumpCount++;
-            SetGravityRatio(0f);
-            BanGravityRay = true;
             StandOnFloor = false;
             StandOnPlatform = false;
-            PlayerSlope = Vector2.right;
             IsJumpingForward = MountGSS.gameScoreSettings.Horizontal != 0;
 
             SoundEffectCtrl.soundEffectCtrl.PlaySE(Variable.SoundEffect.PlayerJump);
+            //恢复中立，并顺便消除垂直方向的速度
+            SetGravityRatio(1f);
+            //施加向上的力（大小待测试）
+            rigidbody2D.AddForce(Vector2.up * 9.5f, ForceMode2D.Impulse);
         }
-        //跳跃状态
-        if (IsJumping)
+
+        else if (IsJumping || IsJumpingForward)
         {
-            //上升
-            if (Time.timeSinceLevelLoad - JumpInteralTimer <= 0.35f)
+            //垂直几乎没速度了
+            if (rigidbody2D.velocity.y < 0f)
             {
-                //解决一个很奇怪的BUG
-                SetIsOnGround(false);
-                
-                Move((GameScoreSettingsIO.JumpSpeed - (Time.timeSinceLevelLoad - JumpInteralTimer) * GameScoreSettingsIO.JumpSpeed / 0.3F), true, Vector3.up);
-            }
-            //下降（其实就是取消跳跃状态）
-            else
-            {
-                BanGravityRay = false;
-                //见上方，因为只有攻击才会修改GravityRatio为0，1以外的其他值，所以非攻击状态（指跳跃允许使用）且掉落，直接改成1
-                SetGravityRatio(1f);
                 IsJumping = false;
                 IsJumpingForward = false;
-
-
             }
         }
-
         //跳跃计数器更新
-        if (IsGround) { JumpCount = 0; }
+        else if (IsGround && !IsJumping && !IsJumpingForward) { JumpCount = 0; }
 
 
 
         //穿过平台，激活之后一直往下掉，直到碰到地板才停止
-        //激活  UnderFootForFalling == -1：防止多次执行
-        if (MountGSS.gameScoreSettings.Down && StandOnPlatform && MountGSS.gameScoreSettings.Jump && UnderFootForFalling == -1)
+        //. Changing this property(rigidbody2D.simulated) is much more memory and processor-efficient than enabling or disabling individual Collider 2D and Joint 2D components.
+        if (MountGSS.gameScoreSettings.Down && StandOnPlatform && MountGSS.gameScoreSettings.Jump && go.layer != 7)
         {
-            UnderFootForFalling = WhatUnderFoot;//临时保存一个，用于判断穿过平台是否碰地了
+            //更改玩家层，使玩家具有下落传过平台的条件
+            go.layer = 7;//7 与平台不碰撞的
             IsJumping = false;
-            BanGravityRay = true;
-            BanJiaoChaDi = true;
-            PlayerSlope = Vector2.right;
             FallFromPlatformTime = Time.timeSinceLevelLoad;
-            SetGravityRatio(1f);
+        }
 
-        }
-        //穿过平台的那一段时间
-        else if(UnderFootForFalling == WhatUnderFoot)
+        //一定时间后，大概是穿过平台了，回复玩家层准备接受对平台的碰撞
+        else if (Time.timeSinceLevelLoad - FallFromPlatformTime >= 1f && go.layer == 7)
         {
-            //临时允许重力射线用于更新WhatUnderFoot，并改回原来的下降状态
-            BanGravityRay = false;
-            RayCtrl();
-            BanGravityRay = true;
-            //设置状态（因为上面会改变状态）
-            IsGround = false;
-            StandOnFloor = false;
-            StandOnPlatform = false;
-            //独立的向下移动
-            Move(((Time.timeSinceLevelLoad - FallFromPlatformTime) * GameScoreSettingsIO.JumpSpeed / 0.4F), true, Vector3.down);
+            go.layer = 8;//8 通常玩家层
         }
-        else if(UnderFootForFalling != WhatUnderFoot && UnderFootForFalling != -1)
-        {
-            //成功穿过平台，在空气中，就变成了正常的下落
-            BanGravityRay = false;
-            SetGravityRatio(1f);
-            UnderFootForFalling = -1;
-            BanJiaoChaDi = false;
-            //更新下落时间使下落更平滑
-            FallInteralTimer = FallFromPlatformTime;
-        }
-        
+
     }
 
     /// <summary>
@@ -600,282 +618,31 @@ public abstract class APlayerCtrl : MonoBehaviour
         {
             return;
         }
-        //既然要取消，那肯定是跳起来了
+        //既然要取消，那肯定是跳起来了，不在地上，悬空，准备后面的处理
         SetGravityRatio(0f);
-        BanGravityRay = false;//有向上移动的攻击时，才能禁用这个
-        SetIsOnGround(false);
         IsJumping = false;
         IsJumpingForward = false;
-
-    }
-
-
-    #region 射线控制
-    /// <summary>
-    /// 射线控制器
-    /// </summary>
-    public void RayCtrl()
-    {       
-        //重力射线（禁止的话，不允许脚底这几个向下的射线工作）
-        if (!BanGravityRay)
-        {
-
-            //获取射线击中的物体
-            //向下的
-            //左脚（被动脚
-            infoLeft = Physics2D.Raycast(GavityRayPos[1].position, Vector2.down, 0.5f);
-            //右脚（主动角）
-            infoRight = Physics2D.Raycast(GavityRayPos[0].position, Vector2.down, 0.5f);
-            //主动角右脚 发射一个向上的射线，用来防止角插进地里面，包含在斜面上转身而造成的情况
-            infoAntiGround = Physics2D.Raycast(GavityRayPos[0].position, Vector2.up, 0.1f);
-
-            //右脚向上的射线检测到东西了，说明右脚（全局方向）插进地理了
-            if (infoAntiGround.collider != null)
-            {
-                tr.Translate(new Vector2(0F, 0.1f), Space.World);
-                Debug.Log("YUKI.N> 紧急修正程序已启动");
-               
-            }
-
-
-
-            //3种着地情况
-            if (infoRight.collider != null && infoLeft.collider != null)
-            {
-                CheckVerticalLine(infoLeft,infoRight);
-                RepairFlip();
-            }
-
-            else if (infoRight.collider != null && infoLeft.collider == null)
-            {
-                CheckVerticalLine(infoRight,GavityRayPos[0].position);
-                RepairFlip();
-
-            }
-            else if (infoRight.collider == null && infoLeft.collider != null)
-            {
-                CheckVerticalLine(infoLeft, GavityRayPos[1].position);
-                RepairFlip();
-
-
-            }
-            //啥也没才上，腾空
-            else if (!IsJumping)//去除跳跃与在斜面上移动的情况的情况
-            {
-                StandOnPlatform = false;
-                StandOnFloor = false;
-                WhatUnderFoot = 0;
-            }
-
-            //根据是否在地板/平台上得到着地状态
-            SetIsOnGround(StandOnPlatform || StandOnFloor);
-
-
-            //站在地上
-            if (!IsAttack[0] && !IsAttack[1] && !IsAttack[2] && IsGround)
-            {
-                SetGravityRatio(0f);
-            }
-            //悬空并且能够下落
-            else if (!IsAttack[0] && !IsAttack[1] && !IsAttack[2] && !IsGround && !IsJumping && !MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId])
-            {
-                SetGravityRatio(1f);//114514
-            }
-        }
-
-
-        //水平移动防止穿墙射线
-        if (DoLookRight)
-        {
-            infoHor = Physics2D.Raycast(GavityRayPos[0].position + Vector3.up * 0.2f, Vector2.right, 0.15f);
-        }
-        else//
-        {
-            infoHor = Physics2D.Raycast(GavityRayPos[0].position + Vector3.up * 0.2f, Vector2.left, 0.15f);
-
-        }
-
-        //撞墙限制移动
-        BanLeftOrRight = 0;
-        ZhuangBi = false;
-        if (infoHor.collider != null)
-        {
-            //撞墙限制移动（墙都是指空气墙）
-            if (infoHor.collider.CompareTag("Wall") || infoHor.collider.CompareTag("Floor"))
-            {
-                ZhuangBi = infoHor.collider.CompareTag("Wall");
-
-                //允许玩家穿过平台
-                if (!infoHor.collider.gameObject.layer.Equals(15))
-                {
-                    if (DoLookRight)
-                    {
-                        BanLeftOrRight = 1;
-                    }
-                    else
-                    {
-                        BanLeftOrRight = -1;
-
-                    }
-                }
-
-               
-            }
-
-          
-
-        }
-
-        /*
-        //脚插地修复（留着吧以后）
-        if (!BanJiaoChaDi&& infoLeft.collider != null && infoHor.collider != null && IsGround && !MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId] && !ZhuangBi )
-        {
-            //如果水平射线与脚底射线得到的东西一致，那么说明脚插在地里（不对地板进行处理）
-            if (infoLeft.collider.GetInstanceID().Equals(infoHor.collider.GetInstanceID()))
-            {
-                Debug.Log("YUKI.N> 紧急修正程序已启动");
-
-                tr.Translate(Vector3.up * 0.1f, Space.World);
-            }
-        }
-        */
-        
     }
 
     /// <summary>
-    /// 检查垂直射线
+    /// 用这个设定重力速率（但凡用到这个，垂直速度都会调成0）
     /// </summary>
-    /// <param name="raycastHit2D">射线碰撞</param>
-    /// <param name="OriginalPoint">发射射线的位置</param>
-    void CheckVerticalLine(RaycastHit2D raycastHit2D,Vector2 OriginalPoint)
+    /// <param name="number"></param>
+    public void SetGravityRatio(float number, bool AllowCheck = true)
     {
-        //这种只有一个脚的射线触碰到地面的，一定是玩家在那种可以向下穿梭的平台上
-
-        //其中一个脚的射线碰到地面，并且碰的比较近，判定为着陆
-        if (OriginalPoint.y - raycastHit2D.point.y <= 0.07f)
-        {
-            //层15是平台
-            StandOnPlatform = raycastHit2D.collider.gameObject.layer.Equals(15);
-            WhatUnderFoot = raycastHit2D.collider.GetInstanceID();
-        }        
-        //其中一个脚的射线碰到地面，但是碰的比较远，判定为未着陆
-        else
-        {
-            StandOnPlatform = false;
-            StandOnFloor = false;
-            WhatUnderFoot = 0;
-
-        }
+#if UNITY_EDITOR
+        if (number > 1f && AllowCheck) { Debug.Log("该重力比率大于1，如果是想使玩家快速下降，请将该方法的AllowCheck参数改为false"); }
+#endif
+        rigidbody2D.gravityScale = number * 2.3f;
+        rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, 0f);
     }
-    /// <summary>
-    /// 两只脚都踩在地上
-    /// </summary>
-    /// <param name="Left">左脚</param>
-    /// <param name="Right">右脚</param>
-    void CheckVerticalLine(RaycastHit2D Left,RaycastHit2D Right)
-    {
-
-        //射线长度0.5，多出来的一截用来判断斜坡
-
-        //两脚射线的触碰位置位于相同的高度，站在平地上
-        if (Left.point.y == Right.point.y)
-        {
-          PlayerSlope = Vector2.right;
-
-            //地面离玩家较近，判定为着陆
-            if (GavityRayPos[0].position.y - Right.point.y <= 0.12f)
-            {
-                StandOnPlatform = Left.collider.gameObject.layer.Equals(15);
-                StandOnFloor = Left.collider.CompareTag("Floor") || Left.collider.CompareTag("Slope");
-                WhatUnderFoot = Left.collider.GetInstanceID();
-            }
-            //地面离玩家较远，判定为未着陆
-            else
-            {
-                StandOnPlatform = false;
-                StandOnFloor = false;
-                WhatUnderFoot = 0;
-            }
-        }
-        //两脚射线的触碰位置位于不同的高度，站在斜坡上
-        else
-        {
-            //右脚触碰位置比左脚高，并且右脚可以判定为着陆
-            if (GavityRayPos[0].position.y - Right.point.y <= 0.12f)
-            {
-
-                if(PlayerSlope == Vector2.right)
-                {
-                   PlayerSlope = (Left.point - Right.point).normalized;
-                    //  PlayerSlope = ExMath.Abs((Left.point - Right.point).normalized);
-                }
-
-                StandOnPlatform = Right.collider.gameObject.layer.Equals(15);
-                StandOnFloor = Right.collider.CompareTag("Floor") || Right.collider.CompareTag("Slope");
-                WhatUnderFoot = Right.collider.GetInstanceID();
-
-            }
-            //左脚触碰位置比佑脚高，并且左脚可以判定为着陆
-            else
-            {
-                if (PlayerSlope == Vector2.right)
-                {
-                    PlayerSlope = (Right.point - Left.point).normalized;
-
-
-                  //  PlayerSlope = ExMath.Abs((Right.point - Left.point).normalized);
-                }
-
-
-                StandOnPlatform = Left.collider.gameObject.layer.Equals(15);
-                StandOnFloor = Left.collider.CompareTag("Floor") || Left.collider.CompareTag("Slope");
-                WhatUnderFoot = Left.collider.GetInstanceID();
-
-            }
-
-        }
-
-
-    }
-
-    /// <summary>
-    /// 修复转向引起的倒着走的问题
-    /// </summary>
-    void RepairFlip()
-    {
-        switch (DoLookRight)
-        {
-            //向右看，PlayerSlope的x一定是正直
-            case true:
-                if(PlayerSlope.x < 0f)
-                {
-                    PlayerSlope = -PlayerSlope;
-                }
-                break;
-
-            //向右看，PlayerSlope的x一定是负数
-            case false:
-                if (PlayerSlope.x > 0f)
-                {
-                    PlayerSlope = -PlayerSlope;
-                }
-                break;
-        }
-
-    }
-
-
-
-
-
-    #endregion
 
 
     /// <summary>
     /// 普通的行走用
     /// </summary>
     void Walk()
-    {     
+    {
         //灵魂球的上下移动
         switch (MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId])
         {
@@ -883,154 +650,56 @@ public abstract class APlayerCtrl : MonoBehaviour
             case true:
                 if (MountGSS.gameScoreSettings.Up)
                 {
-                    Move(GameScoreSettingsIO.MoveSpeed, true, Vector2.up);
+                    Move(GameScoreSettingsIO.MoveSpeed, Vector2.up);
                 }
                 else if (MountGSS.gameScoreSettings.Down)
                 {
-                    Move(GameScoreSettingsIO.MoveSpeed, true, Vector2.down);
+                    Move(GameScoreSettingsIO.MoveSpeed, Vector2.down);
                 }
                 break;
         }
         //不管是否死亡都用同一个左右移动
-        Move(GameScoreSettingsIO.MoveSpeed, true, Vector2.right * MountGSS.gameScoreSettings.Horizontal);
+        Move(GameScoreSettingsIO.MoveSpeed, Vector2.right * MountGSS.gameScoreSettings.Horizontal);
 
-        // tr.Translate(MountGSS.gameScoreSettings.Horizontal * Vector2.right * MountGSS.gameScoreSettings.mahouShoujos[MahouShoujoId].MoveSpeed * MoveSpeedRatio * Time.deltaTime, Space.World);
+        // tr.Translate(MountGSS.gameScoreSettings.Horizontal * Vector2.right * MountGSS.gameScoreSettings.mahouShoujos[MountGSS.gameScoreSettings.PlayerSelectedGirlId].MoveSpeed * MoveSpeedRatio * Time.deltaTime, Space.World);
 
-
-        /*MD我真服了，这个Bug令人恶心
-        if (MountGSS.gameScoreSettings.UseScreenInput)
-        {
-            tr.Translate(MountGSS.gameScoreSettings.Horizontal * Vector2.right * MountGSS.gameScoreSettings.mahouShoujos[id].MoveSpeed * Time.deltaTime);
-        }
-        else
-        {
-            tr.Translate(RebindableInput.GetAxis("Horizontal") * Vector2.right * MountGSS.gameScoreSettings.mahouShoujos[id].MoveSpeed * Time.deltaTime);
-        }*/
     }
 
     /// <summary>
-    /// 自带joystick（Space为World，自行处理Direction的正负）
+    /// 移动（Space为World，自行处理方向正负）
     /// </summary>
     /// <param name="Speed"></param>
     /// <param name="UseTimeDelta"></param>
     /// <param name="Direction"></param>
     /// <param name="space"></param>
-    public void Move(float Speed, bool UseTimeDelta, Vector2 Direction)
+    public void Move(float Speed, Vector2 Direction)
     {
+        //消除因为更换为物理引擎后造成的数值差异
+        Speed /= 2.6f;
 
-        //应用斜坡
-        if (Direction != Vector2.zero && IsGround)
-        {
-            Direction = PlayerSlope;
-        }
-        /*
-        if (Direction == Vector2.right && DoLookRight)
-        {
-            Direction = PlayerSlope;
-        }
-        else if (Direction == Vector2.left && !DoLookRight && Direction != -PlayerSlope)
-        {
-            Direction = -PlayerSlope;
+        Direction = new Vector2(Direction.x *-Mathf.Cos( PlayerSlopeAngle) * Speed, Direction.y * Mathf.Sin(PlayerSlopeAngle) * Speed);
 
-        }*/
-
-        float x = Direction.x; float y = Direction.y;
-        bool Border = false;//出现对XY的修改之后，把它改为TRUE，为了减少不必要的MEW
-
-        //站在地板上，剔除向下移动方向（为球球做的）
-        if (!StandOnPlatform && StandOnFloor && MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId] && Direction.y < 0)
-        {
-            //  Direction = new Vector2(Direction.x, 0f);
-            y = 0f;
-            Border = true;
-        }
-        else if(StandOnPlatform && MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId])
+        //水平方向速度为0，站在地上，消除竖直方向速度，防止玩家弹起或者下滑
+        if(ExMath.Approximation(0.01F,0F, Direction.x) && IsGround )
         {
 
-        }
-        //移动上限
-        else if(Direction.y > 0 && ExMath.Abs(tr.position.y - Roof.position.y) <= 0.1f && MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId])
-        {
-            y = 0f;
-            Border = true;
-        }
-
-        //左右碰到墙或者地板（找个时间和上面的额合并一下）
-        if (BanLeftOrRight == -1 && Direction.x < 0)
-        {
-            x = 0f;
-            Border = true;
-        }
-        else if (BanLeftOrRight == 1 && Direction.x > 0)
-        {
-            x = 0f;
-            Border = true;
-        }
-
-
-        //不能向左走，面向左，除了跳和攻击之外，不允许往上走
-        if(BanLeftOrRight == -1 && Direction.y > 0 && !DoLookRight && !IsJumping && !IsJumpingForward && !IsAttack[0] && !IsAttack[1] && !IsAttack[2] && !MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId])
-        {
-            y = 0f;
-            Border = true;
-        }
-        //不能向右走，面向右，除了跳和攻击之外，不允许往上走
-        else if (BanLeftOrRight == 1 && DoLookRight && Direction.y > 0 && !IsJumping && !IsJumpingForward && !IsAttack[0] && !IsAttack[1] && !IsAttack[2] && !MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId])
-        {
-            y = 0f;
-            Border = true;
-
-        }
-
-        if (Border)
-        {
-            //减少一个new
-            Direction = new Vector2(x, y);
-        }
-
-
-        if (UseTimeDelta)
-        {
-            MountGSS.gameScoreSettings.PlayerMove = Speed * MoveSpeedRatio * Time.deltaTime * Direction;
+            rigidbody2D.velocity = new Vector2(MountGSS.gameScoreSettings.PlayerMove.x, 0f);//竖直方向：物理引擎碰撞引起的
         }
         else
         {
-            MountGSS.gameScoreSettings.PlayerMove = Speed * MoveSpeedRatio * Direction;
+            rigidbody2D.velocity = new Vector2(MountGSS.gameScoreSettings.PlayerMove.x, rigidbody2D.velocity.y);//竖直方向：物理引擎碰撞引起的
         }
-
-
-            tr.Translate(MountGSS.gameScoreSettings.PlayerMove, Space.World);
+        MountGSS.gameScoreSettings.PlayerMove = Speed * MoveSpeedRatio * Direction;
 
 
         //更新玩家位置
-        MountGSS.gameScoreSettings.PlayersPosition[PlayerId] = tr.position;
+        MountGSS.gameScoreSettings.PlayersPosition[PlayerId] = rigidbody2D.position; //相机抖动的话，注意一下这行代码
 
     }
 
-    /// <summary>
-    /// 下落重力
-    /// </summary>
-    public void Gravity()
-    {
+    #endregion
 
-        //当没有重力的时候，强制将间隔时间设置为游戏时间，防止悬空结束掉落时速度太快
-        if(GravityRatio == 0F)
-        {
-            FallInteralTimer = Time.timeSinceLevelLoad;
-            //减少后续计算
-            return;
-        }
-
-        //降落速度用的跳跃速度玩 指JumpSpeed
-        Move(((Time.timeSinceLevelLoad - FallInteralTimer) * GameScoreSettingsIO.JumpSpeed / 0.4F) * GravityRatio, true, Vector3.down);
-
-    }
-
-
-
-#endregion
-
-#region 僵直
+    #region 僵直
     /// <summary>
     /// 设置僵直
     /// </summary>
@@ -1039,27 +708,18 @@ public abstract class APlayerCtrl : MonoBehaviour
     {
         //僵直状态
         StopAttacking = false;
-        if (IsGround)
-        {
-            SetGravityRatio(0f);
-        }
-        else
-        {
-            SetGravityRatio(1f);
-        }
         MoveSpeedRatio = 1F;
-        BanGravityRay = false;
-        animator.enabled = !true;
-        MountGSS.gameScoreSettings.BanInput = !false;//这一个就够了
-        MountGSS.gameScoreSettings.LocalIsStiff = !false;
+        animator.enabled = false;//暂停动画
+        MountGSS.gameScoreSettings.BanInput = true;//这一个就够了
+        MountGSS.gameScoreSettings.LocalIsStiff = true;
+        SetGravityRatio(1f);//中断了所有的咏唱，牛顿把玩家从天上拉下来
 
         //启用新的僵直
-        StartCoroutine(nameof(PlayerStiff), Time);
         Timing.RunCoroutine(PlayerStiff(Time), "PlayerStiff");
 
     }
     /// <summary>
-    /// 这里经常初BUG
+    /// 这里经常出BUG
     /// </summary>
     /// <param name="d"></param>
     /// <returns></returns>
@@ -1069,32 +729,25 @@ public abstract class APlayerCtrl : MonoBehaviour
         yield return Timing.WaitForSeconds(d);
 
         //状态恢复
-        BanWalk = false;
-        StopAttacking = !false;
-        if (IsGround)
-        {
-            SetGravityRatio(0f);
-        }
-        else
-        {
-            SetGravityRatio(1f);
-        }
+        StopAttacking = true;
         MoveSpeedRatio = 1F;
-        BanGravityRay = false;
-        BanTurnAround = false;
-        BanJump = false;
         animator.enabled = true;
         MountGSS.gameScoreSettings.LocalIsStiff = false;
-        //第二帧才解除禁用
-        yield return Timing.WaitForOneFrame;
         MountGSS.gameScoreSettings.BanInput = false;
+        yield return 0f;
 
 
     }
-#endregion
+    #endregion
+    public void PlayerSE(Variable.SoundEffect soundEffect)
+    {
+        SoundEffectCtrl.soundEffectCtrl.PlaySE(soundEffect);
+    }
 
 
-#region 攻击方法
+    #region 攻击方法
+
+
     /// <summary>
     /// 普通Z攻击，又名Zattack
     /// </summary>
@@ -1134,30 +787,30 @@ public abstract class APlayerCtrl : MonoBehaviour
     public abstract void DownXattackAnimationEvent(string AnimationName);
 
     public abstract void MagiaAnimationEvent(string AnimationName);
-#endregion
+    #endregion
 
 
-#region 时间变化 信息更新与升级
+    #region 时间变化 信息更新与升级
 
     /// <summary>
     /// 随着时间流逝，灵魂宝石变黑
     /// </summary>
     void PerSecondChange()
     {
-        if (!MountGSS.gameScoreSettings.DoesMajoOrShoujoDie && Time.timeScale != 0 && !IsInvincible && MountGSS.gameScoreSettings.GirlsVit[MahouShoujoId] != 0 && MountGSS.gameScoreSettings.GirlSoulLimit[MahouShoujoId] != 0 && !MountGSS.gameScoreSettings.IsBodyDieInGame[PlayerId] && !MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId])
+        if (!MountGSS.gameScoreSettings.DoesMajoOrShoujoDie && Time.timeScale != 0 && !IsInvincible && MountGSS.gameScoreSettings.GirlsVit[MountGSS.gameScoreSettings.PlayerSelectedGirlId] != 0 && MountGSS.gameScoreSettings.GirlSoulLimit[MountGSS.gameScoreSettings.PlayerSelectedGirlId] != 0 && !MountGSS.gameScoreSettings.IsBodyDieInGame[PlayerId] && !MountGSS.gameScoreSettings.IsSoulBallInGame[PlayerId])
         {
-            MountGSS.gameScoreSettings.GirlSoulLimit[MahouShoujoId]--;
+            MountGSS.gameScoreSettings.GirlSoulLimit[MountGSS.gameScoreSettings.PlayerSelectedGirlId]--;
 
             //soul随着时间扣没了
-            if (MountGSS.gameScoreSettings.GirlSoulLimit[MahouShoujoId] <= 0)
+            if (MountGSS.gameScoreSettings.GirlSoulLimit[MountGSS.gameScoreSettings.PlayerSelectedGirlId] <= 0)
             {
                 Die(1);
             }
 
-            if (!MountGSS.gameScoreSettings.IsBodyDieInGame[PlayerId] && MountGSS.gameScoreSettings.GirlsVit[MahouShoujoId] < MountGSS.gameScoreSettings.mahouShoujos[MahouShoujoId].BasicVit + Grow(MountGSS.gameScoreSettings.mahouShoujos[MahouShoujoId].VitGrowth, MountGSS.gameScoreSettings.mahouShoujos[MahouShoujoId].VitGrowthLevelLimit, true))
+            if (!MountGSS.gameScoreSettings.IsBodyDieInGame[PlayerId] && MountGSS.gameScoreSettings.GirlsVit[MountGSS.gameScoreSettings.PlayerSelectedGirlId] < MountGSS.gameScoreSettings.mahouShoujos[MountGSS.gameScoreSettings.PlayerSelectedGirlId].BasicVit + Grow(MountGSS.gameScoreSettings.mahouShoujos[MountGSS.gameScoreSettings.PlayerSelectedGirlId].VitGrowth, MountGSS.gameScoreSettings.mahouShoujos[MountGSS.gameScoreSettings.PlayerSelectedGirlId].VitGrowthLevelLimit, true))
             {
-                MountGSS.gameScoreSettings.GirlsVit[MahouShoujoId] = MountGSS.gameScoreSettings.GirlsVit[MahouShoujoId] + 7;
-                MountGSS.gameScoreSettings.GirlsVit[MahouShoujoId] = Mathf.Clamp(MountGSS.gameScoreSettings.GirlsVit[MahouShoujoId], 0, MountGSS.gameScoreSettings.mahouShoujos[MahouShoujoId].MaxVit);
+                MountGSS.gameScoreSettings.GirlsVit[MountGSS.gameScoreSettings.PlayerSelectedGirlId] = MountGSS.gameScoreSettings.GirlsVit[MountGSS.gameScoreSettings.PlayerSelectedGirlId] + 7;
+                MountGSS.gameScoreSettings.GirlsVit[MountGSS.gameScoreSettings.PlayerSelectedGirlId] = Mathf.Clamp(MountGSS.gameScoreSettings.GirlsVit[MountGSS.gameScoreSettings.PlayerSelectedGirlId], 0, MountGSS.gameScoreSettings.mahouShoujos[MountGSS.gameScoreSettings.PlayerSelectedGirlId].MaxVit);
             }
         }
     }
@@ -1167,7 +820,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     {
         SoundEffectCtrl.soundEffectCtrl.PlaySE(Variable.SoundEffect.LevelUp);
 
-        MountGSS.gameScoreSettings.GirlsLevel[MahouShoujoId]++;
+        MountGSS.gameScoreSettings.GirlsLevel[MountGSS.gameScoreSettings.PlayerSelectedGirlId]++;
         UpdateInf(false);
     }
 
@@ -1181,23 +834,23 @@ public abstract class APlayerCtrl : MonoBehaviour
         if (StartGameOrRebirth)
         {
             //累计值，直接回复到最大值
-            gss.GirlsVit[MahouShoujoId] = gss.mahouShoujos[MahouShoujoId].BasicVit + Grow(gss.mahouShoujos[MahouShoujoId].VitGrowth, gss.mahouShoujos[MahouShoujoId].VitGrowthLevelLimit, true);
-            gss.GirlsVit[MahouShoujoId] = Mathf.Clamp(gss.GirlsVit[MahouShoujoId], 0, gss.mahouShoujos[MahouShoujoId].MaxVit);
-            gss.GirlSoulLimit[MahouShoujoId] = gss.mahouShoujos[MahouShoujoId].BasicSoulLimit + gss.mahouShoujos[MahouShoujoId].SoulGrowth * (MountGSS.gameScoreSettings.GirlsLevel[MahouShoujoId] - 1);
-            gss.GirlsVit[MahouShoujoId] = Mathf.Clamp(gss.GirlsVit[MahouShoujoId], 0, gss.mahouShoujos[MahouShoujoId].MaxSoul);
-            gss.GirlsPow[MahouShoujoId] = gss.mahouShoujos[MahouShoujoId].BasicPow + gss.mahouShoujos[MahouShoujoId].PowGrowth * (MountGSS.gameScoreSettings.GirlsLevel[MahouShoujoId] - 1);
-            gss.GirlsVit[MahouShoujoId] = Mathf.Clamp(gss.GirlsVit[MahouShoujoId], 0, gss.mahouShoujos[MahouShoujoId].MaxPow);
+            gss.GirlsVit[MountGSS.gameScoreSettings.PlayerSelectedGirlId] = gss.mahouShoujos[MountGSS.gameScoreSettings.PlayerSelectedGirlId].BasicVit + Grow(gss.mahouShoujos[MountGSS.gameScoreSettings.PlayerSelectedGirlId].VitGrowth, gss.mahouShoujos[MountGSS.gameScoreSettings.PlayerSelectedGirlId].VitGrowthLevelLimit, true);
+            gss.GirlsVit[MountGSS.gameScoreSettings.PlayerSelectedGirlId] = Mathf.Clamp(gss.GirlsVit[MountGSS.gameScoreSettings.PlayerSelectedGirlId], 0, gss.mahouShoujos[MountGSS.gameScoreSettings.PlayerSelectedGirlId].MaxVit);
+            gss.GirlSoulLimit[MountGSS.gameScoreSettings.PlayerSelectedGirlId] = gss.mahouShoujos[MountGSS.gameScoreSettings.PlayerSelectedGirlId].BasicSoulLimit + gss.mahouShoujos[MountGSS.gameScoreSettings.PlayerSelectedGirlId].SoulGrowth * (MountGSS.gameScoreSettings.GirlsLevel[MountGSS.gameScoreSettings.PlayerSelectedGirlId] - 1);
+            gss.GirlsVit[MountGSS.gameScoreSettings.PlayerSelectedGirlId] = Mathf.Clamp(gss.GirlsVit[MountGSS.gameScoreSettings.PlayerSelectedGirlId], 0, gss.mahouShoujos[MountGSS.gameScoreSettings.PlayerSelectedGirlId].MaxSoul);
+            gss.GirlsPow[MountGSS.gameScoreSettings.PlayerSelectedGirlId] = gss.mahouShoujos[MountGSS.gameScoreSettings.PlayerSelectedGirlId].BasicPow + gss.mahouShoujos[MountGSS.gameScoreSettings.PlayerSelectedGirlId].PowGrowth * (MountGSS.gameScoreSettings.GirlsLevel[MountGSS.gameScoreSettings.PlayerSelectedGirlId] - 1);
+            gss.GirlsVit[MountGSS.gameScoreSettings.PlayerSelectedGirlId] = Mathf.Clamp(gss.GirlsVit[MountGSS.gameScoreSettings.PlayerSelectedGirlId], 0, gss.mahouShoujos[MountGSS.gameScoreSettings.PlayerSelectedGirlId].MaxPow);
 
         }
         //因为每次升级都要调用，所以无需乘以等级
         else
         {
-            gss.GirlsVit[MahouShoujoId] = gss.GirlsVit[MahouShoujoId] + Grow(gss.mahouShoujos[MahouShoujoId].VitGrowth, gss.mahouShoujos[MahouShoujoId].VitGrowthLevelLimit, false);
-            gss.GirlsVit[MahouShoujoId] = Mathf.Clamp(gss.GirlsVit[MahouShoujoId], 0, gss.mahouShoujos[MahouShoujoId].MaxVit);
-            gss.GirlSoulLimit[MahouShoujoId] = gss.GirlSoulLimit[MahouShoujoId] + gss.mahouShoujos[MahouShoujoId].SoulGrowth;
-            gss.GirlsVit[MahouShoujoId] = Mathf.Clamp(gss.GirlsVit[MahouShoujoId], 0, gss.mahouShoujos[MahouShoujoId].MaxSoul);
-            gss.GirlsPow[MahouShoujoId] = gss.GirlsPow[MahouShoujoId] + gss.mahouShoujos[MahouShoujoId].PowGrowth;
-            gss.GirlsVit[MahouShoujoId] = Mathf.Clamp(gss.GirlsVit[MahouShoujoId], 0, gss.mahouShoujos[MahouShoujoId].MaxPow);
+            gss.GirlsVit[MountGSS.gameScoreSettings.PlayerSelectedGirlId] = gss.GirlsVit[MountGSS.gameScoreSettings.PlayerSelectedGirlId] + Grow(gss.mahouShoujos[MountGSS.gameScoreSettings.PlayerSelectedGirlId].VitGrowth, gss.mahouShoujos[MountGSS.gameScoreSettings.PlayerSelectedGirlId].VitGrowthLevelLimit, false);
+            gss.GirlsVit[MountGSS.gameScoreSettings.PlayerSelectedGirlId] = Mathf.Clamp(gss.GirlsVit[MountGSS.gameScoreSettings.PlayerSelectedGirlId], 0, gss.mahouShoujos[MountGSS.gameScoreSettings.PlayerSelectedGirlId].MaxVit);
+            gss.GirlSoulLimit[MountGSS.gameScoreSettings.PlayerSelectedGirlId] = gss.GirlSoulLimit[MountGSS.gameScoreSettings.PlayerSelectedGirlId] + gss.mahouShoujos[MountGSS.gameScoreSettings.PlayerSelectedGirlId].SoulGrowth;
+            gss.GirlsVit[MountGSS.gameScoreSettings.PlayerSelectedGirlId] = Mathf.Clamp(gss.GirlsVit[MountGSS.gameScoreSettings.PlayerSelectedGirlId], 0, gss.mahouShoujos[MountGSS.gameScoreSettings.PlayerSelectedGirlId].MaxSoul);
+            gss.GirlsPow[MountGSS.gameScoreSettings.PlayerSelectedGirlId] = gss.GirlsPow[MountGSS.gameScoreSettings.PlayerSelectedGirlId] + gss.mahouShoujos[MountGSS.gameScoreSettings.PlayerSelectedGirlId].PowGrowth;
+            gss.GirlsVit[MountGSS.gameScoreSettings.PlayerSelectedGirlId] = Mathf.Clamp(gss.GirlsVit[MountGSS.gameScoreSettings.PlayerSelectedGirlId], 0, gss.mahouShoujos[MountGSS.gameScoreSettings.PlayerSelectedGirlId].MaxPow);
         }
 
     }
@@ -1221,7 +874,7 @@ public abstract class APlayerCtrl : MonoBehaviour
             for (int i = 0; i < length; i++)
             {
                 //如果当前角色等级低于i阶等级限制的门槛
-                if (MountGSS.gameScoreSettings.GirlsLevel[MahouShoujoId] < LevelLimit[i])
+                if (MountGSS.gameScoreSettings.GirlsLevel[MountGSS.gameScoreSettings.PlayerSelectedGirlId] < LevelLimit[i])
                 {
                     break;
                 }
@@ -1242,7 +895,7 @@ public abstract class APlayerCtrl : MonoBehaviour
             for (int i = 0; i < length; i++)
             {
                 //如果当前角色等级低于i阶等级限制的门槛
-                if (MountGSS.gameScoreSettings.GirlsLevel[MahouShoujoId] < LevelLimit[i])
+                if (MountGSS.gameScoreSettings.GirlsLevel[MountGSS.gameScoreSettings.PlayerSelectedGirlId] < LevelLimit[i])
                 {
                     //则返回上一阶的成长值
                     if (i != 0)
@@ -1260,9 +913,9 @@ public abstract class APlayerCtrl : MonoBehaviour
         return j;
 
     }
-#endregion
+    #endregion
 
-#region 受伤，死亡与无敌
+    #region 受伤，死亡与无敌
 
     /// <summary>
     /// 清除当前灵魂值
@@ -1280,7 +933,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// </summary>
     public void CleanVit()
     {
-        GetHurt(MountGSS.gameScoreSettings.GirlsVit[MahouShoujoId]);
+        GetHurt(MountGSS.gameScoreSettings.GirlsVit[MountGSS.gameScoreSettings.PlayerSelectedGirlId]);
 
     }
 
@@ -1289,7 +942,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// </summary>
     public void OneBlood()
     {
-        GetHurt(MountGSS.gameScoreSettings.GirlsVit[MahouShoujoId] - 1);
+        GetHurt(MountGSS.gameScoreSettings.GirlsVit[MountGSS.gameScoreSettings.PlayerSelectedGirlId] - 1);
 
     }
 
@@ -1298,7 +951,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// </summary>
     bool KaQiTuoLiTai = false;
     /// <summary>
-    /// 适用于卡其脱离太的速度设置
+    /// 适用于卡其脱离太的速度设置（按钮事件）
     /// </summary>
     public void SpeedSet()
     {
@@ -1356,7 +1009,7 @@ public abstract class APlayerCtrl : MonoBehaviour
 
         IsAttack[0] = false;
         IsAttack[1] = false;
-        if (MahouShoujoId != 4)
+        if (MountGSS.gameScoreSettings.PlayerSelectedGirlId != 4)
         {
             //沙耶加magia受击不中断攻击
             IsAttack[2] = false;
@@ -1364,28 +1017,28 @@ public abstract class APlayerCtrl : MonoBehaviour
 
 
         //如果承受不住这个攻击，宝石直接碎了
-        if (MountGSS.gameScoreSettings.GirlSoulLimit[MahouShoujoId] - damage * MountGSS.gameScoreSettings.mahouShoujos[MahouShoujoId].Recovery <= 0)
+        if (MountGSS.gameScoreSettings.GirlSoulLimit[MountGSS.gameScoreSettings.PlayerSelectedGirlId] - damage * MountGSS.gameScoreSettings.mahouShoujos[MountGSS.gameScoreSettings.PlayerSelectedGirlId].Recovery <= 0)
         {
-            MountGSS.gameScoreSettings.GirlSoulLimit[MahouShoujoId] = 0;
+            MountGSS.gameScoreSettings.GirlSoulLimit[MountGSS.gameScoreSettings.PlayerSelectedGirlId] = 0;
             Die(1);
             return;
         }
 
         //扣个血完事
-        if (MountGSS.gameScoreSettings.GirlsVit[MahouShoujoId] > damage)
+        if (MountGSS.gameScoreSettings.GirlsVit[MountGSS.gameScoreSettings.PlayerSelectedGirlId] > damage)
         {
             //扣除hp（vit)
-            MountGSS.gameScoreSettings.GirlsVit[MahouShoujoId] = MountGSS.gameScoreSettings.GirlsVit[MahouShoujoId] - damage;
+            MountGSS.gameScoreSettings.GirlsVit[MountGSS.gameScoreSettings.PlayerSelectedGirlId] = MountGSS.gameScoreSettings.GirlsVit[MountGSS.gameScoreSettings.PlayerSelectedGirlId] - damage;
             //扣除soullimit
-            MountGSS.gameScoreSettings.GirlSoulLimit[MahouShoujoId] = MountGSS.gameScoreSettings.GirlSoulLimit[MahouShoujoId] - damage * MountGSS.gameScoreSettings.mahouShoujos[MahouShoujoId].Recovery;
+            MountGSS.gameScoreSettings.GirlSoulLimit[MountGSS.gameScoreSettings.PlayerSelectedGirlId] = MountGSS.gameScoreSettings.GirlSoulLimit[MountGSS.gameScoreSettings.PlayerSelectedGirlId] - damage * MountGSS.gameScoreSettings.mahouShoujos[MountGSS.gameScoreSettings.PlayerSelectedGirlId].Recovery;
 
 
-            //   MountGSS.gameScoreSettings.HurtGirlsVit[MahouShoujoId] = damage;
+            //   MountGSS.gameScoreSettings.HurtGirlsVit[MountGSS.gameScoreSettings.PlayerSelectedGirlId] = damage;
             MountGSS.gameScoreSettings.GetHurtInGame[PlayerId] = true;
 
 
             //无敌状态
-            StartCoroutine(nameof(Invincible));
+            Timing.RunCoroutine(Invincible());
         }
         //挂了，但不至于宝石碎了
         else
@@ -1405,7 +1058,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     {
 
         //扣除soullimit
-        MountGSS.gameScoreSettings.GirlSoulLimit[MahouShoujoId] = MountGSS.gameScoreSettings.GirlSoulLimit[MahouShoujoId] - damage * MountGSS.gameScoreSettings.mahouShoujos[MahouShoujoId].Rebirth;
+        MountGSS.gameScoreSettings.GirlSoulLimit[MountGSS.gameScoreSettings.PlayerSelectedGirlId] = MountGSS.gameScoreSettings.GirlSoulLimit[MountGSS.gameScoreSettings.PlayerSelectedGirlId] - damage * MountGSS.gameScoreSettings.mahouShoujos[MountGSS.gameScoreSettings.PlayerSelectedGirlId].Rebirth;
 
         MountGSS.gameScoreSettings.IsBodyDieInGame[PlayerId] = true;
 
@@ -1421,7 +1074,7 @@ public abstract class APlayerCtrl : MonoBehaviour
         IsInvincible = true;
 
         //宝石黑掉了
-        if (MountGSS.gameScoreSettings.GirlSoulLimit[MahouShoujoId] <= 0)
+        if (MountGSS.gameScoreSettings.GirlSoulLimit[MountGSS.gameScoreSettings.PlayerSelectedGirlId] <= 0)
         {
             SoundEffectCtrl.soundEffectCtrl.PlaySE(Variable.SoundEffect.GemBreak);
 
@@ -1438,8 +1091,8 @@ public abstract class APlayerCtrl : MonoBehaviour
             MoveSpeedRatio = 1.2f;
 
             MountGSS.gameScoreSettings.BanInput = false;
+
             SetGravityRatio(0f); ;
-            // BanGravityRay = true;
 
         }
     }
@@ -1458,18 +1111,18 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// </summary>
     /// <param name="time"></param>
     /// <returns></returns>
-    IEnumerator Invincible()
+    IEnumerator<float> Invincible()
     {
         IsInvincible = true;
 
         for (int i = 0; i < 15; i++)
         {
-            yield return new WaitForSeconds(0.1f);
+            yield return Timing.WaitForSeconds(0.1f);
             animator.enabled = !animator.enabled;//我屈服了，dnmdBUG
             spriteRenderer.enabled = !spriteRenderer.enabled;
         }
 
-        //防止bug，启用一次
+        //防止bug，强调一次变量修改
         spriteRenderer.enabled = true;
         animator.enabled = true;
         IsInvincible = false;
@@ -1485,15 +1138,7 @@ public abstract class APlayerCtrl : MonoBehaviour
         MountGSS.gameScoreSettings.BanInput = false;
         BanWalk = false;
         BanJump = false;
-        if (IsGround)
-        {
-            SetGravityRatio(0f);
-        }
-        else
-        {
-            SetGravityRatio(1f);
-        }
-        BanGravityRay = false;
+        SetGravityRatio(1f);
         BanTurnAround = false;
         MountGSS.gameScoreSettings.GetHurtInGame[PlayerId] = false;
         MountGSS.gameScoreSettings.IsBodyDieInGame[PlayerId] = false;
@@ -1516,9 +1161,9 @@ public abstract class APlayerCtrl : MonoBehaviour
         MountGSS.gameScoreSettings.IsBodyDieInGame[PlayerId] = false;
 
         //在这里恢复VIT，为了得到血条恢复的效果
-        int MaxVit = MountGSS.gameScoreSettings.mahouShoujos[MahouShoujoId].BasicVit + Grow(MountGSS.gameScoreSettings.mahouShoujos[MahouShoujoId].VitGrowth, MountGSS.gameScoreSettings.mahouShoujos[MahouShoujoId].VitGrowthLevelLimit, true);
-        MaxVit = Mathf.Clamp(MaxVit, 0, MountGSS.gameScoreSettings.mahouShoujos[MahouShoujoId].MaxVit);
-        MountGSS.gameScoreSettings.GirlsVit[MahouShoujoId] = MaxVit;
+        int MaxVit = MountGSS.gameScoreSettings.mahouShoujos[MountGSS.gameScoreSettings.PlayerSelectedGirlId].BasicVit + Grow(MountGSS.gameScoreSettings.mahouShoujos[MountGSS.gameScoreSettings.PlayerSelectedGirlId].VitGrowth, MountGSS.gameScoreSettings.mahouShoujos[MountGSS.gameScoreSettings.PlayerSelectedGirlId].VitGrowthLevelLimit, true);
+        MaxVit = Mathf.Clamp(MaxVit, 0, MountGSS.gameScoreSettings.mahouShoujos[MountGSS.gameScoreSettings.PlayerSelectedGirlId].MaxVit);
+        MountGSS.gameScoreSettings.GirlsVit[MountGSS.gameScoreSettings.PlayerSelectedGirlId] = MaxVit;
 
     }
 
@@ -1528,7 +1173,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// <returns></returns>
     public void GemBroken()
     {
-       // SoundEffectCtrl.soundEffectCtrl.PlaySE(Variable.SoundEffect.GemBreakFadeOut); 不要这个音效了，有点乱
+        // SoundEffectCtrl.soundEffectCtrl.PlaySE(Variable.SoundEffect.GemBreakFadeOut); 不要这个音效了，有点乱
 
         /*
         //应用影子魔女的效果，尝试修复移动设备下不产生fade效果的bug
@@ -1540,7 +1185,7 @@ public abstract class APlayerCtrl : MonoBehaviour
         Material.EnableKeyword("FADE_ON");//开始消失的shader特征
         */
         //设置死亡状态
-        MountGSS.gameScoreSettings.MagicalGirlsDie[MahouShoujoId] = true;
+        MountGSS.gameScoreSettings.MagicalGirlsDie[MountGSS.gameScoreSettings.PlayerSelectedGirlId] = true;
 
         //切换为消失动画和状态
         PlayPlayerDie3 = true;
@@ -1555,10 +1200,50 @@ public abstract class APlayerCtrl : MonoBehaviour
     public void DestroyPoorGirl()
     {
         //场上有一个玩家死了
-         MountGSS.gameScoreSettings.PlayerDie();
+        MountGSS.gameScoreSettings.PlayerDie();
         //删除物体
         Destroy(gameObject);
     }
-#endregion
+    #endregion
+
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        //获取的有效碰撞体数
+        int GetNumber = 0;
+
+        for (int i = 0; i < collision.contactCount; i++)
+        {
+            //限制高度，使在高度之下的才能被识别为脚下踩的东西
+            if (Feet.position.y >= collision.GetContact(i).point.y)
+            {
+                //对于触碰地面的处理
+                if (collision.collider.CompareTag("Floor") || collision.collider.CompareTag("Platform")) //获取任务#1  尽量减少获取任务
+                {
+                    //修改落地状态
+                    StandOnPlatform = collision.collider.CompareTag("Platform");
+                    StandOnFloor = collision.collider.CompareTag("Floor");
+
+                    GetNumber++;//每获取一次有效的碰撞数据，就增加一次，当总数达到预期目标之后，直接破坏这个for
+                }
+
+            }
+
+
+            if (GetNumber == 1) //现在就一个获取任务
+            {
+                break;
+            }
+        }
+
+
+
+
+
+
+
+
+    }
+
 }
+
 

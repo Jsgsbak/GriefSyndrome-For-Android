@@ -2453,8 +2453,8 @@ namespace MEC
 
             public override bool Equals(object other)
             {
-                if (other is ProcessIndex)
-                    return Equals((ProcessIndex)other);
+                if (other is ProcessIndex index)
+                    return Equals(index);
                 return false;
             }
 

@@ -105,6 +105,24 @@ namespace PureAmaya.General
                     false;
             }
         }
+
+        /// <summary>
+        /// 角度转弧度
+        /// </summary>
+        /// <param name="angleDeg">角度角</param>
+        /// <param name="UseAccuratePi">使用精确的圆周率</param>
+        /// <returns></returns>
+        public static float Deg2Rad(float angleDeg,bool UseAccuratePi = false)
+        {
+            if (UseAccuratePi)
+            {
+                return 3.14f / 180f * angleDeg;
+            }
+            else
+            {
+               return Mathf.Deg2Rad * angleDeg;
+            }
+        }
     }
 }
 

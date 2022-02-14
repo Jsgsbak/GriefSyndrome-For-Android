@@ -15,6 +15,9 @@ public class CameraCtrl : MonoBehaviour
   [HideInInspector] public  Transform tr;
 
     public Transform[] Players;
+    /// <summary>
+    /// 目标玩家（其实是多人游戏相机的目标位置啦）
+    /// </summary>
    public Transform TargetedPlayer;
 
     public StopPoint[] StopPoints;

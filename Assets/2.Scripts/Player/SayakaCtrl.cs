@@ -10,8 +10,7 @@ public class SayakaCtrl : APlayerCtrl
     /// 适用于X攻击蓄力的魔法阵
     /// </summary>
     [Space]
- //   public Animator MagicRing;
-   public int ZattackCount = 0;
+    int ZattackCount = 0;
     /// <summary>
     /// z攻击这一阶段完成了
     /// </summary>
@@ -75,7 +74,7 @@ public class SayakaCtrl : APlayerCtrl
         if (MagiaDashSpeedRatio == 1f && MountGSS.gameScoreSettings.Xattack && IsAttack[2])
         {
             MagiaDashSpeedRatio = 1.5f;
-            playerStatus = Variable.PlayerStatus.Magia_2;
+            PlayerStatus  = Variable.PlayerStatus.Magia_2;
         }
 
         //初始发动magia
@@ -88,9 +87,9 @@ public class SayakaCtrl : APlayerCtrl
             SetGravityRatio(0f);
             //  BanGravityRay = true;
 
-            playerStatus = Variable.PlayerStatus.Magia_1;
+            PlayerStatus  = Variable.PlayerStatus.Magia_1;
 
-            MountGSS.gameScoreSettings.GirlsVit[MahouShoujoId] = MountGSS.gameScoreSettings.GirlsVit[MahouShoujoId] - MountGSS.gameScoreSettings.mahouShoujos[MahouShoujoId].MaigaVit;
+            MountGSS.gameScoreSettings.GirlsVit[(int)MahouShoujoType] = MountGSS.gameScoreSettings.GirlsVit[(int)MahouShoujoType] - MountGSS.gameScoreSettings.mahouShoujos[(int)MahouShoujoType].MaigaVit;
 
             //用于UI中HP血条信息更新
             MountGSS.gameScoreSettings.MagiaKeyDown[PlayerId] = true;
@@ -105,11 +104,11 @@ public class SayakaCtrl : APlayerCtrl
 
             if (DoLookRight)
             {
-                Move(8f * MagiaDashSpeedRatio, true,  Vector2.right);
+                Move(8f * MagiaDashSpeedRatio,  Vector2.right);
             }
             else
             {
-                Move(8f * MagiaDashSpeedRatio, true, Vector2.left);
+                Move(8f * MagiaDashSpeedRatio,  Vector2.left);
             }
         }
     }
@@ -124,21 +123,21 @@ public class SayakaCtrl : APlayerCtrl
             MountGSS.gameScoreSettings.BanInput = true;
             IsAttack[1] = true;
             StopAttacking = false;
-            playerStatus = Variable.PlayerStatus.HorizontalStrong_1;//移动
+            PlayerStatus  = Variable.PlayerStatus.HorizontalStrong_1;//移动
         }
 
-        if (playerStatus == Variable.PlayerStatus.HorizontalStrong_1)
+        if (PlayerStatus  == Variable.PlayerStatus.HorizontalStrong_1)
         {
              MountGSS.gameScoreSettings.BanInput = true; //BUG修复
 
             //移动
             if (DoLookRight)
             {
-                Move(8f, true, Vector3.right);
+                Move(8f,  Vector3.right);
             }
             else
             {
-                Move(8f, true, Vector3.left);
+                Move(8f,  Vector3.left);
             }
         }
     }
@@ -155,7 +154,7 @@ public class SayakaCtrl : APlayerCtrl
         //从通常状态进入到X攻击准备状态
         if (!HasXattackFlying && MountGSS.gameScoreSettings.Horizontal == 0 && !IsAttack[1] && !MountGSS.gameScoreSettings.Up && !MountGSS.gameScoreSettings.Down  && MountGSS.gameScoreSettings.XattackPressed  && !XordinaryDash)
         {
-            playerStatus = Variable.PlayerStatus.Strong_1;
+            PlayerStatus  = Variable.PlayerStatus.Strong_1;
             CancelJump();//直接中断跳跃并且不恢复
             IsAttack[1] = true;
             BanWalk = true;
@@ -170,9 +169,9 @@ public class SayakaCtrl : APlayerCtrl
             SetGravityRatio(0.1f);
         }
         //松开X键，但仍然处于X攻击状态，所以能往前冲
-        else if (!MountGSS.gameScoreSettings.XattackPressed && IsAttack[1]&& playerStatus == Variable.PlayerStatus.Strong_1 && !XordinaryDash)
+        else if (!MountGSS.gameScoreSettings.XattackPressed && IsAttack[1]&& PlayerStatus  == Variable.PlayerStatus.Strong_1 && !XordinaryDash)
         {
-            playerStatus = Variable.PlayerStatus.Strong_2;
+            PlayerStatus  = Variable.PlayerStatus.Strong_2;
             XordinaryDash = true;
             //冲刺时不受重力影响
             SetGravityRatio(0f);
@@ -190,11 +189,11 @@ public class SayakaCtrl : APlayerCtrl
 
             if (DoLookRight)
             {
-                Move(6F - OrdinaryXTimer * 4F, true, Vector2.right);
+                Move(6F - OrdinaryXTimer * 4F, Vector2.right);
             }
             else
             {
-                Move(6F - OrdinaryXTimer * 4F, true, Vector2.left);
+                Move(6F - OrdinaryXTimer * 4F, Vector2.left);
             }
         }
     }
@@ -205,7 +204,7 @@ public class SayakaCtrl : APlayerCtrl
 
             CancelJump();//直接中断跳跃并且不恢复
             IsAttack[1] = true;
-            playerStatus = Variable.PlayerStatus.DownStrong_1;//上升动作
+            PlayerStatus  = Variable.PlayerStatus.DownStrong_1;//上升动作
             MountGSS.gameScoreSettings.BanInput = true;//在这一套攻击里，就靠取消僵直来把这个设置为false了
             SetGravityRatio(0f);
             DownAttackMovingUpward = 1;
@@ -216,11 +215,11 @@ public class SayakaCtrl : APlayerCtrl
         {
             if (IsGround)
             {
-                Move(10f, true, Vector2.up);
+                Move(10f, Vector2.up);
             }
             else
             {
-                Move(5f, true, Vector2.up);
+                Move(5f,  Vector2.up);
             }
         }
         //下降
@@ -228,15 +227,15 @@ public class SayakaCtrl : APlayerCtrl
         {
             if (DoLookRight)
             {
-                Move(13f, true,  Vector2.right);
+                Move(13f, Vector2.right);
             }
             else
             {
-                Move(13f, true,  Vector2.left);
+                Move(13f,Vector2.left);
             }
 
             //碰到地了（仅执行一次）
-            if (IsGround && playerStatus != Variable.PlayerStatus.DownStrong_3)
+            if (IsGround && PlayerStatus  != Variable.PlayerStatus.DownStrong_3)
             {
                 //反弹
               Timing.RunCoroutine(XattackBound());
@@ -250,11 +249,11 @@ public class SayakaCtrl : APlayerCtrl
         {
             if (DoLookRight)
             {
-                Move(5f, true, new Vector2(-1f, 1f));
+                Move(5f,new Vector2(-1f, 1f));
             }
             else
             {
-                Move(5f, true,  new Vector2(1f, 1f));
+                Move(5f,new Vector2(1f, 1f));
             }
         }
 
@@ -277,18 +276,18 @@ public class SayakaCtrl : APlayerCtrl
             SetGravityRatio(0f);
             BanJump = true;
 
-            playerStatus = Variable.PlayerStatus.UpStrong_1;
+            PlayerStatus  = Variable.PlayerStatus.UpStrong_1;
         }
 
         if (UpAttackMove)
         {
             if (DoLookRight)
             {
-                Move(4f, true, new Vector2(1f, 3f));
+                Move(4f,  new Vector2(1f, 3f));
             }
             else
             {
-                Move(4f, true,  new Vector2(-1f, 3f));
+                Move(4f, new Vector2(-1f, 3f));
             }
         }
     }
@@ -300,7 +299,7 @@ public class SayakaCtrl : APlayerCtrl
         if( MountGSS.gameScoreSettings.Zattack && !IsAttack[0])
         {
             ZattackCount = 1;
-            playerStatus = Variable.PlayerStatus.Weak_1;
+            PlayerStatus  = Variable.PlayerStatus.Weak_1;
             IsAttack[0] = true;
             AllowZcontinue = false;
             ThisFregmentDone = false;
@@ -309,14 +308,14 @@ public class SayakaCtrl : APlayerCtrl
         else if ( ZattackCount == 1 && ThisFregmentDone && AllowZcontinue)
         {
             ZattackCount = 2;
-            playerStatus = Variable.PlayerStatus.Weak_2;
+            PlayerStatus  = Variable.PlayerStatus.Weak_2;
             ThisFregmentDone = false;
             AllowZcontinue = false;
         }
         else if ( ZattackCount == 2 && ThisFregmentDone && AllowZcontinue)
         {
             ZattackCount = 3;
-            playerStatus = Variable.PlayerStatus.Weak_1;
+            PlayerStatus  = Variable.PlayerStatus.Weak_1;
             ThisFregmentDone = false;
             AllowZcontinue = false;
         }
@@ -324,7 +323,7 @@ public class SayakaCtrl : APlayerCtrl
         {
 
             ZattackCount = 4;
-            playerStatus = Variable.PlayerStatus.Weak_2;
+            PlayerStatus  = Variable.PlayerStatus.Weak_2;
             ThisFregmentDone = false;
             AllowZcontinue = false;
 
@@ -339,7 +338,7 @@ public class SayakaCtrl : APlayerCtrl
             MoveSpeedRatio = 1f;
 
             ZattackCount = 0;
-            playerStatus = Variable.PlayerStatus.Weak_3;
+            PlayerStatus  = Variable.PlayerStatus.Weak_3;
 
             AllowZcontinue = false;
             ThisFregmentDone = false;
@@ -353,15 +352,7 @@ public class SayakaCtrl : APlayerCtrl
             ZattackCount = 0;
             IsAttack[0] = false;
             ThisFregmentDone = false;
-            if (IsGround)
-            {
-                SetGravityRatio(0f);
-            }
-            else
-            {
-                FallInteralTimer = Time.timeSinceLevelLoad;
-                SetGravityRatio(1f);
-            }
+            SetGravityRatio(1f);
             MoveSpeedRatio = 1f;
             VariableInitialization();
         }
@@ -419,7 +410,6 @@ public class SayakaCtrl : APlayerCtrl
                 StopAttacking = true;
                 BanTurnAround = false;//攻击完了可以
                                       //这里再检查一下
-                Debug.Log("check");
 
                 if (MountGSS.gameScoreSettings.ZattackPressed)
                 {
@@ -439,11 +429,11 @@ public class SayakaCtrl : APlayerCtrl
                 //向前移动
                 if (DoLookRight)
                 {
-                    Move(0.4f, false, Vector2.right);
+                    Move(0.4f, Vector2.right);
                 }
                 else
                 {
-                    Move(0.4f, false, Vector2.left);
+                    Move(0.4f, Vector2.left);
                 }
                 break;
 
@@ -511,7 +501,7 @@ public class SayakaCtrl : APlayerCtrl
 
                 //蹬了一脚，准备下移
             case "StartMovingDownward":
-                playerStatus = Variable.PlayerStatus.DownStrong_2;//下移动作
+                PlayerStatus  = Variable.PlayerStatus.DownStrong_2;//下移动作
 
                 break;
 
@@ -573,11 +563,11 @@ public class SayakaCtrl : APlayerCtrl
         {
             if (DoLookRight)
             {
-                Move(0.02f, false, Vector2.right);
+                Move(0.02f, Vector2.right);
             }
             else
             {
-                Move(0.02f, false, Vector2.left);
+                Move(0.02f,  Vector2.left);
             }
         }
 
@@ -590,7 +580,7 @@ public class SayakaCtrl : APlayerCtrl
     /// <returns></returns>
     IEnumerator<float> XattackBound()
     {
-        playerStatus = Variable.PlayerStatus.DownStrong_3;//反弹动作
+        PlayerStatus  = Variable.PlayerStatus.DownStrong_3;//反弹动作
 
         SetGravityRatio(0f);
         DownAttackMovingUpward = 2;

@@ -312,7 +312,7 @@ public class GameScoreSettingsIO : ScriptableObject
     /// </summary>
     [HideInInspector] public bool Pause = false;
     /// <summary>
-    /// 玩家移动的方向与距离
+    /// 本地玩家移动的方向与距离   用处越来越少了
     /// </summary>
     [HideInInspector] public Vector2 PlayerMove = Vector2.right;
 

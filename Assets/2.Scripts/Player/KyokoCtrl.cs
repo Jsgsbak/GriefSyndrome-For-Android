@@ -32,7 +32,6 @@ public class KyokoCtrl : APlayerCtrl
     {
         if(MountGSS.gameScoreSettings.Horizontal != 0 && MountGSS.gameScoreSettings.Xattack && !IsAttack[1])
         {
-            Debug.Log("???");
 
             CancelJump();
             SetGravityRatio(0.1f);
@@ -43,31 +42,31 @@ public class KyokoCtrl : APlayerCtrl
             StrongForwardDash = 0;
 
             //动画播放，一直播放到结尾
-            playerStatus = Variable.PlayerStatus.HorizontalStrong_1;
+            PlayerStatus = Variable.PlayerStatus.HorizontalStrong_1;
         }
 
         //短暂移动
-        else if(playerStatus == Variable.PlayerStatus.HorizontalStrong_1 && StrongForwardDash == 1)
+        else if(PlayerStatus == Variable.PlayerStatus.HorizontalStrong_1 && StrongForwardDash == 1)
         {
             if (DoLookRight)
             {
-                Move(3f, true, Vector2.right);
+                Move(3f, Vector2.right);
             }
             else
             {
-                Move(3f, true, Vector2.left);
+                Move(3f,Vector2.left);
             }
         }
         //最后冲刺一下
-        else if(playerStatus == Variable.PlayerStatus.HorizontalStrong_1 && StrongForwardDash == 2)
+        else if(PlayerStatus == Variable.PlayerStatus.HorizontalStrong_1 && StrongForwardDash == 2)
         {
             if (DoLookRight)
             {
-                Move(10f, true, Vector2.right);
+                Move(10f, Vector2.right);
             }
             else
             {
-                Move(10f, true, Vector2.left);
+                Move(10f, Vector2.left);
             }
         }
     }
@@ -125,7 +124,7 @@ public class KyokoCtrl : APlayerCtrl
             BanJump = true;
             SetGravityRatio(0.3f);
 
-            playerStatus = Variable.PlayerStatus.Strong_1;
+            PlayerStatus = Variable.PlayerStatus.Strong_1;
             //冲刺计时器
             if(!IsAttack[1])
             {
@@ -136,9 +135,9 @@ public class KyokoCtrl : APlayerCtrl
 
         }
         //松开X
-        else if(!MountGSS.gameScoreSettings.XattackPressed && !StrongDash && IsAttack[1] && playerStatus == Variable.PlayerStatus.Strong_1)
+        else if(!MountGSS.gameScoreSettings.XattackPressed && !StrongDash && IsAttack[1] && PlayerStatus == Variable.PlayerStatus.Strong_1)
         {
-            playerStatus = Variable.PlayerStatus.Strong_2;
+            PlayerStatus = Variable.PlayerStatus.Strong_2;
             StrongDash = true;
         }
         //冲刺阶段
@@ -153,11 +152,11 @@ public class KyokoCtrl : APlayerCtrl
 
             if (DoLookRight)
             {
-                Move(6F - OrdinaryXTimer, true, Vector2.right);
+                Move(6F - OrdinaryXTimer, Vector2.right);
             }
             else
             {
-                Move(6F - OrdinaryXTimer, true, Vector2.left);
+                Move(6F - OrdinaryXTimer,Vector2.left);
             }
         }
     }
@@ -167,9 +166,9 @@ public class KyokoCtrl : APlayerCtrl
         if(MountGSS.gameScoreSettings.ZattackPressed)
         {
             //杏子只有一段攻击动画
-            if (playerStatus != Variable.PlayerStatus.Weak_1) CancelJump();
+            if (PlayerStatus != Variable.PlayerStatus.Weak_1) CancelJump();
             IsAttack[0] = true;
-            playerStatus = Variable.PlayerStatus.Weak_1;
+            PlayerStatus = Variable.PlayerStatus.Weak_1;
             BanWalk = true;
 
           
@@ -188,18 +187,18 @@ public class KyokoCtrl : APlayerCtrl
             MountGSS.gameScoreSettings.BanInput = true;
             SetGravityRatio(1f);
 
-            playerStatus = Variable.PlayerStatus.UpStrong_1;
+            PlayerStatus = Variable.PlayerStatus.UpStrong_1;
         }
 
         if (UpAttackMove)
         {
             if (DoLookRight)
             {
-                Move(2f, true, new Vector2(0.5f, 3f));
+                Move(2f, new Vector2(0.5f, 3f));
             }
             else
             {
-                Move(2f, true, new Vector2(-0.5f, 3f));
+                Move(2f,  new Vector2(-0.5f, 3f));
             }
         }
     }
@@ -255,11 +254,11 @@ public class KyokoCtrl : APlayerCtrl
         {
             if (DoLookRight)
             {
-                Move(0.02f, false, Vector2.right);
+                Move(0.02f, Vector2.right);
             }
             else
             {
-                Move(0.02f, false, Vector2.left);
+                Move(0.02f, Vector2.left);
             }
         }
     }
