@@ -72,16 +72,18 @@ public class CameraCtrl : MonoBehaviour
         StopPoints[(int)MountGSS.gameScoreSettings.BattlingMajo].CancelStop();
     }
 
-    public void LateUpdate()
+
+    private void FixedUpdate()
     {
         //更新限制点
-       cameraRestraints[(int)MountGSS.gameScoreSettings.BattlingMajo]. UpdatePoint();
+        cameraRestraints[(int)MountGSS.gameScoreSettings.BattlingMajo].UpdatePoint();
         //检查停止点
         StopPoints[(int)MountGSS.gameScoreSettings.BattlingMajo].CheckStopPoint(tr.position);
         //到停止点，停下
         if (!StopPoints[(int)MountGSS.gameScoreSettings.BattlingMajo].StopCamera)
         {
             Restraint();
+
         }
 
     }
@@ -91,10 +93,19 @@ public class CameraCtrl : MonoBehaviour
     /// </summary>
     void Restraint()
     {
+
+        //既然不同移动方式c不同，判断c然后采取另外一种更保险更好的方法，不是更好吗
+        //早这样子弄你也不至于半天改不好这个代码
+        //先能做出来就行
+
       Vector3 c =  cameraRestraints[(int)MountGSS.gameScoreSettings.BattlingMajo].RepairCameraMoveDirection(MountGSS.gameScoreSettings.PlayerMove,TargetedPlayer.position);
 
-      tr.Translate(c, Space.World);
+        Debug.Log(c);
 
+        if(ExMath.Abs(c.x) >= 0.001F)
+        {
+            tr.position = Vector3.Lerp(tr.position, new Vector3(TargetedPlayer.position.x, c.y + tr.position.y, tr.position.z), 0.3F);
+        }
     }
 
     #region 调试模式（相机一侧）

@@ -80,20 +80,35 @@ namespace PureAmaya.General
 
 
         /// <summary>
-        /// 是否在给定的范围内
+        /// 是否在给定的范围内（闭区间）
         /// </summary>
-        /// <param name="value">给定值</param>
-        /// <param name="min"></param>
-        /// <param name="max"></param>
+        /// <param name="value">比较的值</param>
+        /// <param name="min">最小值（含）</param>
+        /// <param name="max">最大值（含）</param>
+        /// <param name="FixMinMax">修复最大最小混淆吗</param>
         /// <returns></returns>
-        public static bool Range(float value,float min,float max)
+        public static bool InRange(float value,float min,float max,bool FixMinMax = true)
         {
-            if(min > max)
+
+            switch (FixMinMax)
             {
-                float S = min;
-                min = max;
-                max = S;
+                case true:
+                    if (min > max)
+                    {
+                        float S = min;
+                        min = max;
+                        max = S;
+                    }
+                    break;
+
+                case false:
+                    if (min > max)
+                    {
+                        Debug.LogError("最小值大于最大值");
+                    }
+                    break;
             }
+           
 
             if(value >= min && value <= max)
             {
@@ -123,6 +138,7 @@ namespace PureAmaya.General
                return Mathf.Deg2Rad * angleDeg;
             }
         }
+
     }
 }
 

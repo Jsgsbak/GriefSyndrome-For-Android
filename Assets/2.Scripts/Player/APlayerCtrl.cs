@@ -150,6 +150,12 @@ public abstract class APlayerCtrl : MonoBehaviour
     /// 相机顶，防止玩家向上移动超出视野
     /// </summary>
     public Transform Roof;
+
+    /// <summary>
+    /// 上一帧玩家的位置
+    /// </summary>
+    Vector2 LastPlayerPos = Vector2.zero;
+
     #endregion
 
 
@@ -426,7 +432,7 @@ public abstract class APlayerCtrl : MonoBehaviour
     {
 
         //脚底向下发射一个射线
-        FeetDown = Physics2D.Raycast(Feet.position, Vector2.down,1F, (1 << 9) | (1 << 13) | (1 << 14));
+        FeetDown = Physics2D.Raycast(Feet.position, Vector2.down,1F, (1 << 9) | (1 << 13) | (1 << 15));
         Collider2D collider2D = FeetDown.collider;
 
 #if UNITY_EDITOR
@@ -439,6 +445,7 @@ public abstract class APlayerCtrl : MonoBehaviour
             StandOnPlatform = false;
             return;
         }
+
         //脚底踩地面
         if (collider2D.CompareTag("Platform") || collider2D.CompareTag("Floor"))
         {
@@ -598,6 +605,8 @@ public abstract class APlayerCtrl : MonoBehaviour
             //更改玩家层，使玩家具有下落传过平台的条件
             go.layer = 7;//7 与平台不碰撞的
             IsJumping = false;
+            StandOnFloor = false;
+            StandOnPlatform = false;
             FallFromPlatformTime = Time.timeSinceLevelLoad;
         }
 
@@ -675,25 +684,27 @@ public abstract class APlayerCtrl : MonoBehaviour
     public void Move(float Speed, Vector2 Direction)
     {
         //消除因为更换为物理引擎后造成的数值差异
-        Speed /= 2.6f;
-
+        //Speed /= 2.6f;
+        //计算移动方向与距离
         Direction = new Vector2(Direction.x *-Mathf.Cos( PlayerSlopeAngle) * Speed, Direction.y * Mathf.Sin(PlayerSlopeAngle) * Speed);
 
-        //水平方向速度为0，站在地上，消除竖直方向速度，防止玩家弹起或者下滑
-        if(ExMath.Approximation(0.01F,0F, Direction.x) && IsGround )
+        //竖直方向上有移动速度，覆盖物理引擎的垂直方向移动
+        if(!ExMath.Approximation(0.001f, Direction.y,0f))
         {
-
-            rigidbody2D.velocity = new Vector2(MountGSS.gameScoreSettings.PlayerMove.x, 0f);//竖直方向：物理引擎碰撞引起的
+            rigidbody2D.velocity = new Vector2(Direction.x, Direction.y);//竖直方向：物理引擎碰撞引起的
         }
+        //竖直方向上无移动速度，应用物理引擎的垂直方向移动
         else
         {
-            rigidbody2D.velocity = new Vector2(MountGSS.gameScoreSettings.PlayerMove.x, rigidbody2D.velocity.y);//竖直方向：物理引擎碰撞引起的
+            rigidbody2D.velocity = new Vector2(Direction.x, rigidbody2D.velocity.y);
         }
-        MountGSS.gameScoreSettings.PlayerMove = Speed * MoveSpeedRatio * Direction;
+
+
+            MountGSS.gameScoreSettings.PlayerMove = Direction / 20f ;
 
 
         //更新玩家位置
-        MountGSS.gameScoreSettings.PlayersPosition[PlayerId] = rigidbody2D.position; //相机抖动的话，注意一下这行代码
+        MountGSS.gameScoreSettings.PlayersPosition[PlayerId] = tr.position; //相机抖动的话，注意一下这行代码
 
     }
 
